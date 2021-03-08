@@ -1,21 +1,17 @@
 import React from 'react';
+import { NavLink } from 'react-router-dom';
 import styled from 'styled-components';
+import MainNavigation from './MainNavigation';
 
 const Header = () => {
   return (
     <StWrapper>
       <StHeader>
-        <StTitle>Instagram</StTitle>
+        <StTitle>
+          <NavLink to="/">Instagram</NavLink>
+        </StTitle>
         <StSearch type="search" placeholder="검색" />
-        <StMainNavigation>
-          <ul>
-            <li>홈</li>
-            <li>DM</li>
-            <li>탐색</li>
-            <li>좋아요</li>
-            <li>Profile</li>
-          </ul>
-        </StMainNavigation>
+        <MainNavigation />
       </StHeader>
     </StWrapper>
   );
@@ -45,25 +41,15 @@ const StHeader = styled.header`
 
 const StTitle = styled.h1`
   width: 15rem;
+  & > a {
+    text-decoration: none;
+    color: black;
+  }
 `;
 
 const StSearch = styled.input`
   width: 22rem;
   height: 2.5rem;
-`;
-
-const StMainNavigation = styled.nav`
-  width: 15rem;
-  & > ul {
-    display: flex;
-    flex-flow: row nowrap;
-    & > li {
-      flex-grow: 1;
-    }
-    & > li:last-child {
-      flex-grow: 0;
-    }
-  }
 `;
 
 export default Header;

@@ -1,15 +1,17 @@
 import React from 'react';
 import styled from 'styled-components';
+import InfoRouter from '../Router/infoRouter';
 import Profile from './Profile';
 import SubNavigation from './SubNavigation';
 
-const Main = () => {
+const User = () => {
   return (
     <StWrapper>
       <StMain>
         <Profile />
         <SubNavigation />
-        <section>하단 섹션(sub route section)</section>
+        {/* <section>하단 섹션(sub route section)</section> */}
+        <InfoRouter />
       </StMain>
     </StWrapper>
   );
@@ -30,4 +32,4 @@ const StMain = styled.main`
   width: 95rem;
 `;
 
-export default Main;
+export default User;

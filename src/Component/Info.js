@@ -1,14 +1,14 @@
 import React from 'react';
 import styled from 'styled-components';
 import Header from './Header';
-import Main from './Main';
 import Footer from './Footer';
+import MainRouter from '../Router/mainRouter';
 
 const Info = () => {
   return (
     <StProfileWrapper>
       <Header />
-      <Main />
+      <MainRouter />
       <Footer />
     </StProfileWrapper>
   );
