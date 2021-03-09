@@ -10,7 +10,6 @@ const User = () => {
       <StMain>
         <Profile />
         <SubNavigation />
-        {/* <section>하단 섹션(sub route section)</section> */}
         <InfoRouter />
       </StMain>
     </StWrapper>
