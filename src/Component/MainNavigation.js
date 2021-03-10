@@ -1,10 +1,10 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 import styled from 'styled-components';
-import { Home } from '@styled-icons/heroicons-outline/Home';
-import { PaperPlane } from '@styled-icons/evaicons-solid/PaperPlane';
-import { Compass3 } from '@styled-icons/remix-line/Compass3';
-import { Heart } from '@styled-icons/boxicons-regular/Heart';
+import { Home } from '@styled-icons/ionicons-outline/Home';
+import { PaperPlane } from '@styled-icons/ionicons-outline/PaperPlane';
+import { Compass } from '@styled-icons/ionicons-outline/Compass';
+import { Heart } from '@styled-icons/ionicons-outline/Heart';
 
 const MainNavigation = () => {
   return (
@@ -27,7 +27,7 @@ const MainNavigation = () => {
         <li>
           <NavLink to="/explore">
             <StIcon>
-              <Compass3 />
+              <Compass />
             </StIcon>
           </NavLink>
         </li>
@@ -62,7 +62,7 @@ const StMainNavigation = styled.nav`
     flex-flow: row nowrap;
     align-items: center;
     & > li + li {
-      margin-left: 2rem;
+      margin-left: 1.8rem;
     }
     & > li:last-child {
       flex-grow: 0;
@@ -75,7 +75,8 @@ const StMainNavigation = styled.nav`
 `;
 
 const StIcon = styled.div`
-  width: 3rem;
+  width: 2.7rem;
+  height: 2.7rem;
 `;
 
 const StProfile = styled.div`
