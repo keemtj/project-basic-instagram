@@ -15,7 +15,9 @@ const Header = () => {
             />
           </NavLink>
         </StTitle>
-        <StSearch type="search" placeholder="검색" />
+        <StSearch>
+          <StSearchInput type="search" placeholder="검색" />
+        </StSearch>
         <MainNavigation />
       </StHeader>
     </StWrapper>
@@ -45,7 +47,7 @@ const StHeader = styled.header`
 `;
 
 const StTitle = styled.h1`
-  width: 15rem;
+  width: 100%;
   & > a {
     text-decoration: none;
     color: black;
@@ -57,9 +59,25 @@ const StLogo = styled.img`
   height: 100%;
 `;
 
-const StSearch = styled.input`
+const StSearch = styled.div`
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
+const StSearchInput = styled.input`
   width: 22rem;
-  height: 2.5rem;
+  height: 3rem;
+  border: 1px solid rgba(219, 219, 219, 1);
+  border-radius: 3px;
+  background-color: #fafafa;
+  padding-left: 2.5rem;
+  &::placeholder {
+    color: #828282;
+    font-weight: 100;
+  }
 `;
 
 export default Header;

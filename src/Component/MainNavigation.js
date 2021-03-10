@@ -52,7 +52,12 @@ const MainNavigation = () => {
 };
 
 const StMainNavigation = styled.nav`
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
   & > ul {
+    width: fit-content;
     display: flex;
     flex-flow: row nowrap;
     align-items: center;
