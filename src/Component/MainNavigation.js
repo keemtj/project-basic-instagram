@@ -75,12 +75,13 @@ const StMainNavigation = styled.nav`
 `;
 
 const StIcon = styled.div`
-  width: 2.7rem;
-  height: 2.7rem;
+  width: 2.6rem;
+  height: 2.6rem;
 `;
 
 const StProfile = styled.div`
-  border: 2px solid black;
+  /* true면 black false면 white */
+  border: 1px solid black;
   width: 2.8rem;
   height: 2.8rem;
   border-radius: 50%;
@@ -90,10 +91,10 @@ const StProfile = styled.div`
 `;
 
 const StProfileImage = styled.img`
-  border: 1px solid white;
+  border: 2px solid white;
   border-radius: 50%;
-  width: 2.4rem;
-  height: 2.4rem;
+  width: 2.6rem;
+  height: 2.6rem;
   object-fit: cover;
 `;
 

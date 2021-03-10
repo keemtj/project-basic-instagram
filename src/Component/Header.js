@@ -2,6 +2,8 @@ import React from 'react';
 import { NavLink } from 'react-router-dom';
 import styled from 'styled-components';
 import MainNavigation from './MainNavigation';
+import { Search } from '@styled-icons/ionicons-outline/Search';
+import { CloseCircle } from '@styled-icons/ionicons-sharp/CloseCircle';
 
 const Header = () => {
   return (
@@ -16,7 +18,11 @@ const Header = () => {
           </NavLink>
         </StTitle>
         <StSearch>
-          <StSearchInput type="search" placeholder="검색" />
+          <StSearchInput type="text" placeholder="검색" />
+          <StSearchIcon />
+          <StClearBtn>
+            <StCloseCircleIcon />
+          </StClearBtn>
         </StSearch>
         <MainNavigation />
       </StHeader>
@@ -65,6 +71,7 @@ const StSearch = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+  position: relative;
 `;
 
 const StSearchInput = styled.input`
@@ -73,11 +80,29 @@ const StSearchInput = styled.input`
   border: 1px solid rgba(219, 219, 219, 1);
   border-radius: 3px;
   background-color: #fafafa;
-  padding-left: 2.5rem;
+  padding: 0rem 2.5rem;
   &::placeholder {
     color: #828282;
     font-weight: 100;
   }
+`;
+
+const StSearchIcon = styled(Search)`
+  position: absolute;
+  width: 1.4rem;
+  left: 5.5rem;
+  color: #828282;
+`;
+
+const StClearBtn = styled.button`
+  position: absolute;
+  right: 5rem;
+`;
+
+const StCloseCircleIcon = styled(CloseCircle)`
+  width: 1.5rem;
+  height: 3rem;
+  color: #828282;
 `;
 
 export default Header;
