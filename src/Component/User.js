@@ -18,7 +18,7 @@ const User = () => {
 
 const StWrapper = styled.div`
   flex-grow: 1;
-  margin-top: 5rem;
+  margin-top: 5.5rem;
   width: 100%;
   background-color: #fafafa;
   display: flex;

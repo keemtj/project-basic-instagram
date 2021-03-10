@@ -1,12 +1,16 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 import styled from 'styled-components';
+import { Grid } from '@styled-icons/feather/Grid';
+import { TvOutline } from '@styled-icons/evaicons-outline/TvOutline';
+import { Bookmark } from '@styled-icons/feather/Bookmark';
+import { User } from '@styled-icons/boxicons-regular/User';
 
 const subnav = [
-  { name: '', text: '게시물' },
-  { name: 'channel', text: 'IGTV' },
-  { name: 'saved', text: '저장됨' },
-  { name: 'tagged', text: '태그됨' },
+  { name: '', text: '게시물', icon: <Grid /> },
+  { name: 'channel', text: 'IGTV', icon: <TvOutline /> },
+  { name: 'saved', text: '저장됨', icon: <Bookmark /> },
+  { name: 'tagged', text: '태그됨', icon: <User /> },
 ];
 
 const SubNavigation = () => {
@@ -20,6 +24,7 @@ const SubNavigation = () => {
               to={nav.name === '' ? '/user/' : `/user/${nav.name}`}
               exact={nav.name === ''}
             >
+              <StIcon>{nav.icon}</StIcon>
               {nav.text}
             </NavLink>
           </StNavItem>
@@ -45,7 +50,7 @@ const StNavItem = styled.li`
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 5rem;
+  width: fit-content;
   height: 100%;
   font-size: 1.2rem;
   font-weight: 600;
@@ -78,6 +83,12 @@ const StNavItem = styled.li`
       border-top: 1px solid black;
     }
   }
+`;
+
+const StIcon = styled.span`
+  margin-right: 0.3rem;
+  width: 1.3rem;
+  height: 1.3rem;
 `;
 
 export default SubNavigation;

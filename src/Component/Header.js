@@ -8,7 +8,12 @@ const Header = () => {
     <StWrapper>
       <StHeader>
         <StTitle>
-          <NavLink to="/">Instagram</NavLink>
+          <NavLink to="/">
+            <StLogo
+              src="https://www.instagram.com/static/images/web/mobile_nav_type_logo-2x.png/1b47f9d0e595.png"
+              alt="instagram"
+            />
+          </NavLink>
         </StTitle>
         <StSearch type="search" placeholder="검색" />
         <MainNavigation />
@@ -25,7 +30,7 @@ const StWrapper = styled.div`
   align-items: center;
   justify-content: center;
   width: 100vw;
-  height: 5rem;
+  height: 5.5rem;
   border-bottom: 1px solid rgba(219, 219, 219, 1);
   background-color: white;
 `;
@@ -45,6 +50,11 @@ const StTitle = styled.h1`
     text-decoration: none;
     color: black;
   }
+`;
+
+const StLogo = styled.img`
+  width: 10rem;
+  height: 100%;
 `;
 
 const StSearch = styled.input`
