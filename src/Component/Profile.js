@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import { Settings } from '@styled-icons/ionicons-sharp/Settings';
 
 const Profile = () => {
   return (
@@ -14,7 +15,9 @@ const Profile = () => {
         <StIdBox>
           <StId>keemtj</StId>
           <StEditBtn>프로필 편집</StEditBtn>
-          <button>settings</button>
+          <StSettingsBtn>
+            <Settings />
+          </StSettingsBtn>
         </StIdBox>
         <StFollowBox>
           <li>
@@ -84,6 +87,13 @@ const StEditBtn = styled.button`
   height: 100%;
   font-size: 1.4rem;
   font-weight: 600;
+  cursor: pointer;
+`;
+
+const StSettingsBtn = styled.button`
+  width: 3rem;
+  height: 100%;
+  margin-left: 0.5rem;
   cursor: pointer;
 `;
 
