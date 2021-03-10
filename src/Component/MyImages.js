@@ -4,7 +4,7 @@ import axios from 'axios';
 
 const MyImages = () => {
   const [datas, setDatas] = useState(null);
-  console.log(datas);
+
   useEffect(() => {
     const fetchData = async () => {
       const response = await axios.get(
