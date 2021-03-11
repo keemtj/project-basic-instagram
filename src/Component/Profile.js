@@ -13,7 +13,7 @@ const Profile = () => {
       </StImageWrapper>
       <StDetail>
         <StIdBox>
-          <StId>keemtj</StId>
+          <StId>Elon_musk</StId>
           <StEditBtn>프로필 편집</StEditBtn>
           <StSettingsBtn>
             <Settings />

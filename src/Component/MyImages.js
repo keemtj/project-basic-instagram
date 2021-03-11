@@ -1,11 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import axios from 'axios';
+import EmptyPosts from './EmptyPosts';
 
 const MyImages = () => {
   const [datas, setDatas] = useState(null);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
+    setLoading(true);
     const fetchData = async () => {
       const response = await axios.get(
         // eslint-disable-next-line no-undef
@@ -13,14 +16,16 @@ const MyImages = () => {
       );
       const { data } = await response.data;
       setDatas(data);
+      setLoading(false);
     };
     fetchData();
   }, []);
 
-  if (!datas) return <div>loading...</div>;
+  if (loading) return <div>loading...</div>;
+  if (!datas) return <EmptyPosts />;
   return (
     <StMyImagesWrapper>
-      {datas?.map(({ id, media_url, caption }) => (
+      {datas.map(({ id, media_url, caption }) => (
         <StImage src={media_url} alt={caption} key={id} />
       ))}
     </StMyImagesWrapper>
