@@ -9,9 +9,9 @@ const MainRouter = () => {
   return (
     <Switch>
       <Route path="/" component={Home} exact />
-      <Route path="/direct/" component={Direct} />
-      <Route path="/explore/" component={Explore} />
-      <Route path="/user/" component={User} />
+      <Route path="/direct" component={Direct} />
+      <Route path="/explore" component={Explore} />
+      <Route path="/user" component={User} />
       <Route
         render={({ location }) => (
           <div style={{ marginTop: '5rem' }}>

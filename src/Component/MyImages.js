@@ -6,22 +6,29 @@ import EmptyPosts from './EmptyPosts';
 const MyImages = () => {
   const [datas, setDatas] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     setLoading(true);
     const fetchData = async () => {
-      const response = await axios.get(
-        // eslint-disable-next-line no-undef
-        `https://graph.instagram.com/me/media?fields=id,caption,media_url,username&access_token=${process.env.REACT_APP_FACEBOOK_ACCESS_TOKEN}`,
-      );
-      const { data } = await response.data;
-      setDatas(data);
-      setLoading(false);
+      try {
+        const response = await axios.get(
+          // eslint-disable-next-line no-undef
+          `https://graph.instagram.com/me/media?fields=id,caption,media_url,username&access_token=${process.env.REACT_APP_FACEBOOK_ACCESS_TOKEN}`,
+        );
+        const { data } = await response.data;
+        setDatas(data);
+        setLoading(false);
+      } catch (e) {
+        setError(e);
+        setLoading(false);
+      }
     };
     fetchData();
   }, []);
 
   if (loading) return <div>loading...</div>;
+  if (error) return <div>error...</div>;
   if (!datas) return <EmptyPosts />;
   return (
     <StMyImagesWrapper>

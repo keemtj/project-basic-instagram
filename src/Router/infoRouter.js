@@ -8,10 +8,10 @@ import Tagged from '../Component/Tagged';
 const InfoRouter = () => {
   return (
     <Switch>
-      <Route path="/user/" component={MyImages} exact />
-      <Route path="/user/channel/" component={Channel} />
-      <Route path="/user/saved/" component={Saved} />
-      <Route path="/user/tagged/" component={Tagged} />
+      <Route path="/user" component={MyImages} exact />
+      <Route path="/user/channel" component={Channel} />
+      <Route path="/user/saved" component={Saved} />
+      <Route path="/user/tagged" component={Tagged} />
       <Route
         render={({ location }) => (
           <div>
