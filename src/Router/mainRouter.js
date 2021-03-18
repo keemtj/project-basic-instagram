@@ -3,7 +3,7 @@ import { Route, Switch } from 'react-router-dom';
 import Home from '../Component/Home';
 import Direct from '../Component/Direct';
 import Explore from '../Component/Explore';
-import User from '../Component/User';
+import Profile from '../Component/Profile';
 
 const MainRouter = () => {
   return (
@@ -11,7 +11,7 @@ const MainRouter = () => {
       <Route path="/" component={Home} exact />
       <Route path="/direct" component={Direct} />
       <Route path="/explore" component={Explore} />
-      <Route path="/user" component={User} />
+      <Route path="/profile" component={Profile} />
       <Route
         render={({ location }) => (
           <div style={{ marginTop: '5rem' }}>

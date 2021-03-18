@@ -13,15 +13,15 @@ const subnav = [
   { name: 'tagged', text: '태그됨', icon: <User /> },
 ];
 
-const SubNavigation = () => {
+const ProfileNavigation = () => {
   return (
-    <StSubNavigation>
+    <StProfileNavigation>
       <StNav>
         {subnav.map(nav => (
           <StNavItem key={nav.name}>
             <NavLink
               activeClassName="active"
-              to={nav.name === '' ? '/user/' : `/user/${nav.name}`}
+              to={nav.name === '' ? '/profile/' : `/profile/${nav.name}`}
               exact={nav.name === ''}
             >
               <StIcon>{nav.icon}</StIcon>
@@ -30,11 +30,11 @@ const SubNavigation = () => {
           </StNavItem>
         ))}
       </StNav>
-    </StSubNavigation>
+    </StProfileNavigation>
   );
 };
 
-const StSubNavigation = styled.nav`
+const StProfileNavigation = styled.nav`
   border-top: 1px solid rgba(219, 219, 219, 1);
   height: 5rem;
 `;
@@ -91,4 +91,4 @@ const StIcon = styled.span`
   height: 1.3rem;
 `;
 
-export default SubNavigation;
+export default ProfileNavigation;

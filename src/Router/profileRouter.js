@@ -1,17 +1,17 @@
 import React from 'react';
 import { Route, Switch } from 'react-router-dom';
 import Channel from '../Component/Channel';
-import MyImages from '../Component/MyImages';
+import Posts from '../Component/Posts';
 import Saved from '../Component/Saved';
 import Tagged from '../Component/Tagged';
 
-const InfoRouter = () => {
+const ProfileRouter = () => {
   return (
     <Switch>
-      <Route path="/user" component={MyImages} exact />
-      <Route path="/user/channel" component={Channel} />
-      <Route path="/user/saved" component={Saved} />
-      <Route path="/user/tagged" component={Tagged} />
+      <Route path="/profile" component={Posts} exact />
+      <Route path="/profile/channel" component={Channel} />
+      <Route path="/profile/saved" component={Saved} />
+      <Route path="/profile/tagged" component={Tagged} />
       <Route
         render={({ location }) => (
           <div>
@@ -24,4 +24,4 @@ const InfoRouter = () => {
   );
 };
 
-export default InfoRouter;
+export default ProfileRouter;

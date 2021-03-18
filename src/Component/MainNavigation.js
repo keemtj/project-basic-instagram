@@ -37,7 +37,7 @@ const MainNavigation = () => {
           </StIcon>
         </li>
         <li>
-          <NavLink to="/user">
+          <NavLink to="/profile">
             <StProfile>
               <StProfileImage
                 src="https://dimg.donga.com/wps/NEWS/IMAGE/2021/01/27/105114070.2.jpg"
