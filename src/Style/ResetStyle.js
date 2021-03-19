@@ -21,6 +21,8 @@ const ResetStyle = createGlobalStyle`
   button {
     border: none;
     background: transparent;
+    padding: 0;
+    margin: 0;
   }
 `;
 

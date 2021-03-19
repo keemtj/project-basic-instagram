@@ -63,6 +63,7 @@ const StCopyrightBox = styled.div`
 
 const StSelectBox = styled.select`
   border: none;
+  background: #fafafa;
   color: rgba(142, 142, 142, 1);
   font-size: 1.2rem;
   margin-right: 1rem;

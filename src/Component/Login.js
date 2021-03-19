@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import Footer from './Footer';
+import { Google2 } from '@styled-icons/icomoon/Google2';
 
 const Login = ({ onClickLogin }) => {
   return (
@@ -21,9 +22,16 @@ const Login = ({ onClickLogin }) => {
             <StOr>또는</StOr>
             <StLine></StLine>
           </StContour>
-          <button onClick={onClickLogin}>Google로 로그인</button>
+          <StGoogleLogin onClick={onClickLogin}>
+            <StGoogleIcon />
+            <span>Google로 로그인</span>
+          </StGoogleLogin>
+          <StForget>비밀번호를 잊으셨나요?</StForget>
         </StLoginBox>
-        <StSignUpBox>계정이 없으신가요? 가입하기</StSignUpBox>
+        <StSignUpBox>
+          <StText>계정이 없으신가요?</StText>
+          <StSignUp>가입하기</StSignUp>
+        </StSignUpBox>
       </StLogin>
       <Footer />
     </StLoginWrappr>
@@ -48,7 +56,7 @@ const StLogin = styled.main`
 const StLoginBox = styled.div`
   background: white;
   width: 35rem;
-  height: 36rem;
+  height: 38rem;
   border: 1px solid rgba(219, 219, 219, 1);
   display: flex;
   flex-flow: column nowrap;
@@ -94,12 +102,13 @@ const StContour = styled.div`
   width: 27rem;
   display: flex;
   flex-flow: row nowrap;
+  align-items: center;
+  justify-content: center;
 `;
 
 const StLine = styled.div`
   border-top: 1px solid rgba(219, 219, 219, 1);
   flex-grow: 1;
-  transform: translate(0%, 50%);
 `;
 
 const StOr = styled.div`
@@ -111,6 +120,33 @@ const StOr = styled.div`
   text-align: center;
 `;
 
+const StGoogleLogin = styled.button`
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
+  justify-content: center;
+  width: 27rem;
+  color: #385185;
+  font-size: 1.5rem;
+  font-weight: 600;
+  cursor: pointer;
+`;
+
+const StGoogleIcon = styled(Google2)`
+  margin-right: 0.5rem;
+  width: 1.8rem;
+  color: #385185;
+`;
+
+const StForget = styled.button`
+  margin-top: 1.5rem;
+  width: 27rem;
+  color: #385185;
+  font-size: 1.2rem;
+  font-weight: 500;
+  cursor: pointer;
+`;
+
 const StLogo = styled.img`
   width: 17rem;
   margin: 4rem auto;
@@ -118,6 +154,7 @@ const StLogo = styled.img`
 
 const StSignUpBox = styled.div`
   display: flex;
+  flex-flow: row nowrap;
   align-items: center;
   justify-content: center;
   margin-top: 1rem;
@@ -125,6 +162,20 @@ const StSignUpBox = styled.div`
   height: 6.5rem;
   border: 1px solid rgba(219, 219, 219, 1);
   background-color: white;
+  font-size: 1.4rem;
+`;
+
+const StText = styled.span`
+  display: inline-block;
+  height: 1.6rem;
+`;
+
+const StSignUp = styled.button`
+  margin-left: 0.5rem;
+  color: #0095f6;
+  font-size: 1.4rem;
+  font-weight: 600;
+  cursor: pointer;
 `;
 
 export default Login;
