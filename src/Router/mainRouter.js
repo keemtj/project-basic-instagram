@@ -4,6 +4,7 @@ import Home from '../Component/Home';
 import Direct from '../Component/Direct';
 import Explore from '../Component/Explore';
 import Profile from '../Component/Profile';
+import Login from '../Component/Login';
 
 const MainRouter = () => {
   return (
@@ -12,6 +13,7 @@ const MainRouter = () => {
       <Route path="/direct" component={Direct} />
       <Route path="/explore" component={Explore} />
       <Route path="/profile" component={Profile} />
+      <Route path="/login" component={Login} />
       <Route
         render={({ location }) => (
           <div style={{ marginTop: '5rem' }}>

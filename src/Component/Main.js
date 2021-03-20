@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import styled from 'styled-components';
-import Header from './Header';
-import Footer from './Footer';
+import Header from './Global/Header';
+import Footer from './Global/Footer';
 import MainRouter from '../Router/mainRouter';
 import { firestore } from '../services/firebase';
 

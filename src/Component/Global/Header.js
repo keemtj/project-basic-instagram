@@ -1,7 +1,7 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 import styled from 'styled-components';
-import MainNavigation from './MainNavigation';
+import MainNavigation from '../MainNavigation';
 import { Search } from '@styled-icons/ionicons-outline/Search';
 import { CloseCircle } from '@styled-icons/ionicons-sharp/CloseCircle';
 
