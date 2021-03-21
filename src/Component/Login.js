@@ -3,16 +3,14 @@ import { Link, useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 import LoginRouter from '../Router/loginRouter';
 import Footer from './Global/Footer';
-// import LoginBox from './LoginBox';
 
-const Login = () => {
+const Login = ({ setSignin }) => {
   const location = useLocation();
-  console.log('location', location.pathname);
+
   return (
     <StLoginWrappr>
       <StLogin>
-        <LoginRouter />
-        {/* <LoginBox onClickLogin={onClickLogin} /> */}
+        <LoginRouter setSignin={setSignin} />
         <StQuestionBox>
           {location.pathname === '/login' || location.pathname === '/' ? (
             <>

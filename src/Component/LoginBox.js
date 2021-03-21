@@ -1,18 +1,48 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import { Google2 } from '@styled-icons/icomoon/Google2';
 import Input from './Global/Input';
+import { firebaseAuth } from '../services/firebase';
 
-const LoginBox = ({ onClickLogin }) => {
+const LoginBox = ({ setSignin }) => {
+  const { useState } = React;
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+
+  const handleLogin = async e => {
+    e.preventDefault();
+    try {
+      await firebaseAuth.signInWithEmailAndPassword(email, password);
+      setSignin(true);
+      console.log('login 성공');
+    } catch (e) {
+      console.log(e.message);
+    }
+  };
+
+  useEffect(() => {
+    document.title = 'Login - instagram';
+  }, []);
+
   return (
     <StLoginBox>
       <StLogo
         src="https://www.instagram.com/static/images/web/mobile_nav_type_logo-2x.png/1b47f9d0e595.png"
         alt="instagram"
       />
-      <StLoginForm>
-        <Input type="email" placeholder="이메일" />
-        <Input type="password" placeholder="비밀번호" />
+      <StLoginForm onSubmit={handleLogin}>
+        <Input
+          type="text"
+          placeholder="이메일"
+          value={email}
+          onChange={e => setEmail(e.target.value)}
+        />
+        <Input
+          type="password"
+          placeholder="비밀번호"
+          value={password}
+          onChange={e => setPassword(e.target.value)}
+        />
         <StButton type="submit">로그인</StButton>
       </StLoginForm>
       <StContour>
@@ -20,7 +50,7 @@ const LoginBox = ({ onClickLogin }) => {
         <StOr>또는</StOr>
         <StLine></StLine>
       </StContour>
-      <StGoogleLogin onClick={onClickLogin}>
+      <StGoogleLogin>
         <StGoogleIcon />
         <span>Google로 로그인</span>
       </StGoogleLogin>

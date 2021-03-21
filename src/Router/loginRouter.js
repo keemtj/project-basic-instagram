@@ -3,11 +3,15 @@ import { Route, Switch } from 'react-router-dom';
 import LoginBox from '../Component/LoginBox';
 import SignUpBox from '../Component/SignUpBox';
 
-const LoginRouter = () => {
+const LoginRouter = ({ setSignin }) => {
   return (
     <Switch>
-      <Route path="/" component={LoginBox} exact />
-      <Route path="/login" component={LoginBox} />
+      <Route path="/" exact>
+        <LoginBox setSignin={setSignin} />
+      </Route>
+      <Route path="/login">
+        <LoginBox setSignin={setSignin} />
+      </Route>
       <Route path="/signup" component={SignUpBox} />
       <Route
         render={({ location }) => (

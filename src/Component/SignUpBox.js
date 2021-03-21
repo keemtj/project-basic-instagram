@@ -2,16 +2,36 @@ import React from 'react';
 import styled from 'styled-components';
 import { Google2 } from '@styled-icons/icomoon/Google2';
 import Input from './Global/Input';
-import { firebaseAuth, firestore } from '../services/firebase';
+import { firebaseAuth, firestore, googleProvider } from '../services/firebase';
 import { useHistory } from 'react-router';
 
-const SignUpBox = ({ onClickLogin }) => {
+const SignUpBox = () => {
   const history = useHistory();
   const { useState } = React;
   const [email, setEmail] = useState('');
   const [fullname, setFullname] = useState('');
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+
+  const handleGoogleSignup = async () => {
+    try {
+      const createUser = await firebaseAuth.signInWithPopup(googleProvider);
+      await firestore.collection('users').add({
+        uid: createUser.user.uid,
+        email: createUser.user.email,
+        fullname: '',
+        username: '',
+        followers: [],
+        following: [],
+        profileSrc: '',
+        dateCreated: Date.now(),
+      });
+      alert('회원가입이 완료되었습니다. 로그인 페이지로 이동합니다.');
+      history.push('/');
+    } catch (e) {
+      console.log(e.message);
+    }
+  };
 
   const handleSignup = async e => {
     e.preventDefault();
@@ -61,7 +81,7 @@ const SignUpBox = ({ onClickLogin }) => {
         alt="instagram"
       />
       <StNotice>친구들의 사진과 동영상을 보려면 가입하세요.</StNotice>
-      <StGoogleLogin onClick={onClickLogin}>
+      <StGoogleLogin onClick={handleGoogleSignup}>
         <StGoogleIcon />
         <span>Google로 로그인</span>
       </StGoogleLogin>
