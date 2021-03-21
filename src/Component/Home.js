@@ -1,33 +1,47 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import Header from './Global/Header';
 import Footer from './Global/Footer';
 import MainRouter from '../Router/mainRouter';
-import { firestore } from '../services/firebase';
+import { firebaseAuth, firestore } from '../services/firebase';
 
 const Home = () => {
-  const [data, setData] = useState(null);
-  console.log('data', data);
-
-  const fetchData = useCallback(async () => {
-    let datas = [];
-    try {
-      // firestore에서 컬렉션 가져오기
-      const docs = await firestore.collection('users').get();
-      docs.forEach(doc => {
-        // console.log(doc.data());
-        return datas.push(doc.data());
-      });
-
-      setData(datas);
-    } catch (e) {
-      console.log(e);
-    }
-  }, []);
+  const [userData, setUserData] = useState(null);
+  const [postData, setPostData] = useState(null);
+  console.log('userData', userData);
+  console.log('postData', postData);
 
   useEffect(() => {
-    fetchData();
-  }, [fetchData]);
+    const getUserData = async () => {
+      let userData = [];
+      let postData = [];
+      try {
+        // 현재 접속중인 유저의 uid 가져오기
+        const { uid } = firebaseAuth.currentUser;
+        // firestore에서 uid에 맞는 users 컬렉션 가져오기
+        const usersDocs = await firestore
+          .collection('users')
+          .where('uid', '==', uid)
+          .get();
+        usersDocs.forEach(doc => {
+          return userData.push(doc.data());
+        });
+        // firestore에서 uid에 맞는 posts 컬렉션 가져오기
+        const postsDocs = await firestore
+          .collection('posts')
+          // .where('uid', '==', uid)
+          .get();
+        postsDocs.forEach(doc => {
+          return postData.push(doc.data());
+        });
+        setUserData(userData);
+        setPostData(postData);
+      } catch (e) {
+        console.log(e);
+      }
+    };
+    getUserData();
+  }, []);
 
   return (
     <StMainWrapper>
