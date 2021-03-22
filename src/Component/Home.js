@@ -18,6 +18,7 @@ const Home = () => {
       try {
         // 현재 접속중인 유저의 uid 가져오기
         const { uid } = firebaseAuth.currentUser;
+        console.log('uid', uid);
         // firestore에서 uid에 맞는 users 컬렉션 가져오기
         const usersDocs = await firestore
           .collection('users')
@@ -32,7 +33,11 @@ const Home = () => {
           // .where('uid', '==', uid)
           .get();
         postsDocs.forEach(doc => {
-          return postData.push(doc.data());
+          console.log('doc', doc.id);
+          if (doc.id === uid) {
+            console.log('uid에맞는 필드 가져오기');
+            return postData.push(doc.data());
+          }
         });
         setUserData(userData);
         setPostData(postData);

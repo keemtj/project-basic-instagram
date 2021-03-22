@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import { Google2 } from '@styled-icons/icomoon/Google2';
 import Input from './Global/Input';
-import { firebaseAuth } from '../services/firebase';
+import { firebaseAuth, googleProvider } from '../services/firebase';
 
 const LoginBox = ({ setSignin }) => {
   const { useState } = React;
@@ -15,6 +15,15 @@ const LoginBox = ({ setSignin }) => {
       await firebaseAuth.signInWithEmailAndPassword(email, password);
       setSignin(true);
       console.log('login 성공');
+    } catch (e) {
+      console.log(e.message);
+    }
+  };
+
+  const handleGoogleLogin = async () => {
+    try {
+      await firebaseAuth.signInWithPopup(googleProvider);
+      setSignin(true);
     } catch (e) {
       console.log(e.message);
     }
@@ -50,7 +59,7 @@ const LoginBox = ({ setSignin }) => {
         <StOr>또는</StOr>
         <StLine></StLine>
       </StContour>
-      <StGoogleLogin>
+      <StGoogleLogin onClick={handleGoogleLogin}>
         <StGoogleIcon />
         <span>Google로 로그인</span>
       </StGoogleLogin>

@@ -8,11 +8,7 @@ function App() {
   return (
     <>
       <ResetStyle />
-      {isSignin ? (
-        <Home />
-      ) : (
-        <Login isSignin={isSignin} setSignin={setSignin} />
-      )}
+      {isSignin ? <Home /> : <Login setSignin={setSignin} />}
     </>
   );
 }
