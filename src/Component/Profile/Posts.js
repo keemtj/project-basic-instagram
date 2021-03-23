@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import axios from 'axios';
-import EmptyPosts from './EmptyPosts';
+import EmptyPosts from '../EmptyPosts';
 
 const Posts = () => {
   const [datas, setDatas] = useState(null);

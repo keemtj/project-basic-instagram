@@ -1,9 +1,9 @@
 import React from 'react';
 import { Route, Switch } from 'react-router-dom';
-import Channel from '../Component/Channel';
-import Posts from '../Component/Posts';
-import Saved from '../Component/Saved';
-import Tagged from '../Component/Tagged';
+import Channel from '../Component/Profile/Channel';
+import Posts from '../Component/Profile/Posts';
+import Saved from '../Component/Profile/Saved';
+import Tagged from '../Component/Profile/Tagged';
 
 const ProfileRouter = () => {
   return (

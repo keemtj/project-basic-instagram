@@ -1,7 +1,7 @@
 import React from 'react';
 import { Route, Switch } from 'react-router-dom';
-import LoginBox from '../Component/LoginBox';
-import SignUpBox from '../Component/SignUpBox';
+import LoginBox from '../Component/Login/LoginBox';
+import SignUpBox from '../Component/Login/SignUpBox';
 
 const LoginRouter = ({ setSignin }) => {
   return (

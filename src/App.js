@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import Home from './Component/Home';
-import Login from './Component/Login';
+import Login from './Component/Login/Login';
 import ResetStyle from './Style/ResetStyle';
 
 function App() {

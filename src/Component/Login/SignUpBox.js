@@ -1,8 +1,12 @@
 import React from 'react';
 import styled from 'styled-components';
 import { Google2 } from '@styled-icons/icomoon/Google2';
-import Input from './Global/Input';
-import { firebaseAuth, firestore, googleProvider } from '../services/firebase';
+import Input from '../Global/Input';
+import {
+  firebaseAuth,
+  firestore,
+  googleProvider,
+} from '../../services/firebase';
 import { useHistory } from 'react-router';
 
 const SignUpBox = () => {

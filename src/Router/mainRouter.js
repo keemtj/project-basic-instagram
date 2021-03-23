@@ -1,10 +1,10 @@
 import React from 'react';
 import { Route, Switch } from 'react-router-dom';
-import Main from '../Component/Main';
-import Direct from '../Component/Direct';
-import Explore from '../Component/Explore';
-import Profile from '../Component/Profile';
-import Login from '../Component/Login';
+import Main from '../Component/Main/Main';
+import Direct from '../Component/Direct/Direct';
+import Explore from '../Component/Explore/Explore';
+import Profile from '../Component/Profile/Profile';
+import Login from '../Component/Login/Login';
 
 const MainRouter = () => {
   return (

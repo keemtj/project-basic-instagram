@@ -1,8 +1,8 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import styled from 'styled-components';
-import LoginRouter from '../Router/loginRouter';
-import Footer from './Global/Footer';
+import LoginRouter from '../../Router/loginRouter';
+import Footer from '../Global/Footer';
 
 const Login = ({ setSignin }) => {
   const location = useLocation();

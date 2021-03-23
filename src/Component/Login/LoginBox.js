@@ -1,8 +1,8 @@
 import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import { Google2 } from '@styled-icons/icomoon/Google2';
-import Input from './Global/Input';
-import { firebaseAuth, googleProvider } from '../services/firebase';
+import Input from '../Global/Input';
+import { firebaseAuth, googleProvider } from '../../services/firebase';
 
 const LoginBox = ({ setSignin }) => {
   const { useState } = React;
