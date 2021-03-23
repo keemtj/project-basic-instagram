@@ -23,6 +23,7 @@ const ResetStyle = createGlobalStyle`
     background: transparent;
     padding: 0;
     margin: 0;
+    font-size: 10px;
   }
 `;
 

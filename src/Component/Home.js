@@ -4,8 +4,10 @@ import Header from './Global/Header';
 import Footer from './Global/Footer';
 import MainRouter from '../Router/mainRouter';
 import { firebaseAuth, firestore } from '../services/firebase';
+import { useLocation } from 'react-router';
 
 const Home = () => {
+  const location = useLocation();
   const [userData, setUserData] = useState(null);
   const [postData, setPostData] = useState(null);
   console.log('userData', userData);
@@ -52,7 +54,7 @@ const Home = () => {
     <StMainWrapper>
       <Header />
       <MainRouter />
-      <Footer />
+      {location.pathname !== '/' && <Footer />}
     </StMainWrapper>
   );
 };
