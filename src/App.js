@@ -4,11 +4,15 @@ import Login from './Component/Login/Login';
 import ResetStyle from './Style/ResetStyle';
 
 function App() {
-  const [isSignin, setSignin] = useState(true);
+  const [isSignin, setSignin] = useState(false);
   return (
     <>
       <ResetStyle />
-      {isSignin ? <Home /> : <Login setSignin={setSignin} />}
+      {isSignin ? (
+        <Home setSignin={setSignin} />
+      ) : (
+        <Login isSignin={isSignin} setSignin={setSignin} />
+      )}
     </>
   );
 }

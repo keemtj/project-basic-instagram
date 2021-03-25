@@ -6,9 +6,9 @@ import { PaperPlane } from '@styled-icons/ionicons-outline/PaperPlane';
 import { Chat } from '@styled-icons/bootstrap/Chat';
 import { Bookmark } from '@styled-icons/bootstrap/Bookmark';
 import { EmojiSmile } from '@styled-icons/bootstrap/EmojiSmile';
+import Carousel from '../Global/Carousel';
 
 const Post = ({ post }) => {
-  const images = ['image1'];
   const icons = [
     { icon: <Heart /> },
     { icon: <Chat /> },
@@ -21,8 +21,6 @@ const Post = ({ post }) => {
     id: 'username1',
     text:
       'Lorem ipsum dolor sit amet consectetur adipisicing elit. Minima deleniti quis reiciendis nulla, ipsa aspernatur qui praesentium nostrum, commodi adipisci harum, quod quisquam. Minima id ullam doloribus blanditiis at neque!',
-    text2:
-      '동해물과 백두산이 마르고 닳도록 하느님이 보우하사 우리나라 만세. 무궁화 삼천리 화려강산 대한 사람 대한으로 길이 보전하세.동해물과 백두산이 마르고 닳도록 하느님이 보우하사 우리나라 만세. 무궁화 삼천리 화려강산 대한 사람 대한으로 길이 보전하세.',
   };
   const [more, setMore] = React.useState(true);
   const onClickMore = () => {
@@ -46,17 +44,12 @@ const Post = ({ post }) => {
           <div>{post.username}</div>
         </div>
         <button style={{ width: '2rem' }}>
+          {/* modal trigger */}
           <ThreeDots />
         </button>
       </StHeader>
       <StImagesSection>
-        {images.map((_, index) => (
-          <StImage
-            key={index}
-            src="https://source.unsplash.com/random/500x500"
-            alt="post"
-          />
-        ))}
+        <Carousel />
       </StImagesSection>
       <StSectionNav>
         {icons.map((icon, index) => (
@@ -85,7 +78,7 @@ const Post = ({ post }) => {
           <span>{comments[1].comment}</span>
         </div>
       </StCommentsBox>
-      <div style={{ padding: '1rem 1.5rem' }}>1일전</div>
+      <StDate>1일전</StDate>
       <StChatCommentLabel>
         <button>
           <StEmojiSmile />
@@ -134,10 +127,6 @@ const StProfileImage = styled.img`
 `;
 
 const StImagesSection = styled.section`
-  width: 100%;
-`;
-
-const StImage = styled.img`
   width: 100%;
 `;
 
@@ -197,6 +186,7 @@ const StMoreToggle = styled.span`
   margin-left: ${({ more }) => (more ? '0.5rem' : '0')};
   color: #828282;
   line-height: 1.3;
+  cursor: pointer;
 `;
 
 const StCommentsBox = styled.section`
@@ -206,6 +196,11 @@ const StCommentsBox = styled.section`
   & > div {
     margin-top: 0.5rem;
   }
+`;
+
+const StDate = styled.div`
+  padding: 1rem 1.5rem;
+  color: #828282;
 `;
 
 const StMoreComments = styled.div`
