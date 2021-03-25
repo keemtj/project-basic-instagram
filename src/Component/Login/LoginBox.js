@@ -31,6 +31,14 @@ const LoginBox = ({ setSignin }) => {
 
   useEffect(() => {
     document.title = 'Login - instagram';
+    firebaseAuth.onAuthStateChanged(user => {
+      if (user) {
+        console.log(user.uid);
+        setSignin(true);
+      } else {
+        console.log('No user is sign in');
+      }
+    });
   }, []);
 
   return (
