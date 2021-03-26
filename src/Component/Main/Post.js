@@ -69,14 +69,11 @@ const Post = ({ post }) => {
         {comments.length > 2 && (
           <StMoreComments>댓글 {comments.length}개 모두 보기</StMoreComments>
         )}
-        <div>
-          <StUsername>{comments[0].id}</StUsername>{' '}
-          <span>{comments[0].comment}</span>
-        </div>
-        <div>
-          <StUsername>{comments[1].id}</StUsername>{' '}
-          <span>{comments[1].comment}</span>
-        </div>
+        {comments.slice(0, 2).map((comment, index) => (
+          <div key={index}>
+            <StUsername>{comment.id}</StUsername> <span>{comment.comment}</span>
+          </div>
+        ))}
       </StCommentsBox>
       <StDate>1일전</StDate>
       <StChatCommentLabel>
