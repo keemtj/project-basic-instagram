@@ -4,7 +4,7 @@ import Post from './Post';
 import Aside from './Aside';
 import AsideFooter from './AsideFooter';
 
-const Main = () => {
+const Main = ({ setSignin }) => {
   const posts = [
     { username: 'username1' },
     { username: 'username2' },
@@ -20,7 +20,7 @@ const Main = () => {
           ))}
         </StSection>
         <StAsideWrapper>
-          <Aside />
+          <Aside setSignin={setSignin} />
           <AsideFooter />
         </StAsideWrapper>
       </StMain>

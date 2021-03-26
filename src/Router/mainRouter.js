@@ -6,10 +6,12 @@ import Explore from '../Component/Explore/Explore';
 import Profile from '../Component/Profile/Profile';
 import Login from '../Component/Login/Login';
 
-const MainRouter = () => {
+const MainRouter = ({ setSignin }) => {
   return (
     <Switch>
-      <Route path="/" component={Main} exact />
+      <Route path="/" exact>
+        <Main setSignin={setSignin} />
+      </Route>
       <Route path="/direct" component={Direct} />
       <Route path="/explore" component={Explore} />
       <Route path="/profile" component={Profile} />

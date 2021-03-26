@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useRef } from 'react';
 import styled from 'styled-components';
 import { Dot } from '@styled-icons/bootstrap/Dot';
 import { ArrowLeftCircleFill } from '@styled-icons/bootstrap/ArrowLeftCircleFill';
@@ -12,8 +12,8 @@ const Carousel = () => {
     'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS0FoDXeLRXEqA2o02I2JPgz2VhDb1vyuFAKQ&usqp=CAU',
     'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS0FoDXeLRXEqA2o02I2JPgz2VhDb1vyuFAKQ&usqp=CAU',
   ];
-  const ref = React.useRef();
-  const [currentImage, setCurrentImage] = React.useState(0);
+  const ref = useRef();
+  const [currentImage, setCurrentImage] = useState(0);
 
   const handlePrev = () => {
     ref.current.style.transform = `translate(-${100 * (currentImage - 1)}%)`;

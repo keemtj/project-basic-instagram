@@ -4,18 +4,8 @@ import styled from 'styled-components';
 import MainNavigation from './MainNavigation';
 import { Search } from '@styled-icons/ionicons-outline/Search';
 import { CloseCircle } from '@styled-icons/ionicons-sharp/CloseCircle';
-import { firebaseAuth } from '../../services/firebase';
 
-const Header = ({ setSignin }) => {
-  const handleLogout = async () => {
-    try {
-      await firebaseAuth.signOut();
-      setSignin(false);
-      console.log('sign out');
-    } catch (e) {
-      console.log(e.message);
-    }
-  };
+const Header = () => {
   return (
     <StWrapper>
       <StHeader>
@@ -25,7 +15,6 @@ const Header = ({ setSignin }) => {
               src="https://www.instagram.com/static/images/web/mobile_nav_type_logo-2x.png/1b47f9d0e595.png"
               alt="instagram"
             />
-            <button onClick={handleLogout}>로그아웃</button>
           </NavLink>
         </StTitle>
         <StSearch>

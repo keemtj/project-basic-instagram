@@ -53,8 +53,8 @@ const Home = ({ setSignin }) => {
 
   return (
     <StMainWrapper>
-      <Header setSignin={setSignin} />
-      <MainRouter />
+      <Header />
+      <MainRouter setSignin={setSignin} />
       {location.pathname !== '/' && <Footer />}
     </StMainWrapper>
   );
