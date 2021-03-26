@@ -1,10 +1,15 @@
 import React from 'react';
 import styled from 'styled-components';
 import { Dot } from '@styled-icons/bootstrap/Dot';
+import { ArrowLeftCircleFill } from '@styled-icons/bootstrap/ArrowLeftCircleFill';
+import { ArrowRightCircleFill } from '@styled-icons/bootstrap/ArrowRightCircleFill';
+
 const Carousel = () => {
   const images = [
     'https://s6.favim.com/orig/140415/black-cute-girl-grunge-Favim.com-1669287.jpg',
     'https://www.studyheights.com/uploads/quizzCategory/a98500a459e1b0bfbbfa43bf9da1e9b7.png',
+    'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS0FoDXeLRXEqA2o02I2JPgz2VhDb1vyuFAKQ&usqp=CAU',
+    'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS0FoDXeLRXEqA2o02I2JPgz2VhDb1vyuFAKQ&usqp=CAU',
     'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS0FoDXeLRXEqA2o02I2JPgz2VhDb1vyuFAKQ&usqp=CAU',
   ];
   const ref = React.useRef();
@@ -34,14 +39,14 @@ const Carousel = () => {
       <StSlideButtonWrapper>
         {currentImage > 0 ? (
           <StSlideButton type="button" onClick={handlePrev}>
-            Prev
+            <StLeftButton />
           </StSlideButton>
         ) : (
           <div />
         )}
         {currentImage < images.length - 1 && (
           <StSlideButton type="button" onClick={handleNext}>
-            Next
+            <StRightButton />
           </StSlideButton>
         )}
       </StSlideButtonWrapper>
@@ -87,16 +92,26 @@ const StSlideButtonWrapper = styled.div`
   justify-content: space-between;
   width: 100%;
   position: absolute;
-  top: 50%;
+  top: 0;
+  bottom: 0;
   z-index: 1;
 `;
 
 const StSlideButton = styled.button`
   padding: 1rem;
-  font-size: 2rem;
-  font-weight: 600;
+  color: rgba(255, 255, 255, 0.8);
   cursor: pointer;
   outline: none;
+`;
+
+const StLeftButton = styled(ArrowLeftCircleFill)`
+  width: 2.5rem;
+  height: 2.5rem;
+`;
+
+const StRightButton = styled(ArrowRightCircleFill)`
+  width: 2.5rem;
+  height: 2.5rem;
 `;
 
 const StPagenation = styled.ul`
@@ -112,7 +127,7 @@ const StPagenation = styled.ul`
 const StPage = styled.li`
   width: 3rem;
   color: #828282;
-  &:nth-child(${({ currentImage }) => currentImage}) {
+  &:nth-child(${({ currentImage }) => currentImage + 1}) {
     color: #0095f6;
   }
   & + & {
