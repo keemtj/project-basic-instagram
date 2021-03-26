@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import Post from './Post';
 import Aside from './Aside';
-import MainFooter from './MainFooter';
+import AsideFooter from './AsideFooter';
 
 const Main = () => {
   const posts = [
@@ -21,7 +21,7 @@ const Main = () => {
         </StSection>
         <StAsideWrapper>
           <Aside />
-          <MainFooter />
+          <AsideFooter />
         </StAsideWrapper>
       </StMain>
     </StMainWrapper>
@@ -52,7 +52,6 @@ const StAsideWrapper = styled.div`
   width: 100%;
   max-width: 30rem;
   padding-top: 3rem;
-  border: 1px solid orange;
   top: 5.5rem;
   position: fixed;
   right: calc((100% - 95rem) / 2);
