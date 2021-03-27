@@ -2,17 +2,29 @@ import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 import LoginRouter from '../../Router/loginRouter';
+import { firebaseAuth } from '../../services/firebase';
 import Footer from '../Global/Footer';
 
 const Login = ({ setSignin }) => {
   const location = useLocation();
+  const [isLoggedIn, setLoggedIn] = React.useState(false);
 
+  React.useEffect(() => {
+    firebaseAuth.onAuthStateChanged(user => {
+      if (user) {
+        setSignin(true);
+        setLoggedIn(true);
+      }
+    });
+  }, []);
+
+  if (!isLoggedIn) return null;
   return (
     <StLoginWrappr>
       <StLogin>
         <LoginRouter setSignin={setSignin} />
         <StQuestionBox>
-          {location.pathname === '/login' || location.pathname === '/' ? (
+          {location.pathname === '/' || location.pathname === '/login' ? (
             <>
               <StText>계정이 없으신가요?</StText>
               <Link to="/signup">

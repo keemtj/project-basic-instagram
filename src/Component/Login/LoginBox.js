@@ -33,8 +33,7 @@ const LoginBox = ({ setSignin }) => {
     document.title = 'Login - instagram';
     firebaseAuth.onAuthStateChanged(user => {
       if (user) {
-        console.log(user.uid);
-        setSignin(true);
+        console.log('user is sign in');
       } else {
         console.log('No user is sign in');
       }

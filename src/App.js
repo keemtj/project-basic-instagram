@@ -5,13 +5,14 @@ import ResetStyle from './Style/ResetStyle';
 
 function App() {
   const [isSignin, setSignin] = useState(false);
+
   return (
     <>
       <ResetStyle />
       {isSignin ? (
         <Home setSignin={setSignin} />
       ) : (
-        <Login isSignin={isSignin} setSignin={setSignin} />
+        <Login setSignin={setSignin} />
       )}
     </>
   );
