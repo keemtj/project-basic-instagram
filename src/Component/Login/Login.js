@@ -2,23 +2,25 @@ import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 import LoginRouter from '../../Router/loginRouter';
-import { firebaseAuth } from '../../services/firebase';
+// import { firebaseAuth } from '../../services/firebase';
 import Footer from '../Global/Footer';
 
 const Login = ({ setSignin }) => {
   const location = useLocation();
-  const [isLoggedIn, setLoggedIn] = React.useState(false);
+  // const [isLoggedIn, setLoggedIn] = React.useState(false);
 
-  React.useEffect(() => {
-    firebaseAuth.onAuthStateChanged(user => {
-      if (user) {
-        setSignin(true);
-        setLoggedIn(true);
-      }
-    });
-  }, []);
+  // React.useEffect(() => {
+  //   firebaseAuth.onAuthStateChanged(user => {
+  //     if (user) {
+  //       setSignin(true);
+  //       setLoggedIn(true);
+  //     } else {
+  //       setSignin(false);
+  //       setLoggedIn(false);
+  //     }
+  //   });
+  // }, []);
 
-  if (!isLoggedIn) return null;
   return (
     <StLoginWrappr>
       <StLogin>

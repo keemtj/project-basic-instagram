@@ -9,8 +9,8 @@ const DirectItem = () => {
       <ProfileImage
         src="/images/default_profile.png"
         alt="default profile"
-        width={5.5}
-        height={5.5}
+        width={6}
+        height={6}
       >
         <StPreviewbox>
           <div>username</div>
@@ -30,7 +30,7 @@ const StDirectItem = styled.li`
   padding: 0.5rem 2rem;
   cursor: pointer;
   &:hover {
-    background: rgba(219, 219, 219, 0.1);
+    background: rgba(219, 219, 219, 0.2);
   }
   &:active {
     background: rgba(219, 219, 219, 0.5);

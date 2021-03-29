@@ -6,12 +6,13 @@ const ProfileImage = ({
   alt = 'default image',
   width,
   height,
-  username = 'username',
+  username,
+  children,
 }) => {
   return (
     <StProfileImageWrapper>
       <StProfileImage src={src} alt={alt} width={width} height={height} />
-      <StUsername>{username}</StUsername>
+      {children ? children : <StUsername>{username}</StUsername>}
     </StProfileImageWrapper>
   );
 };
