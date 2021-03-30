@@ -6,13 +6,21 @@ const ProfileImage = ({
   alt = 'default image',
   width,
   height,
+  marginLeft,
+  fontSize,
   username,
   children,
 }) => {
   return (
     <StProfileImageWrapper>
       <StProfileImage src={src} alt={alt} width={width} height={height} />
-      {children ? children : <StUsername>{username}</StUsername>}
+      {children ? (
+        children
+      ) : (
+        <StUsername marginLeft={marginLeft} fontSize={fontSize}>
+          {username}
+        </StUsername>
+      )}
     </StProfileImageWrapper>
   );
 };
@@ -31,8 +39,8 @@ const StProfileImage = styled.img`
 `;
 
 const StUsername = styled.div`
-  margin-left: 1.5rem;
-  font-size: 1.4rem;
+  margin-left: ${({ marginLeft }) => marginLeft}rem;
+  font-size: ${({ fontSize }) => fontSize}rem;
   font-weight: 600;
 `;
 

@@ -89,6 +89,7 @@ const Post = ({ post }) => {
 
 const StArticle = styled.article`
   border: 1px solid rgba(219, 219, 219, 1);
+  background: white;
   border-radius: 3px;
   margin-bottom: 6rem;
   width: 62rem;
@@ -218,7 +219,7 @@ const StEmojiSmile = styled(EmojiSmile)`
 
 const StCommentInput = styled.input`
   border: none;
-  background: #fafafa;
+  background: white;
   margin-left: 1.5rem;
   width: 100%;
   outline: none;

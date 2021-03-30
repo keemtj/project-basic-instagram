@@ -4,18 +4,18 @@ import { PaperPlane } from '@styled-icons/ionicons-outline/PaperPlane';
 
 const NewChat = () => {
   return (
-    <StDefaultChat>
+    <StNewChat>
       <StIconWrapper>
         <StIcon />
       </StIconWrapper>
       <StTitle>내 메시지</StTitle>
       <StText>친구나 그룹에 비공개 사진과 메시지를 보내보세요.</StText>
-      <StNewDirectButton>메시지 보내기</StNewDirectButton>
-    </StDefaultChat>
+      <StNewChatButton>메시지 보내기</StNewChatButton>
+    </StNewChat>
   );
 };
 
-const StDefaultChat = styled.div`
+const StNewChat = styled.div`
   height: 100%;
   display: flex;
   flex-flow: column nowrap;
@@ -51,7 +51,7 @@ const StText = styled.div`
   font-weight: 600;
 `;
 
-const StNewDirectButton = styled.button`
+const StNewChatButton = styled.button`
   border-radius: 4px;
   background: #0098fa;
   margin-top: 2.5rem;

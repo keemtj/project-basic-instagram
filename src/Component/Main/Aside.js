@@ -31,6 +31,8 @@ const Aside = ({ setSignin }) => {
           src="/images/default_profile.png"
           width={5.5}
           height={5.5}
+          marginLeft={1.2}
+          fontSize={1.4}
           username={'username'}
         />
         <StButton onClick={handleLogout}>로그아웃</StButton>
@@ -43,6 +45,8 @@ const Aside = ({ setSignin }) => {
               username={username}
               width={3.5}
               height={3.5}
+              marginLeft={1.2}
+              fontSize={1.4}
               src="/images/default_profile.png"
             />
             <StButton>팔로우</StButton>
