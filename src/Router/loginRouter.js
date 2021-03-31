@@ -1,18 +1,15 @@
 import React from 'react';
 import { Route, Switch } from 'react-router-dom';
-import LoginBox from '../Component/Login/LoginBox';
-import SignUpBox from '../Component/Login/SignUpBox';
+import LoginPage from '../Pages/LoginPage';
+import SignupPage from '../Pages/SignupPage';
+import LoadingPage from '../Pages/LoadingPage';
 
-const LoginRouter = ({ setSignin }) => {
+const LoginRouter = () => {
   return (
     <Switch>
-      <Route path="/" exact>
-        <LoginBox setSignin={setSignin} />
-      </Route>
-      <Route path="/login">
-        <LoginBox setSignin={setSignin} />
-      </Route>
-      <Route path="/signup" component={SignUpBox} />
+      <Route path="/" component={LoginPage} exact />
+      <Route path="/signup" component={SignupPage} />
+      <Route render={() => <LoadingPage />} />
       <Route
         render={({ location }) => (
           <div style={{ marginTop: '5.5rem' }}>

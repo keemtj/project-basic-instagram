@@ -2,12 +2,14 @@ import React from 'react';
 import styled from 'styled-components';
 import ProfileImage from '../Global/ProfileImage';
 import { firebaseAuth } from '../../services/firebase';
+import { useHistory } from 'react-router';
 
-const Aside = ({ setSignin }) => {
+const Aside = () => {
+  const { push } = useHistory();
   const handleLogout = async () => {
     try {
       await firebaseAuth.signOut();
-      setSignin(false);
+      push('/login');
       console.log('sign out');
     } catch (e) {
       console.log(e.message);

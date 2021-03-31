@@ -4,7 +4,7 @@ import { Google2 } from '@styled-icons/icomoon/Google2';
 import Input from '../Global/Input';
 import { firebaseAuth, googleProvider } from '../../services/firebase';
 
-const LoginBox = ({ setSignin }) => {
+const LoginBox = () => {
   const { useState } = React;
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -13,7 +13,6 @@ const LoginBox = ({ setSignin }) => {
     e.preventDefault();
     try {
       await firebaseAuth.signInWithEmailAndPassword(email, password);
-      setSignin(true);
       console.log('login 성공');
     } catch (e) {
       console.log(e.message);
@@ -23,7 +22,6 @@ const LoginBox = ({ setSignin }) => {
   const handleGoogleLogin = async () => {
     try {
       await firebaseAuth.signInWithPopup(googleProvider);
-      setSignin(true);
     } catch (e) {
       console.log(e.message);
     }

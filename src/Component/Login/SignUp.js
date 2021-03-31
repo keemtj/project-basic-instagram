@@ -1,17 +1,17 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
-import LoginBox from './LoginBox';
+import SignUpBox from './SignUpBox';
 
 const Login = () => {
   return (
     <StLoginWrappr>
       <StLogin>
-        <LoginBox />
+        <SignUpBox />
         <StQuestionBox>
-          <StText>계정이 없으신가요?</StText>
-          <Link to="/signup">
-            <StSignUp>가입하기</StSignUp>
+          <StText>계정이 있으신가요?</StText>
+          <Link to="/login">
+            <StSignUp>로그인</StSignUp>
           </Link>
         </StQuestionBox>
       </StLogin>

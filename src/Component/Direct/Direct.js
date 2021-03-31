@@ -4,6 +4,7 @@ import DirectItem from './DirectItem';
 import { NewMessage } from '@styled-icons/entypo/NewMessage';
 import DirectRouter from '../../Router/directRouter';
 import { Link } from 'react-router-dom';
+
 const Direct = () => {
   const directs = [1, 2, 3, 4];
 

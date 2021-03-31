@@ -1,14 +1,9 @@
 import React from 'react';
-// import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import Header from './Global/Header';
-import Footer from './Global/Footer';
-import MainRouter from '../Router/mainRouter';
+// import React, { useEffect, useState } from 'react';
 // import { firebaseAuth, firestore } from '../services/firebase';
-import { useLocation } from 'react-router';
 
-const Home = ({ setSignin }) => {
-  const location = useLocation();
+const Home = () => {
   // const [userData, setUserData] = useState(null);
   // const [postData, setPostData] = useState(null);
   // console.log('userData', userData);
@@ -53,11 +48,8 @@ const Home = ({ setSignin }) => {
 
   return (
     <StMainWrapper>
-      <Header />
-      <MainRouter setSignin={setSignin} />
-      {!(location.pathname === '/' || location.pathname === '/direct') && (
-        <Footer />
-      )}
+      {/* <Header /> */}
+      {/* <MainRouter setSignin={setSignin} /> */}
     </StMainWrapper>
   );
 };

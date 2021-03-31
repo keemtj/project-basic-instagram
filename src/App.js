@@ -1,20 +1,19 @@
-import React, { useState } from 'react';
-import { useHistory } from 'react-router';
-import Home from './Component/Home';
-import Login from './Component/Login/Login';
-import { firebaseAuth } from './services/firebase';
+import React from 'react';
+import MainRouter from './Router/mainRouter';
+import LoginRouter from './Router/loginRouter';
 import ResetStyle from './Style/ResetStyle';
+import { firebaseAuth } from './services/firebase';
+import PageWrapper from './Component/Global/PageWrapper';
 
-function App() {
-  const history = useHistory();
-  const [isSignin, setSignin] = useState(false);
+const App = () => {
+  const [isSignin, setSignin] = React.useState(false);
 
   React.useEffect(() => {
     firebaseAuth.onAuthStateChanged(user => {
       if (user) {
-        history.push('/');
+        setSignin(true);
       } else {
-        history.push('/login');
+        setSignin(false);
       }
     });
   });
@@ -23,12 +22,16 @@ function App() {
     <>
       <ResetStyle />
       {isSignin ? (
-        <Home setSignin={setSignin} />
+        <PageWrapper>
+          <MainRouter />
+        </PageWrapper>
       ) : (
-        <Login setSignin={setSignin} />
+        <PageWrapper>
+          <LoginRouter />
+        </PageWrapper>
       )}
     </>
   );
-}
+};
 
 export default App;

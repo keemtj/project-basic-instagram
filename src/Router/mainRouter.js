@@ -1,21 +1,17 @@
 import React from 'react';
 import { Route, Switch } from 'react-router-dom';
-import Main from '../Component/Main/Main';
-import Direct from '../Component/Direct/Direct';
-import New from '../Component/New/New';
-import Profile from '../Component/Profile/Profile';
-import Login from '../Component/Login/Login';
+import MainPage from '../Pages/MainPage';
+import DirectPage from '../Pages/DirectPage';
+import NewPostPage from '../Pages/NewPostPage';
+import ProfilePage from '../Pages/ProfilePage';
 
-const MainRouter = ({ setSignin }) => {
+const MainRouter = () => {
   return (
     <Switch>
-      <Route path="/" exact>
-        <Main setSignin={setSignin} />
-      </Route>
-      <Route path="/direct" component={Direct} />
-      <Route path="/new" component={New} />
-      <Route path="/profile" component={Profile} />
-      <Route path="/login" component={Login} />
+      <Route path="/" component={MainPage} exact />
+      <Route path="/direct" component={DirectPage} />
+      <Route path="/new" component={NewPostPage} />
+      <Route path="/profile" component={ProfilePage} />
       <Route
         render={({ location }) => (
           <div style={{ marginTop: '5.5rem' }}>
