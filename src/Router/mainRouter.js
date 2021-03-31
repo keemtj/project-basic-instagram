@@ -2,7 +2,7 @@ import React from 'react';
 import { Route, Switch } from 'react-router-dom';
 import Main from '../Component/Main/Main';
 import Direct from '../Component/Direct/Direct';
-import Explore from '../Component/Explore/Explore';
+import New from '../Component/New/New';
 import Profile from '../Component/Profile/Profile';
 import Login from '../Component/Login/Login';
 
@@ -13,7 +13,7 @@ const MainRouter = ({ setSignin }) => {
         <Main setSignin={setSignin} />
       </Route>
       <Route path="/direct" component={Direct} />
-      <Route path="/explore" component={Explore} />
+      <Route path="/new" component={New} />
       <Route path="/profile" component={Profile} />
       <Route path="/login" component={Login} />
       <Route
