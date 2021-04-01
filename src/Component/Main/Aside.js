@@ -5,11 +5,11 @@ import { firebaseAuth } from '../../services/firebase';
 import { useHistory } from 'react-router';
 
 const Aside = () => {
-  const { push } = useHistory();
+  const history = useHistory();
   const handleLogout = async () => {
     try {
       await firebaseAuth.signOut();
-      push('/login');
+      history.push('/login');
       console.log('sign out');
     } catch (e) {
       console.log(e.message);

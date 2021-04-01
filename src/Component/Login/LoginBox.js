@@ -1,18 +1,20 @@
-import React, { useEffect } from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import { Google2 } from '@styled-icons/icomoon/Google2';
 import Input from '../Global/Input';
 import { firebaseAuth, googleProvider } from '../../services/firebase';
+import { useHistory } from 'react-router';
 
 const LoginBox = () => {
-  const { useState } = React;
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const history = useHistory();
 
   const handleLogin = async e => {
     e.preventDefault();
     try {
       await firebaseAuth.signInWithEmailAndPassword(email, password);
+      history.push('/');
       console.log('login 성공');
     } catch (e) {
       console.log(e.message);
@@ -27,16 +29,16 @@ const LoginBox = () => {
     }
   };
 
-  useEffect(() => {
-    document.title = 'Login - instagram';
-    firebaseAuth.onAuthStateChanged(user => {
-      if (user) {
-        console.log('user is sign in');
-      } else {
-        console.log('No user is sign in');
-      }
-    });
-  }, []);
+  // React.useEffect(() => {
+  //   document.title = 'Login - instagram';
+  //   firebaseAuth.onAuthStateChanged(user => {
+  //     if (user) {
+  //       console.log('user is sign in');
+  //     } else {
+  //       console.log('No user is sign in');
+  //     }
+  //   });
+  // }, []);
 
   return (
     <StLoginBox>
