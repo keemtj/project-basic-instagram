@@ -99,7 +99,7 @@ const StSlideButtonWrapper = styled.div`
 
 const StSlideButton = styled.button`
   padding: 1rem;
-  color: rgba(255, 255, 255, 0.8);
+  color: ${({ theme }) => theme.gray8};
   cursor: pointer;
   outline: none;
 `;
@@ -115,7 +115,6 @@ const StRightButton = styled(ArrowRightCircleFill)`
 `;
 
 const StPagenation = styled.ul`
-  /* border: 1px solid red; */
   width: 100%;
   height: 4rem;
   display: flex;
@@ -126,9 +125,9 @@ const StPagenation = styled.ul`
 
 const StPage = styled.li`
   width: 3rem;
-  color: #828282;
+  color: ${({ theme }) => theme.darkGray};
   &:nth-child(${({ currentImage }) => currentImage + 1}) {
-    color: #0095f6;
+    color: ${({ theme }) => theme.activeBlue};
   }
   & + & {
     margin-left: -2rem;

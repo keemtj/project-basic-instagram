@@ -20,7 +20,7 @@ const StWrapper = styled.div`
   flex-grow: 1;
   margin-top: 5.5rem;
   width: 100%;
-  background-color: #fafafa;
+  background: ${({ theme }) => theme.background};
   display: flex;
   flex-flow: column nowrap;
   align-items: center;

@@ -30,10 +30,10 @@ const StDirectItem = styled.li`
   padding: 0.5rem 2rem;
   cursor: pointer;
   &:hover {
-    background: rgba(219, 219, 219, 0.2);
+    background: ${({ theme }) => theme.gray2};
   }
   &:active {
-    background: rgba(219, 219, 219, 0.5);
+    background: ${({ theme }) => theme.gray5};
   }
 `;
 
@@ -42,7 +42,7 @@ const StPreviewbox = styled.div`
 `;
 
 const StMsgInfo = styled.div`
-  color: #828282;
+  color: ${({ theme }) => theme.darkGray};
 `;
 
 const StDot = styled(Dot)`

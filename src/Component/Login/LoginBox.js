@@ -3,18 +3,15 @@ import styled from 'styled-components';
 import { Google2 } from '@styled-icons/icomoon/Google2';
 import Input from '../Global/Input';
 import { firebaseAuth, googleProvider } from '../../services/firebase';
-import { useHistory } from 'react-router';
 
 const LoginBox = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const history = useHistory();
 
   const handleLogin = async e => {
     e.preventDefault();
     try {
       await firebaseAuth.signInWithEmailAndPassword(email, password);
-      history.push('/');
       console.log('login 성공');
     } catch (e) {
       console.log(e.message);
@@ -28,17 +25,6 @@ const LoginBox = () => {
       console.log(e.message);
     }
   };
-
-  // React.useEffect(() => {
-  //   document.title = 'Login - instagram';
-  //   firebaseAuth.onAuthStateChanged(user => {
-  //     if (user) {
-  //       console.log('user is sign in');
-  //     } else {
-  //       console.log('No user is sign in');
-  //     }
-  //   });
-  // }, []);
 
   return (
     <StLoginBox>
@@ -80,7 +66,7 @@ const StLoginBox = styled.div`
   background: white;
   width: 35rem;
   height: fit-content;
-  border: 1px solid rgba(219, 219, 219, 1);
+  border: 1px solid ${({ theme }) => theme.gray};
   display: flex;
   flex-flow: column nowrap;
   align-items: center;
@@ -98,7 +84,7 @@ const StLoginForm = styled.form`
 const StButton = styled.button`
   /* input에 채워져있을 때 */
   /* background: #0095f6; */
-  background: rgba(0, 149, 246, 0.3);
+  background: ${({ theme }) => theme.inactiveBlue};
   width: 27rem;
   height: 3rem;
   border-radius: 3px;
@@ -118,14 +104,14 @@ const StContour = styled.div`
 `;
 
 const StLine = styled.div`
-  border-top: 1px solid rgba(219, 219, 219, 1);
+  border-top: 1px solid ${({ theme }) => theme.gray};
   flex-grow: 1;
 `;
 
 const StOr = styled.div`
   width: 5rem;
   margin: 2rem 0rem;
-  color: #828282;
+  color: ${({ theme }) => theme.darkGray};
   font-size: 1.3rem;
   font-weight: 500;
   text-align: center;
@@ -137,7 +123,7 @@ const StGoogleLogin = styled.button`
   align-items: center;
   justify-content: center;
   width: 27rem;
-  color: #385185;
+  color: ${({ theme }) => theme.google};
   font-size: 1.5rem;
   font-weight: 600;
   cursor: pointer;
@@ -146,13 +132,13 @@ const StGoogleLogin = styled.button`
 const StGoogleIcon = styled(Google2)`
   margin-right: 0.5rem;
   width: 1.8rem;
-  color: #385185;
+  color: ${({ theme }) => theme.google};
 `;
 
 const StForget = styled.button`
   margin-top: 2rem;
   width: 27rem;
-  color: #385185;
+  color: ${({ theme }) => theme.google};
   font-size: 1.2rem;
   font-weight: 500;
   cursor: pointer;

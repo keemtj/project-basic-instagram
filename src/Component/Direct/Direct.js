@@ -43,12 +43,12 @@ const StDirect = styled.main`
   display: flex;
   align-items: center;
   justify-content: center;
-  background: #fafafa;
+  background: ${({ theme }) => theme.background};
 `;
 
 const StDirectBox = styled.div`
   background: white;
-  border: 1px solid rgba(219, 219, 219, 1);
+  border: 1px solid ${({ theme }) => theme.gray};
   border-radius: 4px;
   width: 95rem;
   height: 100%;
@@ -59,12 +59,12 @@ const StDirectBox = styled.div`
 const StInboxSection = styled.section`
   width: 40%;
   height: 100%;
-  border-right: 1px solid rgba(219, 219, 219, 1);
+  border-right: 1px solid ${({ theme }) => theme.gray};
 `;
 
 const StInboxHeader = styled.header`
   height: 5.5rem;
-  border-bottom: 1px solid rgba(219, 219, 219, 1);
+  border-bottom: 1px solid ${({ theme }) => theme.gray};
   display: flex;
   flex-flow: row nowrap;
   align-items: center;
@@ -93,7 +93,7 @@ const StInbox = styled.ul`
 
 const StLink = styled(Link)`
   text-decoration: none;
-  color: black;
+  color: ${({ theme }) => theme.black};
 `;
 const StChatSection = styled.section`
   width: 60%;

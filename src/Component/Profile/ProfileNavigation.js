@@ -35,7 +35,7 @@ const ProfileNavigation = () => {
 };
 
 const StProfileNavigation = styled.nav`
-  border-top: 1px solid rgba(219, 219, 219, 1);
+  border-top: 1px solid ${({ theme }) => theme.gray};
   height: 5rem;
 `;
 
@@ -67,20 +67,20 @@ const StNavItem = styled.li`
     align-items: center;
     justify-content: center;
     text-decoration: none;
-    color: rgba(142, 142, 142, 1);
+    color: ${({ theme }) => theme.category};
   }
   & > .active {
     & {
-      color: black;
+      color: ${({ theme }) => theme.black};
     }
     &::after {
       width: 100%;
       content: '';
       position: absolute;
       top: -1px;
-      background: white;
+      background: ${({ theme }) => theme.white};
       transition: all 0.2s ease-in-out;
-      border-top: 1px solid black;
+      border-top: 1px solid ${({ theme }) => theme.black};
     }
   }
 `;

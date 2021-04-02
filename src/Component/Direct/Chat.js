@@ -80,7 +80,7 @@ const StChatHeader = styled.header`
   padding: 0rem 2rem;
   height: 5.5rem;
   min-height: 5.5rem;
-  border-bottom: 1px solid rgba(219, 219, 219, 1);
+  border-bottom: 1px solid ${({ theme }) => theme.gray};
 `;
 
 const StIcons = styled(InformationCircle)`
@@ -100,7 +100,7 @@ const StChatBox = styled.div`
 
 const StChatBubble = styled.div`
   border-radius: 3rem;
-  background: rgba(219, 219, 219, 0.5);
+  background: ${({ theme }) => theme.gray5};
   width: fit-content;
   padding: 1.5rem;
   ${({ send }) =>
@@ -121,7 +121,7 @@ const StChatFooter = styled.footer`
 `;
 
 const StChatLabel = styled.label`
-  border: 1px solid rgba(219, 219, 219, 1);
+  border: 1px solid ${({ theme }) => theme.gray};
   border-radius: 5rem;
   margin: 0 auto;
   padding: 1.5rem;
@@ -146,7 +146,7 @@ const StChatButton = styled.button`
   width: 5rem;
   font-size: 1.5rem;
   font-weight: 600;
-  color: #0095f6;
+  color: ${({ theme }) => theme.activeBlue};
 `;
 
 export default Chat;

@@ -139,10 +139,10 @@ const SignUpBox = () => {
 
 const StSignUpBox = styled.div`
   padding: 3rem 0rem;
-  background: white;
+  background: ${({ theme }) => theme.white};
   width: 35rem;
   height: fit-content;
-  border: 1px solid rgba(219, 219, 219, 1);
+  border: 1px solid ${({ theme }) => theme.gray};
   display: flex;
   flex-flow: column nowrap;
   align-items: center;
@@ -157,7 +157,7 @@ const StLogo = styled.img`
 const StNotice = styled.div`
   margin-top: 1.5rem;
   width: 27rem;
-  color: #828282;
+  color: ${({ theme }) => theme.darkGray};
   font-size: 1.8rem;
   font-weight: 600;
   text-align: center;
@@ -169,7 +169,7 @@ const StGoogleLogin = styled.button`
   flex-flow: row nowrap;
   align-items: center;
   justify-content: center;
-  background: #0095f6;
+  background: ${({ theme }) => theme.activeBlue};
   border-radius: 3px;
   margin-top: 1.5rem;
   width: 27rem;
@@ -195,14 +195,14 @@ const StContour = styled.div`
 `;
 
 const StLine = styled.div`
-  border-top: 1px solid rgba(219, 219, 219, 1);
+  border-top: 1px solid ${({ theme }) => theme.gray};
   flex-grow: 1;
 `;
 
 const StOr = styled.div`
   width: 5rem;
   margin: 2rem 0rem;
-  color: #828282;
+  color: ${({ theme }) => theme.darkGray};
   font-size: 1.3rem;
   font-weight: 500;
   text-align: center;
@@ -219,7 +219,7 @@ const StSignUpForm = styled.form`
 const StButton = styled.button`
   /* input에 채워져있을 때 */
   /* background: #0095f6; */
-  background: rgba(0, 149, 246, 0.3);
+  background: ${({ theme }) => theme.inactiveBlue};
   width: 27rem;
   height: 3rem;
   border-radius: 3px;
@@ -235,7 +235,7 @@ const StNotice2 = styled.div`
   width: 27rem;
   font-size: 1.2rem;
   text-align: center;
-  color: #828282;
+  color: ${({ theme }) => theme.darkGray};
 `;
 
 export default SignUpBox;

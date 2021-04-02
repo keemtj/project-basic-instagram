@@ -74,7 +74,7 @@ const StProfileImageWrapper = styled.div`
 `;
 
 const StButton = styled.button`
-  color: #0092f5;
+  color: ${({ theme }) => theme.activeBlue};
   font-size: 1.2rem;
   font-weight: 700;
   cursor: pointer;
@@ -82,7 +82,7 @@ const StButton = styled.button`
 
 const StRecommendTitle = styled.div`
   margin-top: 1.5rem;
-  color: #828282;
+  color: ${({ theme }) => theme.darkGray};
   font-size: 1.35rem;
   font-weight: 600;
 `;

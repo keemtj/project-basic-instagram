@@ -33,7 +33,7 @@ const MainFooter = () => {
 };
 
 const StFooter = styled.footer`
-  color: #c7c7c7;
+  color: ${({ theme }) => theme.category2};
   line-height: 1.5;
 `;
 const StCategories = styled.ul`

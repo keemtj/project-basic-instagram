@@ -20,14 +20,14 @@ const Login = () => {
 };
 
 const StLoginWrappr = styled.div`
+  flex-grow: 1;
   display: flex;
   flex-flow: column nowrap;
-  min-height: 100vh;
 `;
 
 const StLogin = styled.main`
   flex-grow: 1;
-  background-color: #fafafa;
+  background: ${({ theme }) => theme.background};
   display: flex;
   flex-flow: column nowrap;
   align-items: center;
@@ -42,8 +42,8 @@ const StQuestionBox = styled.div`
   margin-top: 1rem;
   width: 35rem;
   height: 6.5rem;
-  border: 1px solid rgba(219, 219, 219, 1);
-  background-color: white;
+  border: 1px solid ${({ theme }) => theme.gray};
+  background: ${({ theme }) => theme.white};
   font-size: 1.4rem;
 `;
 
@@ -54,7 +54,7 @@ const StText = styled.span`
 
 const StSignUp = styled.button`
   margin-left: 0.5rem;
-  color: #0095f6;
+  color: ${({ theme }) => theme.activeBlue};
   font-size: 1.4rem;
   font-weight: 600;
   cursor: pointer;

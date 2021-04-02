@@ -18,9 +18,9 @@ const MainRouter = ({ isSignin }) => {
         <Route path="/profile" component={ProfilePage} />
         <Route
           render={({ history }) => {
-            alert(
-              '이미 로그인되어 있거나, 잘못된 페이지 입니다. 이전 페이지로 돌아갑니다.',
-            );
+            // alert(
+            //   '이미 로그인되어 있거나, 잘못된 페이지 입니다. 이전 페이지로 돌아갑니다.',
+            // );
             history.goBack();
           }}
         />

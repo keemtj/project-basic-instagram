@@ -33,7 +33,7 @@ const StWrapper = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: #fafafa;
+  background: ${({ theme }) => theme.background};
   width: 100vw;
   height: 12rem;
 `;
@@ -45,7 +45,7 @@ const StFooter = styled.footer`
   width: 95rem;
   height: 100%;
   padding-top: 1.5rem;
-  color: rgba(142, 142, 142, 1);
+  color: ${({ theme }) => theme.category};
   font-size: 1.2rem;
 `;
 
@@ -63,8 +63,8 @@ const StCopyrightBox = styled.div`
 
 const StSelectBox = styled.select`
   border: none;
-  background: #fafafa;
-  color: rgba(142, 142, 142, 1);
+  background: ${({ theme }) => theme.background};
+  color: ${({ theme }) => theme.category};
   font-size: 1.2rem;
   margin-right: 1rem;
   outline: none;

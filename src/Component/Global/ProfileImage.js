@@ -32,7 +32,7 @@ const StProfileImageWrapper = styled.div`
 `;
 
 const StProfileImage = styled.img`
-  border: 1px solid rgba(219, 219, 219, 1);
+  border: 1px solid ${({ theme }) => theme.gray};
   border-radius: 50%;
   width: ${({ width }) => width}rem;
   height: ${({ height }) => height}rem;

@@ -39,7 +39,7 @@ const StWrapper = styled.div`
   justify-content: center;
   width: 100vw;
   height: 5.5rem;
-  border-bottom: 1px solid rgba(219, 219, 219, 1);
+  border-bottom: 1px solid ${({ theme }) => theme.gray};
   background-color: white;
 `;
 
@@ -77,12 +77,12 @@ const StSearch = styled.div`
 const StSearchInput = styled.input`
   width: 22rem;
   height: 3rem;
-  border: 1px solid rgba(219, 219, 219, 1);
+  border: 1px solid ${({ theme }) => theme.gray};
   border-radius: 3px;
-  background-color: #fafafa;
+  background: ${({ theme }) => theme.background};
   padding: 0rem 2.5rem;
   &::placeholder {
-    color: #828282;
+    color: ${({ theme }) => theme.darkGray};
     font-weight: 100;
   }
 `;
@@ -91,7 +91,7 @@ const StSearchIcon = styled(Search)`
   position: absolute;
   width: 1.4rem;
   left: 5.5rem;
-  color: #828282;
+  color: ${({ theme }) => theme.darkGray};
 `;
 
 const StClearBtn = styled.button`
@@ -102,7 +102,7 @@ const StClearBtn = styled.button`
 const StCloseCircleIcon = styled(CloseCircle)`
   width: 1.5rem;
   height: 3rem;
-  color: #828282;
+  color: ${({ theme }) => theme.darkGray};
 `;
 
 export default Header;

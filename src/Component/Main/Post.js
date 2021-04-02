@@ -88,8 +88,8 @@ const Post = ({ post }) => {
 };
 
 const StArticle = styled.article`
-  border: 1px solid rgba(219, 219, 219, 1);
-  background: white;
+  border: 1px solid ${({ theme }) => theme.gray};
+  background: ${({ theme }) => theme.white};
   border-radius: 3px;
   margin-bottom: 6rem;
   width: 62rem;
@@ -102,7 +102,7 @@ const StHeader = styled.header`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border-bottom: 1px solid rgba(219, 219, 219, 1);
+  border-bottom: 1px solid ${({ theme }) => theme.gray};
   padding: 0rem 1.5rem;
   width: 100%;
   height: 5.5rem;
@@ -118,7 +118,7 @@ const StHeader = styled.header`
 `;
 
 const StProfileImage = styled.img`
-  border: 1px solid rgba(219, 219, 219, 1);
+  border: 1px solid ${({ theme }) => theme.gray};
   border-radius: 50%;
   width: 3rem;
   height: 3rem;
@@ -182,7 +182,7 @@ const StUsername = styled.span`
 
 const StMoreToggle = styled.span`
   margin-left: ${({ more }) => (more ? '0.5rem' : '0')};
-  color: #828282;
+  color: ${({ theme }) => theme.darkGray};
   line-height: 1.3;
   cursor: pointer;
 `;
@@ -198,15 +198,15 @@ const StCommentsBox = styled.section`
 
 const StDate = styled.div`
   padding: 1rem 1.5rem;
-  color: #828282;
+  color: ${({ theme }) => theme.darkGray};
 `;
 
 const StMoreComments = styled.div`
-  color: #828282;
+  color: ${({ theme }) => theme.darkGray};
 `;
 
 const StChatCommentLabel = styled.label`
-  border-top: 1px solid rgba(219, 219, 219, 1);
+  border-top: 1px solid ${({ theme }) => theme.gray};
   padding: 1.5rem;
   width: 100%;
   display: flex;
@@ -219,7 +219,7 @@ const StEmojiSmile = styled(EmojiSmile)`
 
 const StCommentInput = styled.input`
   border: none;
-  background: white;
+  background: ${({ theme }) => theme.white};
   margin-left: 1.5rem;
   width: 100%;
   outline: none;
@@ -229,7 +229,7 @@ const StCommentButton = styled.button`
   width: 4rem;
   font-size: 1.5rem;
   font-weight: 600;
-  color: #0095f6;
+  color: ${({ theme }) => theme.activeBlue};
 `;
 
 export default Post;

@@ -33,7 +33,7 @@ const StEmptyPosts = styled.article`
   flex-flow: row nowrap;
   width: 100%;
   border-radius: 4px;
-  background-color: white;
+  background: ${({ theme }) => theme.white};
   overflow: hidden;
 `;
 

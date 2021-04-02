@@ -70,7 +70,7 @@ const StMainNavigation = styled.nav`
     }
     & > li > a {
       text-decoration: none;
-      color: black;
+      color: ${({ theme }) => theme.black};
     }
   }
 `;
@@ -82,7 +82,7 @@ const StIcon = styled.div`
 
 const StProfile = styled.div`
   /* true면 black false면 white */
-  border: 1px solid black;
+  border: 1px solid ${({ theme }) => theme.black};
   width: 2.8rem;
   height: 2.8rem;
   border-radius: 50%;
@@ -92,7 +92,7 @@ const StProfile = styled.div`
 `;
 
 const StProfileImage = styled.img`
-  border: 2px solid white;
+  border: 2px solid ${({ theme }) => theme.white};
   border-radius: 50%;
   width: 2.6rem;
   height: 2.6rem;

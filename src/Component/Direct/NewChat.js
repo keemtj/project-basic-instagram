@@ -29,7 +29,7 @@ const StNewChat = styled.div`
 const StIconWrapper = styled.div`
   width: 8rem;
   height: 8rem;
-  border: 3px solid black;
+  border: 2px solid ${({ theme }) => theme.black};
   border-radius: 50%;
   display: flex;
   align-items: center;
@@ -53,7 +53,7 @@ const StText = styled.div`
 
 const StNewChatButton = styled.button`
   border-radius: 4px;
-  background: #0098fa;
+  background: ${({ theme }) => theme.activeBlue};
   margin-top: 2.5rem;
   padding: 0.8rem 1rem;
   color: white;
