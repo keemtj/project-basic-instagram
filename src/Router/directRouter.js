@@ -7,7 +7,7 @@ const DirectRouter = () => {
   return (
     <Switch>
       <Route path="/direct/" component={NewChat} exact />
-      <Route path="/direct/:id" component={Chat} />
+      <Route path="/direct/:username" component={Chat} />
       <Route
         render={({ location }) => (
           <div style={{ marginTop: '5.5rem' }}>

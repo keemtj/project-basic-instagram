@@ -6,7 +6,11 @@ import DirectRouter from '../../Router/directRouter';
 import { Link } from 'react-router-dom';
 
 const Direct = () => {
-  const directs = [1, 2, 3, 4];
+  // const directs = [1, 2, 3, 4];
+  const chats = [
+    { username: 'james', chats: [], lastTimeStamp: '5' },
+    { username: 'lee', chats: [], lastTimeStamp: '3' },
+  ];
 
   return (
     <StDirect>
@@ -19,9 +23,9 @@ const Direct = () => {
             </StNewDirectButton>
           </StInboxHeader>
           <StInbox>
-            {directs.map((dmId, index) => (
-              <StLink to={`/direct/${dmId}`} key={index}>
-                <DirectItem />
+            {chats.map((chat, index) => (
+              <StLink to={`/direct/${chat.username}`} key={index}>
+                <DirectItem chat={chat} />
               </StLink>
             ))}
           </StInbox>

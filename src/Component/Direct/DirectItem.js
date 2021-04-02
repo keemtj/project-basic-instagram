@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import ProfileImage from '../Global/ProfileImage';
 import { Dot } from '@styled-icons/bootstrap/Dot';
 
-const DirectItem = () => {
+const DirectItem = ({ chat }) => {
   return (
     <StDirectItem>
       <ProfileImage
@@ -13,10 +13,10 @@ const DirectItem = () => {
         height={6}
       >
         <StPreviewbox>
-          <div>username</div>
+          <div>{chat.username}</div>
           <StMsgInfo>
             msg <StDot />
-            5일
+            {chat.lastTimeStamp}일전
           </StMsgInfo>
         </StPreviewbox>
       </ProfileImage>
