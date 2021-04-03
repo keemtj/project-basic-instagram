@@ -1,11 +1,35 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import styled from 'styled-components';
 import MainNavigation from './MainNavigation';
 import { Search } from '@styled-icons/ionicons-outline/Search';
 import { CloseCircle } from '@styled-icons/ionicons-sharp/CloseCircle';
+import NewPost from '../New/NewPost';
 
 const Header = () => {
+  const [modalState, setModalState] = useState(false);
+  const [scrollY, setScrollY] = useState(0);
+
+  const openModal = () => {
+    console.log('open new post!');
+    setScrollY(window.scrollY);
+    setModalState(!modalState);
+  };
+
+  const closeModal = () => {
+    console.log('close new post!');
+    setModalState(!modalState);
+  };
+
+  const handleScroll = () => {
+    window.scrollTo(0, scrollY);
+  };
+
+  useEffect(() => {
+    modalState && window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [modalState]);
+
   return (
     <StWrapper>
       <StHeader>
@@ -24,8 +48,9 @@ const Header = () => {
             <StCloseCircleIcon />
           </StClearBtn>
         </StSearch>
-        <MainNavigation />
+        <MainNavigation openModal={openModal} />
       </StHeader>
+      {modalState && <NewPost closeModal={closeModal} />}
     </StWrapper>
   );
 };
@@ -33,7 +58,7 @@ const Header = () => {
 const StWrapper = styled.div`
   position: fixed;
   top: 0;
-  z-index: 9999;
+  z-index: 2;
   display: flex;
   align-items: center;
   justify-content: center;
