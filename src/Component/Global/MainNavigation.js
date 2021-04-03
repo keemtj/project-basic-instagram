@@ -31,11 +31,13 @@ const MainNavigation = () => {
           </StIcon>
         </li>
         <li>
-          <NavLink to="/new">
+          {/* <NavLink to="/new"> */}
+          <button style={{ cursor: 'pointer' }}>
             <StIcon>
               <AddCircle />
             </StIcon>
-          </NavLink>
+          </button>
+          {/* </NavLink> */}
         </li>
         <li>
           <NavLink to="/profile">
