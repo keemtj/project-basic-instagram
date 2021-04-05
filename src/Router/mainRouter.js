@@ -2,7 +2,6 @@ import React from 'react';
 import { Route, Switch } from 'react-router-dom';
 import MainPage from '../Pages/MainPage';
 import DirectPage from '../Pages/DirectPage';
-import NewPostPage from '../Pages/NewPostPage';
 import ProfilePage from '../Pages/ProfilePage';
 import LoginPage from '../Pages/LoginPage';
 import SignupPage from '../Pages/SignupPage';
@@ -14,7 +13,6 @@ const MainRouter = ({ isSignin }) => {
       <Switch>
         <Route path="/" component={MainPage} exact />
         <Route path="/direct" component={DirectPage} />
-        <Route path="/new" component={NewPostPage} />
         <Route path="/profile" component={ProfilePage} />
         <Route
           render={({ history }) => {

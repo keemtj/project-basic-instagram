@@ -26,6 +26,7 @@ const Header = () => {
   };
 
   useEffect(() => {
+    document.body.style.overflow = modalState ? 'hidden' : 'auto';
     modalState && window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, [modalState]);

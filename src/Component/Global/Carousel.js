@@ -4,14 +4,7 @@ import { Dot } from '@styled-icons/bootstrap/Dot';
 import { ArrowLeftCircleFill } from '@styled-icons/bootstrap/ArrowLeftCircleFill';
 import { ArrowRightCircleFill } from '@styled-icons/bootstrap/ArrowRightCircleFill';
 
-const Carousel = () => {
-  const images = [
-    'https://s6.favim.com/orig/140415/black-cute-girl-grunge-Favim.com-1669287.jpg',
-    'https://www.studyheights.com/uploads/quizzCategory/a98500a459e1b0bfbbfa43bf9da1e9b7.png',
-    'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS0FoDXeLRXEqA2o02I2JPgz2VhDb1vyuFAKQ&usqp=CAU',
-    'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS0FoDXeLRXEqA2o02I2JPgz2VhDb1vyuFAKQ&usqp=CAU',
-    'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS0FoDXeLRXEqA2o02I2JPgz2VhDb1vyuFAKQ&usqp=CAU',
-  ];
+const Carousel = ({ images, pagenation }) => {
   const ref = useRef();
   const [currentImage, setCurrentImage] = useState(0);
 
@@ -29,7 +22,7 @@ const Carousel = () => {
     <StCarouselWrapper>
       <StCarousel>
         <StCarouselInner ref={ref}>
-          {images.map((_, index, arr) => (
+          {images?.map((_, index, arr) => (
             <StImageWrapper key={index}>
               <StImage src={arr[index]} alt="random image" />
             </StImageWrapper>
@@ -44,19 +37,21 @@ const Carousel = () => {
         ) : (
           <div />
         )}
-        {currentImage < images.length - 1 && (
+        {currentImage < images?.length - 1 && (
           <StSlideButton type="button" onClick={handleNext}>
             <StRightButton />
           </StSlideButton>
         )}
       </StSlideButtonWrapper>
-      <StPagenation>
-        {images.map((_, index) => (
-          <StPage key={index} currentImage={currentImage}>
-            <Dot />
-          </StPage>
-        ))}
-      </StPagenation>
+      {pagenation && (
+        <StPagenation>
+          {images?.map((_, index) => (
+            <StPage key={index} currentImage={currentImage}>
+              <Dot />
+            </StPage>
+          ))}
+        </StPagenation>
+      )}
     </StCarouselWrapper>
   );
 };

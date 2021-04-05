@@ -15,6 +15,13 @@ const Post = ({ post }) => {
     { icon: <PaperPlane /> },
     { icon: <Bookmark /> },
   ];
+  const images = [
+    'https://s6.favim.com/orig/140415/black-cute-girl-grunge-Favim.com-1669287.jpg',
+    'https://www.studyheights.com/uploads/quizzCategory/a98500a459e1b0bfbbfa43bf9da1e9b7.png',
+    'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS0FoDXeLRXEqA2o02I2JPgz2VhDb1vyuFAKQ&usqp=CAU',
+    'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS0FoDXeLRXEqA2o02I2JPgz2VhDb1vyuFAKQ&usqp=CAU',
+    'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS0FoDXeLRXEqA2o02I2JPgz2VhDb1vyuFAKQ&usqp=CAU',
+  ];
   const heartCount = 17;
 
   const posttext = {
@@ -49,7 +56,7 @@ const Post = ({ post }) => {
         </button>
       </StHeader>
       <StImagesSection>
-        <Carousel />
+        <Carousel images={images} pagenation />
       </StImagesSection>
       <StSectionNav>
         {icons.map((icon, index) => (
