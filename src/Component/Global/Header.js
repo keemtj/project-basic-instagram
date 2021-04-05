@@ -8,11 +8,11 @@ import NewPost from '../New/NewPost';
 
 const Header = () => {
   const [modalState, setModalState] = useState(false);
-  const [scrollY, setScrollY] = useState(0);
+  // const [scrollY, setScrollY] = useState(0);
 
   const openModal = () => {
     console.log('open new post!');
-    setScrollY(window.scrollY);
+    // setScrollY(window.scrollY);
     setModalState(!modalState);
   };
 
@@ -21,14 +21,15 @@ const Header = () => {
     setModalState(!modalState);
   };
 
-  const handleScroll = () => {
-    window.scrollTo(0, scrollY);
-  };
+  // const handleScroll = () => {
+  //   // window.scrollTo(0, scrollY);
+  //   window.scrollTo(0, 0);
+  // };
 
   useEffect(() => {
     document.body.style.overflow = modalState ? 'hidden' : 'auto';
-    modalState && window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+    // modalState && window.addEventListener('scroll', handleScroll);
+    // return () => window.removeEventListener('scroll', handleScroll);
   }, [modalState]);
 
   return (

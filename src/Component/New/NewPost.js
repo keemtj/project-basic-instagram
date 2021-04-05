@@ -1,17 +1,21 @@
-import React from 'react';
-import { useHistory } from 'react-router';
+import React, { useState } from 'react';
 import styled, { css } from 'styled-components';
+import { useHistory } from 'react-router';
 import ModalPortal from '../../ModalPortal';
+import { Upload } from '@styled-icons/boxicons-regular/Upload';
+import { Location } from '@styled-icons/entypo/Location';
+import { Close } from '@styled-icons/evaicons-solid/Close';
 
 const NewPost = ({ closeModal }) => {
+  const [location, setLocation] = useState('강남구 역삼동');
+  console.log(setLocation);
   const history = useHistory();
   const images = [
-    'images/default_profile.png',
-    'images/default_profile.png',
-    'images/default_profile.png',
-    // 'images/default_profile.png',
-    // 'images/default_profile.png',
-    // 'images/default_profile.png',
+    // 'https://source.unsplash.com/random/500x500',
+    // 'https://source.unsplash.com/random/500x500',
+    // 'https://source.unsplash.com/random/500x500',
+    // 'https://source.unsplash.com/random/500x500',
+    // 'https://source.unsplash.com/random/500x500',
   ];
 
   const uploadImage = () => {
@@ -25,6 +29,13 @@ const NewPost = ({ closeModal }) => {
     history.push('/');
   };
 
+  const addLocation = () => {
+    setLocation('강남구 역삼동');
+  };
+  const removeLocation = () => {
+    setLocation(false);
+  };
+
   return (
     <ModalPortal>
       <StModal>
@@ -32,32 +43,65 @@ const NewPost = ({ closeModal }) => {
           <StHeader>
             <h2>새 게시물</h2>
           </StHeader>
-          <StUpload>
-            <label htmlFor="upload">사진 업로드</label>
+          <StUploadSection>
+            <div>이미지 업로드</div>
+            <label htmlFor="upload">
+              <StUploadIcon width={2} height={2} />
+            </label>
             <input
               id="upload"
               type="file"
               accept="image/jpeg, image/png, image/jpg"
               hidden
             />
-          </StUpload>
-          <StImagePreviewWrapper>
-            <StImagePreview>
-              {images?.map((image, index) => (
-                <img key={index} src={image} alt="image" />
-              ))}
-            </StImagePreview>
-          </StImagePreviewWrapper>
-          <StTextarea placeholder="문구 입력..." />
-          <StLocation>
+          </StUploadSection>
+          <StImagePreviewSection>
+            {images.length ? (
+              <StImagePreview>
+                {images?.map((image, index) => (
+                  <StImage key={index} src={image} alt="image" />
+                ))}
+              </StImagePreview>
+            ) : (
+              <div>
+                <StImagePreviewLabel htmlFor="upload">
+                  <StIconWrapper>
+                    <StUploadIcon width={3} height={3} />
+                  </StIconWrapper>
+                  <StText>업로드된 사진이 여기에 표시됩니다.</StText>
+                </StImagePreviewLabel>
+              </div>
+            )}
+          </StImagePreviewSection>
+          <StTextareaSection>
+            <StTextareaTitle>문구 입력</StTextareaTitle>
+            <StTextarea placeholder="문구를 입력하세요." />
+          </StTextareaSection>
+          <StLocationSection>
+            <div>위치 추가</div>
             {/* 지도 api, googlemaps? kakaomaps? navermaps? */}
             {/* geolocation api */}
-            <div>위치 추가 버튼</div>
-            <div>[강남구 역삼동]</div>
-          </StLocation>
+            {location ? (
+              <StLocation>
+                <div>{location}</div>
+                <StRemoveLocation type="button" onClick={removeLocation}>
+                  <Close />
+                </StRemoveLocation>
+              </StLocation>
+            ) : (
+              <StAddLocation type="button" onClick={addLocation}>
+                <StLocationIcon />
+              </StAddLocation>
+            )}
+          </StLocationSection>
+          <StCommentSettingSection>
+            <StCommentTitle>댓글 기능 해제</StCommentTitle>
+            <input type="checkbox" />
+            {/* <StToggle /> */}
+          </StCommentSettingSection>
           <StFooter>
-            <StButton onClick={closeModal}>취소</StButton>
-            <StButton onClick={addPost}>공유</StButton>
+            <StNewPostButton onClick={closeModal}>취소</StNewPostButton>
+            <StNewPostButton onClick={addPost}>공유</StNewPostButton>
           </StFooter>
         </StNewPostBox>
       </StModal>
@@ -68,7 +112,7 @@ const NewPost = ({ closeModal }) => {
 const baseStyle = css`
   width: 100%;
   border-bottom: 1px solid ${({ theme }) => theme.gray8};
-  padding: 2rem;
+  padding: 2rem 2rem;
 `;
 
 const StModal = styled.div`
@@ -86,13 +130,9 @@ const StModal = styled.div`
 const StNewPostBox = styled.div`
   position: relative;
   background: ${({ theme }) => theme.white};
-  border-radius: 4px;
+  border-radius: 5px;
   width: 50rem;
   height: auto;
-  /* display: flex;
-  flex-flow: column nowrap;
-  align-items: center;
-  justify-content: center; */
 `;
 
 const StHeader = styled.header`
@@ -105,13 +145,35 @@ const StHeader = styled.header`
   height: 5.5rem;
 `;
 
-const StUpload = styled.div`
+const StUploadSection = styled.section`
   ${baseStyle}
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 5.5rem;
+  font-size: 1.4rem;
+  font-weight: 600;
 `;
 
-const StImagePreviewWrapper = styled.div`
+const StIconWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid black;
+  border-radius: 50%;
+  width: 6rem;
+  height: 6rem;
+`;
+
+const StUploadIcon = styled(Upload)`
+  width: ${({ width }) => width}rem;
+  height: ${({ height }) => height}rem;
+  font-weight: bolder;
+  cursor: pointer;
+`;
+
+const StImagePreviewSection = styled.section`
   ${baseStyle}
-  padding: 1rem;
 `;
 
 const StImagePreview = styled.div`
@@ -120,23 +182,93 @@ const StImagePreview = styled.div`
   & > img + img {
     margin-left: 1rem;
   }
+  &::-webkit-scrollbar {
+    display: none;
+  }
+`;
+
+const StImagePreviewLabel = styled.label`
+  display: flex;
+  background: ${({ theme }) => theme.gray2};
+  width: 100%;
+  height: 25rem;
+  flex-flow: column nowrap;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+`;
+
+const StImage = styled.img`
+  width: 25rem;
+  height: 25rem;
+`;
+
+const StText = styled.div`
+  margin-top: 2rem;
+  font-size: 1.3rem;
+  font-weight: 500;
+`;
+
+const StTextareaSection = styled.section`
+  ${baseStyle}
+  width: 100%;
+  height: auto;
+`;
+
+const StTextareaTitle = styled.div`
+  font-size: 1.4rem;
+  font-weight: 600;
 `;
 
 const StTextarea = styled.textarea`
+  width: 100%;
+  height: 100%;
+  margin-top: 1rem;
+  padding: 0rem;
   border: none;
-  ${baseStyle}
   resize: none;
-  height: 5.5rem;
   outline: none;
+  color: ${({ theme }) => theme.black};
+  font-family: inherit;
+  font-size: 1.3rem;
+`;
+
+const StLocationSection = styled.section`
+  ${baseStyle}
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 5.5rem;
+  font-size: 1.4rem;
+  font-weight: 600;
+`;
+
+const StLocationIcon = styled(Location)`
+  width: 1.6rem;
+  height: 1.6rem;
 `;
 
 const StLocation = styled.div`
-  ${baseStyle}
+  display: flex;
+  align-items: center;
+  font-size: 1.4rem;
+  font-weight: 400;
+`;
+
+const StAddLocation = styled.button`
+  cursor: pointer;
+  outline: none;
+`;
+
+const StRemoveLocation = styled.button`
+  width: 2rem;
+  height: 2rem;
+  cursor: pointer;
+  outline: none;
 `;
 
 const StFooter = styled.footer`
   ${baseStyle}
-  padding: 1rem;
   border: none;
   display: flex;
   align-items: center;
@@ -146,7 +278,7 @@ const StFooter = styled.footer`
   top: 0;
 `;
 
-const StButton = styled.button`
+const StNewPostButton = styled.button`
   /* input에 채워져있을 때 */
   /* background: #0095f6; */
   color: ${({ theme }) => theme.inactiveBlue};
@@ -158,5 +290,23 @@ const StButton = styled.button`
     margin-left: 1rem;
   }
 `;
+
+const StCommentSettingSection = styled.section`
+  ${baseStyle}
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+`;
+
+const StCommentTitle = styled.div`
+  font-size: 1.4rem;
+  font-weight: 600;
+`;
+
+// const StToggle = styled.label`
+//   border: 1px solid red;
+//   width: 2rem;
+// `;
 
 export default NewPost;
