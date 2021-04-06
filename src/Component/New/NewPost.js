@@ -7,8 +7,11 @@ import { Location } from '@styled-icons/entypo/Location';
 import { Close } from '@styled-icons/evaicons-solid/Close';
 
 const NewPost = ({ closeModal }) => {
-  const [location, setLocation] = useState('강남구 역삼동');
-  console.log(setLocation);
+  // const [images, setImages] = useState([]);
+  const [location, setLocation] = useState(null);
+  const [checked, setChecked] = useState(false);
+  const [textarea, setTextarea] = useState('');
+
   const history = useHistory();
   const images = [
     // 'https://source.unsplash.com/random/500x500',
@@ -18,22 +21,27 @@ const NewPost = ({ closeModal }) => {
     // 'https://source.unsplash.com/random/500x500',
   ];
 
-  const uploadImage = () => {
-    console.log('upload image');
-  };
-  console.log(uploadImage);
-
   const addPost = () => {
     console.log('새 게시물이 작성되었습니다');
     closeModal();
     history.push('/');
   };
 
+  const addText = ({ target }) => {
+    setTextarea(target.value);
+  };
+
   const addLocation = () => {
     setLocation('강남구 역삼동');
   };
+
   const removeLocation = () => {
     setLocation(false);
+  };
+
+  const handleToggle = () => {
+    console.log(checked);
+    setChecked(!checked);
   };
 
   return (
@@ -75,7 +83,11 @@ const NewPost = ({ closeModal }) => {
           </StImagePreviewSection>
           <StTextareaSection>
             <StTextareaTitle>문구 입력</StTextareaTitle>
-            <StTextarea placeholder="문구를 입력하세요." />
+            <StTextarea
+              placeholder="문구를 입력하세요."
+              value={textarea}
+              onChange={addText}
+            />
           </StTextareaSection>
           <StLocationSection>
             <div>위치 추가</div>
@@ -96,8 +108,15 @@ const NewPost = ({ closeModal }) => {
           </StLocationSection>
           <StCommentSettingSection>
             <StCommentTitle>댓글 기능 해제</StCommentTitle>
-            <input type="checkbox" />
-            {/* <StToggle /> */}
+            <StToggle checked={checked}>
+              <input
+                type="checkbox"
+                checked={checked}
+                onChange={handleToggle}
+                hidden
+              />
+              <StCircle checked={checked} />
+            </StToggle>
           </StCommentSettingSection>
           <StFooter>
             <StNewPostButton onClick={closeModal}>취소</StNewPostButton>
@@ -304,9 +323,29 @@ const StCommentTitle = styled.div`
   font-weight: 600;
 `;
 
-// const StToggle = styled.label`
-//   border: 1px solid red;
-//   width: 2rem;
-// `;
+const StToggle = styled.label`
+  display: flex;
+  align-items: center;
+  border-radius: 2rem;
+  width: 3.6rem;
+  height: 2rem;
+  position: relative;
+  cursor: pointer;
+  transition: all 0.4s ease;
+  background: ${({ checked, theme }) =>
+    checked ? theme.activeBlue : theme.gray5};
+`;
 
+const StCircle = styled.span`
+  position: absolute;
+  left: 0.2rem;
+  background: white;
+  width: 1.6rem;
+  height: 1.6rem;
+  border-radius: 50%;
+  transition: all 0.4s ease;
+  transform: ${({ checked }) => checked && 'translate3d(1.6rem, 0, 0)'};
+`;
+
+// export default React.memo(NewPost);
 export default NewPost;
