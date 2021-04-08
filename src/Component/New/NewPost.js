@@ -1,36 +1,95 @@
-import React, { useState } from 'react';
+import React, {
+  // useEffect,
+  useState,
+} from 'react';
 import styled, { css } from 'styled-components';
 import { useHistory } from 'react-router';
 import ModalPortal from '../../ModalPortal';
 import { Upload } from '@styled-icons/boxicons-regular/Upload';
 import { Location } from '@styled-icons/entypo/Location';
 import { Close } from '@styled-icons/evaicons-solid/Close';
+import {
+  firebaseAuth,
+  firestore,
+  firebaseStorage,
+} from '../../services/firebase';
 
 const NewPost = ({ closeModal }) => {
-  // const [images, setImages] = useState([]);
+  const [images, setImages] = useState([]);
   const [location, setLocation] = useState(null);
-  const [checked, setChecked] = useState(false);
-  const [textarea, setTextarea] = useState('');
-
+  const [isPossibleComment, setIsPossibleComment] = useState(false);
+  const [text, setText] = useState('');
   const history = useHistory();
-  const images = [
-    // 'https://source.unsplash.com/random/500x500',
-    // 'https://source.unsplash.com/random/500x500',
-    // 'https://source.unsplash.com/random/500x500',
-    // 'https://source.unsplash.com/random/500x500',
-    // 'https://source.unsplash.com/random/500x500',
-  ];
 
-  const addPost = () => {
-    console.log('새 게시물이 작성되었습니다');
+  // create post
+  const createPost = async () => {
+    const { uid } = firebaseAuth.currentUser;
+    // 1. get filename
+    const filenames = images.map(image => image.file.name);
+    console.log(filenames);
+    // 2. set post data to firestore
+    // 2. create
+    const date = Date.now();
+    firestore.collection('posts').doc(uid).set({
+      images: filenames,
+      date,
+      text,
+      location,
+      isPossibleComment,
+      heartCount: 0,
+      bookmarkCount: 0,
+      comments: [],
+    });
+    // 3. upload images to storage
+    await uploadImagesToStorage();
+    // close modal
+    console.log('success upload to storage');
     closeModal();
+    console.log('새 게시물이 작성되었습니다');
     history.push('/');
   };
 
-  const addText = ({ target }) => {
-    setTextarea(target.value);
+  // Add images
+  const addImage = ({ target }) => {
+    let files = [];
+    Array.from(target.files).forEach(file => {
+      const url = URL.createObjectURL(file);
+      files.push({ file, url });
+    });
+    setImages([...images, ...files]);
+    console.log('add images');
   };
 
+  // upload images to firebase storage
+  const uploadImagesToStorage = async () => {
+    // uid
+    const { uid } = firebaseAuth.currentUser;
+    // postid
+    const datas = await firestore
+      .collection('posts')
+      .where('uid', '==', uid)
+      .get();
+    let idx;
+    datas.forEach(doc => {
+      // no posts === undefined
+      // posts === 1 && length === 1 && idx === length - 1
+      idx = doc.data().posts.length - 1;
+    });
+    // upload to storage
+    console.log('idx', idx);
+    images.forEach(image => {
+      firebaseStorage
+        .ref(`/${uid}/${idx === undefined ? 0 : idx + 1}/${image.file.name}`)
+        .put(image.file);
+    });
+    console.log('success upload to storage');
+  };
+
+  // Textareas
+  const addText = ({ target }) => {
+    setText(target.value);
+  };
+  // Location
   const addLocation = () => {
     setLocation('강남구 역삼동');
   };
@@ -39,9 +98,10 @@ const NewPost = ({ closeModal }) => {
     setLocation(false);
   };
 
+  // Commnet setting
   const handleToggle = () => {
-    console.log(checked);
-    setChecked(!checked);
+    console.log(isPossibleComment);
+    setIsPossibleComment(!isPossibleComment);
   };
 
   return (
@@ -53,22 +113,29 @@ const NewPost = ({ closeModal }) => {
           </StHeader>
           <StUploadSection>
             <div>이미지 업로드</div>
-            <label htmlFor="upload">
+            <label htmlFor="upload" onChange={addImage}>
               <StUploadIcon width={2} height={2} />
+              <input
+                id="upload"
+                type="file"
+                accept="image/jpeg, image/png, image/jpg"
+                multiple
+                hidden
+              />
             </label>
-            <input
-              id="upload"
-              type="file"
-              accept="image/jpeg, image/png, image/jpg"
-              hidden
-            />
           </StUploadSection>
           <StImagePreviewSection>
             {images.length ? (
               <StImagePreview>
-                {images?.map((image, index) => (
-                  <StImage key={index} src={image} alt="image" />
-                ))}
+                {images.map((image, index) => {
+                  return (
+                    <StImage
+                      key={index}
+                      src={image.url}
+                      alt={image.file.name}
+                    />
+                  );
+                })}
               </StImagePreview>
             ) : (
               <div>
@@ -77,6 +144,13 @@ const NewPost = ({ closeModal }) => {
                     <StUploadIcon width={3} height={3} />
                   </StIconWrapper>
                   <StText>업로드된 사진이 여기에 표시됩니다.</StText>
+                  <input
+                    id="upload"
+                    type="file"
+                    accept="image/jpeg, image/png, image/jpg"
+                    multiple
+                    hidden
+                  />
                 </StImagePreviewLabel>
               </div>
             )}
@@ -85,7 +159,7 @@ const NewPost = ({ closeModal }) => {
             <StTextareaTitle>문구 입력</StTextareaTitle>
             <StTextarea
               placeholder="문구를 입력하세요."
-              value={textarea}
+              value={text}
               onChange={addText}
             />
           </StTextareaSection>
@@ -108,19 +182,19 @@ const NewPost = ({ closeModal }) => {
           </StLocationSection>
           <StCommentSettingSection>
             <StCommentTitle>댓글 기능 해제</StCommentTitle>
-            <StToggle checked={checked}>
+            <StToggle checked={isPossibleComment}>
               <input
                 type="checkbox"
-                checked={checked}
+                checked={isPossibleComment}
                 onChange={handleToggle}
                 hidden
               />
-              <StCircle checked={checked} />
+              <StCircle checked={isPossibleComment} />
             </StToggle>
           </StCommentSettingSection>
           <StFooter>
             <StNewPostButton onClick={closeModal}>취소</StNewPostButton>
-            <StNewPostButton onClick={addPost}>공유</StNewPostButton>
+            <StNewPostButton onClick={createPost}>공유</StNewPostButton>
           </StFooter>
         </StNewPostBox>
       </StModal>
