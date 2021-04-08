@@ -30,8 +30,7 @@ const MainRouter = ({ isSignin }) => {
         <Route path="/login" component={LoginPage} />
         <Route path="/signup" component={SignupPage} />
         <Route
-          render={({ location }) => {
-            console.log(location.pathname, '!isSignin???');
+          render={() => {
             return <LoadingPage />;
           }}
         />

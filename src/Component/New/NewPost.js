@@ -23,30 +23,56 @@ const NewPost = ({ closeModal }) => {
 
   // create post
   const createPost = async () => {
+    // 0. get uid of currentUser
     const { uid } = firebaseAuth.currentUser;
-    // 1. get filename
+    // 1. get filenames
     const filenames = images.map(image => image.file.name);
-    console.log(filenames);
-    // 2. set post data to firestore
-    // 2. create
+    // 2. get size of posts data
+    const allDocs = await firestore
+      .collection('posts')
+      .doc(uid)
+      .collection('my-posts')
+      .get();
+    const size = allDocs.size;
+    console.log('sizeeeeeeeeeee', size);
+    // 3. create post
     const date = Date.now();
-    firestore.collection('posts').doc(uid).set({
-      images: filenames,
-      date,
-      text,
-      location,
-      isPossibleComment,
-      heartCount: 0,
-      bookmarkCount: 0,
-      comments: [],
-    });
-    // 3. upload images to storage
-    await uploadImagesToStorage();
-    // close modal
+    await firestore
+      .collection('posts') // collection
+      .doc(uid)
+      .collection('my-posts') // subcollection
+      .doc(`${date}`)
+      .set({
+        images: filenames,
+        date,
+        text,
+        location,
+        isPossibleComment,
+        heartCount: 0,
+        bookmarkCount: 0,
+        comments: [],
+      });
+
+    // 4. upload images to storage
+    uploadImagesToStorage(uid, size);
     console.log('success upload to storage');
+
+    // 4. close modal
+    // setImages([]);
+    // setLocation(null);
+    // setIsPossibleComment(false);
+    // setText('');
     closeModal();
     console.log('새 게시물이 작성되었습니다');
     history.push('/');
+  };
+
+  // upload images to firebase storage
+  const uploadImagesToStorage = (uid, size) => {
+    images.forEach(image => {
+      firebaseStorage.ref(`/${uid}/${size}/${image.file.name}`).put(image.file);
+    });
+    console.log('upload images to storage');
   };
 
   // Add images
@@ -57,50 +83,23 @@ const NewPost = ({ closeModal }) => {
       files.push({ file, url });
     });
     setImages([...images, ...files]);
-    console.log('add images');
-  };
-
-  // upload images to firebase storage
-  const uploadImagesToStorage = async () => {
-    // uid
-    const { uid } = firebaseAuth.currentUser;
-    // postid
-    const datas = await firestore
-      .collection('posts')
-      .where('uid', '==', uid)
-      .get();
-    let idx;
-    datas.forEach(doc => {
-      // no posts === undefined
-      // posts === 1 && length === 1 && idx === length - 1
-      idx = doc.data().posts.length - 1;
-    });
-    // upload to storage
-    console.log('idx', idx);
-    images.forEach(image => {
-      firebaseStorage
-        .ref(`/${uid}/${idx === undefined ? 0 : idx + 1}/${image.file.name}`)
-        .put(image.file);
-    });
-    console.log('success upload to storage');
   };
 
   // Textareas
   const addText = ({ target }) => {
     setText(target.value);
   };
-  // Location
+  // Add location
   const addLocation = () => {
     setLocation('강남구 역삼동');
   };
-
+  // Remove location
   const removeLocation = () => {
     setLocation(false);
   };
 
-  // Commnet setting
+  // Commnet setting toggle
   const handleToggle = () => {
-    console.log(isPossibleComment);
     setIsPossibleComment(!isPossibleComment);
   };
 
