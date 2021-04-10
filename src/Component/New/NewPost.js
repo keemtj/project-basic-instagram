@@ -13,6 +13,7 @@ import {
   firestore,
   firebaseStorage,
 } from '../../services/firebase';
+import SearchPlace from './SearchPlace';
 
 const NewPost = ({ closeModal }) => {
   const [images, setImages] = useState([]);
@@ -191,6 +192,7 @@ const NewPost = ({ closeModal }) => {
               <StCircle checked={isPossibleComment} />
             </StToggle>
           </StCommentSettingSection>
+          <SearchPlace />
           <StFooter>
             <StNewPostButton onClick={closeModal}>취소</StNewPostButton>
             <StNewPostButton onClick={createPost}>공유</StNewPostButton>
