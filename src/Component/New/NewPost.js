@@ -4,7 +4,7 @@ import React, {
 } from 'react';
 import styled, { css } from 'styled-components';
 import { useHistory } from 'react-router';
-import ModalPortal from '../../ModalPortal';
+import PostModalPortal from '../../PostModalPortal';
 import { Upload } from '@styled-icons/boxicons-regular/Upload';
 import { Location } from '@styled-icons/entypo/Location';
 import { Close } from '@styled-icons/evaicons-solid/Close';
@@ -92,6 +92,7 @@ const NewPost = ({ closeModal }) => {
   };
   // Add location
   const addLocation = () => {
+    console.log('place search input');
     setLocation('강남구 역삼동');
   };
   // Remove location
@@ -105,7 +106,7 @@ const NewPost = ({ closeModal }) => {
   };
 
   return (
-    <ModalPortal>
+    <PostModalPortal>
       <StModal>
         <StNewPostBox>
           <StHeader>
@@ -199,7 +200,7 @@ const NewPost = ({ closeModal }) => {
           </StFooter>
         </StNewPostBox>
       </StModal>
-    </ModalPortal>
+    </PostModalPortal>
   );
 };
 
@@ -227,6 +228,7 @@ const StNewPostBox = styled.div`
   border-radius: 5px;
   width: 50rem;
   height: auto;
+  transform: translateY(0%);
 `;
 
 const StHeader = styled.header`
