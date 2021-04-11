@@ -6,7 +6,7 @@ import PlacesAutocomplete, {
   geocodeByPlaceId,
 } from 'react-places-autocomplete';
 
-const SearchPlace = () => {
+const PlaceAutoComplete = () => {
   // google places autocomplete
   const [address, setAddress] = React.useState('');
   const [location, setLocation] = React.useState('');
@@ -101,4 +101,4 @@ const StSuggestionItem = styled.li`
   }
 `;
 
-export default React.memo(SearchPlace);
+export default React.memo(PlaceAutoComplete);

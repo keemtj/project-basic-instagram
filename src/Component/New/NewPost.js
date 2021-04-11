@@ -6,18 +6,16 @@ import styled, { css } from 'styled-components';
 import { useHistory } from 'react-router';
 import PostModalPortal from '../../PostModalPortal';
 import { Upload } from '@styled-icons/boxicons-regular/Upload';
-import { Location } from '@styled-icons/entypo/Location';
-import { Close } from '@styled-icons/evaicons-solid/Close';
 import {
   firebaseAuth,
   firestore,
   firebaseStorage,
 } from '../../services/firebase';
 import UploadImageInput from './UploadImageInput';
-import SearchPlace from './SearchPlace';
 import ImagePreview from './ImagePreview';
 import Textarea from './Textarea';
 import CommentSetting from './CommentSetting';
+import PlaceSearch from './PlaceSearch';
 
 const NewPost = ({ closeModal }) => {
   const [images, setImages] = useState([]);
@@ -130,21 +128,12 @@ const NewPost = ({ closeModal }) => {
             <Textarea text={text} addText={addText} />
           </StTextareaSection>
           <StLocationSection>
-            <div>위치 추가</div>
-            {location ? (
-              <StLocation>
-                <div>{location}</div>
-                <StRemoveLocation type="button" onClick={removeLocation}>
-                  <Close />
-                </StRemoveLocation>
-              </StLocation>
-            ) : (
-              <StAddLocation type="button" onClick={addLocation}>
-                <StLocationIcon />
-              </StAddLocation>
-            )}
+            <PlaceSearch
+              location={location}
+              removeLocation={removeLocation}
+              addLocation={addLocation}
+            />
           </StLocationSection>
-          <SearchPlace />
           <StCommentSettingSection>
             <CommentSetting
               isPossibleComment={isPossibleComment}
@@ -233,30 +222,6 @@ const StLocationSection = styled.section`
   height: 5.5rem;
   font-size: 1.4rem;
   font-weight: 600;
-`;
-
-const StLocationIcon = styled(Location)`
-  width: 1.6rem;
-  height: 1.6rem;
-`;
-
-const StLocation = styled.div`
-  display: flex;
-  align-items: center;
-  font-size: 1.4rem;
-  font-weight: 400;
-`;
-
-const StAddLocation = styled.button`
-  cursor: pointer;
-  outline: none;
-`;
-
-const StRemoveLocation = styled.button`
-  width: 2rem;
-  height: 2rem;
-  cursor: pointer;
-  outline: none;
 `;
 
 const StFooter = styled.footer`
