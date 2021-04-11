@@ -1,5 +1,5 @@
 import React from 'react';
-// import axios from 'axios';
+import styled from 'styled-components';
 import PlacesAutocomplete, {
   geocodeByAddress,
   // getLatLng,
@@ -11,79 +11,94 @@ const SearchPlace = () => {
   const [address, setAddress] = React.useState('');
   const [location, setLocation] = React.useState('');
   console.log('내가 선택한 location of value:', location);
+
   const handleChange = address => {
-    console.log(address);
     setAddress(address);
   };
 
   const handleSelect = address => {
     geocodeByAddress(address)
       .then(results => geocodeByPlaceId(results[0].place_id))
-      .then(result => console.log(result));
-    // .then(latLng => console.log('Success', latLng))
-    // .catch(error => console.error('Error', error));
+      .then(result => console.log('---------------', result));
   };
 
-  // React.useEffect(() => {
-  //   axios.get(
-  //     `https://maps.googleapis.com/maps/api/js?key=${process.env.REACT_APP_GOOGLE_API_KEY}&libraries=places`,
-  //   );
-  // }, []);
+  const onClickSuggestion = suggestion => {
+    console.log(
+      '내가 선택한 location of terms:',
+      suggestion.terms,
+      '| mainText:',
+      suggestion.formattedSuggestion.mainText,
+      '| secondaryText:',
+      suggestion.formattedSuggestion.secondaryText,
+    );
+    setLocation(suggestion.terms[0].value);
+    setAddress('');
+  };
 
   return (
-    <div>
+    <StSearchPlaceWrapper>
       <PlacesAutocomplete
         value={address}
         onChange={handleChange}
         onSelect={handleSelect}
       >
-        {({ getInputProps, suggestions, getSuggestionItemProps, loading }) => (
+        {({ getInputProps, suggestions, getSuggestionItemProps }) => (
           <div>
-            <input
+            <StSearchInput
               {...getInputProps({
-                placeholder: 'Search Places ...',
-                className: 'location-search-input',
+                placeholder: '장소를 검색하세요',
               })}
             />
-            <div className="autocomplete-dropdown-container">
-              {loading && <div>검색중...</div>}
-              {suggestions.map((suggestion, index) => {
-                const className = suggestion.active
-                  ? 'suggestion-item--active'
-                  : 'suggestion-item';
-                // inline style for demonstration purpose
-                const style = suggestion.active
-                  ? { backgroundColor: '#fafafa', cursor: 'pointer' }
-                  : { backgroundColor: '#ffffff', cursor: 'pointer' };
-                return (
-                  <div
-                    key={index}
-                    {...getSuggestionItemProps(suggestion, {
-                      className,
-                      style,
-                    })}
-                    onClick={() => {
-                      console.log(
-                        '내가 선택한 location of terms:',
-                        suggestion.terms,
-                        '| mainText:',
-                        suggestion.formattedSuggestion.mainText,
-                        '| secondaryText:',
-                        suggestion.formattedSuggestion.secondaryText,
-                      );
-                      return setLocation(suggestion.terms[0].value);
-                    }}
-                  >
-                    <span>{suggestion.description}</span>
-                  </div>
-                );
-              })}
-            </div>
+            {address && (
+              <StSuggestions>
+                {suggestions.map((suggestion, index) => {
+                  return (
+                    <StSuggestionItem
+                      key={index}
+                      {...getSuggestionItemProps(suggestion)}
+                      onClick={() => onClickSuggestion(suggestion)}
+                    >
+                      <span>{suggestion.formattedSuggestion.mainText}</span>
+                    </StSuggestionItem>
+                  );
+                })}
+              </StSuggestions>
+            )}
           </div>
         )}
       </PlacesAutocomplete>
-    </div>
+    </StSearchPlaceWrapper>
   );
 };
 
-export default SearchPlace;
+const StSearchPlaceWrapper = styled.div`
+  width: 100%;
+`;
+
+const StSearchInput = styled.input`
+  border: none;
+  padding: 2rem;
+`;
+
+const StSuggestions = styled.ul`
+  display: flex;
+  padding: 0rem 2rem;
+  overflow-x: auto;
+  border: 1px solid red;
+`;
+
+const StSuggestionItem = styled.li`
+  width: fit-content;
+  border: 1px solid gray;
+  border-radius: 4px;
+  & + & {
+    margin-left: 1rem;
+  }
+  padding: 1rem;
+  cursor: pointer;
+  &:hover {
+    background: yellow;
+  }
+`;
+
+export default React.memo(SearchPlace);

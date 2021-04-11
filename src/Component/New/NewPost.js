@@ -13,11 +13,15 @@ import {
   firestore,
   firebaseStorage,
 } from '../../services/firebase';
+import UploadImageInput from './UploadImageInput';
 import SearchPlace from './SearchPlace';
+import ImagePreview from './ImagePreview';
+import Textarea from './Textarea';
+import CommentSetting from './CommentSetting';
 
 const NewPost = ({ closeModal }) => {
   const [images, setImages] = useState([]);
-  const [location, setLocation] = useState(null);
+  const [location, setLocation] = useState('');
   const [isPossibleComment, setIsPossibleComment] = useState(false);
   const [text, setText] = useState('');
   const history = useHistory();
@@ -113,61 +117,20 @@ const NewPost = ({ closeModal }) => {
             <h2>새 게시물</h2>
           </StHeader>
           <StUploadSection>
-            <div>이미지 업로드</div>
-            <label htmlFor="upload" onChange={addImage}>
+            <UploadImageInput addImage={addImage}>
               <StUploadIcon width={2} height={2} />
-              <input
-                id="upload"
-                type="file"
-                accept="image/jpeg, image/png, image/jpg"
-                multiple
-                hidden
-              />
-            </label>
+            </UploadImageInput>
           </StUploadSection>
           <StImagePreviewSection>
-            {images.length ? (
-              <StImagePreview>
-                {images.map((image, index) => {
-                  return (
-                    <StImage
-                      key={index}
-                      src={image.url}
-                      alt={image.file.name}
-                    />
-                  );
-                })}
-              </StImagePreview>
-            ) : (
-              <div>
-                <StImagePreviewLabel htmlFor="upload">
-                  <StIconWrapper>
-                    <StUploadIcon width={3} height={3} />
-                  </StIconWrapper>
-                  <StText>업로드된 사진이 여기에 표시됩니다.</StText>
-                  <input
-                    id="upload"
-                    type="file"
-                    accept="image/jpeg, image/png, image/jpg"
-                    multiple
-                    hidden
-                  />
-                </StImagePreviewLabel>
-              </div>
-            )}
+            <ImagePreview images={images}>
+              <StUploadIcon width={3} height={3} />
+            </ImagePreview>
           </StImagePreviewSection>
           <StTextareaSection>
-            <StTextareaTitle>문구 입력</StTextareaTitle>
-            <StTextarea
-              placeholder="문구를 입력하세요."
-              value={text}
-              onChange={addText}
-            />
+            <Textarea text={text} addText={addText} />
           </StTextareaSection>
           <StLocationSection>
             <div>위치 추가</div>
-            {/* 지도 api, googlemaps? kakaomaps? navermaps? */}
-            {/* geolocation api */}
             {location ? (
               <StLocation>
                 <div>{location}</div>
@@ -181,19 +144,13 @@ const NewPost = ({ closeModal }) => {
               </StAddLocation>
             )}
           </StLocationSection>
-          <StCommentSettingSection>
-            <StCommentTitle>댓글 기능 해제</StCommentTitle>
-            <StToggle checked={isPossibleComment}>
-              <input
-                type="checkbox"
-                checked={isPossibleComment}
-                onChange={handleToggle}
-                hidden
-              />
-              <StCircle checked={isPossibleComment} />
-            </StToggle>
-          </StCommentSettingSection>
           <SearchPlace />
+          <StCommentSettingSection>
+            <CommentSetting
+              isPossibleComment={isPossibleComment}
+              handleToggle={handleToggle}
+            />
+          </StCommentSettingSection>
           <StFooter>
             <StNewPostButton onClick={closeModal}>취소</StNewPostButton>
             <StNewPostButton onClick={createPost}>공유</StNewPostButton>
@@ -251,16 +208,6 @@ const StUploadSection = styled.section`
   font-weight: 600;
 `;
 
-const StIconWrapper = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border: 2px solid black;
-  border-radius: 50%;
-  width: 6rem;
-  height: 6rem;
-`;
-
 const StUploadIcon = styled(Upload)`
   width: ${({ width }) => width}rem;
   height: ${({ height }) => height}rem;
@@ -272,61 +219,10 @@ const StImagePreviewSection = styled.section`
   ${baseStyle}
 `;
 
-const StImagePreview = styled.div`
-  display: flex;
-  overflow: auto;
-  & > img + img {
-    margin-left: 1rem;
-  }
-  &::-webkit-scrollbar {
-    display: none;
-  }
-`;
-
-const StImagePreviewLabel = styled.label`
-  display: flex;
-  background: ${({ theme }) => theme.gray2};
-  width: 100%;
-  height: 25rem;
-  flex-flow: column nowrap;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-`;
-
-const StImage = styled.img`
-  width: 25rem;
-  height: 25rem;
-`;
-
-const StText = styled.div`
-  margin-top: 2rem;
-  font-size: 1.3rem;
-  font-weight: 500;
-`;
-
 const StTextareaSection = styled.section`
   ${baseStyle}
   width: 100%;
   height: auto;
-`;
-
-const StTextareaTitle = styled.div`
-  font-size: 1.4rem;
-  font-weight: 600;
-`;
-
-const StTextarea = styled.textarea`
-  width: 100%;
-  height: 100%;
-  margin-top: 1rem;
-  padding: 0rem;
-  border: none;
-  resize: none;
-  outline: none;
-  color: ${({ theme }) => theme.black};
-  font-family: inherit;
-  font-size: 1.3rem;
 `;
 
 const StLocationSection = styled.section`
@@ -395,34 +291,4 @@ const StCommentSettingSection = styled.section`
   justify-content: space-between;
 `;
 
-const StCommentTitle = styled.div`
-  font-size: 1.4rem;
-  font-weight: 600;
-`;
-
-const StToggle = styled.label`
-  display: flex;
-  align-items: center;
-  border-radius: 2rem;
-  width: 3.6rem;
-  height: 2rem;
-  position: relative;
-  cursor: pointer;
-  transition: all 0.4s ease;
-  background: ${({ checked, theme }) =>
-    checked ? theme.activeBlue : theme.gray5};
-`;
-
-const StCircle = styled.span`
-  position: absolute;
-  left: 0.2rem;
-  background: white;
-  width: 1.6rem;
-  height: 1.6rem;
-  border-radius: 50%;
-  transition: all 0.4s ease;
-  transform: ${({ checked }) => checked && 'translate3d(1.6rem, 0, 0)'};
-`;
-
-// export default React.memo(NewPost);
 export default NewPost;
