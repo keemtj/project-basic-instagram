@@ -16,10 +16,13 @@ import ImagePreview from './ImagePreview';
 import Textarea from './Textarea';
 import CommentSetting from './CommentSetting';
 import PlaceSearch from './PlaceSearch';
+import PlaceAutoComplete from './PlaceAutoComplete';
 
 const NewPost = ({ closeModal }) => {
   const [images, setImages] = useState([]);
   const [location, setLocation] = useState('');
+  const [subLocation, setSubLocation] = useState('');
+  const [autoCompleteState, setAutoCompleteState] = useState(false);
   const [isPossibleComment, setIsPossibleComment] = useState(false);
   const [text, setText] = useState('');
   const history = useHistory();
@@ -50,6 +53,7 @@ const NewPost = ({ closeModal }) => {
         date,
         text,
         location,
+        subLocation,
         isPossibleComment,
         heartCount: 0,
         bookmarkCount: 0,
@@ -95,7 +99,7 @@ const NewPost = ({ closeModal }) => {
   // Add location
   const addLocation = () => {
     console.log('place search input');
-    setLocation('강남구 역삼동');
+    setAutoCompleteState(true);
   };
   // Remove location
   const removeLocation = () => {
@@ -107,42 +111,63 @@ const NewPost = ({ closeModal }) => {
     setIsPossibleComment(!isPossibleComment);
   };
 
+  const prev = () => {
+    setAutoCompleteState(false);
+  };
+
   return (
     <PostModalPortal>
       <StModal>
         <StNewPostBox>
           <StHeader>
-            <h2>새 게시물</h2>
+            <h2>{autoCompleteState ? '장소 검색' : '새 게시물'}</h2>
           </StHeader>
-          <StUploadSection>
-            <UploadImageInput addImage={addImage}>
-              <StUploadIcon width={2} height={2} />
-            </UploadImageInput>
-          </StUploadSection>
-          <StImagePreviewSection>
-            <ImagePreview images={images}>
-              <StUploadIcon width={3} height={3} />
-            </ImagePreview>
-          </StImagePreviewSection>
-          <StTextareaSection>
-            <Textarea text={text} addText={addText} />
-          </StTextareaSection>
-          <StLocationSection>
-            <PlaceSearch
-              location={location}
-              removeLocation={removeLocation}
-              addLocation={addLocation}
+          {autoCompleteState ? (
+            <PlaceAutoComplete
+              setLocation={setLocation}
+              setSubLocation={setSubLocation}
+              setAutoCompleteState={setAutoCompleteState}
             />
-          </StLocationSection>
-          <StCommentSettingSection>
-            <CommentSetting
-              isPossibleComment={isPossibleComment}
-              handleToggle={handleToggle}
-            />
-          </StCommentSettingSection>
+          ) : (
+            <>
+              <StUploadSection>
+                <UploadImageInput addImage={addImage}>
+                  <StUploadIcon width={2} height={2} />
+                </UploadImageInput>
+              </StUploadSection>
+              <StImagePreviewSection>
+                <ImagePreview images={images}>
+                  <StUploadIcon width={3} height={3} />
+                </ImagePreview>
+              </StImagePreviewSection>
+              <StTextareaSection>
+                <Textarea text={text} addText={addText} />
+              </StTextareaSection>
+              <StLocationSection>
+                <PlaceSearch
+                  location={location}
+                  subLocation={subLocation}
+                  removeLocation={removeLocation}
+                  addLocation={addLocation}
+                />
+              </StLocationSection>
+              <StCommentSettingSection>
+                <CommentSetting
+                  isPossibleComment={isPossibleComment}
+                  handleToggle={handleToggle}
+                />
+              </StCommentSettingSection>
+            </>
+          )}
           <StFooter>
-            <StNewPostButton onClick={closeModal}>취소</StNewPostButton>
-            <StNewPostButton onClick={createPost}>공유</StNewPostButton>
+            {autoCompleteState ? (
+              <StNewPostButton onClick={prev}>뒤로</StNewPostButton>
+            ) : (
+              <>
+                <StNewPostButton onClick={closeModal}>취소</StNewPostButton>
+                <StNewPostButton onClick={createPost}>공유</StNewPostButton>
+              </>
+            )}
           </StFooter>
         </StNewPostBox>
       </StModal>
@@ -174,6 +199,7 @@ const StNewPostBox = styled.div`
   border-radius: 5px;
   width: 50rem;
   height: auto;
+  min-height: 61.5rem;
   transform: translateY(0%);
 `;
 
