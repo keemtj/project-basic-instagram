@@ -31,8 +31,10 @@ const NewPost = ({ closeModal }) => {
   const createPost = async () => {
     // 0. get uid of currentUser
     const { uid } = firebaseAuth.currentUser;
+
     // 1. get filenames
     const filenames = images.map(image => image.file.name);
+
     // 2. get size of posts data
     const allDocs = await firestore
       .collection('posts')
@@ -41,6 +43,7 @@ const NewPost = ({ closeModal }) => {
       .get();
     const size = allDocs.size;
     console.log('sizeeeeeeeeeee', size);
+
     // 3. create post
     const date = Date.now();
     await firestore
@@ -61,11 +64,24 @@ const NewPost = ({ closeModal }) => {
         comments: [],
       });
 
-    // 4. upload images to storage
-    uploadImagesToStorage(uid, size);
+    // 4. get doc.id
+    let idx;
+    await firestore
+      .collection('posts')
+      .doc(uid)
+      .collection('my-posts')
+      .orderBy('date', 'desc')
+      .limit(1)
+      .get()
+      .then(docs => {
+        docs.forEach(doc => (idx = doc.id));
+      });
+
+    // 5. upload images to storage
+    uploadImagesToStorage(uid, idx);
     console.log('success upload to storage');
 
-    // 4. close modal
+    // 6. close modal
     // setImages([]);
     // setLocation(null);
     // setIsPossibleComment(false);
@@ -76,9 +92,9 @@ const NewPost = ({ closeModal }) => {
   };
 
   // upload images to firebase storage
-  const uploadImagesToStorage = (uid, size) => {
+  const uploadImagesToStorage = (uid, idx) => {
     images.forEach(image => {
-      firebaseStorage.ref(`/${uid}/${size}/${image.file.name}`).put(image.file);
+      firebaseStorage.ref(`/${uid}/${idx}/${image.file.name}`).put(image.file);
     });
     console.log('upload images to storage');
   };

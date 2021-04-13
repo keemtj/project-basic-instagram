@@ -3,13 +3,36 @@ import styled from 'styled-components';
 import Post from './Post';
 import Aside from './Aside';
 import AsideFooter from './AsideFooter';
+import { firebaseAuth, firestore } from '../../services/firebase';
 
 const Main = ({ setSignin }) => {
-  const posts = [
-    { username: 'username1' },
-    { username: 'username2' },
-    { username: 'username3' },
-  ];
+  const [posts, setPosts] = React.useState([]);
+
+  React.useEffect(() => {
+    const getPostData = async () => {
+      let datas = [];
+      try {
+        const { uid } = firebaseAuth.currentUser;
+        const postDocs = await firestore
+          .collection('posts')
+          .doc(uid)
+          .collection('my-posts')
+          .orderBy('date', 'desc')
+          .get();
+        postDocs.forEach(doc => {
+          if (doc.exists) {
+            datas.push({ id: doc.id, data: doc.data() });
+          } else {
+            console.log('게시물 없음');
+          }
+        });
+      } catch (e) {
+        console.log(e);
+      }
+      setPosts(datas);
+    };
+    getPostData();
+  }, []);
 
   return (
     <StMainWrapper>

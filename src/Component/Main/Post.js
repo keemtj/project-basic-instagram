@@ -9,36 +9,38 @@ import { EmojiSmile } from '@styled-icons/bootstrap/EmojiSmile';
 import Carousel from '../Global/Carousel';
 
 const Post = ({ post }) => {
+  const [more, setMore] = React.useState(true);
+  const { id, data } = post;
+  const { images, heartCount, text, isPossibleComment, comments, date } = data;
+
+  const getTimeElapsed = date => {
+    const start = new Date(date);
+    const end = Date.now();
+    const sec = Math.floor((end - start) / 1000); // 경과시간, 초
+    const min = Math.floor((end - start) / 1000 / 60); // 경과시간, 분
+    const hour = Math.floor((end - start) / 1000 / 60 / 60); // 경과시간, 시간
+    const day = Math.floor((end - start) / 1000 / 60 / 60 / 24); // 경과시간, 일
+    const elapsed =
+      sec >= 60
+        ? min >= 60
+          ? hour >= 24
+            ? day + '일전'
+            : hour + '시간 전'
+          : min + '분 전'
+        : '방금 전';
+    return elapsed;
+  };
+
   const icons = [
     { icon: <Heart /> },
     { icon: <Chat /> },
     { icon: <PaperPlane /> },
     { icon: <Bookmark /> },
   ];
-  const images = [
-    'https://s6.favim.com/orig/140415/black-cute-girl-grunge-Favim.com-1669287.jpg',
-    'https://www.studyheights.com/uploads/quizzCategory/a98500a459e1b0bfbbfa43bf9da1e9b7.png',
-    'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS0FoDXeLRXEqA2o02I2JPgz2VhDb1vyuFAKQ&usqp=CAU',
-    'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS0FoDXeLRXEqA2o02I2JPgz2VhDb1vyuFAKQ&usqp=CAU',
-    'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS0FoDXeLRXEqA2o02I2JPgz2VhDb1vyuFAKQ&usqp=CAU',
-  ];
-  const heartCount = 17;
 
-  const posttext = {
-    id: 'username1',
-    text:
-      'Lorem ipsum dolor sit amet consectetur adipisicing elit. Minima deleniti quis reiciendis nulla, ipsa aspernatur qui praesentium nostrum, commodi adipisci harum, quod quisquam. Minima id ullam doloribus blanditiis at neque!',
-  };
-  const [more, setMore] = React.useState(true);
   const onClickMore = () => {
     setMore(!more);
   };
-  const comments = [
-    { id: 'eun1010', comment: '좋아요' },
-    { id: 'pnh1123', comment: 'i love it' },
-    { id: 'kjh5555', comment: 'nice photo!' },
-    { id: 'lms1234', comment: 'goooooood' },
-  ];
 
   return (
     <StArticle>
@@ -48,7 +50,7 @@ const Post = ({ post }) => {
             src="images/default_profile.png"
             alt="default_image"
           />
-          <div>{post.username}</div>
+          <div>username</div>
         </div>
         <button style={{ width: '2rem' }}>
           {/* modal trigger */}
@@ -56,40 +58,47 @@ const Post = ({ post }) => {
         </button>
       </StHeader>
       <StImagesSection>
-        <Carousel images={images} pagenation />
+        <Carousel id={id} images={images} pagenation />
       </StImagesSection>
       <StSectionNav>
         {icons.map((icon, index) => (
           <span key={index}>{icon.icon}</span>
         ))}
       </StSectionNav>
-      <StHeartCount>좋아요 {heartCount}개</StHeartCount>
+      {heartCount > 0 && <StHeartCount>좋아요 {heartCount}개</StHeartCount>}
       <StTextBox>
         <StText more={more}>
-          <StUsername>{`${posttext.id}`}</StUsername> {`${posttext.text}`}{' '}
+          <StUsername>username</StUsername> {text}{' '}
         </StText>
-        <StMoreToggle onClick={onClickMore} more={more}>
-          {more ? '더 보기' : '숨기기'}
-        </StMoreToggle>
-      </StTextBox>
-      <StCommentsBox>
-        {comments.length > 2 && (
-          <StMoreComments>댓글 {comments.length}개 모두 보기</StMoreComments>
+        {text.length > 70 && (
+          <StMoreToggle onClick={onClickMore} more={more}>
+            {more ? '더 보기' : '숨기기'}
+          </StMoreToggle>
         )}
-        {comments.slice(0, 2).map((comment, index) => (
-          <div key={index}>
-            <StUsername>{comment.id}</StUsername> <span>{comment.comment}</span>
-          </div>
-        ))}
-      </StCommentsBox>
-      <StDate>1일전</StDate>
-      <StChatCommentLabel>
-        <button>
-          <StEmojiSmile />
-        </button>
-        <StCommentInput type="text" placeholder="댓글 달기..." />
-        <StCommentButton type="submit">게시</StCommentButton>
-      </StChatCommentLabel>
+      </StTextBox>
+      {!isPossibleComment && (
+        <StCommentsBox>
+          {comments.length > 2 && (
+            <StMoreComments>댓글 {comments.length}개 모두 보기</StMoreComments>
+          )}
+          {comments.slice(0, 2).map((comment, index) => (
+            <div key={index}>
+              <StUsername>{comment.id}</StUsername>{' '}
+              <span>{comment.comment}</span>
+            </div>
+          ))}
+        </StCommentsBox>
+      )}
+      <StDate>{getTimeElapsed(date)}</StDate>
+      {!isPossibleComment && (
+        <StChatCommentLabel>
+          <button>
+            <StEmojiSmile />
+          </button>
+          <StCommentInput type="text" placeholder="댓글 달기..." />
+          <StCommentButton type="submit">게시</StCommentButton>
+        </StChatCommentLabel>
+      )}
     </StArticle>
   );
 };
@@ -170,7 +179,7 @@ const StTextBox = styled.div`
 `;
 
 const StText = styled.div`
-  width: ${({ more }) => (more ? '70%' : '100%')};
+  width: ${({ more }) => (more ? '90%' : '100%')};
   line-height: 1.3;
   ${({ more }) =>
     more &&
