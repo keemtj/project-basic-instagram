@@ -50,7 +50,6 @@ const NewPost = ({ closeModal }) => {
       .collection('posts') // collection
       .doc(uid)
       .collection('my-posts') // subcollection
-      // .doc(`${date}`)
       .doc()
       .set({
         images: filenames,

@@ -10,7 +10,10 @@ import Carousel from '../Global/Carousel';
 
 const Post = ({ post }) => {
   const [more, setMore] = React.useState(true);
-  const { id, data } = post;
+  const {
+    // id,
+    data,
+  } = post;
   const { images, heartCount, text, isPossibleComment, comments, date } = data;
 
   const getTimeElapsed = date => {
@@ -58,7 +61,7 @@ const Post = ({ post }) => {
         </button>
       </StHeader>
       <StImagesSection>
-        <Carousel id={id} images={images} pagenation />
+        <Carousel images={images} pagenation />
       </StImagesSection>
       <StSectionNav>
         {icons.map((icon, index) => (

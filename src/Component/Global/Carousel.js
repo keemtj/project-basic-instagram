@@ -3,12 +3,10 @@ import styled from 'styled-components';
 import { Dot } from '@styled-icons/bootstrap/Dot';
 import { ArrowLeftCircleFill } from '@styled-icons/bootstrap/ArrowLeftCircleFill';
 import { ArrowRightCircleFill } from '@styled-icons/bootstrap/ArrowRightCircleFill';
-import { firebaseAuth, firebaseStorage } from '../../services/firebase';
 
-const Carousel = ({ id, images, pagenation }) => {
+const Carousel = ({ images, pagenation }) => {
   const ref = useRef();
   const [currentImage, setCurrentImage] = useState(0);
-  const [imageUrls, setImageUrls] = useState([]);
 
   const handlePrev = () => {
     ref.current.style.transform = `translate(-${100 * (currentImage - 1)}%)`;
@@ -20,31 +18,13 @@ const Carousel = ({ id, images, pagenation }) => {
     currentImage < images.length - 1 && setCurrentImage(currentImage + 1);
   };
 
-  React.useEffect(() => {
-    const getImageUrls = async () => {
-      let datas = [];
-      const { uid } = firebaseAuth.currentUser;
-      await images.forEach(image =>
-        firebaseStorage
-          .ref()
-          .child(`${uid}/${id}/${image}`)
-          .getDownloadURL()
-          .then(url => {
-            datas.push(url);
-          }),
-      );
-      setImageUrls(datas);
-    };
-    getImageUrls();
-  }, []);
-
   return (
     <StCarouselWrapper>
       <StCarousel>
         <StCarouselInner ref={ref}>
-          {imageUrls?.map((url, index) => (
+          {images?.map((image, index) => (
             <StImageWrapper key={index}>
-              <StImage src={url} alt={url} />
+              <StImage src={image} alt={image} />
             </StImageWrapper>
           ))}
         </StCarouselInner>
