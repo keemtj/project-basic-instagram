@@ -4,8 +4,7 @@ import { Dot } from '@styled-icons/bootstrap/Dot';
 import { ArrowLeftCircleFill } from '@styled-icons/bootstrap/ArrowLeftCircleFill';
 import { ArrowRightCircleFill } from '@styled-icons/bootstrap/ArrowRightCircleFill';
 
-const Carousel = ({ imageSrc, pagenation }) => {
-  console.log(imageSrc.length);
+const Carousel = ({ srcs, images, pagenation }) => {
   const ref = useRef();
   const [currentImage, setCurrentImage] = useState(0);
 
@@ -16,16 +15,16 @@ const Carousel = ({ imageSrc, pagenation }) => {
 
   const handleNext = () => {
     ref.current.style.transform = `translate(-${100 * (currentImage + 1)}%)`;
-    currentImage < imageSrc.length - 1 && setCurrentImage(currentImage + 1);
+    currentImage < images.length - 1 && setCurrentImage(currentImage + 1);
   };
 
   return (
     <StCarouselWrapper>
       <StCarousel>
         <StCarouselInner ref={ref}>
-          {imageSrc?.map((image, index) => (
+          {images?.map((image, index) => (
             <StImageWrapper key={index}>
-              <StImage src={image.url} alt={image.name} />
+              <StImage src={srcs[index]} alt={image} />
             </StImageWrapper>
           ))}
         </StCarouselInner>
@@ -38,15 +37,15 @@ const Carousel = ({ imageSrc, pagenation }) => {
         ) : (
           <div />
         )}
-        {currentImage < imageSrc?.length - 1 && (
+        {currentImage < images.length - 1 && (
           <StSlideButton type="button" onClick={handleNext}>
             <StRightButton />
           </StSlideButton>
         )}
       </StSlideButtonWrapper>
-      {pagenation && imageSrc?.length >= 2 && (
+      {pagenation && images.length >= 2 && (
         <StPagenation>
-          {imageSrc?.map((_, index) => (
+          {images.map((_, index) => (
             <StPage key={index} currentImage={currentImage}>
               <Dot />
             </StPage>

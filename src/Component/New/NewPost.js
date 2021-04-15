@@ -40,6 +40,7 @@ const NewPost = ({ closeModal }) => {
     // Todo: upload images to storage
     uploadImagesToStorage(uid, postId, images);
     // Todo: close modal
+    closeModal();
     console.log('새 게시물이 작성되었습니다');
     flag && history.push('/');
   };

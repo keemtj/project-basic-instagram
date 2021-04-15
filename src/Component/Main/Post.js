@@ -12,9 +12,16 @@ import { firebaseAuth, firebaseStorage } from '../../services/firebase';
 const Post = ({ post }) => {
   const [more, setMore] = React.useState(true);
   const { id, data } = post;
-  const { images, heartCount, text, isPossibleComment, comments, date } = data;
-  const [imageSrc, setImageSrc] = React.useState([]);
-  console.log(imageSrc);
+  const {
+    images,
+    heartCount,
+    text,
+    isPossibleComment,
+    comments,
+    date,
+    location,
+  } = data;
+  const [srcs, setSrc] = React.useState([]);
   const getTimeElapsed = date => {
     const start = new Date(date);
     const end = Date.now();
@@ -54,7 +61,7 @@ const Post = ({ post }) => {
           .child(`/${uid}/${id}/${name}`)
           .getDownloadURL()
           .then(url => urls.push(url))
-          .then(() => setImageSrc(urls));
+          .then(() => setSrc(urls));
       });
     };
     getImages();
@@ -68,7 +75,10 @@ const Post = ({ post }) => {
             src="images/default_profile.png"
             alt="default_image"
           />
-          <div>username</div>
+          <div>
+            <div>username</div>
+            {location && <StLocation>{location}</StLocation>}
+          </div>
         </div>
         <button style={{ width: '2rem' }}>
           {/* modal trigger */}
@@ -76,7 +86,7 @@ const Post = ({ post }) => {
         </button>
       </StHeader>
       <StImagesSection>
-        <Carousel imageSrc={imageSrc} pagenation />
+        <Carousel srcs={srcs} images={images} pagenation />
       </StImagesSection>
       <StSectionNav>
         {icons.map((icon, index) => (
@@ -156,6 +166,13 @@ const StProfileImage = styled.img`
   border-radius: 50%;
   width: 3rem;
   height: 3rem;
+`;
+
+const StLocation = styled.div`
+  margin-top: 0.2rem;
+  font-size: 1.2rem;
+  font-weight: 400;
+  color: ${({ theme }) => theme.darkGray};
 `;
 
 const StImagesSection = styled.section`
