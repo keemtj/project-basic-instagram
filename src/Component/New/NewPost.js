@@ -3,7 +3,6 @@ import React, {
   useState,
 } from 'react';
 import styled, { css } from 'styled-components';
-import { useHistory } from 'react-router';
 import PostModalPortal from '../../PostModalPortal';
 import { Upload } from '@styled-icons/boxicons-regular/Upload';
 import {
@@ -18,7 +17,7 @@ import CommentSetting from './CommentSetting';
 import PlaceSearch from './PlaceSearch';
 import PlaceAutoComplete from './PlaceAutoComplete';
 
-const NewPost = ({ closeModal }) => {
+const NewPost = ({ closeModal, setProgress, setLoading }) => {
   const [postId, setPostId] = useState('');
   const [images, setImages] = useState([]);
   const [location, setLocation] = useState('');
@@ -26,11 +25,9 @@ const NewPost = ({ closeModal }) => {
   const [autoCompleteState, setAutoCompleteState] = useState(false);
   const [isPossibleComment, setIsPossibleComment] = useState(false);
   const [text, setText] = useState('');
-  const history = useHistory();
 
   // FIXME: create new post
   const createPost = () => {
-    const flag = false;
     // Todo: get uid by currentUser
     const { uid } = firebaseAuth.currentUser;
     // Todo: get filenames by images
@@ -40,9 +37,8 @@ const NewPost = ({ closeModal }) => {
     // Todo: upload images to storage
     uploadImagesToStorage(uid, postId, images);
     // Todo: close modal
-    closeModal();
     console.log('새 게시물이 작성되었습니다');
-    flag && history.push('/');
+    closeModal();
   };
 
   // add post data to firestore
@@ -68,9 +64,29 @@ const NewPost = ({ closeModal }) => {
   // upload images to firebase storage
   const uploadImagesToStorage = (uid, postId) => {
     images.forEach(image => {
-      firebaseStorage
+      const uploadTask = firebaseStorage
         .ref(`/${uid}/${postId}/${image.file.name}`)
         .put(image.file);
+      uploadTask.on(
+        'state_changed',
+        snapshot => {
+          const progress = Math.round(
+            (snapshot.bytesTransferred / snapshot.totalBytes) * 100,
+          );
+          console.log('Upload is ' + progress + '%');
+          setLoading(true);
+          setProgress(progress);
+        },
+        null,
+        () => {
+          uploadTask.snapshot.ref.getDownloadURL().then(function (downloadURL) {
+            console.log('File available at', downloadURL);
+            // setProgress({ ...progress, loading: false });
+            setLoading(false);
+            setProgress(0);
+          });
+        },
+      );
     });
   };
 

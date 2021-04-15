@@ -8,28 +8,24 @@ import NewPost from '../New/NewPost';
 
 const Header = () => {
   const [modalState, setModalState] = useState(false);
-  // const [scrollY, setScrollY] = useState(0);
-
+  const [progress, setProgress] = useState(0);
+  const [loading, setLoading] = useState(false);
   const openModal = () => {
     console.log('open new post!');
-    // setScrollY(window.scrollY);
     setModalState(!modalState);
   };
 
   const closeModal = () => {
     console.log('close new post!');
     setModalState(!modalState);
+    !loading &&
+      setTimeout(() => {
+        window.location.reload();
+      }, 2000);
   };
-
-  // const handleScroll = () => {
-  //   // window.scrollTo(0, scrollY);
-  //   window.scrollTo(0, 0);
-  // };
 
   useEffect(() => {
     document.body.style.overflow = modalState ? 'hidden' : 'auto';
-    // modalState && window.addEventListener('scroll', handleScroll);
-    // return () => window.removeEventListener('scroll', handleScroll);
   }, [modalState]);
 
   return (
@@ -52,16 +48,48 @@ const Header = () => {
         </StSearch>
         <MainNavigation openModal={openModal} />
       </StHeader>
-      {modalState && <NewPost closeModal={closeModal} />}
+      {loading && <StProgressbar value={progress} max={100} />}
+      {modalState && (
+        <NewPost
+          closeModal={closeModal}
+          setProgress={setProgress}
+          setLoading={setLoading}
+        />
+      )}
     </StWrapper>
   );
 };
+
+const StProgressbar = styled.progress`
+  position: fixed;
+  top: 5.5rem;
+  left: 0;
+  z-index: 2;
+
+  border: none;
+  width: 100%;
+  height: 0.2rem;
+  &::-webkit-progress-bar {
+    background-color: ${({ theme }) => theme.background};
+  }
+  &::-webkit-progress-value {
+    background-image: -webkit-linear-gradient(
+      left,
+      #f09433 0%,
+      #e6683c 25%,
+      #dc2743 50%,
+      #cc2366 75%,
+      #bc1888 100%
+    );
+  }
+`;
 
 const StWrapper = styled.div`
   position: fixed;
   top: 0;
   z-index: 2;
   display: flex;
+  flex-flow: column nowrap;
   align-items: center;
   justify-content: center;
   width: 100vw;
