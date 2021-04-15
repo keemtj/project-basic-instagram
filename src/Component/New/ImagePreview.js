@@ -8,7 +8,11 @@ const ImagePreview = ({ images, children }) => {
         <StImagePreview>
           {images.map((image, index) => {
             return (
-              <StImage key={index} src={image.url} alt={image.file.name} />
+              <StImage
+                key={index}
+                src={image.previewUrl}
+                alt={image.file.name}
+              />
             );
           })}
         </StImagePreview>

@@ -19,6 +19,7 @@ import PlaceSearch from './PlaceSearch';
 import PlaceAutoComplete from './PlaceAutoComplete';
 
 const NewPost = ({ closeModal }) => {
+  const [postId, setPostId] = useState('');
   const [images, setImages] = useState([]);
   const [location, setLocation] = useState('');
   const [subLocation, setSubLocation] = useState('');
@@ -27,33 +28,32 @@ const NewPost = ({ closeModal }) => {
   const [text, setText] = useState('');
   const history = useHistory();
 
-  // create post
-  const createPost = async () => {
-    // 0. get uid of currentUser
+  // FIXME: create new post
+  const createPost = () => {
+    const flag = false;
+    // Todo: get uid by currentUser
     const { uid } = firebaseAuth.currentUser;
-
-    // 1. get filenames
+    // Todo: get filenames by images
     const filenames = images.map(image => image.file.name);
+    // Todo: add datas to firestore
+    addPostDataToFirestore(uid, postId, filenames);
+    // Todo: upload images to storage
+    uploadImagesToStorage(uid, postId, images);
+    // Todo: close modal
+    console.log('새 게시물이 작성되었습니다');
+    flag && history.push('/');
+  };
 
-    // 2. get size of posts data
-    const allDocs = await firestore
+  // add post data to firestore
+  const addPostDataToFirestore = (uid, postId, filenames) => {
+    firestore
       .collection('posts')
       .doc(uid)
       .collection('my-posts')
-      .get();
-    const size = allDocs.size;
-    console.log('sizeeeeeeeeeee', size);
-
-    // 3. create post
-    const date = Date.now();
-    await firestore
-      .collection('posts') // collection
-      .doc(uid)
-      .collection('my-posts') // subcollection
-      .doc()
+      .doc(postId)
       .set({
         images: filenames,
-        date,
+        date: Date.now(),
         text,
         location,
         subLocation,
@@ -62,50 +62,25 @@ const NewPost = ({ closeModal }) => {
         bookmarkCount: 0,
         comments: [],
       });
-
-    // 4. get doc.id
-    let idx;
-    await firestore
-      .collection('posts')
-      .doc(uid)
-      .collection('my-posts')
-      .orderBy('date', 'desc')
-      .limit(1)
-      .get()
-      .then(docs => {
-        docs.forEach(doc => (idx = doc.id));
-      });
-
-    // 5. upload images to storage
-    uploadImagesToStorage(uid, idx);
-    console.log('success upload to storage');
-
-    // 6. close modal
-    // setImages([]);
-    // setLocation(null);
-    // setIsPossibleComment(false);
-    // setText('');
-    closeModal();
-    console.log('새 게시물이 작성되었습니다');
-    history.push('/');
   };
 
   // upload images to firebase storage
-  const uploadImagesToStorage = (uid, idx) => {
+  const uploadImagesToStorage = (uid, postId) => {
     images.forEach(image => {
-      firebaseStorage.ref(`/${uid}/${idx}/${image.file.name}`).put(image.file);
+      firebaseStorage
+        .ref(`/${uid}/${postId}/${image.file.name}`)
+        .put(image.file);
     });
-    console.log('upload images to storage');
   };
 
   // Add images
   const addImage = ({ target }) => {
-    let files = [];
-    Array.from(target.files).forEach(file => {
-      const url = URL.createObjectURL(file);
-      files.push({ file, url });
+    let datas = [];
+    [...target.files].forEach(file => {
+      const previewUrl = URL.createObjectURL(file);
+      datas.push({ file, previewUrl });
     });
-    setImages([...images, ...files]);
+    setImages([...images, ...datas]);
   };
 
   // Textareas
@@ -130,6 +105,12 @@ const NewPost = ({ closeModal }) => {
   const prev = () => {
     setAutoCompleteState(false);
   };
+
+  React.useEffect(() => {
+    // Todo: generate Post id
+    const generatedId = firestore.collection('posts').doc().id;
+    setPostId(generatedId);
+  }, []);
 
   return (
     <PostModalPortal>

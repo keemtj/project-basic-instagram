@@ -7,15 +7,14 @@ import { Chat } from '@styled-icons/bootstrap/Chat';
 import { Bookmark } from '@styled-icons/bootstrap/Bookmark';
 import { EmojiSmile } from '@styled-icons/bootstrap/EmojiSmile';
 import Carousel from '../Global/Carousel';
+import { firebaseAuth, firebaseStorage } from '../../services/firebase';
 
 const Post = ({ post }) => {
   const [more, setMore] = React.useState(true);
-  const {
-    // id,
-    data,
-  } = post;
+  const { id, data } = post;
   const { images, heartCount, text, isPossibleComment, comments, date } = data;
-
+  const [imageSrc, setImageSrc] = React.useState([]);
+  console.log(imageSrc);
   const getTimeElapsed = date => {
     const start = new Date(date);
     const end = Date.now();
@@ -45,6 +44,22 @@ const Post = ({ post }) => {
     setMore(!more);
   };
 
+  React.useEffect(() => {
+    const { uid } = firebaseAuth.currentUser;
+    let urls = [];
+    const getImages = async () => {
+      await images.forEach(name => {
+        firebaseStorage
+          .ref()
+          .child(`/${uid}/${id}/${name}`)
+          .getDownloadURL()
+          .then(url => urls.push(url))
+          .then(() => setImageSrc(urls));
+      });
+    };
+    getImages();
+  }, []);
+
   return (
     <StArticle>
       <StHeader>
@@ -61,7 +76,7 @@ const Post = ({ post }) => {
         </button>
       </StHeader>
       <StImagesSection>
-        <Carousel images={images} pagenation />
+        <Carousel imageSrc={imageSrc} pagenation />
       </StImagesSection>
       <StSectionNav>
         {icons.map((icon, index) => (

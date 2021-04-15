@@ -9,10 +9,10 @@ const Main = ({ setSignin }) => {
   const [posts, setPosts] = React.useState([]);
 
   React.useEffect(() => {
+    const { uid } = firebaseAuth.currentUser;
     const getPostData = async () => {
       let datas = [];
       try {
-        const { uid } = firebaseAuth.currentUser;
         const postDocs = await firestore
           .collection('posts')
           .doc(uid)
