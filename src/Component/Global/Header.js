@@ -10,15 +10,17 @@ const Header = () => {
   const [modalState, setModalState] = useState(false);
   const [progress, setProgress] = useState(0);
   const [loading, setLoading] = useState(false);
+
   const openModal = () => {
     console.log('open new post!');
     setModalState(!modalState);
+    setLoading('');
   };
 
   const closeModal = () => {
     console.log('close new post!');
     setModalState(!modalState);
-    !loading &&
+    loading === 'done' &&
       setTimeout(() => {
         window.location.reload();
       }, 2000);
@@ -68,7 +70,7 @@ const StProgressbar = styled.progress`
 
   border: none;
   width: 100%;
-  height: 0.2rem;
+  height: 0.3rem;
   &::-webkit-progress-bar {
     background-color: ${({ theme }) => theme.background};
   }

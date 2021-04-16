@@ -74,15 +74,13 @@ const NewPost = ({ closeModal, setProgress, setLoading }) => {
             (snapshot.bytesTransferred / snapshot.totalBytes) * 100,
           );
           console.log('Upload is ' + progress + '%');
-          setLoading(true);
+          setLoading('loading');
           setProgress(progress);
         },
         null,
         () => {
-          uploadTask.snapshot.ref.getDownloadURL().then(function (downloadURL) {
-            console.log('File available at', downloadURL);
-            // setProgress({ ...progress, loading: false });
-            setLoading(false);
+          uploadTask.snapshot.ref.getDownloadURL().then(() => {
+            setLoading('done');
             setProgress(0);
           });
         },
