@@ -1,7 +1,4 @@
-import React, {
-  // useEffect,
-  useState,
-} from 'react';
+import React, { useEffect, useState } from 'react';
 import styled, { css } from 'styled-components';
 import PostModalPortal from '../../PostModalPortal';
 import { Upload } from '@styled-icons/boxicons-regular/Upload';
@@ -121,10 +118,16 @@ const NewPost = ({ closeModal, setProgress, setLoading }) => {
     setAutoCompleteState(false);
   };
 
-  React.useEffect(() => {
+  useEffect(() => {
+    const title = document.title;
+    document.title = '새 게시물 작성 • Instagram';
     // Todo: generate Post id
     const generatedId = firestore.collection('posts').doc().id;
     setPostId(generatedId);
+    return () => {
+      // 이전 title로 변경
+      document.title = title;
+    };
   }, []);
 
   return (

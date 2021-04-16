@@ -4,6 +4,9 @@ import styled from 'styled-components';
 import SignUpBox from './SignUpBox';
 
 const Login = () => {
+  React.useEffect(() => {
+    document.title = '회원 가입 • Instagram';
+  }, []);
   return (
     <StLoginWrappr>
       <StLogin>

@@ -5,6 +5,10 @@ import User from './User';
 import ProfileNavigation from './ProfileNavigation';
 
 const Profile = () => {
+  React.useEffect(() => {
+    const username = 'username';
+    document.title = `@${username} • Instagram 사진 및 동영상`;
+  }, []);
   return (
     <StWrapper>
       <StMain>

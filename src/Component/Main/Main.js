@@ -9,6 +9,10 @@ const Main = ({ setSignin }) => {
   const [posts, setPosts] = React.useState([]);
 
   React.useEffect(() => {
+    document.title = 'Instagram';
+  }, []);
+
+  React.useEffect(() => {
     const { uid } = firebaseAuth.currentUser;
     const getPostData = async () => {
       let datas = [];

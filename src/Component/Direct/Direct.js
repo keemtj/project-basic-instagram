@@ -12,6 +12,9 @@ const Direct = () => {
     { username: 'lee', chats: [], lastTimeStamp: '3' },
   ];
 
+  React.useEffect(() => {
+    document.title = '받은 메시지함 • Direct';
+  }, []);
   return (
     <StDirect>
       <StDirectBox>
