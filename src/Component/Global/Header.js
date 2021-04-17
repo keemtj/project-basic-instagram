@@ -9,21 +9,15 @@ import NewPost from '../New/NewPost';
 const Header = () => {
   const [modalState, setModalState] = useState(false);
   const [progress, setProgress] = useState(0);
-  const [loading, setLoading] = useState(false);
 
   const openModal = () => {
     console.log('open new post!');
     setModalState(!modalState);
-    setLoading('');
   };
 
   const closeModal = () => {
     console.log('close new post!');
     setModalState(!modalState);
-    loading === 'done' &&
-      setTimeout(() => {
-        window.location.reload();
-      }, 2000);
   };
 
   useEffect(() => {
@@ -50,13 +44,9 @@ const Header = () => {
         </StSearch>
         <MainNavigation openModal={openModal} />
       </StHeader>
-      {loading && <StProgressbar value={progress} max={100} />}
+      {progress !== 0 && <StProgressbar value={progress} max={100} />}
       {modalState && (
-        <NewPost
-          closeModal={closeModal}
-          setProgress={setProgress}
-          setLoading={setLoading}
-        />
+        <NewPost closeModal={closeModal} setProgress={setProgress} />
       )}
     </StWrapper>
   );

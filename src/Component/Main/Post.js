@@ -7,10 +7,16 @@ import { Chat } from '@styled-icons/bootstrap/Chat';
 import { Bookmark } from '@styled-icons/bootstrap/Bookmark';
 import { EmojiSmile } from '@styled-icons/bootstrap/EmojiSmile';
 import Carousel from '../Global/Carousel';
-import { firebaseAuth, firebaseStorage } from '../../services/firebase';
+import {
+  firebaseAuth,
+  firebaseStorage,
+  firestore,
+} from '../../services/firebase';
 
 const Post = ({ post }) => {
   const [more, setMore] = React.useState(true);
+  const [userDatas, setUserDatas] = React.useState({});
+  const { username } = userDatas;
   const { id, data } = post;
   const {
     images,
@@ -65,7 +71,14 @@ const Post = ({ post }) => {
       });
     };
     getImages();
-  }, []);
+    firestore
+      .collection('users')
+      .where('uid', '==', uid)
+      .get()
+      .then(querySnapshot =>
+        querySnapshot.forEach(doc => setUserDatas(doc.data())),
+      );
+  }, [setUserDatas]);
 
   return (
     <StArticle>
@@ -76,7 +89,7 @@ const Post = ({ post }) => {
             alt="default_image"
           />
           <div>
-            <div>username</div>
+            <div>{username}</div>
             {location && <StLocation>{location}</StLocation>}
           </div>
         </div>
@@ -96,7 +109,7 @@ const Post = ({ post }) => {
       {heartCount > 0 && <StHeartCount>좋아요 {heartCount}개</StHeartCount>}
       <StTextBox>
         <StText more={more}>
-          <StUsername>username</StUsername> {text}{' '}
+          <StUsername>{username}</StUsername> {text}{' '}
         </StText>
         {text.length > 70 && (
           <StMoreToggle onClick={onClickMore} more={more}>

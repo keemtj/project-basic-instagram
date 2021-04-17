@@ -14,7 +14,7 @@ import CommentSetting from './CommentSetting';
 import PlaceSearch from './PlaceSearch';
 import PlaceAutoComplete from './PlaceAutoComplete';
 
-const NewPost = ({ closeModal, setProgress, setLoading }) => {
+const NewPost = ({ closeModal, setProgress }) => {
   const [postId, setPostId] = useState('');
   const [images, setImages] = useState([]);
   const [location, setLocation] = useState('');
@@ -47,7 +47,7 @@ const NewPost = ({ closeModal, setProgress, setLoading }) => {
       .doc(postId)
       .set({
         images: filenames,
-        date: Date.now(),
+        date: Date.now(), // 1970~ 2021.4.1
         text,
         location,
         subLocation,
@@ -64,6 +64,7 @@ const NewPost = ({ closeModal, setProgress, setLoading }) => {
       const uploadTask = firebaseStorage
         .ref(`/${uid}/${postId}/${image.file.name}`)
         .put(image.file);
+      // TaskState: "Error" | "Running" | "Success"
       uploadTask.on(
         'state_changed',
         snapshot => {
@@ -71,14 +72,19 @@ const NewPost = ({ closeModal, setProgress, setLoading }) => {
             (snapshot.bytesTransferred / snapshot.totalBytes) * 100,
           );
           console.log('Upload is ' + progress + '%');
-          setLoading('loading');
+          console.log('업로드중에 taskState:', snapshot.state);
           setProgress(progress);
         },
-        null,
+        e => console.log(e),
         () => {
           uploadTask.snapshot.ref.getDownloadURL().then(() => {
-            setLoading('done');
-            setProgress(0);
+            console.log(
+              '업로드를 완료했을 때 taskState:',
+              uploadTask.snapshot.state,
+            );
+            setTimeout(() => {
+              window.location.reload();
+            }, 5000);
           });
         },
       );
