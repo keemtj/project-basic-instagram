@@ -5,8 +5,10 @@ import { Home } from '@styled-icons/ionicons-outline/Home';
 import { PaperPlane } from '@styled-icons/ionicons-outline/PaperPlane';
 import { AddCircle } from '@styled-icons/ionicons-outline/AddCircle';
 import { Heart } from '@styled-icons/ionicons-outline/Heart';
+import Popup from './Popup';
 
 const MainNavigation = ({ openModal }) => {
+  const [popup, setPopup] = React.useState(false);
   return (
     <StMainNavigation>
       <ul>
@@ -36,17 +38,19 @@ const MainNavigation = ({ openModal }) => {
             </StIcon>
           </button>
         </li>
-        <li>
-          <NavLink to="/profile">
-            <StProfile>
-              <StProfileImage
-                src="https://dimg.donga.com/wps/NEWS/IMAGE/2021/01/27/105114070.2.jpg"
-                alt="일론머스크"
-              />
-            </StProfile>
-          </NavLink>
+        <li
+          style={{ position: 'relative', cursor: 'pointer' }}
+          onClick={() => setPopup(!popup)}
+        >
+          <StProfile>
+            <StProfileImage
+              src="https://i.ytimg.com/vi/huQdbOTL_2A/sddefault.jpg"
+              alt="일론머스크"
+            />
+          </StProfile>
         </li>
       </ul>
+      {popup && <Popup />}
     </StMainNavigation>
   );
 };

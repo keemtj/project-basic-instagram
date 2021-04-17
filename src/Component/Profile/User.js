@@ -7,7 +7,7 @@ const User = () => {
     <StUser>
       <StImageWrapper>
         <StImage
-          src="https://dimg.donga.com/wps/NEWS/IMAGE/2021/01/27/105114070.2.jpg"
+          src="https://i.ytimg.com/vi/huQdbOTL_2A/sddefault.jpg"
           alt="일론머스크"
         />
       </StImageWrapper>
