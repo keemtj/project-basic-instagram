@@ -12,22 +12,22 @@ const popupLists = [
   { link: '/edit', text: '설정', icon: <Settings /> },
 ];
 
-const Popup = () => {
+const Popup = ({ setPopup }) => {
   return (
     <>
-      <StTriangle></StTriangle>
+      <StTriangle />
       <StPopup>
         <ul>
-          {popupLists.map((list, index) => (
+          {popupLists.map(({ link, icon, text }, index) => (
             <StPopupList key={index}>
-              <StNavLink to={`${list.link}`}>
-                <StIcons>{list.icon}</StIcons>
-                {list.text}
+              <StNavLink to={`${link}`} onClick={() => setPopup(false)}>
+                <StIcons>{icon}</StIcons>
+                {text}
               </StNavLink>
             </StPopupList>
           ))}
           <StPopupList>
-            <StLogoutButton>
+            <StLogoutButton onClick={() => setPopup(false)}>
               <StIcons>
                 <LogOut />
               </StIcons>

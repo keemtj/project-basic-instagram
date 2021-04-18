@@ -50,7 +50,7 @@ const MainNavigation = ({ openModal }) => {
           </StProfile>
         </li>
       </ul>
-      {popup && <Popup />}
+      {popup && <Popup setPopup={setPopup} />}
     </StMainNavigation>
   );
 };
