@@ -87,7 +87,7 @@ const StWrapper = styled.div`
   width: 100vw;
   height: 5.5rem;
   border-bottom: 1px solid ${({ theme }) => theme.gray};
-  background-color: white;
+  background-color: ${({ theme }) => theme.white};
 `;
 
 const StHeader = styled.header`
@@ -103,7 +103,7 @@ const StTitle = styled.h1`
   width: 100%;
   & > a {
     text-decoration: none;
-    color: black;
+    color: ${({ theme }) => theme.black};
   }
 `;
 

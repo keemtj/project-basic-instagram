@@ -1,80 +1,117 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
+import { User } from '@styled-icons/boxicons-regular/User';
+import { Bookmark } from '@styled-icons/boxicons-regular/Bookmark';
+import { Settings } from '@styled-icons/ionicons-outline/Settings';
+import { LogOut } from '@styled-icons/boxicons-regular/LogOut';
+
+const popupLists = [
+  { link: '/profile', text: '프로필', icon: <User /> },
+  { link: '/profile/saved', text: '저장됨', icon: <Bookmark /> },
+  { link: '/edit', text: '설정', icon: <Settings /> },
+];
 
 const Popup = () => {
   return (
-    <StPopup className="profile-popup">
-      <ul>
-        <StPopupList>
-          <StNavLink to="/profile">
-            <div>프로필</div>
-          </StNavLink>
-        </StPopupList>
-        <StPopupList>
-          <StNavLink to="/profile/saved">
-            <div>저장됨</div>
-          </StNavLink>
-        </StPopupList>
-        <StPopupList>
-          {/* <NavLink to="/edit"> */}
-          <div> 설정</div>
-          {/* </NavLink> */}
-        </StPopupList>
-        <StPopupList>
-          <button onClick={() => console.log('로그아웃')}>
-            <div>로그아웃</div>
-          </button>
-        </StPopupList>
-      </ul>
-    </StPopup>
+    <>
+      <StTriangle></StTriangle>
+      <StPopup>
+        <ul>
+          {popupLists.map((list, index) => (
+            <StPopupList key={index}>
+              <StNavLink to={`${list.link}`}>
+                <StIcons>{list.icon}</StIcons>
+                {list.text}
+              </StNavLink>
+            </StPopupList>
+          ))}
+          <StPopupList>
+            <StLogoutButton>
+              <StIcons>
+                <LogOut />
+              </StIcons>
+              <div>로그아웃</div>
+            </StLogoutButton>
+          </StPopupList>
+        </ul>
+      </StPopup>
+    </>
   );
 };
 
-const StPopup = styled.div`
-  position: absolute;
-  top: 5.3rem;
-  z-index: 3;
-
-  background: ${({ theme }) => theme.white};
-  border: none;
-  border-radius: 4px;
-  width: 10rem;
-  height: auto;
-  box-shadow: 0px 0px 10px ${({ theme }) => theme.gray8};
-  &::before {
-    content: '';
-    display: block;
-    width: 0;
-    height: 0;
-    position: absolute;
-
-    border-left: 10px solid transparent;
-    border-right: 10px solid transparent;
-    border-bottom: 10px solid ${({ theme }) => theme.white};
-    top: -10px;
-    right: 4px;
+const itemStyle = css`
+  display: flex;
+  align-items: center;
+  padding: 1.8rem 2rem;
+  width: 100%;
+  height: 100%;
+  font-size: 1.4rem;
+  font-weight: 500;
+  &:hover {
+    background: ${({ theme }) => theme.gray5};
+    cursor: pointer;
   }
 `;
 
-const StNavLink = styled(NavLink)`
-  display: block;
-  color: black;
-  text-decoration: none;
-  font-size: 1.2rem;
+const StPopup = styled.div`
+  /* display: none; */
+  position: absolute;
+  right: calc((100% - 100rem) / 2);
+  top: 5.4rem;
+  z-index: 4;
+
+  background: ${({ theme }) => theme.white};
+  border: none;
+  border-radius: 5px;
+  width: 20rem;
+  height: auto;
+  box-shadow: 0px 0px 10px ${({ theme }) => theme.gray8};
+`;
+
+const StTriangle = styled.div`
+  position: absolute;
+  z-index: 5;
+  top: 4.65rem;
+  right: calc((100% - 93.7rem) / 2);
+  border: 7.5px solid black;
+  border-color: ${({ theme }) => theme.white} ${({ theme }) => theme.white}
+    transparent transparent;
+  box-shadow: 2px -2px 5px -2px ${({ theme }) => theme.gray8};
+  transform: rotate(-45deg);
 `;
 
 const StPopupList = styled.li`
   width: 100%;
   height: 100%;
-  padding: 2rem;
+  overflow: hidden;
+  &:first-child {
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
+  }
   &:last-child {
     border-top: 1px solid ${({ theme }) => theme.gray8};
+    border-bottom-left-radius: 4px;
+    border-bottom-right-radius: 4px;
   }
-  &:hover {
-    background: ${({ theme }) => theme.gray5};
-    cursor: pointer;
-  }
+`;
+
+const StNavLink = styled(NavLink)`
+  ${itemStyle};
+  text-decoration: none;
+  color: black;
+`;
+
+const StLogoutButton = styled.button`
+  ${itemStyle};
+  line-height: 1;
+`;
+
+const StIcons = styled.div`
+  width: 1.7rem;
+  height: 1.7rem;
+  margin-right: 1rem;
+  font-weight: 600;
 `;
 
 export default Popup;
