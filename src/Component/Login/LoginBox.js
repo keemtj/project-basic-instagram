@@ -1,31 +1,17 @@
-import React, { useState } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import { Google2 } from '@styled-icons/icomoon/Google2';
 import Input from '../Global/Input';
-import { firebaseAuth, googleProvider } from '../../services/firebase';
 
-const LoginBox = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-
-  const handleLogin = async e => {
-    e.preventDefault();
-    try {
-      await firebaseAuth.signInWithEmailAndPassword(email, password);
-      console.log('login 성공');
-    } catch (e) {
-      console.log(e.message);
-    }
-  };
-
-  const handleGoogleLogin = async () => {
-    try {
-      await firebaseAuth.signInWithPopup(googleProvider);
-    } catch (e) {
-      console.log(e.message);
-    }
-  };
-
+const LoginBox = ({
+  onLogin,
+  handleLogin,
+  handleGoogleLogin,
+  email,
+  password,
+  error,
+}) => {
+  const { message } = error;
   return (
     <StLoginBox>
       <StLogo
@@ -34,18 +20,23 @@ const LoginBox = () => {
       />
       <StLoginForm onSubmit={handleLogin}>
         <Input
+          name="email"
           type="text"
           placeholder="이메일"
           value={email}
-          onChange={e => setEmail(e.target.value)}
+          onChange={onLogin}
         />
         <Input
+          name="password"
           type="password"
           placeholder="비밀번호"
           value={password}
-          onChange={e => setPassword(e.target.value)}
+          onChange={onLogin}
         />
-        <StButton type="submit">로그인</StButton>
+        <StButton type="submit" valid={password.length}>
+          로그인
+        </StButton>
+        {message && <StErrorBox>{message}</StErrorBox>}
       </StLoginForm>
       <StContour>
         <StLine></StLine>
@@ -82,9 +73,8 @@ const StLoginForm = styled.form`
 `;
 
 const StButton = styled.button`
-  /* input에 채워져있을 때 */
-  /* background: #0095f6; */
-  background: ${({ theme }) => theme.inactiveBlue};
+  background: ${({ valid, theme }) =>
+    valid >= 6 ? theme.activeBlue : theme.inactiveBlue};
   width: 27rem;
   height: 3rem;
   border-radius: 3px;
@@ -92,7 +82,18 @@ const StButton = styled.button`
   color: white;
   font-size: 1.4rem;
   font-weight: 700;
-  cursor: pointer;
+  cursor: ${({ valid }) => (valid >= 6 ? 'pointer' : 'default')};
+`;
+
+const StErrorBox = styled.div`
+  width: 27rem;
+  height: auto;
+  margin-top: 1.5rem;
+  color: red;
+  font-size: 1.4rem;
+  font-weight: 400;
+  line-height: 1.3;
+  word-break: keep-all;
 `;
 
 const StContour = styled.div`

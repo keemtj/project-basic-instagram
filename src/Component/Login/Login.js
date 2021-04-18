@@ -1,16 +1,13 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
-import LoginBox from './LoginBox';
+import LoginBoxContainer from '../../Container/Login/LoginBoxContainer';
 
 const Login = () => {
-  React.useEffect(() => {
-    document.title = '로그인 • Instagram';
-  }, []);
   return (
     <StLoginWrappr>
       <StLogin>
-        <LoginBox />
+        <LoginBoxContainer />
         <StQuestionBox>
           <StText>계정이 없으신가요?</StText>
           <Link to="/signup">
