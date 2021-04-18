@@ -1,30 +1,27 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import LoginBox from '../../Component/Login/LoginBox';
-import { addEmail, addError, addPassword } from '../../Modules/login';
+import { addForm, addError, resetForm } from '../../Modules/login';
 import { firebaseAuth, googleProvider } from '../../services/firebase';
 
 const LoginBoxContainer = () => {
-  const { email, password, error } = useSelector(rootState => rootState.login);
+  // ! redux
+  const { form, error } = useSelector(rootState => rootState.login);
   const dispatch = useDispatch();
+  const { email, password } = form;
 
-  const onLogin = ({ target }) => {
-    if (target.name === 'email') {
-      dispatch(addEmail(target.value));
-    }
-    if (target.name === 'password') {
-      dispatch(addPassword(target.value));
-    }
+  // ! event
+  const onChangeInput = ({ target }) => {
+    dispatch(addForm({ name: target.name, value: target.value }));
   };
 
-  const handleLogin = async e => {
+  const handleLoginForm = async e => {
     e.preventDefault();
     try {
       if (email.length && password.length >= 6) {
         await firebaseAuth.signInWithEmailAndPassword(email, password);
-        dispatch(addEmail(''));
-        dispatch(addPassword(''));
         dispatch(addError({ code: '', message: '' }));
+        dispatch(resetForm());
       } else {
         dispatch(
           addError({
@@ -49,8 +46,8 @@ const LoginBoxContainer = () => {
 
   return (
     <LoginBox
-      onLogin={onLogin}
-      handleLogin={handleLogin}
+      onChangeInput={onChangeInput}
+      handleLoginForm={handleLoginForm}
       handleGoogleLogin={handleGoogleLogin}
       email={email}
       password={password}

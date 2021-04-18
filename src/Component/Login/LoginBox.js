@@ -4,8 +4,8 @@ import { Google2 } from '@styled-icons/icomoon/Google2';
 import Input from '../Global/Input';
 
 const LoginBox = ({
-  onLogin,
-  handleLogin,
+  onChangeInput,
+  handleLoginForm,
   handleGoogleLogin,
   email,
   password,
@@ -18,22 +18,22 @@ const LoginBox = ({
         src="https://www.instagram.com/static/images/web/mobile_nav_type_logo-2x.png/1b47f9d0e595.png"
         alt="instagram"
       />
-      <StLoginForm onSubmit={handleLogin}>
+      <StLoginForm onSubmit={handleLoginForm}>
         <Input
           name="email"
           type="text"
           placeholder="이메일"
           value={email}
-          onChange={onLogin}
+          onChange={onChangeInput}
         />
         <Input
           name="password"
           type="password"
           placeholder="비밀번호"
           value={password}
-          onChange={onLogin}
+          onChange={onChangeInput}
         />
-        <StButton type="submit" valid={password.length}>
+        <StButton type="submit" valid={password?.length}>
           로그인
         </StButton>
         {message && <StErrorBox>{message}</StErrorBox>}
