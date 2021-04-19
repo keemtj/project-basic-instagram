@@ -1,16 +1,13 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
-import SignUpBox from './SignUpBox';
+import SignUpBoxContainer from '../../Container/Login/SignUpBoxContainer';
 
-const Login = () => {
-  React.useEffect(() => {
-    document.title = '회원 가입 • Instagram';
-  }, []);
+const SignUp = () => {
   return (
     <StLoginWrappr>
       <StLogin>
-        <SignUpBox />
+        <SignUpBoxContainer />
         <StQuestionBox>
           <StText>계정이 있으신가요?</StText>
           <Link to="/login">
@@ -64,4 +61,4 @@ const StSignUp = styled.button`
   outline: none;
 `;
 
-export default Login;
+export default SignUp;

@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useHistory } from 'react-router';
 import LoginBox from '../../Component/Login/LoginBox';
 import { addForm, addError, resetForm } from '../../Modules/login';
 import { firebaseAuth, googleProvider } from '../../services/firebase';
@@ -8,6 +9,7 @@ const LoginBoxContainer = () => {
   // ! redux
   const { form, error } = useSelector(rootState => rootState.login);
   const dispatch = useDispatch();
+  const history = useHistory();
   const { email, password } = form;
 
   // ! event
@@ -20,8 +22,9 @@ const LoginBoxContainer = () => {
     try {
       if (email.length && password.length >= 6) {
         await firebaseAuth.signInWithEmailAndPassword(email, password);
-        dispatch(addError({ code: '', message: '' }));
         dispatch(resetForm());
+        // dispatch(addError({ code: '', message: '' }));
+        history.push('/');
       } else {
         dispatch(
           addError({
@@ -44,6 +47,9 @@ const LoginBoxContainer = () => {
     }
   };
 
+  useEffect(() => {
+    dispatch(resetForm());
+  }, [resetForm]);
   return (
     <LoginBox
       onChangeInput={onChangeInput}

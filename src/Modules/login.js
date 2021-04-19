@@ -3,13 +3,14 @@ const LOGIN_FORM = 'login/LOGIN_FORM';
 const LOGIN_ERROR = 'login/LOGIN_ERROR';
 const RESET_LOGIN_FORM = 'login/RESET_LOGIN_FORM';
 
+const LOGIN_STATE = 'login/LOGIN_STATE';
 const LOGOUT = 'logout/LOGOUT';
 
 // TODO: action creators
 export const addForm = form => ({ type: LOGIN_FORM, form });
 export const addError = error => ({ type: LOGIN_ERROR, error });
 export const resetForm = () => ({ type: RESET_LOGIN_FORM });
-
+export const loginState = isSignIn => ({ type: LOGIN_STATE, isSignIn });
 export const logout = () => ({ type: LOGOUT });
 
 // TODO: initialState
@@ -52,6 +53,15 @@ const login = (state = initialState, action) => {
           email: '',
           password: '',
         },
+        error: {
+          code: '',
+          message: '',
+        },
+      };
+    case LOGIN_STATE:
+      return {
+        ...state,
+        isSignIn: action.isSignIn,
       };
     case LOGOUT:
       return {

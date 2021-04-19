@@ -33,10 +33,10 @@ const LoginBox = ({
           value={password}
           onChange={onChangeInput}
         />
+        {message && <StErrorBox>{message}</StErrorBox>}
         <StButton type="submit" valid={password?.length}>
           로그인
         </StButton>
-        {message && <StErrorBox>{message}</StErrorBox>}
       </StLoginForm>
       <StContour>
         <StLine></StLine>

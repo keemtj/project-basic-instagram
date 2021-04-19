@@ -1,11 +1,11 @@
 import React from 'react';
 import Footer from '../Component/Global/Footer';
-import SignUp from '../Component/Login/SignUp';
+import SignUpContainer from '../Container/Login/SignUpContainer';
 
 const SignupPage = () => {
   return (
     <>
-      <SignUp />
+      <SignUpContainer />
       <Footer />
     </>
   );

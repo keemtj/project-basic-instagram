@@ -1,21 +1,23 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import MainRouter from './Router/mainRouter';
-// import LoginRouter from './Router/loginRouter';
 import ResetStyle from './Style/ResetStyle';
 import PageWrapper from './Component/Global/PageWrapper';
 import { firebaseAuth } from './services/firebase';
+import { loginState } from './Modules/login';
+import { useDispatch, useSelector } from 'react-redux';
 
 const App = () => {
-  const [isSignin, setSignin] = React.useState(false);
+  // ! redux
+  const isSignIn = useSelector(state => state.login.isSignIn);
+  const dispatch = useDispatch();
 
-  React.useEffect(() => {
+  useEffect(() => {
+    // ! auth state check
     firebaseAuth.onAuthStateChanged(user => {
       if (user) {
-        setSignin(true);
-        console.log('user is sign in');
+        dispatch(loginState(true));
       } else {
-        setSignin(false);
-        console.log('No user is sign in');
+        dispatch(loginState(false));
       }
     });
   }, []);
@@ -24,7 +26,7 @@ const App = () => {
     <>
       <ResetStyle />
       <PageWrapper>
-        <MainRouter isSignin={isSignin} />
+        <MainRouter isSignIn={isSignIn} />
       </PageWrapper>
     </>
   );
