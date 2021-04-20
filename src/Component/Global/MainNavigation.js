@@ -7,7 +7,7 @@ import { AddCircle } from '@styled-icons/ionicons-outline/AddCircle';
 import { Heart } from '@styled-icons/ionicons-outline/Heart';
 import Popup from './Popup';
 
-const MainNavigation = ({ openModal }) => {
+const MainNavigation = ({ openModal, photoURL, displayName }) => {
   const [popup, setPopup] = React.useState(false);
   return (
     <StMainNavigation>
@@ -43,10 +43,7 @@ const MainNavigation = ({ openModal }) => {
           onClick={() => setPopup(!popup)}
         >
           <StProfile>
-            <StProfileImage
-              src="https://i.ytimg.com/vi/huQdbOTL_2A/sddefault.jpg"
-              alt="일론머스크"
-            />
+            <StProfileImage src={photoURL} alt={displayName} />
           </StProfile>
         </li>
       </ul>

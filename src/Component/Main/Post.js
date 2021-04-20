@@ -14,10 +14,11 @@ import {
 } from '../../services/firebase';
 
 const Post = ({ post }) => {
+  // console.log(post);
   const [more, setMore] = React.useState(true);
   const [userDatas, setUserDatas] = React.useState({});
   const { username } = userDatas;
-  const { id, data } = post;
+  const id = 1;
   const {
     images,
     heartCount,
@@ -26,7 +27,7 @@ const Post = ({ post }) => {
     comments,
     date,
     location,
-  } = data;
+  } = post;
   const [srcs, setSrc] = React.useState([]);
   const getTimeElapsed = date => {
     const start = new Date(date);

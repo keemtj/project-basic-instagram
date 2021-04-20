@@ -3,51 +3,18 @@ import styled from 'styled-components';
 import Post from './Post';
 import Aside from './Aside';
 import AsideFooter from './AsideFooter';
-import { firebaseAuth, firestore } from '../../services/firebase';
 
-const Main = ({ setSignin }) => {
-  const [posts, setPosts] = React.useState([]);
-
-  React.useEffect(() => {
-    document.title = 'Instagram';
-  }, []);
-
-  React.useEffect(() => {
-    const { uid } = firebaseAuth.currentUser;
-    const getPostData = async () => {
-      let datas = [];
-      try {
-        const postDocs = await firestore
-          .collection('posts')
-          .doc(uid)
-          .collection('my-posts')
-          .orderBy('date', 'desc')
-          .get();
-        postDocs.forEach(doc => {
-          if (doc.exists) {
-            datas.push({ id: doc.id, data: doc.data() });
-          } else {
-            console.log('게시물 없음');
-          }
-        });
-      } catch (e) {
-        console.log(e);
-      }
-      setPosts(datas);
-    };
-    getPostData();
-  }, []);
-
+const Main = ({ posts }) => {
   return (
     <StMainWrapper>
       <StMain>
         <StSection>
-          {posts.map((post, index) => (
+          {posts?.map((post, index) => (
             <Post key={index} post={post} />
           ))}
         </StSection>
         <StAsideWrapper>
-          <Aside setSignin={setSignin} />
+          <Aside />
           <AsideFooter />
         </StAsideWrapper>
       </StMain>

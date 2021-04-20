@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import styled from 'styled-components';
-import MainNavigation from './MainNavigation';
 import { Search } from '@styled-icons/ionicons-outline/Search';
 import { CloseCircle } from '@styled-icons/ionicons-sharp/CloseCircle';
 import NewPost from '../New/NewPost';
+import MainNavigationContainer from '../../Container/Global/MainNavigationContainer';
 
 const Header = () => {
   const [modalState, setModalState] = useState(false);
@@ -42,7 +42,7 @@ const Header = () => {
             <StCloseCircleIcon />
           </StClearBtn>
         </StSearch>
-        <MainNavigation openModal={openModal} />
+        <MainNavigationContainer openModal={openModal} />
       </StHeader>
       {progress !== 0 && <StProgressbar value={progress} max={100} />}
       {modalState && (
