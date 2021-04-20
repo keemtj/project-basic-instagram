@@ -5,7 +5,7 @@ import { Home } from '@styled-icons/ionicons-outline/Home';
 import { PaperPlane } from '@styled-icons/ionicons-outline/PaperPlane';
 import { AddCircle } from '@styled-icons/ionicons-outline/AddCircle';
 import { Heart } from '@styled-icons/ionicons-outline/Heart';
-import Popup from './Popup';
+import PopupContainer from '../../Container/Global/PopupContainer';
 
 const MainNavigation = ({ openModal, photoURL, displayName }) => {
   const [popup, setPopup] = React.useState(false);
@@ -47,7 +47,7 @@ const MainNavigation = ({ openModal, photoURL, displayName }) => {
           </StProfile>
         </li>
       </ul>
-      {popup && <Popup setPopup={setPopup} />}
+      {popup && <PopupContainer setPopup={setPopup} />}
     </StMainNavigation>
   );
 };

@@ -1,14 +1,14 @@
 import React from 'react';
 import styled from 'styled-components';
 import ProfileRouter from '../../Router/profileRouter';
-import User from './User';
+import UserContainer from '../../Container/Profile/UserContainer';
 import ProfileNavigation from './ProfileNavigation';
 
 const Profile = ({ displayName }) => {
   return (
     <StWrapper>
       <StMain>
-        <User />
+        <UserContainer />
         <ProfileNavigation displayName={displayName} />
         <ProfileRouter displayName={displayName} />
       </StMain>

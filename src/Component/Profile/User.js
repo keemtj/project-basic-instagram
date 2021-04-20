@@ -1,35 +1,45 @@
 import React from 'react';
 import styled from 'styled-components';
 import { Settings } from '@styled-icons/ionicons-sharp/Settings';
+import { Settings as FilledSettings } from '@styled-icons/ionicons-outline/Settings';
 
-const User = () => {
+const User = ({
+  photoURL,
+  username,
+  presentation,
+  displayName,
+  followersCount,
+  followingCount,
+  postsCount,
+  onClickSettings,
+  settings,
+}) => {
   return (
     <StUser>
       <StImageWrapper>
-        <StImage
-          src="https://i.ytimg.com/vi/huQdbOTL_2A/sddefault.jpg"
-          alt="일론머스크"
-        />
+        <StImage src={photoURL} alt={displayName} />
       </StImageWrapper>
       <StDetail>
         <StIdBox>
-          <StId>Elon_musk</StId>
+          <StId>{displayName}</StId>
           <StEditBtn>프로필 편집</StEditBtn>
-          <StSettingsBtn>
-            <Settings />
+          <StSettingsBtn onClick={onClickSettings}>
+            {settings ? <Settings /> : <FilledSettings />}
           </StSettingsBtn>
         </StIdBox>
         <StFollowBox>
           <li>
-            게시물 <StNumber>4</StNumber>
+            게시물 <StNumber>{postsCount}</StNumber>
           </li>
           <li>
-            팔로워 <StNumber>51</StNumber>
+            팔로워 <StNumber>{followersCount}</StNumber>
           </li>
           <li>
-            팔로우 <StNumber>38</StNumber>
+            팔로우 <StNumber>{followingCount}</StNumber>
           </li>
         </StFollowBox>
+        <div>{username}</div>
+        <div>{presentation}</div>
       </StDetail>
     </StUser>
   );
@@ -91,10 +101,11 @@ const StEditBtn = styled.button`
 `;
 
 const StSettingsBtn = styled.button`
-  width: 3rem;
+  width: 2rem;
   height: 100%;
   margin-left: 0.5rem;
   cursor: pointer;
+  outline: none;
 `;
 
 const StId = styled.div`

@@ -1,8 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
 import Post from './Post';
-import Aside from './Aside';
 import AsideFooter from './AsideFooter';
+import AsideContainer from '../../Container/Main/AsideContainer';
 
 const Main = ({ posts }) => {
   return (
@@ -14,7 +14,7 @@ const Main = ({ posts }) => {
           ))}
         </StSection>
         <StAsideWrapper>
-          <Aside />
+          <AsideContainer />
           <AsideFooter />
         </StAsideWrapper>
       </StMain>

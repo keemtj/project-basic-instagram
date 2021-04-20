@@ -7,6 +7,7 @@ export const getCurrentUserData = async uid => {
   return datas;
 };
 
+// get posts by currentUser
 export const getCurrentUserPostsData = async uid => {
   let posts = [];
   const userPosts = await firestore

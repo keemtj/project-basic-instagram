@@ -1,47 +1,27 @@
 import React from 'react';
 import styled from 'styled-components';
 import ProfileImage from '../Global/ProfileImage';
-import { firebaseAuth } from '../../services/firebase';
-import { useHistory } from 'react-router';
 
-const Aside = () => {
-  const history = useHistory();
-  const handleLogout = async () => {
-    try {
-      await firebaseAuth.signOut();
-      history.push('/login');
-      console.log('sign out');
-    } catch (e) {
-      console.log(e.message);
-    }
-  };
-
-  const followedMe = [
-    'username2',
-    'username3',
-    'username4',
-    'username5',
-    'username6',
-    'username7',
-    'username8',
-  ];
-
+const Aside = ({ handleSignOut, displayName, photoURL, following }) => {
   return (
     <StAside>
       <StProfileImageWrapper>
         <ProfileImage
-          src="/images/default_profile.png"
+          src={photoURL}
+          alt={displayName}
           width={5.5}
           height={5.5}
           marginLeft={1.2}
           fontSize={1.4}
-          username={'username'}
+          username={displayName}
         />
-        <StButton onClick={handleLogout}>로그아웃</StButton>
+        <StButton onClick={handleSignOut}>로그아웃</StButton>
       </StProfileImageWrapper>
-      <StRecommendTitle>회원님을 위한 추천</StRecommendTitle>
+      {following.length > 0 && (
+        <StRecommendTitle>회원님을 위한 추천</StRecommendTitle>
+      )}
       <StRecommend>
-        {followedMe.slice(0, 5).map((username, index) => (
+        {following.slice(0, 5).map((username, index) => (
           <StProfileImageWrapper key={index}>
             <ProfileImage
               username={username}

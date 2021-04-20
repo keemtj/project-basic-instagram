@@ -1,22 +1,9 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 import styled, { css } from 'styled-components';
-import { User } from '@styled-icons/boxicons-regular/User';
-import { Bookmark } from '@styled-icons/boxicons-regular/Bookmark';
-import { Settings } from '@styled-icons/ionicons-outline/Settings';
 import { LogOut } from '@styled-icons/boxicons-regular/LogOut';
-import { useSelector } from 'react-redux';
 
-const Popup = ({ setPopup }) => {
-  // ! redux
-  const { displayName } = useSelector(state => state.user);
-
-  const popupLists = [
-    { link: `/${displayName}`, text: '프로필', icon: <User /> },
-    { link: `/${displayName}/saved`, text: '저장됨', icon: <Bookmark /> },
-    { link: '/edit', text: '설정', icon: <Settings /> },
-  ];
-
+const Popup = ({ setPopup, popupLists, onClickSignOut }) => {
   return (
     <>
       <StTriangle />
@@ -31,7 +18,7 @@ const Popup = ({ setPopup }) => {
             </StPopupList>
           ))}
           <StPopupList>
-            <StLogoutButton onClick={() => setPopup(false)}>
+            <StLogoutButton onClick={onClickSignOut}>
               <StIcons>
                 <LogOut />
               </StIcons>
