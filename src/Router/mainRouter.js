@@ -12,7 +12,7 @@ const MainRouter = ({ isSignIn }) => {
     <Switch>
       {isSignIn && <Route path="/" component={MainPage} exact />}
       {isSignIn && <Route path="/direct" component={DirectPage} />}
-      {isSignIn && <Route path="/profile" component={ProfilePage} />}
+      {isSignIn && <Route path="/:displayName" component={ProfilePage} />}
       {!isSignIn && <Route path="/login" component={LoginPage} />}
       <Route path="/signup" component={SignupPage} />
       <Route

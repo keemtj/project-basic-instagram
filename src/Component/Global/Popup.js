@@ -5,14 +5,18 @@ import { User } from '@styled-icons/boxicons-regular/User';
 import { Bookmark } from '@styled-icons/boxicons-regular/Bookmark';
 import { Settings } from '@styled-icons/ionicons-outline/Settings';
 import { LogOut } from '@styled-icons/boxicons-regular/LogOut';
-
-const popupLists = [
-  { link: '/profile', text: '프로필', icon: <User /> },
-  { link: '/profile/saved', text: '저장됨', icon: <Bookmark /> },
-  { link: '/edit', text: '설정', icon: <Settings /> },
-];
+import { useSelector } from 'react-redux';
 
 const Popup = ({ setPopup }) => {
+  // ! redux
+  const { displayName } = useSelector(state => state.user);
+
+  const popupLists = [
+    { link: `/${displayName}`, text: '프로필', icon: <User /> },
+    { link: `/${displayName}/saved`, text: '저장됨', icon: <Bookmark /> },
+    { link: '/edit', text: '설정', icon: <Settings /> },
+  ];
+
   return (
     <>
       <StTriangle />

@@ -4,17 +4,13 @@ import ProfileRouter from '../../Router/profileRouter';
 import User from './User';
 import ProfileNavigation from './ProfileNavigation';
 
-const Profile = () => {
-  React.useEffect(() => {
-    const username = 'username';
-    document.title = `@${username} • Instagram 사진 및 동영상`;
-  }, []);
+const Profile = ({ displayName }) => {
   return (
     <StWrapper>
       <StMain>
         <User />
-        <ProfileNavigation />
-        <ProfileRouter />
+        <ProfileNavigation displayName={displayName} />
+        <ProfileRouter displayName={displayName} />
       </StMain>
     </StWrapper>
   );

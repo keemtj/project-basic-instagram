@@ -6,14 +6,14 @@ import { TvOutline } from '@styled-icons/evaicons-outline/TvOutline';
 import { Bookmark } from '@styled-icons/feather/Bookmark';
 import { User } from '@styled-icons/boxicons-regular/User';
 
-const subnav = [
-  { name: '', text: '게시물', icon: <Grid /> },
-  { name: 'channel', text: 'IGTV', icon: <TvOutline /> },
-  { name: 'saved', text: '저장됨', icon: <Bookmark /> },
-  { name: 'tagged', text: '태그됨', icon: <User /> },
-];
+const ProfileNavigation = ({ displayName }) => {
+  const subnav = [
+    { name: '', text: '게시물', icon: <Grid /> },
+    { name: 'channel', text: 'IGTV', icon: <TvOutline /> },
+    { name: 'saved', text: '저장됨', icon: <Bookmark /> },
+    { name: 'tagged', text: '태그됨', icon: <User /> },
+  ];
 
-const ProfileNavigation = () => {
   return (
     <StProfileNavigation>
       <StNav>
@@ -21,7 +21,11 @@ const ProfileNavigation = () => {
           <StNavItem key={nav.name}>
             <NavLink
               activeClassName="active"
-              to={nav.name === '' ? '/profile/' : `/profile/${nav.name}`}
+              to={
+                nav.name === ''
+                  ? `/${displayName}`
+                  : `/${displayName}/${nav.name}`
+              }
               exact={nav.name === ''}
             >
               <StIcon>{nav.icon}</StIcon>

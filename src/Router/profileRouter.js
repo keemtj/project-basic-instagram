@@ -5,13 +5,13 @@ import Posts from '../Component/Profile/Posts';
 import Saved from '../Component/Profile/Saved';
 import Tagged from '../Component/Profile/Tagged';
 
-const ProfileRouter = () => {
+const ProfileRouter = ({ displayName }) => {
   return (
     <Switch>
-      <Route path="/profile" component={Posts} exact />
-      <Route path="/profile/channel" component={Channel} />
-      <Route path="/profile/saved" component={Saved} />
-      <Route path="/profile/tagged" component={Tagged} />
+      <Route path={`/${displayName}`} component={Posts} exact />
+      <Route path={`/${displayName}/channel`} component={Channel} />
+      <Route path={`/${displayName}/saved`} component={Saved} />
+      <Route path={`/${displayName}/tagged`} component={Tagged} />
       <Route
         render={({ location }) => (
           <div>
