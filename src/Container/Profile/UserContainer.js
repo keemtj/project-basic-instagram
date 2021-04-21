@@ -1,32 +1,33 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
 import User from '../../Component/Profile/User';
 
 const UserContainer = () => {
-  // ! redux
   const { photoURL, username, displayName, followers, following } = useSelector(
     state => state.user,
   );
-  const followersCount = followers.length;
-  const followingCount = following.length;
+  const [settings, setSettings] = useState(false);
+  // ! redux
   const postsCount = 0;
   const presentation = '자기소개문구';
-  const [settings, setSettings] = React.useState(false);
 
   const onClickSettings = () => {
     setSettings(!settings);
   };
+
+  const follower = 'admin2';
   return (
     <User
       photoURL={photoURL}
       username={username}
       displayName={displayName}
       presentation={presentation}
-      followersCount={followersCount}
-      followingCount={followingCount}
       postsCount={postsCount}
+      followersCount={followers.length}
+      followingCount={following.length}
       onClickSettings={onClickSettings}
       settings={settings}
+      follower={follower}
     />
   );
 };

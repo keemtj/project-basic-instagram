@@ -8,11 +8,12 @@ const User = ({
   username,
   presentation,
   displayName,
+  postsCount,
   followersCount,
   followingCount,
-  postsCount,
   onClickSettings,
   settings,
+  follower,
 }) => {
   return (
     <StUser>
@@ -22,10 +23,16 @@ const User = ({
       <StDetail>
         <StIdBox>
           <StId>{displayName}</StId>
-          <StEditBtn>프로필 편집</StEditBtn>
-          <StSettingsBtn onClick={onClickSettings}>
-            {settings ? <Settings /> : <FilledSettings />}
-          </StSettingsBtn>
+          {displayName === displayName ? (
+            <>
+              <StEditBtn>프로필 편집</StEditBtn>
+              <StSettingsBtn onClick={onClickSettings}>
+                {settings ? <Settings /> : <FilledSettings />}
+              </StSettingsBtn>
+            </>
+          ) : (
+            <StEditBtn>팔로우</StEditBtn>
+          )}
         </StIdBox>
         <StFollowBox>
           <li>
@@ -38,8 +45,15 @@ const User = ({
             팔로우 <StNumber>{followingCount}</StNumber>
           </li>
         </StFollowBox>
-        <div>{username}</div>
-        <div>{presentation}</div>
+        <StUsername>{username}</StUsername>
+        <StPresentation>
+          <div>{presentation}</div>
+        </StPresentation>
+        {displayName !== displayName && (
+          <StFollower>
+            <span>{follower}</span>님이 팔로우합니다.
+          </StFollower>
+        )}
       </StDetail>
     </StUser>
   );
@@ -47,11 +61,14 @@ const User = ({
 
 const StUser = styled.section`
   display: flex;
-  align-items: center;
-  height: 22.5rem;
+  flex-flow: row nowrap;
+  align-items: flex-start;
+  min-height: 15rem;
+  height: auto;
   & > div + div {
     margin-left: 3rem;
   }
+  margin: 3rem 0rem;
 `;
 
 const StImageWrapper = styled.div`
@@ -77,7 +94,9 @@ const StDetail = styled.div`
   display: flex;
   flex-flow: column nowrap;
   align-items: flex-start;
+  justify-content: flex-start;
   height: 15rem;
+  height: auto;
 `;
 
 const StIdBox = styled.div`
@@ -124,7 +143,30 @@ const StFollowBox = styled.ul`
   }
 `;
 
+const StUsername = styled.div`
+  margin-top: 1.5rem;
+  font-size: 1.6rem;
+  font-weight: 600;
+`;
+
+const StPresentation = styled.div`
+  margin-top: 0.8rem;
+  font-size: 1.5rem;
+  line-height: 1.5;
+`;
+
+const StFollower = styled.div`
+  margin-top: 1.2rem;
+  color: ${({ theme }) => theme.darkGray};
+  font-size: 1.1rem;
+  & > span {
+    color: ${({ theme }) => theme.black};
+    font-weight: 600;
+  }
+`;
+
 const StNumber = styled.span`
   font-weight: 600;
 `;
+
 export default User;
