@@ -9,7 +9,7 @@ import { useHistory } from 'react-router';
 
 const PopupContainer = ({ setPopup }) => {
   // ! redux
-  const { displayName } = useSelector(state => state.user);
+  const { displayName } = useSelector(state => state.user.currentUser);
   const history = useHistory();
 
   const popupLists = [

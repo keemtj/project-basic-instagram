@@ -4,6 +4,7 @@ import { Settings } from '@styled-icons/ionicons-sharp/Settings';
 import { Settings as FilledSettings } from '@styled-icons/ionicons-outline/Settings';
 
 const User = ({
+  currentDisplayName,
   photoURL,
   username,
   presentation,
@@ -23,7 +24,7 @@ const User = ({
       <StDetail>
         <StIdBox>
           <StId>{displayName}</StId>
-          {displayName === displayName ? (
+          {displayName === currentDisplayName ? (
             <>
               <StEditBtn>프로필 편집</StEditBtn>
               <StSettingsBtn onClick={onClickSettings}>
@@ -47,9 +48,9 @@ const User = ({
         </StFollowBox>
         <StUsername>{username}</StUsername>
         <StPresentation>
-          <div>{presentation}</div>
+          <div>{presentation} 후우꾸꾸우후오호후우꾸꾸우후오호</div>
         </StPresentation>
-        {displayName !== displayName && (
+        {displayName !== currentDisplayName && (
           <StFollower>
             <span>{follower}</span>님이 팔로우합니다.
           </StFollower>

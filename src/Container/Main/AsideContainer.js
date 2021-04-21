@@ -5,7 +5,9 @@ import { signOut } from '../../services/firebaseAuth';
 import { useSelector } from 'react-redux';
 
 const AsideContainer = () => {
-  const { displayName, photoURL, following } = useSelector(state => state.user);
+  const { displayName, photoURL, following } = useSelector(
+    state => state.user.currentUser,
+  );
   const history = useHistory();
 
   const handleSignOut = async () => {
@@ -17,6 +19,7 @@ const AsideContainer = () => {
       console.log(e.message);
     }
   };
+
   return (
     <Aside
       handleSignOut={handleSignOut}

@@ -16,14 +16,27 @@ export const getWatchUserByDisplayName = fetchDataThunk(
 );
 
 // TODO: initialState
-const initialState = reducerUtils.initial();
+const initialState = {
+  currentUser: {
+    photoURL: '',
+    displayName: '',
+    email: '',
+    followers: '',
+    following: '',
+    uid: '',
+    username: '',
+  },
+  searchUser: reducerUtils.initial(),
+};
 
 // TODO: reducer
 const user = (state = initialState, action) => {
   switch (action.type) {
     case CURRENT_USER:
       return {
-        data: {
+        ...state,
+        currentUser: {
+          photoURL: action.userData.photoURL,
           displayName: action.userData.displayName,
           email: action.userData.email,
           followers: [...action.userData.followers],
@@ -31,15 +44,22 @@ const user = (state = initialState, action) => {
           uid: action.userData.uid,
           username: action.userData.username,
         },
-        loading: false,
-        error: null,
       };
     case SEARCH_USER:
-      return reducerUtils.loading();
+      return {
+        ...state,
+        searchUser: reducerUtils.loading(),
+      };
     case SEARCH_USER_SUCCESS:
-      return reducerUtils.success(action.payload);
+      return {
+        ...state,
+        searchUser: reducerUtils.success(action.payload),
+      };
     case SEARCH_USER_ERROR:
-      return reducerUtils.error(action.payload);
+      return {
+        ...state,
+        searchUser: reducerUtils.error(action.payload),
+      };
     default:
       return state;
   }

@@ -2,29 +2,48 @@ import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
 import User from '../../Component/Profile/User';
 
-const UserContainer = () => {
-  const { photoURL, username, displayName, followers, following } = useSelector(
-    state => state.user,
-  );
+const UserContainer = ({ watchName }) => {
+  const currentUser = useSelector(state => state.user.currentUser);
+  const searchUser = useSelector(state => state.user.searchUser.data?.[0]);
   const [settings, setSettings] = useState(false);
-  // ! redux
+
   const postsCount = 0;
   const presentation = '자기소개문구';
 
   const onClickSettings = () => {
     setSettings(!settings);
   };
-
-  const follower = 'admin2';
+  const follower = 'admin';
   return (
     <User
-      photoURL={photoURL}
-      username={username}
-      displayName={displayName}
+      currentDisplayName={currentUser.displayName}
+      photoURL={
+        currentUser.displayName === watchName
+          ? currentUser?.photoURL
+          : searchUser?.photoURL
+      }
+      username={
+        currentUser.displayName === watchName
+          ? currentUser?.username
+          : searchUser?.username
+      }
+      displayName={
+        currentUser.displayName === watchName
+          ? currentUser?.displayName
+          : searchUser?.displayName
+      }
       presentation={presentation}
       postsCount={postsCount}
-      followersCount={followers.length}
-      followingCount={following.length}
+      followersCount={
+        currentUser.displayName === watchName
+          ? currentUser?.followers?.length
+          : searchUser?.followers?.length
+      }
+      followingCount={
+        currentUser.displayName === watchName
+          ? currentUser?.following?.length
+          : searchUser?.following?.length
+      }
       onClickSettings={onClickSettings}
       settings={settings}
       follower={follower}

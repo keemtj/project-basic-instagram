@@ -4,8 +4,9 @@ import MainNavigation from '../../Component/Global/MainNavigation';
 
 const MainNavigationContainer = ({ openModal }) => {
   // ! redux
-  const userData = useSelector(state => state.user);
-  const { photoURL, displayName } = userData;
+  const { photoURL, displayName } = useSelector(
+    state => state.user.currentUser,
+  );
 
   return (
     <MainNavigation
