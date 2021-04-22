@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import ProfileRouter from '../../Router/profileRouter';
+import ProfileRouter from '../../Router/ProfileRouter';
 import UserContainer from '../../Container/Profile/UserContainer';
 import ProfileNavigation from './ProfileNavigation';
 

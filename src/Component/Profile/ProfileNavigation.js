@@ -22,7 +22,9 @@ const ProfileNavigation = ({ watchName }) => {
             <NavLink
               activeClassName="active"
               to={
-                nav.name === '' ? `/${watchName}` : `/${watchName}/${nav.name}`
+                nav.name === ''
+                  ? `/p/${watchName}`
+                  : `/p/${watchName}/${nav.name}`
               }
               exact={nav.name === ''}
             >

@@ -5,21 +5,34 @@ import DirectPage from '../Pages/DirectPage';
 import ProfilePage from '../Pages/ProfilePage';
 import LoginPage from '../Pages/LoginPage';
 import SignupPage from '../Pages/SignupPage';
+import NotFound from '../Component/Global/NotFound';
 import LoadingPage from '../Pages/LoadingPage';
 
 const MainRouter = ({ isSignIn }) => {
   return (
     <Switch>
-      {isSignIn && <Route path="/" component={MainPage} exact />}
-      {isSignIn && <Route path="/direct" component={DirectPage} />}
-      {isSignIn && <Route path="/:displayName" component={ProfilePage} />}
-      {!isSignIn && <Route path="/login" component={LoginPage} />}
-      <Route path="/signup" component={SignupPage} />
-      <Route
-        render={() => {
-          return <LoadingPage />;
-        }}
-      />
+      <Route path="/" exact>
+        {isSignIn ? <MainPage /> : <LoadingPage />}
+      </Route>
+      <Route path="/direct">
+        {isSignIn ? <DirectPage /> : <LoadingPage />}
+      </Route>
+      <Route path="/p/:displayName">
+        {isSignIn ? <ProfilePage /> : <LoadingPage />}
+      </Route>
+      {!isSignIn && (
+        <Route path="/signup">
+          <SignupPage />
+        </Route>
+      )}
+      {!isSignIn && (
+        <Route path="/login">
+          <LoginPage />
+        </Route>
+      )}
+      <Route>
+        <NotFound />
+      </Route>
     </Switch>
   );
 };

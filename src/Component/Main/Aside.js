@@ -2,7 +2,8 @@ import React from 'react';
 import styled from 'styled-components';
 import ProfileImage from '../Global/ProfileImage';
 
-const Aside = ({ handleSignOut, displayName, photoURL, following }) => {
+const Aside = ({ handleSignOut, displayName, photoURL }) => {
+  const following = ['1', '2', '3'];
   return (
     <StAside>
       <StProfileImageWrapper>
@@ -21,7 +22,7 @@ const Aside = ({ handleSignOut, displayName, photoURL, following }) => {
         <StRecommendTitle>회원님을 위한 추천</StRecommendTitle>
       )}
       <StRecommend>
-        {following.slice(0, 5).map((username, index) => (
+        {following.slice(0, 5)?.map((username, index) => (
           <StProfileImageWrapper key={index}>
             <ProfileImage
               username={username}
