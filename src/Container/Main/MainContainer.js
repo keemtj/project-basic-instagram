@@ -10,6 +10,7 @@ const MainContainer = () => {
 
   useEffect(() => {
     document.title = 'Instagram';
+    // get post by me and following
   }, []);
 
   return <Main posts={data} />;

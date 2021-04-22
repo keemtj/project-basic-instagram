@@ -32,8 +32,6 @@ const SignUpBoxContainer = () => {
           email: createUser.user.email,
           username: '',
           displayName: '',
-          followers: [],
-          following: [],
           photoURL: '/images/default_profile.png',
         });
       await firebaseAuth.signOut();
@@ -67,14 +65,20 @@ const SignUpBoxContainer = () => {
             email,
             username,
             displayName,
-            followers: [],
-            following: [],
             photoURL: '/images/default_profile.png',
           });
-        await firebaseAuth.signOut();
+        await firestore
+          .collection('follow')
+          .doc(firebaseAuth.currentUser.uid)
+          .set({
+            following: [],
+            followers: [],
+            uid: firebaseAuth.currentUser.uid,
+            displayName,
+          });
+        history.push('/');
         dispatch(resetForm());
-        alert('회원가입이 완료되었습니다. 로그인 페이지로 이동합니다.');
-        history.push('/login');
+        console.log(`🎉 ${displayName}님의 회원가입을 축하합니다! 🎉`);
       } else {
         dispatch(
           signUpError({

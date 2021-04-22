@@ -7,6 +7,24 @@ export const getCurrentUserData = async uid => {
   return datas;
 };
 
+// get follow data of currentUser by uid
+export const getFollowData = async uid => {
+  const doc = await firestore.collection('follow').doc(uid).get();
+  const datas = doc.data();
+  return datas;
+};
+
+// get DisplayName followed me
+export const getFollowedMe = async displayName => {
+  let followedMe = [];
+  const docs = await firestore
+    .collection('follow')
+    .where('following', 'array-contains', displayName)
+    .get();
+  docs.forEach(doc => followedMe.push(doc.data().displayName));
+  return followedMe;
+};
+
 // get posts by currentUser
 export const getCurrentUserPostsData = async uid => {
   let posts = [];

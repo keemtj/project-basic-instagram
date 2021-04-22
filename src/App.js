@@ -5,8 +5,8 @@ import PageWrapper from './Component/Global/PageWrapper';
 import { firebaseAuth } from './services/firebase';
 import { loginState } from './Modules/login';
 import { useDispatch, useSelector } from 'react-redux';
-import { currentUser } from './Modules/user';
-import { getCurrentUserData } from './services/firestore';
+import { currentUser, followData } from './Modules/user';
+import { getCurrentUserData, getFollowData } from './services/firestore';
 
 const App = () => {
   // ! redux
@@ -19,8 +19,10 @@ const App = () => {
       if (user) {
         const { uid } = user;
         const userData = await getCurrentUserData(uid);
-        dispatch(currentUser(userData));
+        const userFollowData = await getFollowData(uid);
         dispatch(loginState(true));
+        dispatch(currentUser(userData));
+        dispatch(followData(userFollowData));
       }
     });
   }, []);

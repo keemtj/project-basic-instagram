@@ -56,14 +56,14 @@ const SignUpBox = ({
         <Input
           name="password"
           type="password"
-          placeholder="비밀번호"
+          placeholder="비밀번호 6자리 이상"
           value={password}
           onChange={onChangeInput}
           required
         />
         {message && <StErrorBox>{message}</StErrorBox>}
         <StButton type="submit" valid={password?.length}>
-          가입
+          회원 가입 및 로그인
         </StButton>
       </StSignUpForm>
       <StNotice2>

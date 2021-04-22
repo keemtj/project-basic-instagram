@@ -13,11 +13,21 @@ const ProfileImage = ({
 }) => {
   return (
     <StProfileImageWrapper>
-      <StProfileImage src={src} alt={alt} width={width} height={height} />
+      <StProfileImage
+        src={src}
+        alt={alt}
+        width={width}
+        height={height}
+        onClick={() => console.log('이미지 클릭 -> 유저 페이지로 이동')}
+      />
       {children ? (
         children
       ) : (
-        <StUsername marginLeft={marginLeft} fontSize={fontSize}>
+        <StUsername
+          marginLeft={marginLeft}
+          fontSize={fontSize}
+          onClick={() => console.log('이미지 클릭 -> 유저 페이지로 이동')}
+        >
           {username}
         </StUsername>
       )}
@@ -36,12 +46,20 @@ const StProfileImage = styled.img`
   border-radius: 50%;
   width: ${({ width }) => width}rem;
   height: ${({ height }) => height}rem;
+  &:hover {
+    text-decoration: underline;
+    cursor: pointer;
+  }
 `;
 
 const StUsername = styled.div`
   margin-left: ${({ marginLeft }) => marginLeft}rem;
   font-size: ${({ fontSize }) => fontSize}rem;
   font-weight: 600;
+  &:hover {
+    text-decoration: underline;
+    cursor: pointer;
+  }
 `;
 
 export default ProfileImage;

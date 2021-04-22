@@ -2,8 +2,13 @@ import React from 'react';
 import styled from 'styled-components';
 import ProfileImage from '../Global/ProfileImage';
 
-const Aside = ({ handleSignOut, displayName, photoURL }) => {
-  const following = ['1', '2', '3'];
+const Aside = ({
+  handleSignOut,
+  displayName,
+  photoURL,
+  followed,
+  onFollow,
+}) => {
   return (
     <StAside>
       <StProfileImageWrapper>
@@ -18,11 +23,11 @@ const Aside = ({ handleSignOut, displayName, photoURL }) => {
         />
         <StButton onClick={handleSignOut}>로그아웃</StButton>
       </StProfileImageWrapper>
-      {following.length > 0 && (
+      {followed.length > 0 && (
         <StRecommendTitle>회원님을 위한 추천</StRecommendTitle>
       )}
       <StRecommend>
-        {following.slice(0, 5)?.map((username, index) => (
+        {followed.slice(0, 5)?.map((username, index) => (
           <StProfileImageWrapper key={index}>
             <ProfileImage
               username={username}
@@ -32,7 +37,7 @@ const Aside = ({ handleSignOut, displayName, photoURL }) => {
               fontSize={1.4}
               src="/images/default_profile.png"
             />
-            <StButton>팔로우</StButton>
+            <StButton onClick={onFollow}>팔로우</StButton>
           </StProfileImageWrapper>
         ))}
       </StRecommend>
