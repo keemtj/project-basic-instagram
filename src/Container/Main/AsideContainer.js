@@ -4,15 +4,15 @@ import { useHistory } from 'react-router';
 import { signOut } from '../../services/firebaseAuth';
 import { useDispatch, useSelector } from 'react-redux';
 import { loginState } from '../../Modules/login';
-import { getFollowedMe } from '../../services/firestore';
 import { followedMe } from '../../Modules/user';
+import { firebaseAuth } from '../../services/firebase';
 
 const AsideContainer = () => {
   const { displayName, photoURL } = useSelector(
     state => state.user.currentUser,
   );
   const { followers } = useSelector(state => state.user.follow);
-  const followed = useSelector(state => state.user.followed);
+  const { data: followed } = useSelector(state => state.user.followed);
   const dispatch = useDispatch();
   const history = useHistory();
 
@@ -35,9 +35,9 @@ const AsideContainer = () => {
   };
 
   React.useEffect(async () => {
-    const followed = await getFollowedMe(displayName);
-    dispatch(followedMe(followed));
-  }, [displayName]);
+    const { uid } = firebaseAuth.currentUser;
+    dispatch(followedMe(uid));
+  }, []);
 
   return (
     <Aside

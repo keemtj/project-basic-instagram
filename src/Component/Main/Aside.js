@@ -23,14 +23,14 @@ const Aside = ({
         />
         <StButton onClick={handleSignOut}>로그아웃</StButton>
       </StProfileImageWrapper>
-      {followed.length > 0 && (
+      {followed?.length > 0 && (
         <StRecommendTitle>회원님을 위한 추천</StRecommendTitle>
       )}
       <StRecommend>
-        {followed.slice(0, 5)?.map((username, index) => (
+        {followed?.slice(0, 5)?.map((f, index) => (
           <StProfileImageWrapper key={index}>
             <ProfileImage
-              username={username}
+              username={f.displayName}
               width={3.5}
               height={3.5}
               marginLeft={1.2}

@@ -4,7 +4,10 @@ import { fetchDataThunk, reducerUtils } from '../lib/asyncUtils';
 // TODO: action type
 const CURRENT_USER = 'user/CURRENT_USER';
 const FOLLOW_DATA = 'user/FOLLOW_DATA';
+
 const FOLLOWED_ME = 'user/FOLLOWED_ME';
+const FOLLOWED_ME_SUCCESS = 'user/FOLLOWED_ME_SUCCESS';
+const FOLLOWED_ME_ERROR = 'user/FOLLOWED_ME_ERROR';
 
 const SEARCH_USER = 'user/SEARCH_USER';
 const SEARCH_USER_SUCCESS = 'user/SEARCH_USER_SUCCESS';
@@ -14,10 +17,8 @@ const SEARCH_USER_FOLLOW = 'user/SEARCH_USER_FOLLOW';
 // TODO: action creator
 export const currentUser = userData => ({ type: CURRENT_USER, userData });
 export const followData = followData => ({ type: FOLLOW_DATA, followData });
-export const followedMe = followed => ({
-  type: FOLLOWED_ME,
-  followed,
-});
+
+export const followedMe = fetchDataThunk(FOLLOWED_ME, store.getFollowedMe);
 
 export const getWatchUserByDisplayName = fetchDataThunk(
   SEARCH_USER,
@@ -41,7 +42,7 @@ const initialState = {
     followers: [],
     following: [],
   },
-  followed: [],
+  followed: reducerUtils.initial(),
   searchUser: reducerUtils.initial(),
   searchUserFollow: {
     followers: [],
@@ -74,7 +75,17 @@ const user = (state = initialState, action) => {
     case FOLLOWED_ME:
       return {
         ...state,
-        followed: [...action.followed],
+        followed: reducerUtils.loading(),
+      };
+    case FOLLOWED_ME_SUCCESS:
+      return {
+        ...state,
+        followed: reducerUtils.success(action.payload),
+      };
+    case FOLLOWED_ME_ERROR:
+      return {
+        ...state,
+        followed: reducerUtils.error(action.payload),
       };
     case SEARCH_USER:
       return {

@@ -14,27 +14,44 @@ export const getFollowData = async uid => {
   return datas;
 };
 
-// get DisplayName followed me
-export const getFollowedMe = async displayName => {
-  let followedMe = [];
+// get uid followed me
+export const getFollowedMe = async uid => {
+  let followed = [];
   const docs = await firestore
     .collection('follow')
-    .where('following', 'array-contains', displayName)
+    .where('following', 'array-contains', uid)
     .get();
-  docs.forEach(doc => followedMe.push(doc.data().displayName));
-  return followedMe;
+  docs.forEach(doc => {
+    const { uid, displayName } = doc.data();
+    followed.push({ uid, displayName });
+  });
+  return followed;
 };
 
 // get posts by currentUser
 export const getCurrentUserPostsData = async uid => {
-  let posts = [];
-  const userPosts = await firestore
+  let datas = [];
+  const docs = await firestore
     .collection('posts')
     .doc(uid)
     .collection('my-posts')
+    .orderBy('date', 'desc')
     .get();
-  userPosts.forEach(doc => posts.push(doc.data()));
-  return posts;
+  docs.forEach(doc => datas.push(doc.data()));
+  return datas;
+};
+
+// get all posts by following
+export const getAllPostsByFollowing = async uid => {
+  let datas = [];
+  const docs = await firestore
+    .collection('posts')
+    .doc(uid)
+    .collection('my-posts')
+    .orderBy('date', 'desc')
+    .get();
+  docs.forEach(doc => datas.push(doc.data()));
+  return datas;
 };
 
 // get user data by displayname
