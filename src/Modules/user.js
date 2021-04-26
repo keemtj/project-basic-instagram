@@ -24,6 +24,7 @@ export const getWatchUserByDisplayName = fetchDataThunk(
   SEARCH_USER,
   store.getUserDataByDisplayName,
 );
+
 export const searchUserFollow = followData => ({
   type: SEARCH_USER_FOLLOW,
   followData,

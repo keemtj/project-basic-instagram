@@ -1,9 +1,5 @@
 import * as fb from '../services/firestore';
-import {
-  fetchDataThunk,
-  fetchData2Thunk,
-  reducerUtils,
-} from '../lib/asyncUtils';
+import { fetchDataThunk, reducerUtils } from '../lib/asyncUtils';
 
 // TODO: action type
 const MY_ALL_POSTS = 'main/MY_ALL_POSTS';
@@ -20,7 +16,7 @@ export const getAllPostsByCurrentUid = fetchDataThunk(
   MY_ALL_POSTS,
   fb.getCurrentUserPostsData,
 );
-export const getMyFollowingPosts = fetchData2Thunk(
+export const getMyFollowingPosts = fetchDataThunk(
   MY_FOLLOWING_POSTS,
   fb.getAllPostsByFollowing,
 );
