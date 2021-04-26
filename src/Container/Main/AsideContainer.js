@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { loginState } from '../../Modules/login';
 import { followedMe } from '../../Modules/user';
 import { firebaseAuth } from '../../services/firebase';
+import { resetFollowingPosts } from '../../Modules/main';
 
 const AsideContainer = () => {
   const { displayName, photoURL } = useSelector(
@@ -19,6 +20,7 @@ const AsideContainer = () => {
   const handleSignOut = async () => {
     try {
       await signOut();
+      dispatch(resetFollowingPosts());
       dispatch(loginState(false));
       history.push('/login');
       console.log('sign out');

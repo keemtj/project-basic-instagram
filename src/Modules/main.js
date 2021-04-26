@@ -7,8 +7,8 @@ const MY_ALL_POSTS_SUCCESS = 'main/MY_ALL_POSTS_SUCCESS';
 const MY_ALL_POSTS_ERROR = 'main/MY_ALL_POSTS_ERROR';
 
 const MY_FOLLOWING_POSTS = 'main/MY_FOLLOWING_POSTS';
-const MY_FOLLOWING_POSTS_SUCCESS = 'main/MY_FOLLOWING_POSTS_SUCCESS';
-const MY_FOLLOWING_POSTS_ERROR = 'main/MY_FOLLOWING_POSTS_ERROR';
+
+const RESET_FOLLOWING_POSTS = 'main/RESET_FOLLOWING_POSTS';
 
 // TODO: action creator
 // TODO: fetchDataThunk
@@ -16,15 +16,16 @@ export const getAllPostsByCurrentUid = fetchDataThunk(
   MY_ALL_POSTS,
   fb.getCurrentUserPostsData,
 );
-export const getMyFollowingPosts = fetchDataThunk(
-  MY_FOLLOWING_POSTS,
-  fb.getAllPostsByFollowing,
-);
+export const getMyFollowingPosts = datas => ({
+  type: MY_FOLLOWING_POSTS,
+  datas,
+});
+export const resetFollowingPosts = () => ({ type: RESET_FOLLOWING_POSTS });
 
 // TODO: initialState
 const initialState = {
   myPosts: reducerUtils.initial(),
-  myFollowingPosts: reducerUtils.initial(),
+  myFollowingPosts: [],
 };
 
 // TODO: reducer
@@ -48,17 +49,12 @@ const main = (state = initialState, action) => {
     case MY_FOLLOWING_POSTS:
       return {
         ...state,
-        myFollowingPosts: reducerUtils.loading(),
+        myFollowingPosts: action.datas,
       };
-    case MY_FOLLOWING_POSTS_SUCCESS:
+    case RESET_FOLLOWING_POSTS:
       return {
         ...state,
-        myFollowingPosts: reducerUtils.success(action.payload),
-      };
-    case MY_FOLLOWING_POSTS_ERROR:
-      return {
-        ...state,
-        myFollowingPosts: reducerUtils.error(action.payload),
+        myFollowingPosts: [],
       };
     default:
       return state;

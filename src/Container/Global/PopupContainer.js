@@ -7,6 +7,7 @@ import { Settings } from '@styled-icons/ionicons-outline/Settings';
 import { signOut } from '../../services/firebaseAuth';
 import { useHistory } from 'react-router';
 import { loginState } from '../../Modules/login';
+import { resetFollowingPosts } from '../../Modules/main';
 
 const PopupContainer = ({ setPopup }) => {
   // ! redux
@@ -23,6 +24,7 @@ const PopupContainer = ({ setPopup }) => {
   const onClickSignOut = () => {
     setPopup(false);
     signOut();
+    dispatch(resetFollowingPosts());
     dispatch(loginState(false));
     history.push('/login');
     console.log('sign out');
