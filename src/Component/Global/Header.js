@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import { Search } from '@styled-icons/ionicons-outline/Search';
 import { CloseCircle } from '@styled-icons/ionicons-sharp/CloseCircle';
 import MainNavigationContainer from '../../Container/Global/MainNavigationContainer';
-import NewPostContainer from '../../Container/New/NewPostContainer';
+import NewPost from '../New/NewPost';
 
 const Header = ({
   modalState,
@@ -35,7 +35,7 @@ const Header = ({
       </StHeader>
       {progress !== 0 && <StProgressbar value={progress} max={100} />}
       {modalState && (
-        <NewPostContainer closeModal={closeModal} setProgress={setProgress} />
+        <NewPost closeModal={closeModal} setProgress={setProgress} />
       )}
     </StWrapper>
   );

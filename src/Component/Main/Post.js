@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import styled, { css } from 'styled-components';
 import { ThreeDots } from '@styled-icons/bootstrap/ThreeDots';
 import { Heart } from '@styled-icons/bootstrap/Heart';
@@ -7,18 +7,20 @@ import { Chat } from '@styled-icons/bootstrap/Chat';
 import { Bookmark } from '@styled-icons/bootstrap/Bookmark';
 import { EmojiSmile } from '@styled-icons/bootstrap/EmojiSmile';
 import Carousel from '../Global/Carousel';
-import {
-  firebaseAuth,
-  firebaseStorage,
-  firestore,
-} from '../../services/firebase';
+import { useDispatch, useSelector } from 'react-redux';
+import { getPostImagesToStorage } from '../../Modules/post';
+
+const icons = [
+  { icon: <Heart /> },
+  { icon: <Chat /> },
+  { icon: <PaperPlane /> },
+  { icon: <Bookmark /> },
+];
 
 const Post = ({ post }) => {
-  // console.log(post);
-  const [more, setMore] = React.useState(true);
-  const [userDatas, setUserDatas] = React.useState({});
-  const { username } = userDatas;
-  const id = 1;
+  const { data: srcs } = useSelector(state => state.post);
+  console.log(srcs);
+  const dispatch = useDispatch();
   const {
     images,
     heartCount,
@@ -27,9 +29,12 @@ const Post = ({ post }) => {
     comments,
     date,
     location,
+    displayName,
+    uid,
+    id,
   } = post;
-  const [srcs, setSrc] = React.useState([]);
 
+  // TODO: 경과 시간 계산 함수
   const getTimeElapsed = date => {
     const start = new Date(date);
     const end = Date.now();
@@ -48,40 +53,22 @@ const Post = ({ post }) => {
     return elapsed;
   };
 
-  const icons = [
-    { icon: <Heart /> },
-    { icon: <Chat /> },
-    { icon: <PaperPlane /> },
-    { icon: <Bookmark /> },
-  ];
-
+  // TODO: 게시글 더보기, 숨기기 함수
+  const [more, setMore] = useState(true);
   const onClickMore = () => {
     setMore(!more);
   };
 
-  React.useEffect(() => {
-    // get images to firebaseStorage
-    const { uid } = firebaseAuth.currentUser;
-    let urls = [];
-    const getImages = async () => {
-      await images.forEach(name => {
-        firebaseStorage
-          .ref()
-          .child(`/${uid}/${id}/${name}`)
-          .getDownloadURL()
-          .then(url => urls.push(url))
-          .then(() => setSrc(urls));
-      });
-    };
-    getImages();
-    firestore
-      .collection('users')
-      .where('uid', '==', uid)
-      .get()
-      .then(querySnapshot =>
-        querySnapshot.forEach(doc => setUserDatas(doc.data())),
-      );
-  }, [setUserDatas]);
+  useEffect(() => {
+    /**
+     * TODO: get images to firebaseStorage
+     * FIXME: firebaseStorage 및 dispatch
+     * @param uid The uid of the user who posted this post.
+     * @param id  Doc.id pointing to this post.
+     * @param name The filenames of the images in this post.
+     */
+    dispatch(getPostImagesToStorage({ uid, id, images }));
+  }, []);
 
   return (
     <StArticle>
@@ -92,7 +79,7 @@ const Post = ({ post }) => {
             alt="default_image"
           />
           <div>
-            <div>{username}</div>
+            <div>{displayName}</div>
             {location && <StLocation>{location}</StLocation>}
           </div>
         </div>
@@ -112,7 +99,7 @@ const Post = ({ post }) => {
       {heartCount > 0 && <StHeartCount>좋아요 {heartCount}개</StHeartCount>}
       <StTextBox>
         <StText more={more}>
-          <StUsername>{username}</StUsername> {text}{' '}
+          <StUsername>{displayName}</StUsername> {text}{' '}
         </StText>
         {text.length > 70 && (
           <StMoreToggle onClick={onClickMore} more={more}>

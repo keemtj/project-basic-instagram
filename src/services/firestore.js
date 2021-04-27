@@ -70,3 +70,7 @@ export const getUserDataByDisplayName = async displayName => {
   docs.forEach(doc => findUser.push(doc.data()));
   return findUser;
 };
+
+// =====================
+// new post
+export const generatedId = firestore.collection('posts').doc().id;

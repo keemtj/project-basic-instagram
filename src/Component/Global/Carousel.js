@@ -5,6 +5,11 @@ import { ArrowLeftCircleFill } from '@styled-icons/bootstrap/ArrowLeftCircleFill
 import { ArrowRightCircleFill } from '@styled-icons/bootstrap/ArrowRightCircleFill';
 
 const Carousel = ({ srcs, images, pagenation }) => {
+  /**
+   * @param srcs [src, src, ..., src] // storage src
+   * @param images ['filename1', ..., 'filenameN'] // filename
+   */
+
   const ref = useRef();
   const [currentImage, setCurrentImage] = useState(0);
 
@@ -22,9 +27,9 @@ const Carousel = ({ srcs, images, pagenation }) => {
     <StCarouselWrapper>
       <StCarousel>
         <StCarouselInner ref={ref}>
-          {images?.map((image, index) => (
+          {srcs?.map((src, index) => (
             <StImageWrapper key={index}>
-              <StImage src={srcs[index]} alt={image} />
+              <StImage src={src} alt={images[index]} />
             </StImageWrapper>
           ))}
         </StCarouselInner>
