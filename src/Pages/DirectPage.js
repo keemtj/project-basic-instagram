@@ -1,11 +1,11 @@
 import React from 'react';
-import Header from '../Component/Global/Header';
+import HeaderContainer from '../Container/Global/HeaderContainer';
 import Direct from '../Component/Direct/Direct';
 
 const DirectPage = () => {
   return (
     <>
-      <Header />
+      <HeaderContainer />
       <Direct />
     </>
   );

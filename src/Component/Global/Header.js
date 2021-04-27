@@ -1,29 +1,18 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { NavLink } from 'react-router-dom';
 import styled from 'styled-components';
 import { Search } from '@styled-icons/ionicons-outline/Search';
 import { CloseCircle } from '@styled-icons/ionicons-sharp/CloseCircle';
-import NewPost from '../New/NewPost';
 import MainNavigationContainer from '../../Container/Global/MainNavigationContainer';
+import NewPostContainer from '../../Container/New/NewPostContainer';
 
-const Header = () => {
-  const [modalState, setModalState] = useState(false);
-  const [progress, setProgress] = useState(0);
-
-  const openModal = () => {
-    console.log('open new post!');
-    setModalState(!modalState);
-  };
-
-  const closeModal = () => {
-    console.log('close new post!');
-    setModalState(!modalState);
-  };
-
-  useEffect(() => {
-    document.body.style.overflow = modalState ? 'hidden' : 'auto';
-  }, [modalState]);
-
+const Header = ({
+  modalState,
+  progress,
+  setProgress,
+  openModal,
+  closeModal,
+}) => {
   return (
     <StWrapper>
       <StHeader>
@@ -46,7 +35,7 @@ const Header = () => {
       </StHeader>
       {progress !== 0 && <StProgressbar value={progress} max={100} />}
       {modalState && (
-        <NewPost closeModal={closeModal} setProgress={setProgress} />
+        <NewPostContainer closeModal={closeModal} setProgress={setProgress} />
       )}
     </StWrapper>
   );

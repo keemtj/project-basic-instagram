@@ -29,6 +29,7 @@ const Post = ({ post }) => {
     location,
   } = post;
   const [srcs, setSrc] = React.useState([]);
+
   const getTimeElapsed = date => {
     const start = new Date(date);
     const end = Date.now();
@@ -59,6 +60,7 @@ const Post = ({ post }) => {
   };
 
   React.useEffect(() => {
+    // get images to firebaseStorage
     const { uid } = firebaseAuth.currentUser;
     let urls = [];
     const getImages = async () => {

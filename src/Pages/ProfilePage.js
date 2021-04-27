@@ -1,11 +1,11 @@
 import React from 'react';
-import Header from '../Component/Global/Header';
+import HeaderContainer from '../Container/Global/HeaderContainer';
 import ProfileContainer from '../Container/Profile/ProfileContainer';
 
 const ProfilePage = () => {
   return (
     <>
-      <Header />
+      <HeaderContainer />
       <ProfileContainer />
     </>
   );
