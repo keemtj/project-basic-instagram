@@ -4,9 +4,7 @@ import { useHistory } from 'react-router';
 import { signOut } from '../../services/firebaseAuth';
 import { useDispatch, useSelector } from 'react-redux';
 import { loginState } from '../../Modules/login';
-import { followedMe } from '../../Modules/user';
-import { firebaseAuth } from '../../services/firebase';
-import { resetFollowingPosts } from '../../Modules/main';
+import { resetFollow } from '../../Modules/user';
 
 const AsideContainer = () => {
   const { displayName, photoURL } = useSelector(
@@ -17,16 +15,12 @@ const AsideContainer = () => {
   const dispatch = useDispatch();
   const history = useHistory();
 
-  const handleSignOut = async () => {
-    try {
-      await signOut();
-      dispatch(resetFollowingPosts());
-      dispatch(loginState(false));
-      history.push('/login');
-      console.log('sign out');
-    } catch (e) {
-      console.log(e.message);
-    }
+  const handleSignOut = () => {
+    signOut();
+    dispatch(loginState(false));
+    dispatch(resetFollow());
+    history.push('/login');
+    console.log('sign out');
   };
 
   const onFollow = e => {
@@ -35,11 +29,6 @@ const AsideContainer = () => {
       // e.target.innerText = '팔로잉';
     }
   };
-
-  React.useEffect(async () => {
-    const { uid } = firebaseAuth.currentUser;
-    dispatch(followedMe(uid));
-  }, []);
 
   return (
     <Aside

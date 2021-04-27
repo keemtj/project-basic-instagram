@@ -11,6 +11,7 @@ export const getCurrentUserData = async uid => {
 export const getFollowData = async uid => {
   const doc = await firestore.collection('follow').doc(uid).get();
   const datas = doc.data();
+  console.log('getFollowData ==>', datas);
   return datas;
 };
 
@@ -42,16 +43,21 @@ export const getCurrentUserPostsData = async uid => {
 };
 
 // get all posts by following
-export const getAllPostsByFollowing = async uid => {
-  let datas = [];
-  const docs = await firestore
-    .collection('posts')
-    .doc(uid)
-    .collection('my-posts')
-    .orderBy('date', 'desc')
-    .get();
-  docs.forEach(doc => datas.push(doc.data()));
-  return datas;
+export const getAllPostsByFollowing = async following => {
+  const arr = await following.map(async uid => {
+    let datas = [];
+    const docs = await firestore
+      .collection('posts')
+      .doc(uid)
+      .collection('my-posts')
+      .orderBy('date', 'desc')
+      .get();
+    docs.forEach(doc => datas.push(doc.data()));
+    return datas;
+  });
+  const promiseAll = await Promise.all(arr);
+  const result = await promiseAll.flatMap(v => v);
+  return result;
 };
 
 // get user data by displayname

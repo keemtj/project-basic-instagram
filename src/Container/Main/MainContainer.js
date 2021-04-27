@@ -5,15 +5,17 @@ import {
   getAllPostsByCurrentUid,
   getMyFollowingPosts,
 } from '../../Modules/main';
+import { followedMe } from '../../Modules/user';
 import { firebaseAuth } from '../../services/firebase';
-import { getAllPostsByFollowing } from '../../services/firestore';
 
 const MainContainer = () => {
   // ! redux
   const dispatch = useDispatch();
   const { data: posts } = useSelector(state => state.main.myPosts);
   const following = useSelector(state => state.user.follow.following);
-  const followingPosts = useSelector(state => state.main.myFollowingPosts);
+  const { data: followingPosts } = useSelector(
+    state => state.main.myFollowingPosts,
+  );
 
   const all = () => {
     if (posts && followingPosts) {
@@ -23,18 +25,15 @@ const MainContainer = () => {
 
   useEffect(() => {
     document.title = 'Instagram';
-    // get posts by me and following
     const { uid } = firebaseAuth.currentUser;
+    // get my followers
+    dispatch(followedMe(uid));
+    // get posts by me and following
+    // my posts
     dispatch(getAllPostsByCurrentUid(uid));
-    const arr = following.map(async uid => {
-      const response = await getAllPostsByFollowing(uid);
-      return response;
-    });
-    Promise.all(arr).then(value => {
-      const datas = value.flatMap(v => v);
-      dispatch(getMyFollowingPosts(datas));
-    });
-  }, []);
+    // my following posts
+    dispatch(getMyFollowingPosts(following));
+  }, [following]);
   return <Main posts={all()} />;
 };
 

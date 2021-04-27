@@ -1,4 +1,4 @@
-import * as fb from '../services/firestore';
+import * as store from '../services/firestore';
 import { fetchDataThunk, reducerUtils } from '../lib/asyncUtils';
 
 // TODO: action type
@@ -7,25 +7,29 @@ const MY_ALL_POSTS_SUCCESS = 'main/MY_ALL_POSTS_SUCCESS';
 const MY_ALL_POSTS_ERROR = 'main/MY_ALL_POSTS_ERROR';
 
 const MY_FOLLOWING_POSTS = 'main/MY_FOLLOWING_POSTS';
-
-const RESET_FOLLOWING_POSTS = 'main/RESET_FOLLOWING_POSTS';
+const MY_FOLLOWING_POSTS_SUCCESS = 'main/MY_FOLLOWING_POSTS_SUCCESS';
+const MY_FOLLOWING_POSTS_ERROR = 'main/MY_FOLLOWING_POSTS_ERROR';
 
 // TODO: action creator
 // TODO: fetchDataThunk
 export const getAllPostsByCurrentUid = fetchDataThunk(
   MY_ALL_POSTS,
-  fb.getCurrentUserPostsData,
+  store.getCurrentUserPostsData,
 );
-export const getMyFollowingPosts = datas => ({
-  type: MY_FOLLOWING_POSTS,
-  datas,
-});
-export const resetFollowingPosts = () => ({ type: RESET_FOLLOWING_POSTS });
+
+export const getMyFollowingPosts = fetchDataThunk(
+  MY_FOLLOWING_POSTS,
+  store.getAllPostsByFollowing,
+);
+// export const getMyFollowingPosts = datas => ({
+//   type: MY_FOLLOWING_POSTS,
+//   datas,
+// });
 
 // TODO: initialState
 const initialState = {
   myPosts: reducerUtils.initial(),
-  myFollowingPosts: [],
+  myFollowingPosts: reducerUtils.initial(),
 };
 
 // TODO: reducer
@@ -49,12 +53,17 @@ const main = (state = initialState, action) => {
     case MY_FOLLOWING_POSTS:
       return {
         ...state,
-        myFollowingPosts: action.datas,
+        myFollowingPosts: reducerUtils.loading(),
       };
-    case RESET_FOLLOWING_POSTS:
+    case MY_FOLLOWING_POSTS_SUCCESS:
       return {
         ...state,
-        myFollowingPosts: [],
+        myFollowingPosts: reducerUtils.success(action.payload),
+      };
+    case MY_FOLLOWING_POSTS_ERROR:
+      return {
+        ...state,
+        myFollowingPosts: reducerUtils.error(action.payload),
       };
     default:
       return state;

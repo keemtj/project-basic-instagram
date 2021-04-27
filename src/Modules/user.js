@@ -14,8 +14,11 @@ const SEARCH_USER_SUCCESS = 'user/SEARCH_USER_SUCCESS';
 const SEARCH_USER_ERROR = 'user/SEARCH_USER_ERROR';
 const SEARCH_USER_FOLLOW = 'user/SEARCH_USER_FOLLOW';
 
+const RESET_FOLLOW = 'user/RESET_FOLLOW';
+
 // TODO: action creator
 export const currentUser = userData => ({ type: CURRENT_USER, userData });
+
 export const followData = followData => ({ type: FOLLOW_DATA, followData });
 
 export const followedMe = fetchDataThunk(FOLLOWED_ME, store.getFollowedMe);
@@ -29,6 +32,8 @@ export const searchUserFollow = followData => ({
   type: SEARCH_USER_FOLLOW,
   followData,
 });
+
+export const resetFollow = () => ({ type: RESET_FOLLOW });
 
 // TODO: initialState
 const initialState = {
@@ -109,6 +114,14 @@ const user = (state = initialState, action) => {
         searchUserFollow: {
           followers: action.followData.followers,
           following: action.followData.following,
+        },
+      };
+    case RESET_FOLLOW:
+      return {
+        ...state,
+        follow: {
+          followers: [],
+          following: [],
         },
       };
     default:
