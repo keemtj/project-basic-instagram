@@ -13,17 +13,17 @@ export const getPostImagesToStorage = fetchDataThunk(
 );
 
 // TODO: initialState
-const initialState = reducerUtils.initial();
+const initialState = { ...reducerUtils.initial() };
 
 // TODO: reducer
 const post = (state = initialState, action) => {
   switch (action.type) {
     case GET_POST_IMAGES_URL:
-      return reducerUtils.loading();
+      return { ...state, ...reducerUtils.loading() };
     case GET_POST_IMAGES_URL_SUCCESS:
-      return reducerUtils.success(action.payload);
+      return { ...state, ...reducerUtils.success(action.payload) };
     case GET_POST_IMAGES_UR_ERROR:
-      return reducerUtils.error(action.payload);
+      return { ...state, ...reducerUtils.error(action.payload) };
     default:
       return state;
   }
