@@ -18,9 +18,8 @@ const icons = [
 ];
 
 const Post = ({ post }) => {
-  const { data: srcs } = useSelector(state => state.post);
-  console.log(srcs);
   const dispatch = useDispatch();
+  const imagesArray = useSelector(state => state.post);
   const {
     images,
     heartCount,
@@ -33,6 +32,7 @@ const Post = ({ post }) => {
     uid,
     id,
   } = post;
+  const srcs = imagesArray.find(v => v.id === id)?.data?.srcs;
 
   // TODO: 경과 시간 계산 함수
   const getTimeElapsed = date => {

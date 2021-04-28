@@ -21,10 +21,6 @@ export const getMyFollowingPosts = fetchDataThunk(
   MY_FOLLOWING_POSTS,
   store.getAllPostsByFollowing,
 );
-// export const getMyFollowingPosts = datas => ({
-//   type: MY_FOLLOWING_POSTS,
-//   datas,
-// });
 
 // TODO: initialState
 const initialState = {

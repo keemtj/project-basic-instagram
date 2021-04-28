@@ -10,5 +10,6 @@ export const getPostImages = async ({ uid, id, images }) => {
     return url;
   });
   const promiseAll = await Promise.all(arr);
-  return promiseAll;
+  const result = { id, srcs: promiseAll };
+  return result;
 };
