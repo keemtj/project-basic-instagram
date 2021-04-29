@@ -1,9 +1,11 @@
 import React from 'react';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import { Settings } from '@styled-icons/ionicons-sharp/Settings';
 import { Settings as FilledSettings } from '@styled-icons/ionicons-outline/Settings';
-
+import { User as UserIcon } from '@styled-icons/boxicons-regular/User';
+import { Check as CheckIcon } from '@styled-icons/boxicons-regular/Check';
 const User = ({
+  isFollowing,
   currentDisplayName,
   photoURL,
   username,
@@ -14,8 +16,8 @@ const User = ({
   followingCount,
   onClickSettings,
   settings,
-  follower,
 }) => {
+  console.log(isFollowing);
   return (
     <StUser>
       <StImageWrapper>
@@ -31,8 +33,12 @@ const User = ({
                 {settings ? <Settings /> : <FilledSettings />}
               </StSettingsBtn>
             </>
+          ) : isFollowing ? (
+            <StFollowBtn isFollowing={isFollowing}>
+              <StUserIcon /> <StCheckIcon />
+            </StFollowBtn>
           ) : (
-            <StEditBtn>팔로우</StEditBtn>
+            <StFollowBtn isFollowing={isFollowing}>팔로우하기</StFollowBtn>
           )}
         </StIdBox>
         <StFollowBox>
@@ -48,13 +54,17 @@ const User = ({
         </StFollowBox>
         <StUsername>{username}</StUsername>
         <StPresentation>
-          <div>{presentation} 후우꾸꾸우후오호후우꾸꾸우후오호</div>
+          <div>
+            {presentation
+              ? presentation
+              : '프로필 편집 > 소개 문구를 작성해보세요.'}
+          </div>
         </StPresentation>
-        {displayName !== currentDisplayName && (
+        {/* {displayName !== currentDisplayName && (
           <StFollower>
             <span>{follower}</span>님이 팔로우합니다.
           </StFollower>
-        )}
+        )} */}
       </StDetail>
     </StUser>
   );
@@ -108,16 +118,51 @@ const StIdBox = styled.div`
   font-size: 2rem;
 `;
 
-const StEditBtn = styled.button`
-  border: 1px solid rgba(219, 219, 219, 1);
-  border-radius: 4px;
+const buttonCommonStyle = css`
+  display: flex;
+  align-items: center;
   padding: 0.5rem 1rem;
   margin-left: 2rem;
   width: fit-content;
   height: 100%;
+  min-height: 2.9rem;
+  border-radius: 4px;
   font-size: 1.4rem;
   font-weight: 600;
   cursor: pointer;
+`;
+
+const StEditBtn = styled.button`
+  ${buttonCommonStyle};
+  border: 1px solid rgba(219, 219, 219, 1);
+  background: none;
+  color: ${({ theme }) => theme.black};
+`;
+
+const StFollowBtn = styled.button`
+  ${buttonCommonStyle};
+  ${({ isFollowing }) =>
+    isFollowing
+      ? css`
+          border: 1px solid rgba(219, 219, 219, 1);
+          background: none;
+          color: ${({ theme }) => theme.black};
+        `
+      : css`
+          border: none;
+          background: ${({ theme }) => theme.activeBlue};
+          color: ${({ theme }) => theme.white};
+        `}
+`;
+
+const StUserIcon = styled(UserIcon)`
+  width: 1.5rem;
+  height: 100%;
+`;
+
+const StCheckIcon = styled(CheckIcon)`
+  width: 1.5rem;
+  height: 100%;
 `;
 
 const StSettingsBtn = styled.button`
@@ -156,15 +201,15 @@ const StPresentation = styled.div`
   line-height: 1.5;
 `;
 
-const StFollower = styled.div`
-  margin-top: 1.2rem;
-  color: ${({ theme }) => theme.darkGray};
-  font-size: 1.1rem;
-  & > span {
-    color: ${({ theme }) => theme.black};
-    font-weight: 600;
-  }
-`;
+// const StFollower = styled.div`
+//   margin-top: 1.2rem;
+//   color: ${({ theme }) => theme.darkGray};
+//   font-size: 1.1rem;
+//   & > span {
+//     color: ${({ theme }) => theme.black};
+//     font-weight: 600;
+//   }
+// `;
 
 const StNumber = styled.span`
   font-weight: 600;

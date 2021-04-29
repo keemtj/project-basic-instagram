@@ -43,6 +43,7 @@ const initialState = {
     email: '',
     uid: '',
     username: '',
+    presentation: '',
   },
   follow: {
     followers: [],

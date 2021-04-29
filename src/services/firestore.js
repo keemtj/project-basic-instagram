@@ -9,9 +9,15 @@ export const getCurrentUserData = async uid => {
 
 // get follow data of currentUser by uid
 export const getFollowData = async uid => {
-  const doc = await firestore.collection('follow').doc(uid).get();
-  const datas = doc.data();
-  return datas;
+  try {
+    const doc = await firestore.collection('follow').doc(uid).get();
+    const datas = doc.data();
+    console.log(datas);
+    return datas;
+  } catch (e) {
+    console.log(e);
+    return 'no-user';
+  }
 };
 
 // get uid followed me
@@ -71,6 +77,15 @@ export const getUserDataByDisplayName = async displayName => {
   return findUser;
 };
 
+export const getUid = async watchName => {
+  let uid = '';
+  const docs = await firestore
+    .collection('users')
+    .where('displayName', '==', watchName)
+    .get();
+  docs.forEach(doc => (uid = doc.data().uid));
+  return uid;
+};
 // =====================
 // new post
 export const generatedId = firestore.collection('posts').doc().id;

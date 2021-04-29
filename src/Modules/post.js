@@ -1,3 +1,6 @@
+/**
+ * main에 렌더링되는 내 포스트와 팔로잉 유저의 포스트에 대한 이미지 Fetching 모듈입니다.
+ */
 import * as storage from '../services/firebaseStorage';
 import { fetchDataThunk, reducerUtils } from '../lib/asyncUtils';
 
