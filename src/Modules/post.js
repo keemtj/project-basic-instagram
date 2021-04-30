@@ -42,7 +42,7 @@ const post = (state = initialState, action) => {
       return [
         ...state,
         {
-          id: reducerUtils.error(action.payload).data.id,
+          id: reducerUtils.error(action.payload).data?.id,
           ...reducerUtils.error(action.payload),
         },
       ];

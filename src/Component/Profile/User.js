@@ -17,7 +17,6 @@ const User = ({
   onClickSettings,
   settings,
 }) => {
-  console.log(isFollowing);
   return (
     <StUser>
       <StImageWrapper>
@@ -43,13 +42,13 @@ const User = ({
         </StIdBox>
         <StFollowBox>
           <li>
-            게시물 <StNumber>{postsCount}</StNumber>
+            게시물 <StNumber>{postsCount || '0'}</StNumber>
           </li>
           <li>
-            팔로워 <StNumber>{followersCount}</StNumber>
+            팔로워 <StNumber>{followersCount || '0'}</StNumber>
           </li>
           <li>
-            팔로우 <StNumber>{followingCount}</StNumber>
+            팔로우 <StNumber>{followingCount || '0'}</StNumber>
           </li>
         </StFollowBox>
         <StUsername>{username}</StUsername>
