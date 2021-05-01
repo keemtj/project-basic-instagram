@@ -14,12 +14,12 @@ const ProfileContainer = () => {
   const [noUser, setNoUser] = useState(false);
   const { displayName } = useSelector(state => state.user.currentUser);
   const { data } = useSelector(state => state.user.searchUser);
-  const { data: posts } = useSelector(state => state.main.myPosts);
+  const { data: myPosts } = useSelector(state => state.main.myPosts);
   const dispatch = useDispatch();
   const { params } = useRouteMatch();
   const { displayName: watchName } = params;
 
-  console.log('watch =>', watchName);
+  // console.log('watch =>', watchName);
 
   useEffect(async () => {
     document.title = `@${watchName} • Instagram 사진 및 동영상`;
@@ -34,7 +34,7 @@ const ProfileContainer = () => {
         setNoUser(false);
         dispatch(searchUserFollow(searchUserFollowData));
       }
-      if (!posts) {
+      if (!myPosts) {
         dispatch(getAllPostsByCurrentUid(uid));
       }
     }

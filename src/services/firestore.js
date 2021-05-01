@@ -12,7 +12,6 @@ export const getFollowData = async uid => {
   try {
     const doc = await firestore.collection('follow').doc(uid).get();
     const datas = doc.data();
-    console.log(datas);
     return datas;
   } catch (e) {
     console.log(e);

@@ -4,6 +4,7 @@ import signup from './signup';
 import main from './main';
 import user from './user';
 import post from './post';
+import images from './images';
 
 const rootReducer = combineReducers({
   login,
@@ -11,6 +12,7 @@ const rootReducer = combineReducers({
   main,
   user,
   post,
+  images,
 });
 
 export default rootReducer;

@@ -27,10 +27,10 @@ const Carousel = ({ srcs, images, pagenation }) => {
     <StCarouselWrapper>
       <StCarousel>
         <StCarouselInner ref={ref}>
-          {srcs?.map((src, index) => {
+          {images?.map((image, index) => {
             return (
               <StImageWrapper key={index}>
-                <StImage src={src} alt={images[index]} />
+                <StImage src={srcs?.[index]} alt={image} />
               </StImageWrapper>
             );
           })}

@@ -3,17 +3,18 @@ import styled from 'styled-components';
 import EmptyPosts from './EmptyPosts';
 import PostItemContainer from '../../Container/Profile/PostItemContainer';
 
-const Posts = ({ myPosts = [], loading, error }) => {
+const Posts = ({ myPosts, loading, error, images }) => {
   if (loading) return <div>로딩중....</div>;
   if (error) return <div>에러 발생!</div>;
   if (!myPosts) return <EmptyPosts />;
-  return (
-    <StPostsWrapper>
-      {myPosts.map((post, index) => (
-        <PostItemContainer post={post} index={index} key={index} />
-      ))}
-    </StPostsWrapper>
-  );
+  if (myPosts)
+    return (
+      <StPostsWrapper>
+        {myPosts?.map((post, index) => (
+          <PostItemContainer post={post} key={index} image={images[index]} />
+        ))}
+      </StPostsWrapper>
+    );
 };
 
 const StPostsWrapper = styled.article`

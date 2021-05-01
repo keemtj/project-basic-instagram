@@ -1,13 +1,12 @@
 import React from 'react';
 import styled, { css } from 'styled-components';
 
-const PostItem = ({ post, src, alt }) => {
-  const date = new Date(post.date);
+const PostItem = ({ src, alt }) => {
   return (
     <>
       <StPostWrapper>
-        <StPost src={src} alt={alt} />
-        <div>{`${date} ${post.text}`}</div>
+        <StPost src={src[0]} alt={alt[0]} />
+        <div>{`${alt[0]}`}</div>
         <StHover hover={false}>핱 190 댓 25</StHover>
       </StPostWrapper>
     </>
