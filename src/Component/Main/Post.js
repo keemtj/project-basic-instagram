@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import styled, { css } from 'styled-components';
 import { ThreeDots } from '@styled-icons/bootstrap/ThreeDots';
 import { Heart } from '@styled-icons/bootstrap/Heart';
@@ -7,8 +7,6 @@ import { Chat } from '@styled-icons/bootstrap/Chat';
 import { Bookmark } from '@styled-icons/bootstrap/Bookmark';
 import { EmojiSmile } from '@styled-icons/bootstrap/EmojiSmile';
 import Carousel from '../Global/Carousel';
-import { useDispatch, useSelector } from 'react-redux';
-import { getPostImagesToStorage } from '../../Modules/post';
 
 const icons = [
   { icon: <Heart /> },
@@ -17,67 +15,25 @@ const icons = [
   { icon: <Bookmark /> },
 ];
 
-const Post = ({ post }) => {
-  const dispatch = useDispatch();
-  const imagesArray = useSelector(state => state.post);
-  const {
-    images,
-    heartCount,
-    text,
-    isPossibleComment,
-    comments,
-    date,
-    location,
-    displayName,
-    uid,
-    id,
-  } = post;
-  const srcs = imagesArray.find(v => v.id === id)?.data?.srcs;
-
-  // TODO: 경과 시간 계산 함수
-  const getTimeElapsed = date => {
-    const start = new Date(date);
-    const end = Date.now();
-    const sec = Math.floor((end - start) / 1000); // 경과시간, 초
-    const min = Math.floor((end - start) / 1000 / 60); // 경과시간, 분
-    const hour = Math.floor((end - start) / 1000 / 60 / 60); // 경과시간, 시간
-    const day = Math.floor((end - start) / 1000 / 60 / 60 / 24); // 경과시간, 일
-    const elapsed =
-      sec >= 60
-        ? min >= 60
-          ? hour >= 24
-            ? day + '일전'
-            : hour + '시간 전'
-          : min + '분 전'
-        : '방금 전';
-    return elapsed;
-  };
-
-  // TODO: 게시글 더보기, 숨기기 함수
-  const [more, setMore] = useState(true);
-  const onClickMore = () => {
-    setMore(!more);
-  };
-
-  useEffect(() => {
-    /**
-     * TODO: get images to firebaseStorage
-     * FIXME: firebaseStorage 및 dispatch
-     * @param uid The uid of the user who posted this post.
-     * @param id  Doc.id pointing to this post.
-     * @param name The filenames of the images in this post.
-     */
-    dispatch(getPostImagesToStorage({ uid, id, images }));
-  }, []);
-
+const Post = ({
+  photoURL,
+  displayName,
+  location,
+  imagesURL,
+  imagesNames,
+  heartCount,
+  more,
+  text,
+  onClickMore,
+  isPossibleComment,
+  comments,
+  timeElapsed,
+}) => {
   return (
     <StArticle>
       <StHeader>
         <div>
-          <StProfileImage
-            src="images/default_profile.png"
-            alt="default_image"
-          />
+          <StProfileImage src={photoURL} alt={'#'} />
           <div>
             <div>{displayName}</div>
             {location && <StLocation>{location}</StLocation>}
@@ -89,7 +45,7 @@ const Post = ({ post }) => {
         </button>
       </StHeader>
       <StImagesSection>
-        <Carousel srcs={srcs} images={images} pagenation />
+        <Carousel srcs={imagesURL} images={imagesNames} pagenation />
       </StImagesSection>
       <StSectionNav>
         {icons.map((icon, index) => (
@@ -120,7 +76,7 @@ const Post = ({ post }) => {
           ))}
         </StCommentsBox>
       )}
-      <StDate>{getTimeElapsed(date)}</StDate>
+      <StDate>{timeElapsed}</StDate>
       {!isPossibleComment && (
         <StChatCommentLabel>
           <button>

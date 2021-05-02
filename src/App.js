@@ -7,15 +7,23 @@ import { loginState } from './Modules/login';
 import { useDispatch, useSelector } from 'react-redux';
 import { currentUser, followData } from './Modules/user';
 import { getCurrentUserData, getFollowData } from './services/firestore';
-import { getAllPostsByCurrentUid } from './Modules/main';
+
+/**
+ * NOTE App -> dispatch
+ * @param loginState 로그인 상태 유지
+ * @param currentUser 현재 로그인 유저의 데이터
+ * @param followData 현재 로그인 유저의 팔로우 데이터
+ * @param getPosts 현재 로그인 유저의 모든 포스트 데이터
+ *
+ * NOTE
+ * 전체 포스트 이미지 가져오기
+ */
 
 const App = () => {
-  // ! redux
   const isSignIn = useSelector(state => state.login.isSignIn);
   const dispatch = useDispatch();
 
   useEffect(() => {
-    // ! auth state check
     firebaseAuth.onAuthStateChanged(async user => {
       if (user) {
         const { uid } = user;
@@ -24,7 +32,6 @@ const App = () => {
         dispatch(loginState(true));
         dispatch(currentUser(userData));
         dispatch(followData(userFollowData));
-        dispatch(getAllPostsByCurrentUid(uid));
       }
     });
   }, []);

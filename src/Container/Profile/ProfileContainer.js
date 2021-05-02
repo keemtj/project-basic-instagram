@@ -1,20 +1,20 @@
 import React, { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 import { useRouteMatch } from 'react-router';
+import { useDispatch, useSelector } from 'react-redux';
 import NotFound from '../../Component/Global/NotFound';
 import Profile from '../../Component/Profile/Profile';
+import { getFollowData, getUid } from '../../services/firestore';
 import {
   getWatchUserByDisplayName,
   searchUserFollow,
 } from '../../Modules/user';
-import { getAllPostsByCurrentUid } from '../../Modules/main';
-import { getFollowData, getUid } from '../../services/firestore';
+import { getPosts } from '../../Modules/posts';
 
 const ProfileContainer = () => {
   const [noUser, setNoUser] = useState(false);
   const { displayName } = useSelector(state => state.user.currentUser);
   const { data } = useSelector(state => state.user.searchUser);
-  const { data: myPosts } = useSelector(state => state.main.myPosts);
+  const { data: myPosts } = useSelector(state => state.posts.myPosts);
   const dispatch = useDispatch();
   const { params } = useRouteMatch();
   const { displayName: watchName } = params;
@@ -35,7 +35,7 @@ const ProfileContainer = () => {
         dispatch(searchUserFollow(searchUserFollowData));
       }
       if (!myPosts) {
-        dispatch(getAllPostsByCurrentUid(uid));
+        dispatch(getPosts(uid));
       }
     }
   }, []);

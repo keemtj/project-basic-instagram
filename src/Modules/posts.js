@@ -1,51 +1,49 @@
 import * as store from '../services/firestore';
 import { fetchDataThunk, reducerUtils } from '../lib/asyncUtils';
 
-// TODO: action type
-const MY_ALL_POSTS = 'main/MY_ALL_POSTS';
-const MY_ALL_POSTS_SUCCESS = 'main/MY_ALL_POSTS_SUCCESS';
-const MY_ALL_POSTS_ERROR = 'main/MY_ALL_POSTS_ERROR';
+// NOTE action type
+const MY_POSTS = 'main/MY_POSTS';
+const MY_POSTS_SUCCESS = 'main/MY_POSTS_SUCCESS';
+const MY_POSTS_ERROR = 'main/MY_POSTS_ERROR';
 
 const MY_FOLLOWING_POSTS = 'main/MY_FOLLOWING_POSTS';
 const MY_FOLLOWING_POSTS_SUCCESS = 'main/MY_FOLLOWING_POSTS_SUCCESS';
 const MY_FOLLOWING_POSTS_ERROR = 'main/MY_FOLLOWING_POSTS_ERROR';
 
-// TODO: action creator
-// TODO: fetchDataThunk
-export const getAllPostsByCurrentUid = fetchDataThunk(
-  MY_ALL_POSTS,
-  store.getCurrentUserPostsData,
-);
+// NOTE action creator
+export const getPosts = fetchDataThunk(MY_POSTS, store.getCurrentUserPostsData);
 
-export const getMyFollowingPosts = fetchDataThunk(
+export const getFollowingPosts = fetchDataThunk(
   MY_FOLLOWING_POSTS,
   store.getAllPostsByFollowing,
 );
 
-// TODO: initialState
+// NOTE initialState
 const initialState = {
   myPosts: reducerUtils.initial(),
   myFollowingPosts: reducerUtils.initial(),
 };
 
-// TODO: reducer
-const main = (state = initialState, action) => {
+// NOTE reducer
+const posts = (state = initialState, action) => {
   switch (action.type) {
-    case MY_ALL_POSTS:
+    // --> MY POSTS
+    case MY_POSTS:
       return {
         ...state,
         myPosts: reducerUtils.loading(),
       };
-    case MY_ALL_POSTS_SUCCESS:
+    case MY_POSTS_SUCCESS:
       return {
         ...state,
         myPosts: reducerUtils.success(action.payload),
       };
-    case MY_ALL_POSTS_ERROR:
+    case MY_POSTS_ERROR:
       return {
         ...state,
         myPosts: reducerUtils.error(action.payload),
       };
+    // --> MY FOLLOWING POSTS
     case MY_FOLLOWING_POSTS:
       return {
         ...state,
@@ -66,4 +64,4 @@ const main = (state = initialState, action) => {
   }
 };
 
-export default main;
+export default posts;

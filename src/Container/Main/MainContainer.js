@@ -1,20 +1,16 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Main from '../../Component/Main/Main';
-import {
-  getAllPostsByCurrentUid,
-  getMyFollowingPosts,
-} from '../../Modules/main';
-import { followedMe } from '../../Modules/user';
 import { firebaseAuth } from '../../services/firebase';
+import { getPosts, getFollowingPosts } from '../../Modules/posts';
+import { followedMe } from '../../Modules/user';
 
 const MainContainer = () => {
-  // ! redux
   const dispatch = useDispatch();
-  const { data: posts } = useSelector(state => state.main.myPosts);
   const following = useSelector(state => state.user.follow.following);
+  const { data: posts } = useSelector(state => state.posts.myPosts);
   const { data: followingPosts } = useSelector(
-    state => state.main.myFollowingPosts,
+    state => state.posts.myFollowingPosts,
   );
 
   const all = () => {
@@ -26,13 +22,9 @@ const MainContainer = () => {
   useEffect(() => {
     document.title = 'Instagram';
     const { uid } = firebaseAuth.currentUser;
-    // get my followers
     dispatch(followedMe(uid));
-    // get posts by me and following
-    // my posts
-    dispatch(getAllPostsByCurrentUid(uid));
-    // my following posts
-    dispatch(getMyFollowingPosts(following));
+    dispatch(getPosts(uid));
+    dispatch(getFollowingPosts(following));
   }, [following]);
   return <Main posts={all()} />;
 };

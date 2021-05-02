@@ -1,8 +1,8 @@
 import React from 'react';
-import Aside from '../../Component/Main/Aside';
 import { useHistory } from 'react-router';
-import { signOut } from '../../services/firebaseAuth';
 import { useDispatch, useSelector } from 'react-redux';
+import Aside from '../../Component/Main/Aside';
+import { signOut } from '../../services/firebaseAuth';
 import { loginState } from '../../Modules/login';
 import { resetFollow } from '../../Modules/user';
 

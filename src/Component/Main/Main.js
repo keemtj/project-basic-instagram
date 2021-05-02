@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import Post from './Post';
+import PostContainer from '../../Container/Main/PostContainer';
 import AsideFooter from './AsideFooter';
 import AsideContainer from '../../Container/Main/AsideContainer';
 
@@ -10,7 +10,7 @@ const Main = ({ posts }) => {
       <StMain>
         <StSection>
           {posts?.map((post, index) => (
-            <Post key={index} post={post} />
+            <PostContainer key={index} post={post} />
           ))}
         </StSection>
         <StAsideWrapper>

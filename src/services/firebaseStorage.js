@@ -1,19 +1,5 @@
 import { firebaseStorage } from './firebase';
 
-// get post images to storage
-export const getPostImages = async ({ uid, id, images }) => {
-  const arr = await images.map(async filename => {
-    const url = await firebaseStorage
-      .ref()
-      .child(`/${uid}/${id}/${filename}`)
-      .getDownloadURL();
-    return url;
-  });
-  const promiseAll = await Promise.race(arr);
-  const result = { id, srcs: promiseAll };
-  return result;
-};
-
 // get post images to storage at Profile page
 export const getPostImagesUrlFromStorage = async ({ uid, id, images }) => {
   // TODO: url

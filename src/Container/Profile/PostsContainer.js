@@ -3,11 +3,10 @@ import { useSelector } from 'react-redux';
 import Posts from '../../Component/Profile/Posts';
 
 const PostsContainer = () => {
-  // const dispatch = useDispatch();
   const { data: myPosts, loading, error } = useSelector(
-    state => state.main.myPosts,
+    state => state.posts.myPosts,
   );
-  const { data: images } = useSelector(state => state.images);
+  const { data: images } = useSelector(state => state.images.myPostsImages);
 
   const sortedPosts = () => {
     if (myPosts) {

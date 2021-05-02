@@ -1,7 +1,4 @@
-import React, {
-  useState,
-  // useEffect
-} from 'react';
+import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
 import User from '../../Component/Profile/User';
 
@@ -13,7 +10,7 @@ const UserContainer = ({ watchName }) => {
   const isFollowing = following.includes(searchUser?.uid);
   const [settings, setSettings] = useState(false);
 
-  const posts = useSelector(state => state.main.myPosts.data);
+  const posts = useSelector(state => state.posts.myPosts.data);
   const postsCount = posts?.length;
 
   const onClickSettings = () => {

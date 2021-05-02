@@ -33,6 +33,7 @@ export const getFollowedMe = async uid => {
   return followed;
 };
 
+// --> function using posts module
 // get posts by currentUser
 export const getCurrentUserPostsData = async uid => {
   let datas = [];
@@ -64,6 +65,7 @@ export const getAllPostsByFollowing = async following => {
   const result = await promiseAll.flatMap(v => v);
   return result;
 };
+// --> function using posts module
 
 // get user data by displayname
 export const getUserDataByDisplayName = async displayName => {

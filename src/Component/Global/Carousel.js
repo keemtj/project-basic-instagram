@@ -4,12 +4,14 @@ import { Dot } from '@styled-icons/bootstrap/Dot';
 import { ArrowLeftCircleFill } from '@styled-icons/bootstrap/ArrowLeftCircleFill';
 import { ArrowRightCircleFill } from '@styled-icons/bootstrap/ArrowRightCircleFill';
 
-const Carousel = ({ srcs, images, pagenation }) => {
+const Carousel = ({ images, pagenation }) => {
   /**
    * @param srcs [src, src, ..., src] // storage src
    * @param images ['filename1', ..., 'filenameN'] // filename
    */
 
+  // Error: srcs data
+  const srcs = ['#', '#', '#'];
   const ref = useRef();
   const [currentImage, setCurrentImage] = useState(0);
 
