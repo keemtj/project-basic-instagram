@@ -1,13 +1,16 @@
-import React, { useState, useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import React, {
+  useState,
+  // useEffect
+} from 'react';
 import Post from '../../Component/Main/Post';
-import { getFollowingPostImages, getPostImages } from '../../Modules/images';
-import { firebaseAuth } from '../../services/firebase';
+// import { useDispatch, useSelector } from 'react-redux';
+// import { getFollowingPostImages, getPostImages } from '../../Modules/images';
+// import { firebaseAuth } from '../../services/firebase';
 
 const PostContainer = ({ post }) => {
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
   const {
-    images,
+    imagesArray,
     heartCount,
     text,
     isPossibleComment,
@@ -15,29 +18,27 @@ const PostContainer = ({ post }) => {
     date,
     location,
     displayName,
-    uid: uidByPost,
-    id,
   } = post;
 
-  const {
-    data: myPostsImages,
-    // loading: mpLoading,
-    // error: mpError,
-  } = useSelector(state => state.images.myPostsImages);
-  const {
-    data: myFollowingPostsImages,
-    // loading: mfpLoading,
-    // error: mfpError,
-  } = useSelector(state => state.images.myFollowingPostsImages);
+  // const {
+  //   data: myPostsImages,
+  //   // loading: mpLoading,
+  //   // error: mpError,
+  // } = useSelector(state => state.images.myPostsImages);
+  // const {
+  //   data: myFollowingPostsImages,
+  //   // loading: mfpLoading,
+  //   // error: mfpError,
+  // } = useSelector(state => state.images.myFollowingPostsImages);
 
-  const allImages = () => {
-    if (myPostsImages && myFollowingPostsImages) {
-      return [...myPostsImages, ...myFollowingPostsImages].sort(
-        (a, b) => b.date - a.date,
-      );
-    }
-  };
-  const imageArray = allImages() && allImages().find(value => value.id === id);
+  // const allImages = () => {
+  //   if (myPostsImages && myFollowingPostsImages) {
+  //     return [...myPostsImages, ...myFollowingPostsImages].sort(
+  //       (a, b) => b.date - a.date,
+  //     );
+  //   }
+  // };
+  // const imageArray = allImages() && allImages().find(value => value.id === id);
 
   // NOTE 경과 시간 계산 함수
   const calcTimeElapsed = date => {
@@ -64,26 +65,26 @@ const PostContainer = ({ post }) => {
     setMore(!more);
   };
 
-  useEffect(() => {
-    /**
-     * NOTE get images to firebaseStorage
-     * FIXME: firebaseStorage 및 dispatch
-     * @param uid The uid of the user who posted this post.
-     * @param id  Doc.id pointing to this post.
-     * @param name The filenames of the images in this post.
-     */
-    // dispatch(getPostImagesToStorage({ uid, id, images }));
-    const { uid } = firebaseAuth.currentUser;
-    if (!(myPostsImages || myFollowingPostsImages)) {
-      if (uid === uidByPost) {
-        // console.log('내 post');
-        dispatch(getPostImages({ uid: uidByPost, id, images }));
-      } else {
-        // console.log('following유저의 포스트');
-        dispatch(getFollowingPostImages({ uid: uidByPost, id, images }));
-      }
-    }
-  }, []);
+  // useEffect(() => {
+  //   /**
+  //    * NOTE get images to firebaseStorage
+  //    * FIXME: firebaseStorage 및 dispatch
+  //    * @param uid The uid of the user who posted this post.
+  //    * @param id  Doc.id pointing to this post.
+  //    * @param name The filenames of the images in this post.
+  //    */
+  //   // dispatch(getPostImagesToStorage({ uid, id, images }));
+  //   const { uid } = firebaseAuth.currentUser;
+  //   if (!(myPostsImages || myFollowingPostsImages)) {
+  //     if (uid === uidByPost) {
+  //       // console.log('내 post');
+  //       dispatch(getPostImages({ uid: uidByPost, id, images }));
+  //     } else {
+  //       // console.log('following유저의 포스트');
+  //       dispatch(getFollowingPostImages({ uid: uidByPost, id, images }));
+  //     }
+  //   }
+  // }, []);
   // if (mpLoading || mfpLoading) return <div>로딩중</div>;
   // if (mpError || mfpError) return <div>에러발생</div>;
   // if (!(myPostsImages && myFollowingPostsImages))
@@ -93,8 +94,7 @@ const PostContainer = ({ post }) => {
       photoURL={'/images/default_profile.png'}
       displayName={displayName}
       location={location}
-      srcs={imageArray && imageArray.srcs}
-      imagesNames={images}
+      imagesArray={imagesArray}
       heartCount={heartCount}
       more={more}
       text={text}

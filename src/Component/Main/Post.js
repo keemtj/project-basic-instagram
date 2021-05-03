@@ -19,8 +19,7 @@ const Post = ({
   photoURL,
   displayName,
   location,
-  srcs,
-  imagesNames,
+  imagesArray,
   heartCount,
   more,
   text,
@@ -40,12 +39,11 @@ const Post = ({
           </div>
         </div>
         <button style={{ width: '2rem' }}>
-          {/* modal trigger */}
           <ThreeDots />
         </button>
       </StHeader>
       <StImagesSection>
-        <Carousel srcs={srcs} images={imagesNames} pagenation />
+        <Carousel imagesArray={imagesArray} pagenation />
       </StImagesSection>
       <StSectionNav>
         {icons.map((icon, index) => (

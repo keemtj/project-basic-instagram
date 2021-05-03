@@ -8,7 +8,9 @@ import { followedMe } from '../../Modules/user';
 const MainContainer = () => {
   const dispatch = useDispatch();
   const following = useSelector(state => state.user.follow.following);
-  const { data: posts } = useSelector(state => state.posts.myPosts);
+  const { data: posts, loading, error } = useSelector(
+    state => state.posts.myPosts,
+  );
   const { data: followingPosts } = useSelector(
     state => state.posts.myFollowingPosts,
   );
@@ -26,6 +28,9 @@ const MainContainer = () => {
     dispatch(getPosts(uid));
     dispatch(getFollowingPosts(following));
   }, [dispatch, following]);
+
+  if (loading) return <div>main container 로딩중</div>;
+  if (error) return <div>main container 에러발생</div>;
   return <Main posts={all()} />;
 };
 

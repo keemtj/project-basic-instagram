@@ -4,10 +4,9 @@ import { Dot } from '@styled-icons/bootstrap/Dot';
 import { ArrowLeftCircleFill } from '@styled-icons/bootstrap/ArrowLeftCircleFill';
 import { ArrowRightCircleFill } from '@styled-icons/bootstrap/ArrowRightCircleFill';
 
-const Carousel = ({ srcs, images, pagenation }) => {
+const Carousel = ({ imagesArray, pagenation }) => {
   /**
-   * @param srcs [src, src, ..., src] // storage src
-   * @param images ['filename1', ..., 'filenameN'] // filename
+   * @param imagesArray [image, image, ..., image]
    * @param pagenation Dot pagenation
    */
 
@@ -21,21 +20,20 @@ const Carousel = ({ srcs, images, pagenation }) => {
 
   const handleNext = () => {
     ref.current.style.transform = `translate(-${100 * (currentImage + 1)}%)`;
-    currentImage < images.length - 1 && setCurrentImage(currentImage + 1);
+    currentImage < imagesArray.length - 1 && setCurrentImage(currentImage + 1);
   };
 
   return (
     <StCarouselWrapper>
       <StCarousel>
         <StCarouselInner ref={ref}>
-          {srcs &&
-            srcs.map((src, index) => {
-              return (
-                <StImageWrapper key={index}>
-                  <StImage src={src} alt={images[index]} />
-                </StImageWrapper>
-              );
-            })}
+          {imagesArray.map(({ url, name }, index) => {
+            return (
+              <StImageWrapper key={index}>
+                <StImage src={url} alt={name} />
+              </StImageWrapper>
+            );
+          })}
         </StCarouselInner>
       </StCarousel>
       <StSlideButtonWrapper>
@@ -46,15 +44,15 @@ const Carousel = ({ srcs, images, pagenation }) => {
         ) : (
           <div />
         )}
-        {currentImage < images.length - 1 && (
+        {currentImage < imagesArray.length - 1 && (
           <StSlideButton type="button" onClick={handleNext}>
             <StRightButton />
           </StSlideButton>
         )}
       </StSlideButtonWrapper>
-      {pagenation && images.length >= 2 && (
+      {pagenation && imagesArray.length >= 2 && (
         <StPagenation>
-          {images.map((_, index) => (
+          {imagesArray.map((_, index) => (
             <StPage key={index} currentImage={currentImage}>
               <Dot />
             </StPage>
