@@ -14,14 +14,11 @@ import { getCurrentUserData, getFollowData } from './services/firestore';
  * @param currentUser 현재 로그인 유저의 데이터
  * @param followData 현재 로그인 유저의 팔로우 데이터
  * @param getPosts 현재 로그인 유저의 모든 포스트 데이터
- *
- * NOTE
- * 전체 포스트 이미지 가져오기
  */
 
 const App = () => {
-  const isSignIn = useSelector(state => state.login.isSignIn);
   const dispatch = useDispatch();
+  const isSignIn = useSelector(state => state.login.isSignIn);
 
   useEffect(() => {
     firebaseAuth.onAuthStateChanged(async user => {
@@ -34,7 +31,7 @@ const App = () => {
         dispatch(followData(userFollowData));
       }
     });
-  }, []);
+  }, [dispatch]);
 
   return (
     <>

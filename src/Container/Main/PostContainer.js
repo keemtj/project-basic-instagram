@@ -19,21 +19,15 @@ const PostContainer = ({ post }) => {
     id,
   } = post;
 
-  // -->
-  // FIXME: images data 수정
-  // const imagesArray = useSelector(state => state.posts.myPosts.data);
-  // const srcs = imagesArray.find(v => v.id === id)?.data?.srcs;
-
-  // NOTE 수정본
   const {
     data: myPostsImages,
-    loading: mpLoading,
-    error: mpError,
+    // loading: mpLoading,
+    // error: mpError,
   } = useSelector(state => state.images.myPostsImages);
   const {
     data: myFollowingPostsImages,
-    loading: mfpLoading,
-    error: mfpError,
+    // loading: mfpLoading,
+    // error: mfpError,
   } = useSelector(state => state.images.myFollowingPostsImages);
 
   const allImages = () => {
@@ -44,7 +38,6 @@ const PostContainer = ({ post }) => {
     }
   };
   const imageArray = allImages() && allImages().find(value => value.id === id);
-  // -->
 
   // NOTE 경과 시간 계산 함수
   const calcTimeElapsed = date => {
@@ -83,17 +76,18 @@ const PostContainer = ({ post }) => {
     const { uid } = firebaseAuth.currentUser;
     if (!(myPostsImages || myFollowingPostsImages)) {
       if (uid === uidByPost) {
-        console.log('내 post');
+        // console.log('내 post');
         dispatch(getPostImages({ uid: uidByPost, id, images }));
       } else {
-        console.log('following유저의 포스트');
+        // console.log('following유저의 포스트');
         dispatch(getFollowingPostImages({ uid: uidByPost, id, images }));
       }
     }
   }, []);
-  if (mpLoading || mfpLoading) return <div>로딩중</div>;
-  if (mpError || mfpError) return <div>에러발생</div>;
-  if (!(myPostsImages && myFollowingPostsImages)) return <div>데이터없음</div>;
+  // if (mpLoading || mfpLoading) return <div>로딩중</div>;
+  // if (mpError || mfpError) return <div>에러발생</div>;
+  // if (!(myPostsImages && myFollowingPostsImages))
+  //   return <div>이미지 데이터없음</div>;
   return (
     <Post
       photoURL={'/images/default_profile.png'}

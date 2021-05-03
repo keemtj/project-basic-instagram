@@ -5,7 +5,7 @@ const PostItem = ({ srcs, alt }) => {
   return (
     <>
       <StPostWrapper>
-        <StPost src={srcs[0]} alt={alt} />
+        <StPost src={srcs?.[0]} alt={alt} />
         <StHover hover={false}>핱 190 댓 25</StHover>
       </StPostWrapper>
     </>

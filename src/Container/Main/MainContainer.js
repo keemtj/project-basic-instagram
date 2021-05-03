@@ -25,7 +25,7 @@ const MainContainer = () => {
     dispatch(followedMe(uid));
     dispatch(getPosts(uid));
     dispatch(getFollowingPosts(following));
-  }, [following]);
+  }, [dispatch, following]);
   return <Main posts={all()} />;
 };
 

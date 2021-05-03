@@ -4,6 +4,7 @@ import { Settings } from '@styled-icons/ionicons-sharp/Settings';
 import { Settings as FilledSettings } from '@styled-icons/ionicons-outline/Settings';
 import { User as UserIcon } from '@styled-icons/boxicons-regular/User';
 import { Check as CheckIcon } from '@styled-icons/boxicons-regular/Check';
+
 const User = ({
   isFollowing,
   currentDisplayName,

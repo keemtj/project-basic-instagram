@@ -67,7 +67,7 @@ export const getAllPostsByFollowing = async following => {
 };
 // --> function using posts module
 
-// get user data by displayname
+// --> get user data by displayname
 export const getUserDataByDisplayName = async displayName => {
   let findUser = [];
   const docs = await firestore

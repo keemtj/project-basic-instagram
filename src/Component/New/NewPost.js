@@ -8,7 +8,7 @@ import Textarea from './Textarea';
 import CommentSetting from './CommentSetting';
 import PlaceSearch from './PlaceSearch';
 import PlaceAutoComplete from './PlaceAutoComplete';
-import { firestore, firebaseStorage } from '../../services/firebase';
+import { firebase, firestore, firebaseStorage } from '../../services/firebase';
 import { useSelector } from 'react-redux';
 import { generatedId } from '../../services/firestore';
 
@@ -25,9 +25,9 @@ const NewPost = ({ closeModal, setProgress }) => {
   // FIXME: create new post
   const createPost = () => {
     // Todo: get filenames by images
-    const filenames = images.map(image => image.file.name);
+    // const filenames = images.map(image => image.file.name);
     // Todo: add datas to firestore
-    addPostDataToFirestore(uid, displayName, postId, filenames);
+    addPostDataToFirestore(uid, displayName, postId);
     // Todo: upload images to storage
     uploadImagesToStorage(uid, postId, images);
     // Todo: close modal
@@ -36,7 +36,7 @@ const NewPost = ({ closeModal, setProgress }) => {
   };
 
   // add post data to firestore
-  const addPostDataToFirestore = (uid, displayName, postId, filenames) => {
+  const addPostDataToFirestore = (uid, displayName, postId) => {
     firestore
       .collection('posts')
       .doc(uid)
@@ -46,7 +46,6 @@ const NewPost = ({ closeModal, setProgress }) => {
         id: postId,
         uid,
         displayName,
-        images: filenames,
         date: Date.now(), // 1970~ 2021.4.1
         text,
         location,
@@ -76,16 +75,41 @@ const NewPost = ({ closeModal, setProgress }) => {
           setProgress(progress);
         },
         e => console.log(e),
-        () => {
-          uploadTask.snapshot.ref.getDownloadURL().then(() => {
-            console.log(
-              '업로드를 완료했을 때 taskState:',
-              uploadTask.snapshot.state,
-            );
-            setTimeout(() => {
-              window.location.reload();
-            }, 5000);
-          });
+        async () => {
+          const urlResult = await uploadTask.snapshot.ref.getDownloadURL();
+          const url = await Promise.resolve(urlResult);
+          const metadataResult = await uploadTask.snapshot.ref.getMetadata();
+          const { name, timeCreated } = await Promise.resolve(metadataResult);
+          await firestore
+            .collection('posts')
+            .doc(uid)
+            .collection('my-posts')
+            .doc(postId)
+            .update({
+              imagesArray: firebase.firestore.FieldValue.arrayUnion({
+                url,
+                name,
+                timeCreated,
+              }),
+            });
+          console.log(
+            '업로드를 완료했을 때 taskState:',
+            uploadTask.snapshot.state,
+          );
+          setTimeout(() => {
+            window.location.reload();
+          }, 2000);
+          // uploadTask.snapshot.ref.getDownloadURL().then(result => {
+          //   console.log(
+          //     '업로드를 완료했을 때 taskState:',
+          //     uploadTask.snapshot.state,
+          //     'result =>',
+          //     result,
+          //   );
+          //   setTimeout(() => {
+          //     window.location.reload();
+          //   }, 20000);
+          // });
         },
       );
     });
