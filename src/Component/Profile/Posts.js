@@ -1,20 +1,15 @@
 import React from 'react';
 import styled from 'styled-components';
-import EmptyPosts from './EmptyPosts';
 import PostItemContainer from '../../Container/Profile/PostItemContainer';
 
-const Posts = ({ myPosts, loading, error }) => {
-  if (loading) return <div>로딩중....</div>;
-  if (error) return <div>에러 발생!</div>;
-  if (!myPosts) return <EmptyPosts />;
-  if (myPosts)
-    return (
-      <StPostsWrapper>
-        {myPosts.map((post, index) => (
-          <PostItemContainer post={post} key={index} />
-        ))}
-      </StPostsWrapper>
-    );
+const Posts = ({ myPosts }) => {
+  return (
+    <StPostsWrapper>
+      {myPosts?.map((post, index) => (
+        <PostItemContainer post={post} key={index} />
+      ))}
+    </StPostsWrapper>
+  );
 };
 
 const StPostsWrapper = styled.article`

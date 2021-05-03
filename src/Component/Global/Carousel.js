@@ -3,11 +3,15 @@ import styled from 'styled-components';
 import { Dot } from '@styled-icons/bootstrap/Dot';
 import { ArrowLeftCircleFill } from '@styled-icons/bootstrap/ArrowLeftCircleFill';
 import { ArrowRightCircleFill } from '@styled-icons/bootstrap/ArrowRightCircleFill';
+import { SquareMultiple } from '@styled-icons/fluentui-system-filled/SquareMultiple';
 
-const Carousel = ({ imagesArray, pagenation }) => {
+const Carousel = ({ imagesArray, pagenation, multiple, hover }) => {
+  console.log(hover);
   /**
    * @param imagesArray [image, image, ..., image]
    * @param pagenation Dot pagenation
+   * @param multiple images icon
+   * @param hover image hover
    */
 
   const ref = useRef();
@@ -27,29 +31,41 @@ const Carousel = ({ imagesArray, pagenation }) => {
     <StCarouselWrapper>
       <StCarousel>
         <StCarouselInner ref={ref}>
-          {imagesArray.map(({ url, name }, index) => {
-            return (
-              <StImageWrapper key={index}>
-                <StImage src={url} alt={name} />
-              </StImageWrapper>
-            );
-          })}
+          {multiple ? (
+            <StImageWrapper>
+              <StBadge>
+                <SquareMultiple />
+              </StBadge>
+              <StImage src={imagesArray[0].url} alt={imagesArray[0].name} />
+            </StImageWrapper>
+          ) : (
+            imagesArray.map(({ url, name }, index) => {
+              return (
+                <StImageWrapper key={index}>
+                  <StImage src={url} alt={name} />
+                </StImageWrapper>
+              );
+            })
+          )}
         </StCarouselInner>
       </StCarousel>
-      <StSlideButtonWrapper>
-        {currentImage > 0 ? (
-          <StSlideButton type="button" onClick={handlePrev}>
-            <StLeftButton />
-          </StSlideButton>
-        ) : (
-          <div />
-        )}
-        {currentImage < imagesArray.length - 1 && (
-          <StSlideButton type="button" onClick={handleNext}>
-            <StRightButton />
-          </StSlideButton>
-        )}
-      </StSlideButtonWrapper>
+      {/* {hover && <StHover hover={hover}>핱 190 댓 25</StHover>} */}
+      {!multiple && (
+        <StSlideButtonWrapper>
+          {currentImage > 0 ? (
+            <StSlideButton type="button" onClick={handlePrev}>
+              <StLeftButton />
+            </StSlideButton>
+          ) : (
+            <div />
+          )}
+          {currentImage < imagesArray.length - 1 && (
+            <StSlideButton type="button" onClick={handleNext}>
+              <StRightButton />
+            </StSlideButton>
+          )}
+        </StSlideButtonWrapper>
+      )}
       {pagenation && imagesArray.length >= 2 && (
         <StPagenation>
           {imagesArray.map((_, index) => (
@@ -84,10 +100,39 @@ const StImageWrapper = styled.div`
   min-width: 100%;
 `;
 
+const StBadge = styled.div`
+  position: absolute;
+  right: 5px;
+  top: 5px;
+  color: ${({ theme }) => theme.white};
+  width: 2.2rem;
+  height: 2.2rem;
+`;
+
 const StImage = styled.img`
   width: 100%;
   height: auto;
+  background: ${({ theme }) => theme.white};
 `;
+
+// const StHover = styled.div`
+//   display: flex;
+//   align-items: center;
+//   justify-content: center;
+//   ${({ hover }) =>
+//     hover
+//       ? css`
+//           color: red;
+//           position: absolute;
+//           top: 0;
+//           width: 100%;
+//           height: 100%;
+//           background: rgba(0, 0, 0, 0.5);
+//         `
+//       : css`
+//           display: none;
+//         `}
+// `;
 
 const StSlideButtonWrapper = styled.div`
   display: flex;
