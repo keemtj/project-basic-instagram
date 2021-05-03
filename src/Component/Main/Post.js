@@ -19,7 +19,7 @@ const Post = ({
   photoURL,
   displayName,
   location,
-  imagesURL,
+  srcs,
   imagesNames,
   heartCount,
   more,
@@ -45,7 +45,7 @@ const Post = ({
         </button>
       </StHeader>
       <StImagesSection>
-        <Carousel srcs={imagesURL} images={imagesNames} pagenation />
+        <Carousel srcs={srcs} images={imagesNames} pagenation />
       </StImagesSection>
       <StSectionNav>
         {icons.map((icon, index) => (

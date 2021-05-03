@@ -23,6 +23,6 @@ export const getPostImagesUrlFromStorage = async ({ uid, id, images }) => {
   const promiseAll2 = await Promise.all(timeCreatedDatas);
   const date = new Date(promiseAll2.map(d => d.timeCreated)[0]);
   const result = { id, srcs, date };
-  console.log(result);
+  // console.log(result);
   return result;
 };

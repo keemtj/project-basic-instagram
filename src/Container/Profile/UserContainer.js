@@ -10,8 +10,8 @@ const UserContainer = ({ watchName }) => {
   const isFollowing = following.includes(searchUser?.uid);
   const [settings, setSettings] = useState(false);
 
-  const posts = useSelector(state => state.posts.myPosts.data);
-  const postsCount = posts?.length;
+  const { data: myPosts } = useSelector(state => state.posts.myPosts);
+  const postsCount = myPosts?.length;
 
   const onClickSettings = () => {
     setSettings(!settings);

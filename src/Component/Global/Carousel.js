@@ -4,14 +4,13 @@ import { Dot } from '@styled-icons/bootstrap/Dot';
 import { ArrowLeftCircleFill } from '@styled-icons/bootstrap/ArrowLeftCircleFill';
 import { ArrowRightCircleFill } from '@styled-icons/bootstrap/ArrowRightCircleFill';
 
-const Carousel = ({ images, pagenation }) => {
+const Carousel = ({ srcs, images, pagenation }) => {
   /**
    * @param srcs [src, src, ..., src] // storage src
    * @param images ['filename1', ..., 'filenameN'] // filename
+   * @param pagenation Dot pagenation
    */
 
-  // Error: srcs data
-  const srcs = ['#', '#', '#'];
   const ref = useRef();
   const [currentImage, setCurrentImage] = useState(0);
 
@@ -29,13 +28,14 @@ const Carousel = ({ images, pagenation }) => {
     <StCarouselWrapper>
       <StCarousel>
         <StCarouselInner ref={ref}>
-          {images?.map((image, index) => {
-            return (
-              <StImageWrapper key={index}>
-                <StImage src={srcs?.[index]} alt={image} />
-              </StImageWrapper>
-            );
-          })}
+          {srcs &&
+            srcs.map((src, index) => {
+              return (
+                <StImageWrapper key={index}>
+                  <StImage src={src} alt={images[index]} />
+                </StImageWrapper>
+              );
+            })}
         </StCarouselInner>
       </StCarousel>
       <StSlideButtonWrapper>

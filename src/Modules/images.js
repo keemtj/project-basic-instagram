@@ -44,7 +44,10 @@ const images = (state = initialState, action) => {
             ...state,
             myPostsImages: {
               ...state.myPostsImages,
-              data: [...state.data, reducerUtils.success(action.payload).data],
+              data: [
+                ...state.myPostsImages.data,
+                reducerUtils.success(action.payload).data,
+              ],
               loading: reducerUtils.success(action.payload).loading,
             },
           }
@@ -79,7 +82,10 @@ const images = (state = initialState, action) => {
             ...state,
             myFollowingPostsImages: {
               ...state.myFollowingPostsImages,
-              data: [...state.data, reducerUtils.success(action.payload).data],
+              data: [
+                ...state.myFollowingPostsImages.data,
+                reducerUtils.success(action.payload).data,
+              ],
               loading: reducerUtils.success(action.payload).loading,
             },
           }

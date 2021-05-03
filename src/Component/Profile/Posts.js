@@ -11,7 +11,7 @@ const Posts = ({ myPosts, loading, error, images }) => {
     return (
       <StPostsWrapper>
         {myPosts?.map((post, index) => (
-          <PostItemContainer post={post} key={index} image={images[index]} />
+          <PostItemContainer post={post} key={index} image={images} />
         ))}
       </StPostsWrapper>
     );
