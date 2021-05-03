@@ -8,10 +8,11 @@ import { signOut } from '../../services/firebaseAuth';
 import { useHistory } from 'react-router';
 import { loginState } from '../../Modules/login';
 import { resetFollow } from '../../Modules/user';
+import { getPosts } from '../../Modules/posts';
 
 const PopupContainer = ({ setPopup }) => {
   // ! redux
-  const { displayName } = useSelector(state => state.user.currentUser);
+  const { displayName, uid } = useSelector(state => state.user.currentUser);
   const dispatch = useDispatch();
   const history = useHistory();
 
@@ -20,6 +21,11 @@ const PopupContainer = ({ setPopup }) => {
     { link: `/p/${displayName}/saved`, text: '저장됨', icon: <Bookmark /> },
     { link: '/edit', text: '설정', icon: <Settings /> },
   ];
+
+  const onClickList = () => {
+    setPopup(false);
+    dispatch(getPosts(uid));
+  };
 
   const onClickSignOut = () => {
     setPopup(false);
@@ -32,8 +38,8 @@ const PopupContainer = ({ setPopup }) => {
 
   return (
     <Popup
-      setPopup={setPopup}
       popupLists={popupLists}
+      onClickList={onClickList}
       onClickSignOut={onClickSignOut}
     />
   );

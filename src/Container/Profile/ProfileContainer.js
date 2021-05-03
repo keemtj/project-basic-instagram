@@ -45,8 +45,6 @@ const ProfileContainer = () => {
       }
     }
   }, []);
-  console.log('look at userData!!! ==>', userData);
-  console.log('look at noUser!!! ==>', noUser);
   if (userData === []) return null;
   if (noUser) return <NotFound />;
   // -->
