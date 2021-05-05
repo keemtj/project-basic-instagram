@@ -3,7 +3,6 @@ import { useSelector } from 'react-redux';
 import User from '../../Component/Profile/User';
 
 const UserContainer = ({ watchName }) => {
-  console.log('user containr => ', watchName);
   // NOTE 현재 로그인 중인 유저의 데이터
   const { data: myPosts } = useSelector(state => state.posts.myPosts);
   const currentUser = useSelector(state => state.user.currentUser);
