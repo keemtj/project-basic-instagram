@@ -15,6 +15,8 @@ const User = ({
   postsCount,
   followersCount,
   followingCount,
+  onEditProfile,
+  onToggleFollow,
   onClickSettings,
   settings,
 }) => {
@@ -28,17 +30,19 @@ const User = ({
           <StId>{displayName}</StId>
           {displayName === currentDisplayName ? (
             <>
-              <StEditBtn>프로필 편집</StEditBtn>
+              <StEditBtn onClick={onEditProfile}>프로필 편집</StEditBtn>
               <StSettingsBtn onClick={onClickSettings}>
                 {settings ? <Settings /> : <FilledSettings />}
               </StSettingsBtn>
             </>
           ) : isFollowing ? (
-            <StFollowBtn isFollowing={isFollowing}>
+            <StFollowBtn onClick={onToggleFollow} isFollowing={isFollowing}>
               <StUserIcon /> <StCheckIcon />
             </StFollowBtn>
           ) : (
-            <StFollowBtn isFollowing={isFollowing}>팔로우하기</StFollowBtn>
+            <StFollowBtn onClick={onToggleFollow} isFollowing={isFollowing}>
+              팔로우하기
+            </StFollowBtn>
           )}
         </StIdBox>
         <StFollowBox>

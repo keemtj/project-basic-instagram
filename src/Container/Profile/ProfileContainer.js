@@ -1,61 +1,54 @@
-import React, {
-  useEffect,
-  // useState
-} from 'react';
+import React, { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
 import { useRouteMatch } from 'react-router';
-import {
-  // useDispatch,
-  useSelector,
-} from 'react-redux';
 import Profile from '../../Component/Profile/Profile';
-// import NotFound from '../../Component/Global/NotFound';
-// import { getFollowData, getUid } from '../../services/firestore';
-// import {
-//   getWatchUserByDisplayName,
-//   searchUserFollow,
-// } from '../../Modules/user';
-// import { getPosts, getSearchUserPosts } from '../../Modules/posts';
+import { getPosts, getSearchUserPosts } from '../../Modules/posts';
+import {
+  getWatchUserByDisplayName,
+  searchUserFollow,
+} from '../../Modules/user';
+import { firebaseAuth } from '../../services/firebase';
+import {
+  getCurrentUserData,
+  getFollowData,
+  getUid,
+} from '../../services/firestore';
 
 const ProfileContainer = () => {
-  // const dispatch = useDispatch();
-  const { displayName } = useSelector(state => state.user.currentUser);
-  // const { data: userData } = useSelector(state => state.user.searchUser);
-  // const [noUser, setNoUser] = useState(false);
+  const dispatch = useDispatch();
   const { params } = useRouteMatch();
-  const { displayName: watchName } = params;
+  const watchName = params.displayName;
 
   useEffect(async () => {
-    document.title = `@${watchName} • Instagram 사진 및 동영상`;
-    // if (displayName !== watchName) {
-    //   console.log(
-    //     `my displayName: ${displayName} ${typeof displayName}| watchName: ${watchName}`,
-    //   );
-    //   // NOTE get watchName user's profile data
-    //   dispatch(getWatchUserByDisplayName(watchName));
-    //   const uid = await getUid(watchName);
-    //   // NOTE get watchName user's follow data
-    //   const searchUserFollowData = await getFollowData(uid);
-    //   if (searchUserFollowData === 'no-user') {
-    //     setNoUser(true);
-    //   } else {
-    //     setNoUser(false);
-    //     dispatch(searchUserFollow(searchUserFollowData));
-    //     // NOTE search된 유저를 기준으로 myPosts 업데이트
-    //     // NOTE main page 또는 admin(current User) page로 올 경우에도 dispatch
-    //     dispatch(getSearchUserPosts(uid));
-    //   }
-    // } else {
-    //   dispatch(getPosts(uid));
-    // }
+    const { uid } = firebaseAuth.currentUser;
+    dispatch(getPosts(uid));
+    let currentDisplayName = '';
+    const { displayName } = await getCurrentUserData(uid);
+    currentDisplayName = await displayName;
+
+    console.log('변하는값', watchName);
+    console.log('불변 값?', currentDisplayName);
+
+    // switch posts
+    if (currentDisplayName !== watchName) {
+      const watchNameUid = await getUid(watchName);
+      dispatch(getSearchUserPosts(watchNameUid));
+      dispatch(getWatchUserByDisplayName(watchName));
+      const followData = await getFollowData(watchNameUid);
+      dispatch(searchUserFollow(followData));
+    } else {
+      dispatch(getPosts(uid));
+    }
+    console.log(
+      '이건  무슨값?',
+      currentDisplayName !== watchName ? watchName : currentDisplayName,
+    );
+    document.title = `@${
+      currentDisplayName !== watchName ? watchName : currentDisplayName
+    } • Instagram 사진 및 동영상`;
   }, []);
-  // if (userData === []) return null;
-  // if (noUser) return <NotFound />;
-  return (
-    <Profile
-      displayName={displayName}
-      watchName={displayName !== watchName ? watchName : displayName}
-    />
-  );
+
+  return <Profile watchName={watchName} />;
 };
 
 export default ProfileContainer;

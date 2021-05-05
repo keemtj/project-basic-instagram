@@ -5,13 +5,12 @@ import { ArrowLeftCircleFill } from '@styled-icons/bootstrap/ArrowLeftCircleFill
 import { ArrowRightCircleFill } from '@styled-icons/bootstrap/ArrowRightCircleFill';
 import { SquareMultiple } from '@styled-icons/fluentui-system-filled/SquareMultiple';
 
-const Carousel = ({ imagesArray, pagenation, multiple, hover }) => {
-  console.log(hover);
+const Carousel = ({ imagesArray, pagenation, multiple }) => {
   /**
    * @param imagesArray [image, image, ..., image]
    * @param pagenation Dot pagenation
    * @param multiple images icon
-   * @param hover image hover
+   * @param hover image hover in profile page
    */
 
   const ref = useRef();
