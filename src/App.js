@@ -16,6 +16,30 @@ import { getCurrentUserData, getFollowData } from './services/firestore';
  * @param getPosts 현재 로그인 유저의 모든 포스트 데이터
  */
 
+/**
+ * TODO: 필요한 작업
+ * NOTE Tagged, saved, IGTV(릴스) 페이지
+ * 1. 데이터 없을 때 보여주는 default 컴포넌트
+ *
+ * NOTE 팔로우, 팔로잉 기능
+ * 1. 팔로잉 -> 바로 적용
+ * 2. 언팔로잉 -> 모달로 취소 여부 확인(option)
+ *
+ * NOTE 프로필 편집 페이지
+ * 1. 프로필 이미지
+ *    -> 사진 업로드
+ *    -> 현재 프로필 이미지 삭제 -> default profile image보여주기
+ *    -> 취소
+ * 2. 이름(username)
+ * 3. 사용자 이름(displayName)
+ * 4. 소개(presentation)
+ *
+ * NOTE main page에서 북마크한 포스트 렌더링하기
+ *
+ * NOTE carousel hover ui
+ * 1. mousehover시 haertCount || 0, commment.length || 0 넣기
+ */
+
 const App = () => {
   const dispatch = useDispatch();
   const isSignIn = useSelector(state => state.login.isSignIn);

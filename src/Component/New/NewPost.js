@@ -14,7 +14,6 @@ import { generatedId } from '../../services/firestore';
 
 const NewPost = ({ closeModal, setProgress }) => {
   const { displayName, uid } = useSelector(state => state.user.currentUser);
-  const [postId, setPostId] = useState('');
   const [images, setImages] = useState([]);
   const [location, setLocation] = useState('');
   const [subLocation, setSubLocation] = useState('');
@@ -24,8 +23,7 @@ const NewPost = ({ closeModal, setProgress }) => {
 
   // FIXME: create new post
   const createPost = () => {
-    // Todo: get filenames by images
-    // const filenames = images.map(image => image.file.name);
+    const postId = generatedId();
     // Todo: add datas to firestore
     addPostDataToFirestore(uid, displayName, postId);
     // Todo: upload images to storage
@@ -151,8 +149,6 @@ const NewPost = ({ closeModal, setProgress }) => {
   useEffect(() => {
     const title = document.title;
     document.title = '새 게시물 작성 • Instagram';
-    // Todo: generate Post id
-    setPostId(generatedId);
     return () => {
       // 이전 title로 변경
       document.title = title;

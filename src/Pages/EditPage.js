@@ -1,16 +1,16 @@
 import React from 'react';
 import Footer from '../Component/Global/Footer';
+import EditContainer from '../Container/Edit/EditContainer';
 import HeaderContainer from '../Container/Global/HeaderContainer';
-import ProfileContainer from '../Container/Profile/ProfileContainer';
 
-const ProfilePage = () => {
+const EditPage = () => {
   return (
     <>
       <HeaderContainer />
-      <ProfileContainer />
+      <EditContainer />
       <Footer />
     </>
   );
 };
 
-export default ProfilePage;
+export default EditPage;

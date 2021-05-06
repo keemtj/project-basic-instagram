@@ -89,4 +89,8 @@ export const getUid = async watchName => {
 };
 // =====================
 // new post
-export const generatedId = firestore.collection('posts').doc().id;
+export const generatedId = () => {
+  const result = firestore.collection('posts').doc().id;
+  console.log('Promise? =>', result); // [[promiseResult]] || 'random string'
+  return result;
+};

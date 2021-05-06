@@ -40,9 +40,9 @@ const UserContainer = ({ watchName }) => {
       isFollowing={isFollowing}
       currentDisplayName={currentUser.displayName}
       photoURL={
-        currentUser.displayName === watchName
+        (currentUser.displayName === watchName
           ? currentUser?.photoURL
-          : searchUser?.photoURL
+          : searchUser?.photoURL) || '/images/default_profile2.jpg'
       }
       username={
         currentUser.displayName === watchName

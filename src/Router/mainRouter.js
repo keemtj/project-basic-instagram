@@ -7,6 +7,7 @@ import LoginPage from '../Pages/LoginPage';
 import SignupPage from '../Pages/SignupPage';
 import NotFound from '../Component/Global/NotFound';
 import LoadingPage from '../Pages/LoadingPage';
+import EditPage from '../Pages/EditPage';
 
 const MainRouter = ({ isSignIn }) => {
   return (
@@ -17,6 +18,7 @@ const MainRouter = ({ isSignIn }) => {
       <Route path="/direct">
         {isSignIn ? <DirectPage /> : <LoadingPage />}
       </Route>
+      <Route path="/edit">{isSignIn ? <EditPage /> : <LoadingPage />}</Route>
       <Route path="/p/:displayName">
         {isSignIn ? <ProfilePage /> : <LoadingPage />}
       </Route>

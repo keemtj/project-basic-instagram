@@ -11,7 +11,7 @@ const MainNavigationContainer = ({ openModal }) => {
   return (
     <MainNavigation
       openModal={openModal}
-      photoURL={photoURL}
+      photoURL={photoURL || '/images/default_profile2.jpg'}
       displayName={displayName}
     />
   );

@@ -5,7 +5,6 @@ import EmptyPosts from '../../Component/Profile/EmptyPosts';
 
 const PostsContainer = ({ watchName }) => {
   const currentUser = useSelector(state => state.user.currentUser);
-  console.log('PostsContainer => ', currentUser.displayName === watchName);
 
   const {
     data: myPosts,
