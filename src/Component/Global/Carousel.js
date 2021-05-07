@@ -38,7 +38,7 @@ const Carousel = ({ imagesArray, pagenation, multiple }) => {
               <StImage src={imagesArray[0].url} alt={imagesArray[0].name} />
             </StImageWrapper>
           ) : (
-            imagesArray.map(({ url, name }, index) => {
+            imagesArray?.map(({ url, name }, index) => {
               return (
                 <StImageWrapper key={index}>
                   <StImage src={url} alt={name} />
@@ -58,14 +58,14 @@ const Carousel = ({ imagesArray, pagenation, multiple }) => {
           ) : (
             <div />
           )}
-          {currentImage < imagesArray.length - 1 && (
+          {currentImage < imagesArray?.length - 1 && (
             <StSlideButton type="button" onClick={handleNext}>
               <StRightButton />
             </StSlideButton>
           )}
         </StSlideButtonWrapper>
       )}
-      {pagenation && imagesArray.length >= 2 && (
+      {pagenation && imagesArray?.length >= 2 && (
         <StPagenation>
           {imagesArray.map((_, index) => (
             <StPage key={index} currentImage={currentImage}>

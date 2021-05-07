@@ -13,8 +13,8 @@ const EditNavigation = () => {
       {editnav.map((nav, index) => (
         <StEditList key={index}>
           <StNavLink
-            activClassName="active"
             to={`/edit/${nav.link}`}
+            activeClassName={'active'}
             exact={nav.link === ''}
           >
             {nav.text}

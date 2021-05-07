@@ -41,7 +41,6 @@ const EditProfile = () => {
           />
         </StProfileImageBox>
       </StEditProfileImage>
-
       <StEditProfileForm onSubmit={onEditProfileSubmit}>
         {inputList.map(({ id, text }, index) => (
           <StEditProfileFormBlock key={index}>
@@ -82,7 +81,6 @@ const EditProfile = () => {
   );
 };
 
-// NOTE 프로필 이미지 변경 styled-component
 const StEditProfileWrapper = styled.div`
   display: flex;
   flex-flow: column nowrap;
@@ -91,6 +89,7 @@ const StEditProfileWrapper = styled.div`
   height: 100%;
 `;
 
+// NOTE 프로필 이미지 변경 styled-component
 const StEditProfileImage = styled.div`
   display: flex;
   flex-flow: row nowrap;
