@@ -1,7 +1,6 @@
 import React from 'react';
 import styled, { css } from 'styled-components';
 
-// --> styled-components renaming
 const EditPassword = () => {
   const inputList = [
     { id: 'prevPassword', text: '이전 비밀번호' },
@@ -15,38 +14,51 @@ const EditPassword = () => {
     }
   };
 
-  const onEditProfileSubmit = e => {
+  const onEditPasswordSubmit = e => {
     e.preventDefault();
     console.log('비밀번호 변경사항 저장!');
   };
 
   return (
-    <StEditProfileWrapper>
-      <StEditProfileForm onSubmit={onEditProfileSubmit}>
+    <StEditPasswordWrapper>
+      <StEditPasswordImage>
+        <StAside>
+          <StImage src={'/images/default_Profile.png'} />
+        </StAside>
+        <StPasswordImageBox>
+          <StDisplayName>admin</StDisplayName>
+        </StPasswordImageBox>
+      </StEditPasswordImage>
+      <StEditPasswordForm onSubmit={onEditPasswordSubmit}>
         {inputList.map(({ id, text }, index) => (
-          <StEditProfileFormBlock key={index}>
-            <StEditProfileFormAside>
-              <StEditProfileFormLabel htmlFor={id}>
+          <StEditPasswordFormBlock key={index}>
+            <StEditPasswordFormAside>
+              <StEditPasswordFormLabel htmlFor={id}>
                 {text}
-              </StEditProfileFormLabel>
-            </StEditProfileFormAside>
-            <StEditProfileFormDiv>
-              <StEditProfileFormInput
-                type="text"
+              </StEditPasswordFormLabel>
+            </StEditPasswordFormAside>
+            <StEditPasswordFormDiv>
+              <StEditPasswordFormInput
+                type="password"
                 id={id}
-                placeholder={id === 'displayName' ? 'admin' : text}
                 autoComplete="off"
                 onKeyPress={handleKeyPress}
               />
-            </StEditProfileFormDiv>
-          </StEditProfileFormBlock>
+            </StEditPasswordFormDiv>
+          </StEditPasswordFormBlock>
         ))}
-      </StEditProfileForm>
-    </StEditProfileWrapper>
+        <StEditPasswordFormBlock>
+          <StEditPasswordFormAside />
+          <StEditPasswordFormDiv>
+            <StSubmitButton type="submit">비밀번호 변경</StSubmitButton>
+          </StEditPasswordFormDiv>
+        </StEditPasswordFormBlock>
+      </StEditPasswordForm>
+    </StEditPasswordWrapper>
   );
 };
 
-const StEditProfileWrapper = styled.div`
+const StEditPasswordWrapper = styled.div`
   display: flex;
   flex-flow: column nowrap;
   align-items: center;
@@ -54,20 +66,59 @@ const StEditProfileWrapper = styled.div`
   height: 100%;
 `;
 
-const StEditProfileForm = styled.form`
+// NOTE 프로필 이미지 styled-component
+const StEditPasswordImage = styled.div`
+  display: flex;
+  flex-flow: row nowrap;
+  margin-top: 3rem;
+  width: 100%;
+`;
+
+const StAside = styled.aside`
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-end;
+  margin-right: 3rem;
+  width: 25rem;
+  height: 5.5rem;
+`;
+
+const StImage = styled.img`
+  width: 5.5rem;
+  height: 5.5rem;
+  object-fit: cover;
+  border: none;
+  border-radius: 50%;
+`;
+
+const StPasswordImageBox = styled.div`
+  width: 100%;
+  height: 5.5rem;
+  display: flex;
+  flex-flow: column nowrap;
+  align-items: flex-start;
+  justify-content: center;
+`;
+
+const StDisplayName = styled.h2`
+  font-size: 2.2rem;
+`;
+
+// NOTE 데이터 변경 styled-component
+const StEditPasswordForm = styled.form`
   display: flex;
   flex-flow: column nowrap;
   width: 100%;
 `;
 
-const StEditProfileFormBlock = styled.div`
+const StEditPasswordFormBlock = styled.div`
   display: flex;
   flex-flow: row nowrap;
   width: 100%;
-  margin-top: 1rem;
+  /* margin-top: 1rem; */
 `;
 
-const StEditProfileFormAside = styled.aside`
+const StEditPasswordFormAside = styled.aside`
   display: flex;
   align-items: center;
   justify-content: flex-end;
@@ -76,7 +127,7 @@ const StEditProfileFormAside = styled.aside`
   height: 5.5rem;
 `;
 
-const StEditProfileFormLabel = styled.label`
+const StEditPasswordFormLabel = styled.label`
   width: 100%;
   height: 100%;
   display: flex;
@@ -91,7 +142,7 @@ const StEditProfileFormLabel = styled.label`
     `}
 `;
 
-const StEditProfileFormDiv = styled.div`
+const StEditPasswordFormDiv = styled.div`
   width: 100%;
   height: auto;
   min-height: 5.5rem;
@@ -100,21 +151,31 @@ const StEditProfileFormDiv = styled.div`
   justify-content: flex-start;
 `;
 
-const StEditProfileFormInput = styled.input`
+const StEditPasswordFormInput = styled.input`
   width: 70%;
   height: 3.5rem;
   border: 1px solid ${({ theme }) => theme.gray};
   border-radius: 5px;
+  background: ${({ theme }) => theme.gray2};
   padding: 0rem 1rem;
   color: ${({ theme }) => theme.black};
   font-size: 1.6rem;
-  &::placeholder {
-    color: ${({ theme, id }) =>
-      id === 'displayName' ? theme.black : theme.darkGray};
-    font-size: 1.6rem;
-    font-weight: 300;
+  &:focus {
+    background: none;
   }
 `;
-// --> styled-components renaming
+
+const StSubmitButton = styled.button`
+  border: none;
+  border-radius: 4px;
+  padding: 0.5rem 1rem;
+  width: fit-content;
+  background: ${({ theme }) => theme.activeBlue};
+  color: ${({ theme }) => theme.white};
+  font-size: 1.5rem;
+  font-weight: 600;
+  line-height: 1.5;
+  cursor: pointer;
+`;
 
 export default EditPassword;
