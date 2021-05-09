@@ -37,22 +37,26 @@ const EditProfile = () => {
     { id: 'phone', text: '전화번호' },
   ];
 
+  React.useEffect(() => {
+    document.title = '프로필 편집 • Instagram';
+  }, []);
+
   return (
     <StEditProfileWrapper>
       <StEditProfileImage>
         <StAside>
-          <StLabel htmlFor="upload">
+          <StLabel htmlFor="edit">
             <StImage src={'/images/default_profile2.jpg'} />
           </StLabel>
         </StAside>
         <StProfileImageBox>
           <StDisplayName>admin</StDisplayName>
-          <StProfileImageButton htmlFor="upload">
+          <StProfileImageButton htmlFor="edit">
             프로필 사진 바꾸기
           </StProfileImageButton>
           <input
+            id="edit"
             type="file"
-            id="upload"
             accept="image/jpeg,  image/png, image/jpg"
             hidden
           />

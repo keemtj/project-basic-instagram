@@ -19,6 +19,10 @@ const EditPassword = () => {
     console.log('비밀번호 변경사항 저장!');
   };
 
+  React.useEffect(() => {
+    document.title = '비밀번호 변경 • Instagram';
+  }, []);
+
   return (
     <StEditPasswordWrapper>
       <StEditPasswordImage>
