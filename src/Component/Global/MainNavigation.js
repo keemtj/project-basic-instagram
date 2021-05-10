@@ -7,8 +7,14 @@ import { AddCircle } from '@styled-icons/ionicons-outline/AddCircle';
 import { Heart } from '@styled-icons/ionicons-outline/Heart';
 import PopupContainer from '../../Container/Global/PopupContainer';
 
-const MainNavigation = ({ openModal, photoURL, displayName }) => {
-  const [popup, setPopup] = React.useState(false);
+const MainNavigation = ({
+  openModal,
+  photoURL,
+  displayName,
+  popup,
+  setPopup,
+  onPopup,
+}) => {
   return (
     <StMainNavigation>
       <ul>
@@ -40,14 +46,18 @@ const MainNavigation = ({ openModal, photoURL, displayName }) => {
         </li>
         <li
           style={{ position: 'relative', cursor: 'pointer' }}
-          onClick={() => setPopup(!popup)}
+          onClick={onPopup}
         >
           <StProfile>
-            <StProfileImage src={photoURL} alt={displayName} />
+            <StProfileImage
+              src={photoURL}
+              alt={displayName}
+              className="profileNav"
+            />
           </StProfile>
         </li>
       </ul>
-      {popup && <PopupContainer setPopup={setPopup} />}
+      {popup && <PopupContainer popup={popup} setPopup={setPopup} />}
     </StMainNavigation>
   );
 };

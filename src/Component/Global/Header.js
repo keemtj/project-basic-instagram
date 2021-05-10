@@ -1,9 +1,8 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 import styled from 'styled-components';
-import { Search } from '@styled-icons/ionicons-outline/Search';
-import { CloseCircle } from '@styled-icons/ionicons-sharp/CloseCircle';
 import MainNavigationContainer from '../../Container/Global/MainNavigationContainer';
+import SearchContainer from '../../Container/Global/SearchContainer';
 import NewPost from '../New/NewPost';
 
 const Header = ({
@@ -24,13 +23,7 @@ const Header = ({
             />
           </NavLink>
         </StTitle>
-        <StSearch>
-          <StSearchInput type="text" placeholder="검색" />
-          <StSearchIcon />
-          <StClearBtn>
-            <StCloseCircleIcon />
-          </StClearBtn>
-        </StSearch>
+        <SearchContainer />
         <MainNavigationContainer openModal={openModal} />
       </StHeader>
       {progress !== 0 && <StProgressbar value={progress} max={100} />}
@@ -99,46 +92,6 @@ const StTitle = styled.h1`
 const StLogo = styled.img`
   width: 10rem;
   height: 100%;
-`;
-
-const StSearch = styled.div`
-  width: 100%;
-  height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  position: relative;
-`;
-
-const StSearchInput = styled.input`
-  width: 22rem;
-  height: 3rem;
-  border: 1px solid ${({ theme }) => theme.gray};
-  border-radius: 3px;
-  background: ${({ theme }) => theme.background};
-  padding: 0rem 2.5rem;
-  &::placeholder {
-    color: ${({ theme }) => theme.darkGray};
-    font-weight: 100;
-  }
-`;
-
-const StSearchIcon = styled(Search)`
-  position: absolute;
-  width: 1.4rem;
-  left: 5.5rem;
-  color: ${({ theme }) => theme.darkGray};
-`;
-
-const StClearBtn = styled.button`
-  position: absolute;
-  right: 5rem;
-`;
-
-const StCloseCircleIcon = styled(CloseCircle)`
-  width: 1.5rem;
-  height: 3rem;
-  color: ${({ theme }) => theme.darkGray};
 `;
 
 export default Header;

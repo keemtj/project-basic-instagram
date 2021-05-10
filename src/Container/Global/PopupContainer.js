@@ -10,7 +10,8 @@ import { loginState } from '../../Modules/login';
 import { resetFollow } from '../../Modules/user';
 import { getPosts } from '../../Modules/posts';
 
-const PopupContainer = ({ setPopup }) => {
+const PopupContainer = ({ popup, setPopup }) => {
+  const popupRef = React.useRef();
   // ! redux
   const { displayName, uid } = useSelector(state => state.user.currentUser);
   const dispatch = useDispatch();
@@ -36,8 +37,24 @@ const PopupContainer = ({ setPopup }) => {
     console.log('sign out');
   };
 
+  const onClickOutside = e => {
+    console.log(e.target.className);
+    if (e.target.className.includes('profileNav')) return;
+    if (popup && !popupRef.current.contains(e.target)) {
+      console.log('outside');
+      setPopup(false);
+    }
+  };
+
+  React.useEffect(() => {
+    window.addEventListener('click', onClickOutside);
+    return () => {
+      window.removeEventListener('click', onClickOutside);
+    };
+  }, []);
   return (
     <Popup
+      popupRef={popupRef}
       popupLists={popupLists}
       onClickList={onClickList}
       onClickSignOut={onClickSignOut}

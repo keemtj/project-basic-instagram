@@ -3,11 +3,11 @@ import { NavLink } from 'react-router-dom';
 import styled, { css } from 'styled-components';
 import { LogOut } from '@styled-icons/boxicons-regular/LogOut';
 
-const Popup = ({ popupLists, onClickList, onClickSignOut }) => {
+const Popup = ({ popupRef, popupLists, onClickList, onClickSignOut }) => {
   return (
     <>
       <StTriangle />
-      <StPopup>
+      <StPopup ref={popupRef}>
         <ul>
           {popupLists.map(({ link, icon, text }, index) => (
             <StPopupList key={index}>
@@ -46,7 +46,6 @@ const itemStyle = css`
 `;
 
 const StPopup = styled.div`
-  /* display: none; */
   position: absolute;
   right: calc((100% - 100rem) / 2);
   top: 5.4rem;

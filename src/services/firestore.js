@@ -1,13 +1,13 @@
 import { firestore } from './firebase';
 
-//  get currentUser data to users collection of firestore
+// --> get currentUser data to users collection of firestore
 export const getCurrentUserData = async uid => {
   const doc = await firestore.collection('users').doc(uid).get();
   const datas = doc.data();
   return datas;
 };
 
-// get follow data of currentUser by uid
+// --> get follow data of currentUser by uid
 export const getFollowData = async uid => {
   try {
     const doc = await firestore.collection('follow').doc(uid).get();
@@ -65,7 +65,6 @@ export const getAllPostsByFollowing = async following => {
   const result = await promiseAll.flatMap(v => v);
   return result;
 };
-// --> function using posts module
 
 // --> get user data by displayname
 export const getUserDataByDisplayName = async displayName => {
@@ -87,10 +86,12 @@ export const getUid = async watchName => {
   docs.forEach(doc => (uid = doc.data().uid));
   return uid;
 };
-// =====================
-// new post
+
+// --> new post
 export const generatedId = () => {
   const result = firestore.collection('posts').doc().id;
-  console.log('Promise? =>', result); // [[promiseResult]] || 'random string'
   return result;
 };
+
+// --> follow data
+// export const

@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
+import { useHistory } from 'react-router';
 import User from '../../Component/Profile/User';
 
 const UserContainer = ({ watchName }) => {
+  const history = useHistory();
   // NOTE 현재 로그인 중인 유저의 데이터
   const { data: myPosts } = useSelector(state => state.posts.myPosts);
   const currentUser = useSelector(state => state.user.currentUser);
@@ -28,7 +30,8 @@ const UserContainer = ({ watchName }) => {
   };
 
   const onEditProfile = () => {
-    console.log('프로필 편집 트리거!!');
+    history.push('/edit');
+    console.log('프로필 편집 페이지로 이동');
   };
 
   const onClickSettings = () => {
