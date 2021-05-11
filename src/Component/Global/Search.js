@@ -13,7 +13,7 @@ const Search = ({ popupState, onSearch, onClosePopup }) => {
         onClick={onSearch}
         popupState={popupState}
       />
-      <StSearchIcon popupState={popupState} />
+      <StSearchIcon onClick={!popupState && onSearch} popupState={popupState} />
       {popupState && (
         <>
           <StClearBtn onClick={onClosePopup}>
@@ -53,6 +53,7 @@ const StSearchIcon = styled(SearchIcon)`
     !popupState
       ? css`
           left: calc(50% - 3rem);
+          cursor: pointer;
         `
       : css`
           left: 0.5rem;
