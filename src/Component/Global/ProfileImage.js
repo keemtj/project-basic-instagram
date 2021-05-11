@@ -26,7 +26,7 @@ const ProfileImage = ({
         <StUsername
           marginLeft={marginLeft}
           fontSize={fontSize}
-          onClick={() => console.log('이미지 클릭 -> 유저 페이지로 이동')}
+          onClick={() => console.log('유저네임 클릭 -> 유저 페이지로 이동')}
         >
           {username}
         </StUsername>
@@ -50,6 +50,7 @@ const StProfileImage = styled.img`
     text-decoration: underline;
     cursor: pointer;
   }
+  object-fit: cover;
 `;
 
 const StUsername = styled.div`
