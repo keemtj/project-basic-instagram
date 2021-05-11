@@ -97,17 +97,6 @@ const NewPost = ({ closeModal, setProgress }) => {
           setTimeout(() => {
             window.location.reload();
           }, 1000);
-          // uploadTask.snapshot.ref.getDownloadURL().then(result => {
-          //   console.log(
-          //     '업로드를 완료했을 때 taskState:',
-          //     uploadTask.snapshot.state,
-          //     'result =>',
-          //     result,
-          //   );
-          //   setTimeout(() => {
-          //     window.location.reload();
-          //   }, 20000);
-          // });
         },
       );
     });

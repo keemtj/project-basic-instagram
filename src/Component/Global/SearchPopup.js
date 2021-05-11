@@ -1,13 +1,15 @@
 import React from 'react';
 import styled from 'styled-components';
 
-const SearchPopup = ({ value, popupRef }) => {
+const SearchPopup = () => {
   const searchList = [{ displayName: 'admin2' }];
   const searchHistory = [{ displayName: 'admin3' }];
+  const value = 'admin2';
+
   return (
     <>
       <StTriangle />
-      <StSearchPopupWrapper ref={popupRef}>
+      <StSearchPopupWrapper>
         <StSearchPopupHeader>
           <div>최근 검색 항목</div>
           <button>모두 지우기</button>

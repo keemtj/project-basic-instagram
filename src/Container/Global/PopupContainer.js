@@ -9,13 +9,12 @@ import { useHistory } from 'react-router';
 import { loginState } from '../../Modules/login';
 import { resetFollow } from '../../Modules/user';
 import { getPosts } from '../../Modules/posts';
+import { closePopup } from '../../Modules/popup';
 
-const PopupContainer = ({ popup, setPopup }) => {
-  const popupRef = React.useRef();
-  // ! redux
-  const { displayName, uid } = useSelector(state => state.user.currentUser);
+const PopupContainer = () => {
   const dispatch = useDispatch();
   const history = useHistory();
+  const { displayName, uid } = useSelector(state => state.user.currentUser);
 
   const popupLists = [
     { link: `/p/${displayName}`, text: '프로필', icon: <User /> },
@@ -24,26 +23,21 @@ const PopupContainer = ({ popup, setPopup }) => {
   ];
 
   const onClickList = () => {
-    setPopup(false);
     dispatch(getPosts(uid));
+    dispatch(closePopup('profilePopup'));
   };
 
   const onClickSignOut = () => {
-    setPopup(false);
     signOut();
+    dispatch(closePopup('profilePopup'));
     dispatch(loginState(false));
     dispatch(resetFollow());
     history.push('/login');
     console.log('sign out');
   };
 
-  const onClickOutside = e => {
-    console.log(e.target.className);
-    if (e.target.className.includes('profileNav')) return;
-    if (popup && !popupRef.current.contains(e.target)) {
-      console.log('outside');
-      setPopup(false);
-    }
+  const onClickOutside = () => {
+    dispatch(closePopup('profilePopup'));
   };
 
   React.useEffect(() => {
@@ -52,9 +46,9 @@ const PopupContainer = ({ popup, setPopup }) => {
       window.removeEventListener('click', onClickOutside);
     };
   }, []);
+
   return (
     <Popup
-      popupRef={popupRef}
       popupLists={popupLists}
       onClickList={onClickList}
       onClickSignOut={onClickSignOut}

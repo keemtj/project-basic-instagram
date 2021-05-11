@@ -11,9 +11,8 @@ const MainNavigation = ({
   openModal,
   photoURL,
   displayName,
-  popup,
-  setPopup,
   onPopup,
+  popupState,
 }) => {
   return (
     <StMainNavigation>
@@ -49,15 +48,11 @@ const MainNavigation = ({
           onClick={onPopup}
         >
           <StProfile>
-            <StProfileImage
-              src={photoURL}
-              alt={displayName}
-              className="profileNav"
-            />
+            <StProfileImage src={photoURL} alt={displayName} />
           </StProfile>
         </li>
       </ul>
-      {popup && <PopupContainer popup={popup} setPopup={setPopup} />}
+      {popupState && <PopupContainer />}
     </StMainNavigation>
   );
 };

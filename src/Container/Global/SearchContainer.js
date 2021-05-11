@@ -1,25 +1,23 @@
-import React, { useState } from 'react';
+import React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import Search from '../../Component/Global/Search';
+import { openPopup, closePopup } from '../../Modules/popup';
 
 const SearchContainer = () => {
-  const [value, setValue] = useState('');
-  const [popup, setPopup] = useState(false);
+  const popupState = useSelector(state => state.popup.searchPopup);
+  const dispatch = useDispatch();
 
-  const openPopup = () => {
-    setPopup(true);
+  const onSearch = () => {
+    dispatch(openPopup('searchPopup'));
   };
-
-  const onSearch = e => {
-    setValue(e.target.value);
+  const onClosePopup = () => {
+    dispatch(closePopup('searchPopup'));
   };
-
   return (
     <Search
-      openPopup={openPopup}
-      popup={popup}
-      setPopup={setPopup}
-      value={value}
+      popupState={popupState}
       onSearch={onSearch}
+      onClosePopup={onClosePopup}
     />
   );
 };

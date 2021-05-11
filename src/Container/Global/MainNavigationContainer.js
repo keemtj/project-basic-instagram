@@ -1,16 +1,17 @@
-import React, { useState } from 'react';
-import { useSelector } from 'react-redux';
+import React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import MainNavigation from '../../Component/Global/MainNavigation';
+import { openPopup } from '../../Modules/popup';
 
 const MainNavigationContainer = ({ openModal }) => {
-  // ! redux
+  const dispatch = useDispatch();
   const { photoURL, displayName } = useSelector(
     state => state.user.currentUser,
   );
+  const popupState = useSelector(state => state.popup.profilePopup);
 
-  const [popup, setPopup] = useState(false);
   const onPopup = () => {
-    setPopup(true);
+    dispatch(openPopup('profilePopup'));
   };
 
   return (
@@ -18,9 +19,8 @@ const MainNavigationContainer = ({ openModal }) => {
       openModal={openModal}
       photoURL={photoURL || '/images/default_profile2.jpg'}
       displayName={displayName}
-      popup={popup}
-      setPopup={setPopup}
       onPopup={onPopup}
+      popupState={popupState}
     />
   );
 };
