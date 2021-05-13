@@ -95,3 +95,22 @@ export const generatedId = () => {
 
 // --> follow data
 // export const
+
+// --> get user search results by name
+export const getUserSearchResultByDisplayName = async value => {
+  if (value === '') return;
+  // NOTE displayName >= value, limit(10)
+  let datas = [];
+  console.time('get users');
+  const docs = await firestore.collection('users').limit(10).get();
+  docs.forEach(doc => {
+    datas.push(doc.data());
+  });
+  console.timeEnd('get users');
+  const regex = new RegExp(`${value}`, 'i');
+  const result = datas
+    .filter(data => regex.test(data.displayName))
+    .sort((a, b) => a.displayName.localeCompare(b.displayName));
+  console.table(result, 'displayName');
+  return result;
+};

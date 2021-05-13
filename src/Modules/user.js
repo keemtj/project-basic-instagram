@@ -75,8 +75,8 @@ const user = (state = initialState, action) => {
       return {
         ...state,
         follow: {
-          followers: action.followData.followers,
-          following: action.followData.following,
+          followers: action.followData?.followers,
+          following: action.followData?.following,
         },
       };
     case FOLLOWED_ME:

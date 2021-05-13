@@ -4,16 +4,27 @@ import { Search as SearchIcon } from '@styled-icons/ionicons-outline/Search';
 import { CloseCircle } from '@styled-icons/ionicons-sharp/CloseCircle';
 import SearchPopupContainer from '../../Container/Global/SearchPopupContainer';
 
-const Search = ({ popupState, onSearch, onClosePopup }) => {
+const Search = ({
+  popupState,
+  onSearch,
+  onClosePopup,
+  onChangeSearchInput,
+  value,
+}) => {
   return (
     <StSearchWrapper>
       <StSearchInput
         type="text"
         placeholder="검색"
+        value={value}
+        onChange={onChangeSearchInput}
         onClick={onSearch}
         popupState={popupState}
       />
-      <StSearchIcon onClick={!popupState && onSearch} popupState={popupState} />
+      <StSearchIcon
+        onClick={!popupState ? onSearch : undefined}
+        popupState={popupState}
+      />
       {popupState && (
         <>
           <StClearBtn onClick={onClosePopup}>
