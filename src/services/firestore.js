@@ -98,7 +98,7 @@ export const generatedId = () => {
 
 // --> get user search results by name
 export const getUserSearchResultByDisplayName = async value => {
-  if (value === '') return;
+  if (value === '') return null;
   // NOTE displayName >= value, limit(10)
   let datas = [];
   console.time('get users');
@@ -111,6 +111,5 @@ export const getUserSearchResultByDisplayName = async value => {
   const result = datas
     .filter(data => regex.test(data.displayName))
     .sort((a, b) => a.displayName.localeCompare(b.displayName));
-  console.table(result, 'displayName');
   return result;
 };

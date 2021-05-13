@@ -3,15 +3,33 @@ import styled from 'styled-components';
 import Recent from './Recent';
 import SearchResult from './SearchResult';
 
-const SearchPopup = ({ recentList, value, searchResultList }) => {
+const SearchPopup = ({
+  recent,
+  value,
+  searchResult,
+  loading,
+  onClickSearchUser,
+  onClickRecentUser,
+  onRemoveRecentUser,
+  onRemoveAllRecentUser,
+}) => {
   return (
-    <StSearchPopupWrapper style={{ position: ' relative' }}>
+    <StSearchPopupWrapper>
       <StTriangle />
       <StSearchPopup>
         {value ? (
-          <SearchResult searchResultList={searchResultList} />
+          <SearchResult
+            searchResult={searchResult}
+            loading={loading}
+            onClickSearchUser={onClickSearchUser}
+          />
         ) : (
-          <Recent recentList={recentList} />
+          <Recent
+            recent={recent}
+            onClickRecentUser={onClickRecentUser}
+            onRemoveRecentUser={onRemoveRecentUser}
+            onRemoveAllRecentUser={onRemoveAllRecentUser}
+          />
         )}
       </StSearchPopup>
     </StSearchPopupWrapper>
@@ -38,7 +56,7 @@ const StTriangle = styled.div`
 const StSearchPopup = styled.div`
   position: absolute;
   top: 1.2rem;
-  left: -9rem;
+  left: -6.5rem;
   z-index: 4;
 
   display: flex;
@@ -48,8 +66,8 @@ const StSearchPopup = styled.div`
   background: ${({ theme }) => theme.white};
   border: none;
   border-radius: 5px;
-  width: 40rem;
-  height: 37rem;
+  width: 35rem;
+  height: 35rem;
   box-shadow: 0px 0px 10px ${({ theme }) => theme.gray8};
   overflow-y: scroll;
 `;

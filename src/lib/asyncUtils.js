@@ -1,8 +1,11 @@
+const sleep = n => new Promise(resolve => setTimeout(resolve, n));
+
 export const fetchDataThunk = (type, promiseCreator) => {
   const [SUCCESS, ERROR] = [`${type}_SUCCESS`, `${type}_ERROR`];
 
   return param => async dispatch => {
     dispatch({ type });
+    await sleep(1000);
     try {
       const payload = await promiseCreator(param);
       dispatch({ type: SUCCESS, payload }); // 호출 성공

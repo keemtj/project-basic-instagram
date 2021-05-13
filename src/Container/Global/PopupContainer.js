@@ -27,11 +27,16 @@ const PopupContainer = () => {
     dispatch(closePopup('profilePopup'));
   };
 
+  /**
+   * TODO: 1. 로그아웃시 localStorage의 'recent' key 기록 삭제
+   * TODO: 2. 재 로그인시 검색기록을 가져오기 위해 파이어베이스에 저장하는 코드 추가
+   */
   const onClickSignOut = () => {
     signOut();
     dispatch(closePopup('profilePopup'));
     dispatch(loginState(false));
     dispatch(resetFollow());
+    localStorage.removeItem('recent');
     history.push('/login');
     console.log('sign out');
   };

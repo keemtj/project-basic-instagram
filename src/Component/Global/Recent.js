@@ -3,39 +3,49 @@ import styled from 'styled-components';
 import ProfileImage from './ProfileImage';
 import { Clear } from '@styled-icons/material-rounded/Clear';
 
-const Recent = ({ recentList }) => {
+const Recent = ({
+  recent,
+  // onClickRecentUser,
+  onRemoveRecentUser,
+  onRemoveAllRecentUser,
+}) => {
   return (
     <>
       <StRecentPopupHeader>
         <h3>최근 검색 항목</h3>
-        {recentList?.length ? (
-          <StClearAllButton>모두 지우기</StClearAllButton>
+        {recent?.length ? (
+          <StClearAllButton onClick={onRemoveAllRecentUser}>
+            모두 지우기
+          </StClearAllButton>
         ) : (
           <div />
         )}
       </StRecentPopupHeader>
       <StRecentBox>
-        {recentList?.length ? (
-          recentList.map(({ src, displayName, username }, index) => (
-            <StRecentList key={index}>
-              <ProfileImage
-                src={src || '/images/default_profile2.jpg'}
-                width={5}
-                height={5}
-                marginLeft={1.2}
-                fontSize={1.4}
-                username={displayName}
-              >
-                <StNameWrapper>
-                  <StDisplayName>{displayName}</StDisplayName>
-                  {username && <StUsername>{username}</StUsername>}
-                </StNameWrapper>
-              </ProfileImage>
-              <StClearButton>
-                <Clear />
-              </StClearButton>
-            </StRecentList>
-          ))
+        {recent?.length ? (
+          recent.map((user, index) => {
+            const { photoURL, displayName, username } = user;
+            return (
+              <StRecentList key={index}>
+                <ProfileImage
+                  src={photoURL || '/images/default_profile2.jpg'}
+                  width={5}
+                  height={5}
+                  marginLeft={1.2}
+                  fontSize={1.4}
+                  username={displayName}
+                >
+                  <StNameWrapper>
+                    <StDisplayName>{displayName}</StDisplayName>
+                    {username && <StUsername>{username}</StUsername>}
+                  </StNameWrapper>
+                </ProfileImage>
+                <StClearButton onClick={() => onRemoveRecentUser(user)}>
+                  <Clear />
+                </StClearButton>
+              </StRecentList>
+            );
+          })
         ) : (
           <StNoRecent>최근 검색 내역 없음.</StNoRecent>
         )}
