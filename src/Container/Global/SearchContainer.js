@@ -3,20 +3,28 @@ import { useDispatch, useSelector } from 'react-redux';
 import Search from '../../Component/Global/Search';
 import { openPopup, closePopup } from '../../Modules/popup';
 import {
-  getUserSearchResultByDisplayName,
   searchValue,
+  clearValue,
+  getUserSearchResultByDisplayName,
+  addLocalStorageToRecent,
 } from '../../Modules/search';
 
 const SearchContainer = () => {
   const dispatch = useDispatch();
-  const popupState = useSelector(state => state.popup.searchPopup);
+  const { searchPopup: popupState } = useSelector(state => state.popup);
   const value = useSelector(state => state.search.value);
+  const { loading } = useSelector(state => state.search);
+  const searchRef = React.useRef();
 
   const onSearch = () => {
-    dispatch(openPopup('searchPopup'));
+    if (!popupState) dispatch(openPopup('searchPopup'));
   };
-  const onClosePopup = () => {
-    dispatch(closePopup('searchPopup'));
+
+  const onClosePopup = e => {
+    if (popupState && !searchRef.current.contains(e.target)) {
+      e.stopPropagation();
+      dispatch(closePopup('searchPopup'));
+    }
   };
 
   const onChangeSearchInput = e => {
@@ -24,13 +32,31 @@ const SearchContainer = () => {
     dispatch(getUserSearchResultByDisplayName(e.target.value));
   };
 
+  const onClearValue = () => {
+    dispatch(clearValue());
+  };
+
+  React.useEffect(() => {
+    const recentHistory = JSON.parse(localStorage.getItem('recent'));
+    dispatch(addLocalStorageToRecent(recentHistory));
+  }, []);
+
+  React.useEffect(() => {
+    document.addEventListener('mousedown', onClosePopup);
+    return () => {
+      document.removeEventListener('mousedown', onClosePopup);
+    };
+  }, [popupState]);
   return (
     <Search
+      searchRef={searchRef}
       popupState={popupState}
       onSearch={onSearch}
       onClosePopup={onClosePopup}
       onChangeSearchInput={onChangeSearchInput}
+      onClearValue={onClearValue}
       value={value}
+      loading={loading}
     />
   );
 };

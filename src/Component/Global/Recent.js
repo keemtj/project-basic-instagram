@@ -10,7 +10,7 @@ const Recent = ({
   onRemoveAllRecentUser,
 }) => {
   return (
-    <>
+    <StRecentWrapper>
       <StRecentPopupHeader>
         <h3>최근 검색 항목</h3>
         {recent?.length ? (
@@ -50,10 +50,16 @@ const Recent = ({
           <StNoRecent>최근 검색 내역 없음.</StNoRecent>
         )}
       </StRecentBox>
-    </>
+    </StRecentWrapper>
   );
 };
 
+const StRecentWrapper = styled.div`
+  display: flex;
+  flex-flow: column nowrap;
+  width: 100%;
+  height: 100%;
+`;
 const StRecentPopupHeader = styled.header`
   display: flex;
   align-items: center;

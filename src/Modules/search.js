@@ -21,6 +21,7 @@ export const clearValue = () => ({ type: CLEAR_VALUE });
 export const getUserSearchResultByDisplayName = fetchDataThunk(
   SEARCH,
   store.getUserSearchResultByDisplayName,
+  2000,
 );
 export const addRecent = user => ({ type: RECENT_ADD, user });
 export const addLocalStorageToRecent = recent => ({

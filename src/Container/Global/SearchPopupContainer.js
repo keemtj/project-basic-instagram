@@ -1,12 +1,7 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import SearchPopup from '../../Component/Global/SearchPopup';
-import {
-  addLocalStorageToRecent,
-  addRecent,
-  allclearRecent,
-  removeRecent,
-} from '../../Modules/search';
+import { addRecent, allclearRecent, removeRecent } from '../../Modules/search';
 
 const SearchPopupContainer = () => {
   const dispatch = useDispatch();
@@ -28,23 +23,17 @@ const SearchPopupContainer = () => {
   };
 
   const onRemoveRecentUser = user => {
-    console.log('클릭한 유저 기록 삭제');
     dispatch(removeRecent(user));
   };
 
   const onRemoveAllRecentUser = () => {
-    console.log('전체 기록 삭제');
     dispatch(allclearRecent());
   };
 
-  React.useEffect(() => {
-    const recentHistory = JSON.parse(localStorage.getItem('recent'));
-    dispatch(addLocalStorageToRecent(recentHistory));
-  }, []);
   return (
     <SearchPopup
-      value={value}
       recent={recent}
+      value={value}
       searchResult={searchResult}
       loading={loading}
       onClickSearchUser={onClickSearchUser}

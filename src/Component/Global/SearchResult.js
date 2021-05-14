@@ -14,6 +14,7 @@ const SearchResult = ({ searchResult, loading, onClickSearchUser }) => {
           </StLoading>
         ) : searchResult?.length ? (
           searchResult.map((user, index) => {
+            // slice(0, n)
             const { photoURL, displayName, username } = user;
             return (
               <StRecentList key={index}>

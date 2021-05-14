@@ -1,43 +1,42 @@
 import React from 'react';
-import styled, { css } from 'styled-components';
+import styled, { css, keyframes } from 'styled-components';
 import { Search as SearchIcon } from '@styled-icons/ionicons-outline/Search';
 import { CloseCircle } from '@styled-icons/ionicons-sharp/CloseCircle';
 import SearchPopupContainer from '../../Container/Global/SearchPopupContainer';
+import { Spinner3 } from '@styled-icons/icomoon/Spinner3';
 
 const Search = ({
+  searchRef,
   popupState,
   onSearch,
-  onClosePopup,
   onChangeSearchInput,
+  onClearValue,
   value,
+  loading,
 }) => {
   return (
-    <StSearchWrapper>
+    <StSearchWrapper onClick={onSearch} ref={searchRef}>
       <StSearchInput
         type="text"
+        name="searchPopup"
         placeholder="검색"
         value={value}
         onChange={onChangeSearchInput}
-        onClick={onSearch}
         popupState={popupState}
+        autoComplete="off"
       />
-      <StSearchIcon
-        onClick={!popupState ? onSearch : undefined}
-        popupState={popupState}
-      />
+      <StSearchIcon popupState={popupState} />
       {popupState && (
-        <>
-          <StClearBtn onClick={onClosePopup}>
-            <StCloseCircleIcon />
-          </StClearBtn>
-        </>
+        <StClearBtn onClick={loading ? undefined : onClearValue}>
+          {loading ? <StSpinner isLoading={loading} /> : <StCloseCircleIcon />}
+        </StClearBtn>
       )}
       {popupState && <SearchPopupContainer />}
     </StSearchWrapper>
   );
 };
 
-const StSearchWrapper = styled.div`
+const StSearchWrapper = styled.label`
   position: relative;
 `;
 
@@ -79,13 +78,27 @@ const StClearBtn = styled.button`
   right: 0.5rem;
   width: 1.5rem;
   height: 3rem;
-  cursor: pointer;
+  cursor: ${({ isLoading }) => (isLoading ? 'default' : 'pointer')};
 `;
 
 const StCloseCircleIcon = styled(CloseCircle)`
   width: 1.5rem;
   height: 3rem;
   color: ${({ theme }) => theme.darkGray};
+`;
+
+const rotate = keyframes`
+  100% {
+    transform: rotate(360deg);
+  }
+`;
+
+const StSpinner = styled(Spinner3)`
+  animation: ${({ isLoading }) =>
+    isLoading &&
+    css`
+      ${rotate} 2s linear infinite;
+    `};
 `;
 
 export default Search;
