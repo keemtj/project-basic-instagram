@@ -2,17 +2,27 @@ import React from 'react';
 import styled from 'styled-components';
 import Carousel from '../Global/Carousel';
 
-const PostItem = ({ imagesArray }) => {
+const PostItem = ({
+  imagesArray,
+  hover,
+  onShow,
+  onHide,
+  heartCount,
+  comments,
+}) => {
   return (
-    <>
-      <StPostWrapper>
-        <Carousel
-          imagesArray={imagesArray}
-          multiple={imagesArray.length > 1}
-          hover
-        />
-      </StPostWrapper>
-    </>
+    <StPostWrapper>
+      <Carousel
+        imagesArray={imagesArray}
+        badge={imagesArray?.length > 1}
+        profile={true}
+        hover={hover}
+        onShow={onShow}
+        onHide={onHide}
+        heartCount={heartCount}
+        comments={comments}
+      />
+    </StPostWrapper>
   );
 };
 

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Search from '../../Component/Global/Search';
 import { openPopup, closePopup } from '../../Modules/popup';
@@ -14,7 +14,7 @@ const SearchContainer = () => {
   const { searchPopup: popupState } = useSelector(state => state.popup);
   const value = useSelector(state => state.search.value);
   const { loading } = useSelector(state => state.search);
-  const searchRef = React.useRef();
+  const searchRef = useRef();
 
   const onSearch = () => {
     if (!popupState) dispatch(openPopup('searchPopup'));
@@ -36,12 +36,12 @@ const SearchContainer = () => {
     dispatch(clearValue());
   };
 
-  React.useEffect(() => {
+  useEffect(() => {
     const recentHistory = JSON.parse(localStorage.getItem('recent'));
     dispatch(addLocalStorageToRecent(recentHistory));
   }, []);
 
-  React.useEffect(() => {
+  useEffect(() => {
     document.addEventListener('mousedown', onClosePopup);
     return () => {
       document.removeEventListener('mousedown', onClosePopup);

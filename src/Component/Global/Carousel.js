@@ -1,18 +1,22 @@
 import React, { useState, useRef } from 'react';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import { Dot } from '@styled-icons/bootstrap/Dot';
 import { ArrowLeftCircleFill } from '@styled-icons/bootstrap/ArrowLeftCircleFill';
 import { ArrowRightCircleFill } from '@styled-icons/bootstrap/ArrowRightCircleFill';
 import { SquareMultiple } from '@styled-icons/fluentui-system-filled/SquareMultiple';
-
-const Carousel = ({ imagesArray, pagenation, multiple }) => {
+import { Heart } from '@styled-icons/boxicons-solid/Heart';
+import { Chatbubble } from '@styled-icons/ionicons-sharp/Chatbubble';
+const Carousel = ({ imagesArray, pagenation, ...rest }) => {
   /**
    * @param imagesArray [image, image, ..., image]
    * @param pagenation Dot pagenation
-   * @param multiple images icon
+   * @param badge images icon
+   * @param profile using posts in profile page
    * @param hover image hover in profile page
+   * @param heartCount when hovering post image
+   * @param comments(comment.length) when hovering post image
    */
-
+  const { badge, profile, hover, onShow, onHide, heartCount, comments } = rest;
   const ref = useRef();
   const [currentImage, setCurrentImage] = useState(0);
 
@@ -25,17 +29,18 @@ const Carousel = ({ imagesArray, pagenation, multiple }) => {
     ref.current.style.transform = `translate(-${100 * (currentImage + 1)}%)`;
     currentImage < imagesArray.length - 1 && setCurrentImage(currentImage + 1);
   };
-
   return (
     <StCarouselWrapper>
-      <StCarousel>
+      <StCarousel onMouseEnter={onShow} onMouseLeave={onHide}>
         <StCarouselInner ref={ref}>
-          {multiple ? (
-            <StImageWrapper>
-              <StBadge>
-                <SquareMultiple />
-              </StBadge>
-              <StImage src={imagesArray[0].url} alt={imagesArray[0].name} />
+          {profile ? (
+            <StImageWrapper profile={profile}>
+              {badge && (
+                <StBadge>
+                  <SquareMultiple />
+                </StBadge>
+              )}
+              <StBackgroundImg url={imagesArray[0].url} />
             </StImageWrapper>
           ) : (
             imagesArray?.map(({ url, name }, index) => {
@@ -46,10 +51,21 @@ const Carousel = ({ imagesArray, pagenation, multiple }) => {
               );
             })
           )}
+          {hover && (
+            <StHover hover={hover}>
+              <StIconWrap>
+                <StHeartIcons />
+                {heartCount.toLocaleString() || 0}
+              </StIconWrap>
+              <StIconWrap>
+                <StChatIcons />
+                {comments.toLocaleString() || 0}
+              </StIconWrap>
+            </StHover>
+          )}
         </StCarouselInner>
       </StCarousel>
-      {/* {hover && <StHover hover={hover}>핱 190 댓 25</StHover>} */}
-      {!multiple && (
+      {!profile && (
         <StSlideButtonWrapper>
           {currentImage > 0 ? (
             <StSlideButton type="button" onClick={handlePrev}>
@@ -97,15 +113,25 @@ const StCarouselInner = styled.div`
 
 const StImageWrapper = styled.div`
   min-width: 100%;
+  height: ${({ profile }) => profile && '30rem'};
 `;
 
 const StBadge = styled.div`
   position: absolute;
-  right: 5px;
-  top: 5px;
+  right: 8px;
+  top: 8px;
   color: ${({ theme }) => theme.white};
   width: 2.2rem;
   height: 2.2rem;
+`;
+
+const StBackgroundImg = styled.div`
+  width: 100%;
+  height: 100%;
+  background-image: ${({ url }) => `url(${url})`};
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: 50% 50%;
 `;
 
 const StImage = styled.img`
@@ -114,24 +140,45 @@ const StImage = styled.img`
   background: ${({ theme }) => theme.white};
 `;
 
-// const StHover = styled.div`
-//   display: flex;
-//   align-items: center;
-//   justify-content: center;
-//   ${({ hover }) =>
-//     hover
-//       ? css`
-//           color: red;
-//           position: absolute;
-//           top: 0;
-//           width: 100%;
-//           height: 100%;
-//           background: rgba(0, 0, 0, 0.5);
-//         `
-//       : css`
-//           display: none;
-//         `}
-// `;
+const StHover = styled.div`
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
+  justify-content: center;
+  ${({ hover }) =>
+    hover
+      ? css`
+          position: absolute;
+          top: 0;
+          width: 100%;
+          height: 100%;
+          color: white;
+          font-size: 1.8rem;
+          background: rgba(0, 0, 0, 0.5);
+        `
+      : css`
+          display: none;
+        `}
+`;
+
+const StIconWrap = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  :first-child {
+    margin-right: 2.5rem;
+  }
+`;
+
+const StHeartIcons = styled(Heart)`
+  width: 2.2rem;
+  margin-right: 0.5rem;
+`;
+
+const StChatIcons = styled(Chatbubble)`
+  width: 2rem;
+  margin-right: 0.5rem;
+`;
 
 const StSlideButtonWrapper = styled.div`
   display: flex;
