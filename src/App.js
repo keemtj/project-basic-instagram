@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import MainRouter from './Router/MainRouter';
 import ResetStyle from './Style/ResetStyle';
 import PageWrapper from './Component/Global/PageWrapper';
@@ -7,6 +7,45 @@ import { loginState } from './Modules/login';
 import { useDispatch, useSelector } from 'react-redux';
 import { currentUser, followData } from './Modules/user';
 import { getCurrentUserData, getFollowData } from './services/firestore';
+import NewPost from './Component/New/NewPost';
+import ProgressBar from './Component/Global/ProgressBar';
+
+const App = () => {
+  const dispatch = useDispatch();
+  const isSignIn = useSelector(state => state.login.isSignIn);
+  const {
+    newPostModal: newPostModalState,
+    postModal: postModalState,
+  } = useSelector(state => state.popup);
+  const [progress, setProgress] = useState(0);
+
+  useEffect(() => {
+    firebaseAuth.onAuthStateChanged(async user => {
+      if (user) {
+        const { uid } = user;
+        const userData = await getCurrentUserData(uid);
+        const userFollowData = await getFollowData(uid);
+        dispatch(loginState(true));
+        dispatch(currentUser(userData));
+        dispatch(followData(userFollowData));
+      }
+    });
+  }, [dispatch]);
+
+  return (
+    <>
+      <ResetStyle />
+      <PageWrapper>
+        <MainRouter isSignIn={isSignIn} />
+        {progress !== 0 && <ProgressBar progress={progress} />}
+        {newPostModalState && <NewPost setProgress={setProgress} />}
+        {postModalState && <div>post modal~</div>}
+      </PageWrapper>
+    </>
+  );
+};
+
+export default App;
 
 /**
  * NOTE App -> dispatch
@@ -39,32 +78,3 @@ import { getCurrentUserData, getFollowData } from './services/firestore';
  * NOTE carousel hover ui
  * 1. mousehover시 haertCount || 0, commment.length || 0 넣기
  */
-
-const App = () => {
-  const dispatch = useDispatch();
-  const isSignIn = useSelector(state => state.login.isSignIn);
-
-  useEffect(() => {
-    firebaseAuth.onAuthStateChanged(async user => {
-      if (user) {
-        const { uid } = user;
-        const userData = await getCurrentUserData(uid);
-        const userFollowData = await getFollowData(uid);
-        dispatch(loginState(true));
-        dispatch(currentUser(userData));
-        dispatch(followData(userFollowData));
-      }
-    });
-  }, [dispatch]);
-
-  return (
-    <>
-      <ResetStyle />
-      <PageWrapper>
-        <MainRouter isSignIn={isSignIn} />
-      </PageWrapper>
-    </>
-  );
-};
-
-export default App;

@@ -15,6 +15,7 @@ const Carousel = ({ imagesArray, pagenation, ...rest }) => {
    * @param hover image hover in profile page
    * @param heartCount when hovering post image
    * @param comments(comment.length) when hovering post image
+   * FIXME: profile -> isProfile
    */
   const { badge, profile, hover, onShow, onHide, heartCount, comments } = rest;
   const ref = useRef();
@@ -34,7 +35,7 @@ const Carousel = ({ imagesArray, pagenation, ...rest }) => {
       <StCarousel onMouseEnter={onShow} onMouseLeave={onHide}>
         <StCarouselInner ref={ref}>
           {profile ? (
-            <StImageWrapper profile={profile}>
+            <StImageWrapper isProfile={profile}>
               {badge && (
                 <StBadge>
                   <SquareMultiple />
@@ -113,7 +114,7 @@ const StCarouselInner = styled.div`
 
 const StImageWrapper = styled.div`
   min-width: 100%;
-  height: ${({ profile }) => profile && '30rem'};
+  height: ${({ isProfile }) => isProfile && '30rem'};
 `;
 
 const StBadge = styled.div`

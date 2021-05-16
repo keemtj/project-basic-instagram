@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import styled, { css } from 'styled-components';
 import { Upload } from '@styled-icons/boxicons-regular/Upload';
-import PostModalPortal from '../../PostModalPortal';
+import NewPostPortal from '../../NewPostPortal';
 import UploadImageInput from './UploadImageInput';
 import ImagePreview from './ImagePreview';
 import Textarea from './Textarea';
@@ -9,10 +9,15 @@ import CommentSetting from './CommentSetting';
 import PlaceSearch from './PlaceSearch';
 import PlaceAutoComplete from './PlaceAutoComplete';
 import { firebase, firestore, firebaseStorage } from '../../services/firebase';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { generatedId } from '../../services/firestore';
+import { closePopup } from '../../Modules/popup';
+import { useHistory } from 'react-router';
 
-const NewPost = ({ closeModal, setProgress }) => {
+const NewPost = ({ setProgress }) => {
+  const dispatch = useDispatch();
+  const history = useHistory();
+  const modalEntryPath = useSelector(state => state.popup.modalEntryPath);
   const { displayName, uid } = useSelector(state => state.user.currentUser);
   const [images, setImages] = useState([]);
   const [location, setLocation] = useState('');
@@ -20,6 +25,12 @@ const NewPost = ({ closeModal, setProgress }) => {
   const [autoCompleteState, setAutoCompleteState] = useState(false);
   const [isPossibleComment, setIsPossibleComment] = useState(false);
   const [text, setText] = useState('');
+
+  const closeModal = () => {
+    console.log('close new post!');
+    dispatch(closePopup('newPostModal'));
+    history.push(modalEntryPath);
+  };
 
   // FIXME: create new post
   const createPost = () => {
@@ -144,7 +155,7 @@ const NewPost = ({ closeModal, setProgress }) => {
     };
   }, []);
   return (
-    <PostModalPortal>
+    <NewPostPortal>
       <StModal>
         <StNewPostBox>
           <StHeader>
@@ -199,7 +210,7 @@ const NewPost = ({ closeModal, setProgress }) => {
           </StFooter>
         </StNewPostBox>
       </StModal>
-    </PostModalPortal>
+    </NewPostPortal>
   );
 };
 

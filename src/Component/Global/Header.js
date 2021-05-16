@@ -3,15 +3,8 @@ import { NavLink } from 'react-router-dom';
 import styled from 'styled-components';
 import MainNavigationContainer from '../../Container/Global/MainNavigationContainer';
 import SearchContainer from '../../Container/Global/SearchContainer';
-import NewPost from '../New/NewPost';
 
-const Header = ({
-  modalState,
-  progress,
-  setProgress,
-  openModal,
-  closeModal,
-}) => {
+const Header = () => {
   return (
     <StWrapper>
       <StHeader>
@@ -24,39 +17,11 @@ const Header = ({
           </NavLink>
         </StTitle>
         <SearchContainer />
-        <MainNavigationContainer openModal={openModal} />
+        <MainNavigationContainer />
       </StHeader>
-      {progress !== 0 && <StProgressbar value={progress} max={100} />}
-      {modalState && (
-        <NewPost closeModal={closeModal} setProgress={setProgress} />
-      )}
     </StWrapper>
   );
 };
-
-const StProgressbar = styled.progress`
-  position: fixed;
-  top: 5.5rem;
-  left: 0;
-  z-index: 2;
-
-  border: none;
-  width: 100%;
-  height: 0.3rem;
-  &::-webkit-progress-bar {
-    background-color: ${({ theme }) => theme.background};
-  }
-  &::-webkit-progress-value {
-    background-image: -webkit-linear-gradient(
-      left,
-      #f09433 0%,
-      #e6683c 25%,
-      #dc2743 50%,
-      #cc2366 75%,
-      #bc1888 100%
-    );
-  }
-`;
 
 const StWrapper = styled.div`
   position: fixed;

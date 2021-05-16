@@ -1,32 +1,15 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
+import { useSelector } from 'react-redux';
 import Header from '../../Component/Global/Header';
 
 const HeaderContainer = () => {
-  const [modalState, setModalState] = useState(false);
-  const [progress, setProgress] = useState(0);
-
-  const openModal = () => {
-    console.log('open new post!');
-    setModalState(!modalState);
-  };
-
-  const closeModal = () => {
-    console.log('close new post!');
-    setModalState(!modalState);
-  };
+  const newPostModalState = useSelector(state => state.popup.newPostModal);
 
   useEffect(() => {
-    document.body.style.overflow = modalState ? 'hidden' : 'auto';
-  }, [modalState]);
-  return (
-    <Header
-      modalState={modalState}
-      progress={progress}
-      setProgress={setProgress}
-      openModal={openModal}
-      closeModal={closeModal}
-    />
-  );
+    document.body.style.overflow = newPostModalState ? 'hidden' : 'auto';
+  }, [newPostModalState]);
+
+  return <Header />;
 };
 
 export default HeaderContainer;

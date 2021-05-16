@@ -8,20 +8,43 @@ import SignupPage from '../Pages/SignupPage';
 import NotFound from '../Component/Global/NotFound';
 import LoadingPage from '../Pages/LoadingPage';
 import EditPage from '../Pages/EditPage';
+import NewPost from '../Component/New/NewPost';
 
 const MainRouter = ({ isSignIn }) => {
+  const mainRoutes = [
+    {
+      path: '/',
+      exact: true,
+      children: <MainPage />,
+    },
+    {
+      path: '/direct',
+      exact: false,
+      children: <DirectPage />,
+    },
+    {
+      path: '/edit',
+      exact: false,
+      children: <EditPage />,
+    },
+    {
+      path: '/p/:displayName',
+      exact: false,
+      children: <ProfilePage />,
+    },
+  ];
   return (
     <Switch>
-      <Route path="/" exact>
-        {isSignIn ? <MainPage /> : <LoadingPage />}
-      </Route>
-      <Route path="/direct">
-        {isSignIn ? <DirectPage /> : <LoadingPage />}
-      </Route>
-      <Route path="/edit">{isSignIn ? <EditPage /> : <LoadingPage />}</Route>
-      <Route path="/p/:displayName">
-        {isSignIn ? <ProfilePage /> : <LoadingPage />}
-      </Route>
+      {mainRoutes.map(({ path, exact, children }, index) => (
+        <Route key={index} path={path} exact={exact}>
+          {isSignIn ? children : <LoadingPage />}
+        </Route>
+      ))}
+      {isSignIn && (
+        <Route path="/new">
+          <NewPost />
+        </Route>
+      )}
       {!isSignIn && (
         <Route path="/signup">
           <SignupPage />

@@ -36,6 +36,12 @@ const Search = ({
   );
 };
 
+/**
+ * FIXME: Need to change style label, input
+ * @props popupState  -> popupState ? true : false
+ * @props value -> value ? true : false
+ */
+
 const StSearchWrapper = styled.label`
   position: relative;
 `;
