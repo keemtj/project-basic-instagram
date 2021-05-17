@@ -8,8 +8,7 @@ const SearchPopup = ({
   value,
   searchResult,
   loading,
-  onClickSearchUser,
-  onClickRecentUser,
+  onClickUser,
   onRemoveRecentUser,
   onRemoveAllRecentUser,
 }) => {
@@ -21,12 +20,12 @@ const SearchPopup = ({
           <SearchResult
             searchResult={searchResult}
             loading={loading}
-            onClickSearchUser={onClickSearchUser}
+            onClickUser={onClickUser}
           />
         ) : (
           <Recent
             recent={recent}
-            onClickRecentUser={onClickRecentUser}
+            onClickUser={onClickUser}
             onRemoveRecentUser={onRemoveRecentUser}
             onRemoveAllRecentUser={onRemoveAllRecentUser}
           />

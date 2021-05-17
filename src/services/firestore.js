@@ -1,14 +1,33 @@
 import { firestore } from './firebase';
 
-// --> get currentUser data to users collection of firestore
+// get currentUser data to users collection of firestore
 export const getCurrentUserData = async uid => {
   const doc = await firestore.collection('users').doc(uid).get();
   const datas = doc.data();
   return datas;
 };
 
-// --> get follow data of currentUser by uid
+// get searchUser data to users collection of firestore
+export const getSearchUserData = async uid => {
+  const doc = await firestore.collection('users').doc(uid).get();
+  const datas = doc.data();
+  return datas;
+};
+
+// get follow data of currentUser by uid
 export const getFollowData = async uid => {
+  try {
+    const doc = await firestore.collection('follow').doc(uid).get();
+    const datas = doc.data();
+    return datas;
+  } catch (e) {
+    console.log(e);
+    return 'no-user';
+  }
+};
+
+// get follow data of searchUser by uid
+export const getSearchUserFollowData = async uid => {
   try {
     const doc = await firestore.collection('follow').doc(uid).get();
     const datas = doc.data();
@@ -66,17 +85,7 @@ export const getAllPostsByFollowing = async following => {
   return result;
 };
 
-// --> get user data by displayname
-export const getUserDataByDisplayName = async displayName => {
-  let findUser = [];
-  const docs = await firestore
-    .collection('users')
-    .where('displayName', '==', displayName)
-    .get();
-  docs.forEach(doc => findUser.push(doc.data()));
-  return findUser;
-};
-
+// Profile Page에서 새로고침시 watchName에 맞는 uid 가져오기
 export const getUid = async watchName => {
   let uid = '';
   const docs = await firestore
@@ -101,16 +110,13 @@ export const getUserSearchResultByDisplayName = async value => {
   if (value === '') return null;
   // NOTE displayName >= value, limit(10)
   let datas = [];
-  console.time('get users');
   const docs = await firestore.collection('users').get();
   docs.forEach(doc => {
     datas.push(doc.data());
   });
-  console.timeEnd('get users');
   const regex = new RegExp(`${value}`, 'i');
   const result = datas
     .filter(data => {
-      console.log('regex', regex.test(data.displayName));
       return regex.test(data.displayName);
     })
     .sort((a, b) => a.displayName.localeCompare(b.displayName));

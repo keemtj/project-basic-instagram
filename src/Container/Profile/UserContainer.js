@@ -5,21 +5,25 @@ import User from '../../Component/Profile/User';
 
 const UserContainer = ({ watchName }) => {
   const history = useHistory();
+  const [settings, setSettings] = useState(false);
   // NOTE 현재 로그인 중인 유저의 데이터
+  const currentUserData = useSelector(state => state.user.user);
   const { data: myPosts } = useSelector(state => state.posts.myPosts);
-  const currentUser = useSelector(state => state.user.currentUser);
+  const { following, followers } = useSelector(state => state.user.follow);
 
   // NOTE 서칭한 유저의 데이터
+  const { data: searchUserData } = useSelector(
+    state => state.search.searchUser,
+  );
+  const { data: searchUserFollowData } = useSelector(
+    state => state.search.searchUserFollow,
+  );
+  const isFollowing = searchUserFollowData?.followers.includes(
+    currentUserData.uid,
+  );
   const { data: searchUserPosts } = useSelector(
     state => state.posts.searchUserPosts,
   );
-  const searchUser = useSelector(state => state.user.searchUser.data?.[0]);
-  const searchUserFollow = useSelector(state => state.user.searchUserFollow);
-  // NOTE 공통된 부분
-  const { following, followers } = useSelector(state => state.user.follow);
-  const isFollowing = following.includes(searchUser?.uid);
-
-  const [settings, setSettings] = useState(false);
 
   const onToggleFollow = () => {
     if (isFollowing) {
@@ -41,41 +45,41 @@ const UserContainer = ({ watchName }) => {
   return (
     <User
       isFollowing={isFollowing}
-      currentDisplayName={currentUser.displayName}
+      currentDisplayName={currentUserData.displayName}
       photoURL={
-        (currentUser.displayName === watchName
-          ? currentUser?.photoURL
-          : searchUser?.photoURL) || '/images/default_profile2.jpg'
+        (currentUserData.displayName === watchName
+          ? currentUserData?.photoURL
+          : searchUserData?.photoURL) || '/images/default_profile2.jpg'
       }
       username={
-        currentUser.displayName === watchName
-          ? currentUser?.username
-          : searchUser?.username
+        currentUserData.displayName === watchName
+          ? currentUserData?.username
+          : searchUserData?.username
       }
       displayName={
-        currentUser.displayName === watchName
-          ? currentUser?.displayName
-          : searchUser?.displayName
+        currentUserData.displayName === watchName
+          ? currentUserData?.displayName
+          : searchUserData?.displayName
       }
       presentation={
-        currentUser.displayName === watchName
-          ? currentUser?.presentation
-          : searchUser?.displayName
+        currentUserData.displayName === watchName
+          ? currentUserData?.presentation
+          : searchUserData?.displayName
       }
       postsCount={
-        currentUser.displayName === watchName
+        currentUserData.displayName === watchName
           ? myPosts?.length
           : searchUserPosts?.length
       }
       followersCount={
-        currentUser.displayName === watchName
+        currentUserData.displayName === watchName
           ? followers?.length
-          : searchUserFollow?.followers?.length
+          : searchUserFollowData?.followers?.length
       }
       followingCount={
-        currentUser.displayName === watchName
+        currentUserData.displayName === watchName
           ? following?.length
-          : searchUserFollow?.following?.length
+          : searchUserFollowData?.following?.length
       }
       onEditProfile={onEditProfile}
       onToggleFollow={onToggleFollow}

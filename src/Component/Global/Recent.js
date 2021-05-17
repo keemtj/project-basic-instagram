@@ -1,11 +1,12 @@
 import React from 'react';
 import styled from 'styled-components';
+import { Link } from 'react-router-dom';
 import ProfileImage from './ProfileImage';
 import { Clear } from '@styled-icons/material-rounded/Clear';
 
 const Recent = ({
   recent,
-  // onClickRecentUser,
+  onClickUser,
   onRemoveRecentUser,
   onRemoveAllRecentUser,
 }) => {
@@ -27,19 +28,24 @@ const Recent = ({
             const { photoURL, displayName, username } = user;
             return (
               <StRecentList key={index}>
-                <ProfileImage
-                  src={photoURL || '/images/default_profile2.jpg'}
-                  width={5}
-                  height={5}
-                  marginLeft={1.2}
-                  fontSize={1.4}
-                  username={displayName}
+                <StLink
+                  to={`/${displayName}`}
+                  onClick={() => onClickUser(user)}
                 >
-                  <StNameWrapper>
-                    <StDisplayName>{displayName}</StDisplayName>
-                    {username && <StUsername>{username}</StUsername>}
-                  </StNameWrapper>
-                </ProfileImage>
+                  <ProfileImage
+                    src={photoURL || '/images/default_profile2.jpg'}
+                    width={5}
+                    height={5}
+                    marginLeft={1.2}
+                    fontSize={1.4}
+                    username={displayName}
+                  >
+                    <StNameWrapper>
+                      <StDisplayName>{displayName}</StDisplayName>
+                      {username && <StUsername>{username}</StUsername>}
+                    </StNameWrapper>
+                  </ProfileImage>
+                </StLink>
                 <StClearButton onClick={() => onRemoveRecentUser(user)}>
                   <Clear />
                 </StClearButton>
@@ -60,6 +66,7 @@ const StRecentWrapper = styled.div`
   width: 100%;
   height: 100%;
 `;
+
 const StRecentPopupHeader = styled.header`
   display: flex;
   align-items: center;
@@ -88,13 +95,24 @@ const StRecentList = styled.li`
   align-items: center;
   justify-content: space-between;
   cursor: pointer;
-  padding: 0.5rem 2rem;
   &:hover {
     background: ${({ theme }) => theme.gray2};
   }
   &:last-child {
     margin-bottom: 0.5rem;
   }
+  position: relative;
+`;
+
+const StLink = styled(Link)`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  height: 100%;
+  padding: 0.5rem 2rem;
+  color: ${({ theme }) => theme.black};
+  text-decoration: none;
 `;
 
 const StNameWrapper = styled.div`
@@ -121,6 +139,8 @@ const StClearButton = styled.button`
   height: 2.2rem;
   color: ${({ theme }) => theme.darkGray};
   cursor: pointer;
+  position: absolute;
+  right: 2rem;
 `;
 
 const StNoRecent = styled.div`

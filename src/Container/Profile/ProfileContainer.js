@@ -1,53 +1,35 @@
 import React, { useEffect } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useRouteMatch } from 'react-router';
 import Profile from '../../Component/Profile/Profile';
-import { getPosts, getSearchUserPosts } from '../../Modules/posts';
+import { getUid } from '../../services/firestore';
 import {
-  getWatchUserByDisplayName,
-  searchUserFollow,
-} from '../../Modules/user';
-import { firebaseAuth } from '../../services/firebase';
-import {
-  getCurrentUserData,
-  getFollowData,
-  getUid,
-} from '../../services/firestore';
+  getSearchUserData,
+  getSearchUserFollowData,
+} from '../../Modules/search';
+import { getSearchUserPosts } from '../../Modules/posts';
 
 const ProfileContainer = () => {
-  const dispatch = useDispatch();
   const { params } = useRouteMatch();
+  const dispatch = useDispatch();
+  const { data: searchUserData, loading: searchUserDataLoading } = useSelector(
+    state => state.search.searchUser,
+  );
   const watchName = params.displayName;
 
-  useEffect(async () => {
-    const { uid } = firebaseAuth.currentUser;
-    dispatch(getPosts(uid));
-    let currentDisplayName = '';
-    const { displayName } = await getCurrentUserData(uid);
-    currentDisplayName = await displayName;
-
-    console.log('변하는값', watchName);
-    console.log('불변 값?', currentDisplayName);
-
-    // switch posts
-    if (currentDisplayName !== watchName) {
-      const watchNameUid = await getUid(watchName);
-      dispatch(getSearchUserPosts(watchNameUid));
-      dispatch(getWatchUserByDisplayName(watchName));
-      const followData = await getFollowData(watchNameUid);
-      dispatch(searchUserFollow(followData));
-    } else {
-      dispatch(getPosts(uid));
-    }
-    console.log(
-      '이건  무슨값?',
-      currentDisplayName !== watchName ? watchName : currentDisplayName,
-    );
-    document.title = `@${
-      currentDisplayName !== watchName ? watchName : currentDisplayName
-    } • Instagram 사진 및 동영상`;
+  useEffect(() => {
+    document.title = `@${watchName} • Instagram 사진 및 동영상`;
   }, []);
 
+  useEffect(async () => {
+    if (!searchUserData && !searchUserDataLoading) {
+      console.log('새로고침했는데 데이터 없어서 새로가져옴');
+      const uid = await getUid(watchName);
+      dispatch(getSearchUserData(uid));
+      dispatch(getSearchUserFollowData(uid));
+      dispatch(getSearchUserPosts(uid));
+    }
+  }, [watchName]);
   return <Profile watchName={watchName} />;
 };
 

@@ -4,8 +4,7 @@ import Posts from '../../Component/Profile/Posts';
 import EmptyPosts from '../../Component/Profile/EmptyPosts';
 
 const PostsContainer = ({ watchName }) => {
-  const currentUser = useSelector(state => state.user.currentUser);
-
+  const currentUser = useSelector(state => state.user.user);
   const {
     data: myPosts,
     loading: myPostsLoading,
@@ -33,11 +32,11 @@ const PostsContainer = ({ watchName }) => {
     return <div>Posts Container 로딩중</div>;
   if (myPostsError || searchUserPostsError)
     return <div>Posts Container 에러발생</div>;
-  if (!myPosts) return <EmptyPosts />;
+  if (myPosts?.length === 0) return <EmptyPosts />;
   if (searchUserPosts?.length === 0) return <EmptyPosts />;
   return (
     <Posts
-      myPosts={
+      posts={
         currentUser.displayName === watchName
           ? sortedPosts()
           : sortedSearchUserPosts()

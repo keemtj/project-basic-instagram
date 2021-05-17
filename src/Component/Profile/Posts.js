@@ -2,10 +2,10 @@ import React from 'react';
 import styled from 'styled-components';
 import PostItemContainer from '../../Container/Profile/PostItemContainer';
 
-const Posts = ({ myPosts }) => {
+const Posts = ({ posts }) => {
   return (
     <StPostsWrapper>
-      {myPosts?.map((post, index) => (
+      {posts?.map((post, index) => (
         <PostItemContainer post={post} key={index} />
       ))}
     </StPostsWrapper>

@@ -4,24 +4,22 @@ import { Link } from 'react-router-dom';
 import ProfileImage from './ProfileImage';
 import { Spinner3 } from '@styled-icons/icomoon/Spinner3';
 
-const SearchResult = ({ searchResult, loading, onClickSearchUser }) => {
+const SearchResult = ({ searchResult, loading, onClickUser }) => {
   return (
     <>
-      <StRecentBox>
+      <StSearchResultBox>
         {loading ? (
           <StLoading>
             <StSpinner />
           </StLoading>
         ) : searchResult?.length ? (
           searchResult.map((user, index) => {
-            // slice(0, n)
             const { photoURL, displayName, username } = user;
             return (
-              <StRecentList key={index}>
+              <StSearchResultList key={index}>
                 <StLink
-                  // to={`/p/${displayName}`}
-                  to="/direct"
-                  onClick={() => onClickSearchUser(user)}
+                  to={`/${displayName}`}
+                  onClick={() => onClickUser(user)}
                 >
                   <ProfileImage
                     src={photoURL || '/images/default_profile2.jpg'}
@@ -37,13 +35,13 @@ const SearchResult = ({ searchResult, loading, onClickSearchUser }) => {
                     </StNameWrapper>
                   </ProfileImage>
                 </StLink>
-              </StRecentList>
+              </StSearchResultList>
             );
           })
         ) : (
           <StNoResult>검색 결과 없음</StNoResult>
         )}
-      </StRecentBox>
+      </StSearchResultBox>
     </>
   );
 };
@@ -54,14 +52,14 @@ const rotate = keyframes`
   }
 `;
 
-const StRecentBox = styled.ul`
+const StSearchResultBox = styled.ul`
   width: 100%;
   height: 100%;
   padding-top: 1rem;
   overflow: scroll;
 `;
 
-const StRecentList = styled.li`
+const StSearchResultList = styled.li`
   width: 100%;
   display: flex;
   align-items: center;

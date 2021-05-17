@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import styled, { css } from 'styled-components';
 import { Upload } from '@styled-icons/boxicons-regular/Upload';
 import NewPostPortal from '../../NewPostPortal';
@@ -17,8 +17,9 @@ import { useHistory } from 'react-router';
 const NewPost = ({ setProgress }) => {
   const dispatch = useDispatch();
   const history = useHistory();
-  const modalEntryPath = useSelector(state => state.popup.modalEntryPath);
-  const { displayName, uid } = useSelector(state => state.user.currentUser);
+  const modalRef = useRef();
+  const { newPostModal, modalEntryPath } = useSelector(state => state.popup);
+  const { displayName, uid } = useSelector(state => state.user.user);
   const [images, setImages] = useState([]);
   const [location, setLocation] = useState('');
   const [subLocation, setSubLocation] = useState('');
@@ -146,18 +147,31 @@ const NewPost = ({ setProgress }) => {
     setAutoCompleteState(false);
   };
 
+  // click outside
+  const onClickOutside = e => {
+    if (
+      newPostModal &&
+      modalRef.current &&
+      !modalRef.current.contains(e.target)
+    ) {
+      dispatch(closePopup('newPostModal'));
+    }
+  };
+
   useEffect(() => {
     const title = document.title;
     document.title = '새 게시물 작성 • Instagram';
+    window.addEventListener('click', onClickOutside);
     return () => {
       // 이전 title로 변경
       document.title = title;
+      window.removeEventListener('click', onClickOutside);
     };
   }, []);
   return (
     <NewPostPortal>
       <StModal>
-        <StNewPostBox>
+        <StNewPostBox ref={modalRef}>
           <StHeader>
             <h2>{autoCompleteState ? '장소 검색' : '새 게시물'}</h2>
           </StHeader>

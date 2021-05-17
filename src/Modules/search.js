@@ -1,28 +1,32 @@
+// NOTE search user's datas
 import * as store from '../services/firestore';
 import { fetchDataThunk, reducerUtils } from '../lib/asyncUtils';
 import * as searchUtils from '../lib/searchUtils';
 
-// NOTE action
+// action
 const SEARCH_VALUE = 'search/SEARCH_VALUE';
 const CLEAR_VALUE = 'search/CLEAR_VALUE';
 
-const SEARCH = 'search/SEARCH';
-const SEARCH_SUCCESS = 'search/SEARCH_SUCCESS';
-const SEARCH_ERROR = 'search/SEARCH_ERROR';
+const SEARCH_RESULT = 'search/SEARCH_RESULT';
+const SEARCH_RESULT_SUCCESS = 'search/SEARCH_RESULT_SUCCESS';
+const SEARCH_RESULT_ERROR = 'search/SEARCH_RESULT_ERROR';
 
 const RECENT_ADD = 'search/RECENT_ADD';
 const RECENT_ADD_LOCALSTORAGE = 'search/RECENT_ADD_LOCALSTORAGE';
 const RECENT_REMOVE = 'search/RECENT_REMOVE';
 const RECENT_ALL_CLEAR = 'search/RECENT_ALL_CLEAR';
 
-// NOTE action creator
+const SEARCH_USER = 'search/SEARCH_USER';
+const SEARCH_USER_SUCCESS = 'search/SEARCH_USER_SUCCESS';
+const SEARCH_USER_ERROR = 'search/SEARCH_USER_ERROR';
+
+const SEARCH_USER_FOLLOW = 'search/SEARCH_USER_FOLLOW';
+const SEARCH_USER_FOLLOW_SUCCESS = 'search/SEARCH_USER_FOLLOW_SUCCESS';
+const SEARCH_USER_FOLLOW_ERROR = 'search/SEARCH_USER_FOLLOW_ERROR';
+
+// action creator
 export const searchValue = value => ({ type: SEARCH_VALUE, value });
 export const clearValue = () => ({ type: CLEAR_VALUE });
-export const getUserSearchResultByDisplayName = fetchDataThunk(
-  SEARCH,
-  store.getUserSearchResultByDisplayName,
-  2000,
-);
 export const addRecent = user => ({ type: RECENT_ADD, user });
 export const addLocalStorageToRecent = recent => ({
   type: RECENT_ADD_LOCALSTORAGE,
@@ -30,15 +34,30 @@ export const addLocalStorageToRecent = recent => ({
 });
 export const removeRecent = user => ({ type: RECENT_REMOVE, user });
 export const allclearRecent = () => ({ type: RECENT_ALL_CLEAR });
+export const getUserSearchResultByDisplayName = fetchDataThunk(
+  SEARCH_RESULT,
+  store.getUserSearchResultByDisplayName,
+  2000,
+);
+export const getSearchUserData = fetchDataThunk(
+  SEARCH_USER,
+  store.getSearchUserData,
+);
+export const getSearchUserFollowData = fetchDataThunk(
+  SEARCH_USER_FOLLOW,
+  store.getSearchUserFollowData,
+);
 
-// NOTE initialState
+// initialState
 const initialState = {
   value: '',
-  ...reducerUtils.initial(),
+  searchResult: reducerUtils.initial(),
   recent: [],
+  searchUser: reducerUtils.initial(),
+  searchUserFollow: reducerUtils.initial(),
 };
 
-// NOTE reducer
+// reducer
 const popup = (state = initialState, action) => {
   switch (action.type) {
     case SEARCH_VALUE:
@@ -51,20 +70,20 @@ const popup = (state = initialState, action) => {
         ...state,
         value: '',
       };
-    case SEARCH:
+    case SEARCH_RESULT:
       return {
         ...state,
-        ...reducerUtils.loading(),
+        searchResult: reducerUtils.loading(),
       };
-    case SEARCH_SUCCESS:
+    case SEARCH_RESULT_SUCCESS:
       return {
         ...state,
-        ...reducerUtils.success(action.payload),
+        searchResult: reducerUtils.success(action.payload),
       };
-    case SEARCH_ERROR:
+    case SEARCH_RESULT_ERROR:
       return {
         ...state,
-        ...reducerUtils.error(action.payload),
+        searchResult: reducerUtils.error(action.payload),
       };
     case RECENT_ADD:
       return {
@@ -87,6 +106,36 @@ const popup = (state = initialState, action) => {
       return {
         ...state,
         recent: searchUtils.allClearRecent(),
+      };
+    case SEARCH_USER:
+      return {
+        ...state,
+        searchUser: reducerUtils.loading(),
+      };
+    case SEARCH_USER_SUCCESS:
+      return {
+        ...state,
+        searchUser: reducerUtils.success(action.payload),
+      };
+    case SEARCH_USER_ERROR:
+      return {
+        ...state,
+        searchUser: reducerUtils.error(action.payloads),
+      };
+    case SEARCH_USER_FOLLOW:
+      return {
+        ...state,
+        searchUserFollow: reducerUtils.loading(),
+      };
+    case SEARCH_USER_FOLLOW_SUCCESS:
+      return {
+        ...state,
+        searchUserFollow: reducerUtils.success(action.payload),
+      };
+    case SEARCH_USER_FOLLOW_ERROR:
+      return {
+        ...state,
+        searchUserFollow: reducerUtils.error(action.payload),
       };
     default:
       return state;

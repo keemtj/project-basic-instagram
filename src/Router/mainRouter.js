@@ -28,7 +28,7 @@ const MainRouter = ({ isSignIn }) => {
       children: <EditPage />,
     },
     {
-      path: '/p/:displayName',
+      path: '/:displayName',
       exact: false,
       children: <ProfilePage />,
     },
@@ -58,6 +58,7 @@ const MainRouter = ({ isSignIn }) => {
       <Route>
         <NotFound />
       </Route>
+      {/* <Route render={() => <NotFound />} /> */}
     </Switch>
   );
 };

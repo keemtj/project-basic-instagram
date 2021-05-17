@@ -1,25 +1,32 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import SearchPopup from '../../Component/Global/SearchPopup';
-import { addRecent, allclearRecent, removeRecent } from '../../Modules/search';
+import { closePopup } from '../../Modules/popup';
+import {
+  addRecent,
+  allclearRecent,
+  removeRecent,
+  getSearchUserData,
+  getSearchUserFollowData,
+  clearValue,
+} from '../../Modules/search';
+import { getSearchUserPosts } from '../../Modules/posts';
 
 const SearchPopupContainer = () => {
   const dispatch = useDispatch();
   const value = useSelector(state => state.search.value);
-  const { data: searchResult, loading } = useSelector(state => state.search);
+  const { data: searchResult, loading } = useSelector(
+    state => state.search.searchResult,
+  );
   const recent = useSelector(state => state.search.recent);
 
-  const onClickSearchUser = user => {
-    // TODO: 1. 클릭한 유저의 프로필 페이지로 이동
-    console.log('1. 클릭한 유저의 프로필 페이지로 이동');
-    // dispatch();
-    console.log('2. 최근 검색 항목에 추가');
+  const onClickUser = user => {
+    dispatch(getSearchUserData(user.uid));
+    dispatch(getSearchUserFollowData(user.uid));
+    dispatch(getSearchUserPosts(user.uid));
     dispatch(addRecent(user));
-  };
-
-  const onClickRecentUser = () => {
-    // TODO
-    console.log('검색된 항목에서 유저 클릭 -> 검색 항목의 맨 위로 위치 변경');
+    dispatch(clearValue());
+    dispatch(closePopup('searchPopup'));
   };
 
   const onRemoveRecentUser = user => {
@@ -36,8 +43,7 @@ const SearchPopupContainer = () => {
       value={value}
       searchResult={searchResult}
       loading={loading}
-      onClickSearchUser={onClickSearchUser}
-      onClickRecentUser={onClickRecentUser}
+      onClickUser={onClickUser}
       onRemoveRecentUser={onRemoveRecentUser}
       onRemoveAllRecentUser={onRemoveAllRecentUser}
     />

@@ -4,12 +4,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import Aside from '../../Component/Main/Aside';
 import { signOut } from '../../services/firebaseAuth';
 import { loginState } from '../../Modules/login';
-import { resetFollow } from '../../Modules/user';
 
 const AsideContainer = () => {
-  const { displayName, photoURL } = useSelector(
-    state => state.user.currentUser,
-  );
+  const { displayName, photoURL } = useSelector(state => state.user.user);
   const { followers } = useSelector(state => state.user.follow);
   const { data: followed } = useSelector(state => state.user.followed);
   const dispatch = useDispatch();
@@ -18,7 +15,6 @@ const AsideContainer = () => {
   const handleSignOut = () => {
     signOut();
     dispatch(loginState(false));
-    dispatch(resetFollow());
     history.push('/login');
     console.log('sign out');
   };
@@ -33,8 +29,8 @@ const AsideContainer = () => {
   return (
     <Aside
       handleSignOut={handleSignOut}
-      displayName={displayName}
-      photoURL={photoURL}
+      displayName={displayName || 'elon_musk'}
+      photoURL={photoURL || '/images/default_profile2.jpg'}
       followed={followed}
       onFollow={onFollow}
     />

@@ -8,12 +8,12 @@ import Tagged from '../Component/Profile/Tagged';
 const ProfileRouter = ({ watchName }) => {
   return (
     <Switch>
-      <Route path={`/p/:${watchName}`} exact>
+      <Route path={`/:${watchName}`} exact>
         <PostsContainer watchName={watchName} />
       </Route>
-      <Route path={`/p/:${watchName}/channel`} component={Channel} />
-      <Route path={`/p/:${watchName}/saved`} component={Saved} />
-      <Route path={`/p/:${watchName}/tagged`} component={Tagged} />
+      <Route path={`/:${watchName}/channel`} component={Channel} />
+      <Route path={`/:${watchName}/saved`} component={Saved} />
+      <Route path={`/:${watchName}/tagged`} component={Tagged} />
       <Route
         render={({ location }) => (
           <div>

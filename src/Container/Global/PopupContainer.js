@@ -7,18 +7,16 @@ import { Settings } from '@styled-icons/ionicons-outline/Settings';
 import { signOut } from '../../services/firebaseAuth';
 import { useHistory } from 'react-router';
 import { loginState } from '../../Modules/login';
-import { resetFollow } from '../../Modules/user';
 import { getPosts } from '../../Modules/posts';
 import { closePopup } from '../../Modules/popup';
 
 const PopupContainer = () => {
   const dispatch = useDispatch();
   const history = useHistory();
-  const { displayName, uid } = useSelector(state => state.user.currentUser);
-
+  const { displayName, uid } = useSelector(state => state.user.user);
   const popupLists = [
-    { link: `/p/${displayName}`, text: '프로필', icon: <User /> },
-    { link: `/p/${displayName}/saved`, text: '저장됨', icon: <Bookmark /> },
+    { link: `/${displayName}`, text: '프로필', icon: <User /> },
+    { link: `/${displayName}/saved`, text: '저장됨', icon: <Bookmark /> },
     { link: '/edit', text: '설정', icon: <Settings /> },
   ];
 
@@ -27,15 +25,14 @@ const PopupContainer = () => {
     dispatch(closePopup('profilePopup'));
   };
 
-  /**
-   * TODO: 1. 로그아웃시 localStorage의 'recent' key 기록 삭제
-   * TODO: 2. 재 로그인시 검색기록을 가져오기 위해 파이어베이스에 저장하는 코드 추가
-   */
   const onClickSignOut = () => {
+    /**
+     * TODO: 1. 로그아웃시 localStorage의 'recent' key 기록 삭제
+     * TODO: 2. 재 로그인시 검색기록을 가져오기 위해 파이어베이스에 저장하는 코드 추가
+     */
     signOut();
     dispatch(closePopup('profilePopup'));
     dispatch(loginState(false));
-    dispatch(resetFollow());
     localStorage.removeItem('recent');
     history.push('/login');
     console.log('sign out');

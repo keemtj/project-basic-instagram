@@ -13,7 +13,7 @@ const SearchContainer = () => {
   const dispatch = useDispatch();
   const { searchPopup: popupState } = useSelector(state => state.popup);
   const value = useSelector(state => state.search.value);
-  const { loading } = useSelector(state => state.search);
+  const { loading } = useSelector(state => state.search.searchResult);
   const searchRef = useRef();
 
   const onSearch = () => {
@@ -21,9 +21,14 @@ const SearchContainer = () => {
   };
 
   const onClosePopup = e => {
-    if (popupState && !searchRef.current.contains(e.target)) {
+    if (
+      popupState &&
+      searchRef.current &&
+      !searchRef.current.contains(e.target)
+    ) {
       e.stopPropagation();
       dispatch(closePopup('searchPopup'));
+      dispatch(clearValue());
     }
   };
 
@@ -42,9 +47,9 @@ const SearchContainer = () => {
   }, []);
 
   useEffect(() => {
-    document.addEventListener('mousedown', onClosePopup);
+    document.addEventListener('click', onClosePopup);
     return () => {
-      document.removeEventListener('mousedown', onClosePopup);
+      document.removeEventListener('click', onClosePopup);
     };
   }, [popupState]);
   return (

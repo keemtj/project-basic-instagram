@@ -5,10 +5,11 @@ import PageWrapper from './Component/Global/PageWrapper';
 import { firebaseAuth } from './services/firebase';
 import { loginState } from './Modules/login';
 import { useDispatch, useSelector } from 'react-redux';
-import { currentUser, followData } from './Modules/user';
+import { currentUser, currentUserFollow } from './Modules/user';
 import { getCurrentUserData, getFollowData } from './services/firestore';
 import NewPost from './Component/New/NewPost';
 import ProgressBar from './Component/Global/ProgressBar';
+import { getPosts } from './Modules/posts';
 
 const App = () => {
   const dispatch = useDispatch();
@@ -23,11 +24,12 @@ const App = () => {
     firebaseAuth.onAuthStateChanged(async user => {
       if (user) {
         const { uid } = user;
-        const userData = await getCurrentUserData(uid);
-        const userFollowData = await getFollowData(uid);
+        const currentUserData = await getCurrentUserData(uid);
+        const currentUserFollowData = await getFollowData(uid);
         dispatch(loginState(true));
-        dispatch(currentUser(userData));
-        dispatch(followData(userFollowData));
+        dispatch(currentUser(currentUserData));
+        dispatch(currentUserFollow(currentUserFollowData));
+        dispatch(getPosts(uid));
       }
     });
   }, [dispatch]);

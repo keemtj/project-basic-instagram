@@ -8,9 +8,7 @@ const MainNavigationContainer = () => {
   const dispatch = useDispatch();
   const { pathname } = useLocation();
   const popupState = useSelector(state => state.popup.profilePopup);
-  const { photoURL, displayName } = useSelector(
-    state => state.user.currentUser,
-  );
+  const { photoURL, displayName } = useSelector(state => state.user.user);
 
   const onPopup = () => {
     dispatch(openPopup('profilePopup'));
