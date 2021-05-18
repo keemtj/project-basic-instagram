@@ -1,7 +1,6 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 import Posts from '../../Component/Profile/Posts';
-import EmptyPosts from '../../Component/Profile/EmptyPosts';
 
 const PostsContainer = ({ watchName }) => {
   const currentUser = useSelector(state => state.user.user);
@@ -32,8 +31,6 @@ const PostsContainer = ({ watchName }) => {
     return <div>Posts Container 로딩중</div>;
   if (myPostsError || searchUserPostsError)
     return <div>Posts Container 에러발생</div>;
-  if (myPosts?.length === 0) return <EmptyPosts />;
-  if (searchUserPosts?.length === 0) return <EmptyPosts />;
   return (
     <Posts
       posts={

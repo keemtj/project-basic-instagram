@@ -1,11 +1,15 @@
 import React, { useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router';
 import User from '../../Component/Profile/User';
+import { followUser, unFollowUser } from '../../Modules/search';
+import { follow, unfollow } from '../../services/firestore';
 
 const UserContainer = ({ watchName }) => {
   const history = useHistory();
+  const dispatch = useDispatch();
   const [settings, setSettings] = useState(false);
+
   // NOTE 현재 로그인 중인 유저의 데이터
   const currentUserData = useSelector(state => state.user.user);
   const { data: myPosts } = useSelector(state => state.posts.myPosts);
@@ -26,16 +30,26 @@ const UserContainer = ({ watchName }) => {
   );
 
   const onToggleFollow = () => {
+    console.log(currentUserData.uid);
+    console.log(searchUserData?.uid);
     if (isFollowing) {
-      console.log('팔로우 취소 요청 dispatch!!');
+      console.log(
+        '언팔로우 dispatch: 서치 유저의 팔로우 데이터에서 내 uid를 제거',
+      );
+      unfollow(currentUserData.uid, searchUserData?.uid);
+      dispatch(unFollowUser(currentUserData.uid));
     } else {
-      console.log('팔로우 요청 dispatch!!');
+      follow(currentUserData.uid, searchUserData?.uid);
+      console.log(
+        '팔로우 dispatch: 서치 유저의 팔로우 데이터에서 내 uid를 추가',
+      );
+      dispatch(followUser(currentUserData.uid));
     }
   };
 
   const onEditProfile = () => {
-    history.push('/edit');
     console.log('프로필 편집 페이지로 이동');
+    history.push('/edit');
   };
 
   const onClickSettings = () => {

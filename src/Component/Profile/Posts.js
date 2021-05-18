@@ -1,14 +1,22 @@
 import React from 'react';
 import styled from 'styled-components';
 import PostItemContainer from '../../Container/Profile/PostItemContainer';
+import EmptyPosts from '../Profile/EmptyPosts';
 
 const Posts = ({ posts }) => {
+  // isFollowing이 false면 게시물 비공개 처리하기
   return (
-    <StPostsWrapper>
-      {posts?.map((post, index) => (
-        <PostItemContainer post={post} key={index} />
-      ))}
-    </StPostsWrapper>
+    <>
+      {posts?.length === 0 ? (
+        <EmptyPosts />
+      ) : (
+        <StPostsWrapper>
+          {posts?.map((post, index) => (
+            <PostItemContainer post={post} key={index} />
+          ))}
+        </StPostsWrapper>
+      )}
+    </>
   );
 };
 

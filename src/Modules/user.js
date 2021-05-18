@@ -10,6 +10,9 @@ const FOLLOWED_ME = 'user/FOLLOWED_ME';
 const FOLLOWED_ME_SUCCESS = 'user/FOLLOWED_ME_SUCCESS';
 const FOLLOWED_ME_ERROR = 'user/FOLLOWED_ME_ERROR';
 
+// const FOLLOW = 'user/FOLLOW';
+// const UNFOLLOW = 'user/UNFOLLOW';
+
 // action creator
 export const currentUser = currentUserData => ({
   type: CURRENT_USER,
@@ -20,6 +23,8 @@ export const currentUserFollow = followData => ({
   followData,
 });
 export const followedMe = fetchDataThunk(FOLLOWED_ME, store.getFollowedMe);
+// export const followUser = uid => ({ type: FOLLOW, uid });
+// export const unFollowUser = uid => ({ type: UNFOLLOW, uid });
 
 // initialState
 const initialState = {
@@ -62,6 +67,22 @@ const user = (state = initialState, action) => {
         ...state,
         followed: reducerUtils.error(action.payload),
       };
+    // case FOLLOW:
+    //   return {
+    //     ...state,
+    //     follow: {
+    //       ...state.follow,
+    //       followers: [...state.follow.followers, action.uid],
+    //     },
+    //   };
+    // case UNFOLLOW:
+    //   return {
+    //     ...state,
+    //     follow: {
+    //       ...state.follow,
+    //       following: state.follow.following.filter(uid => uid !== action.uid),
+    //     },
+    //   };
     default:
       return state;
   }

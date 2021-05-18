@@ -5,10 +5,10 @@ import DirectPage from '../Pages/DirectPage';
 import ProfilePage from '../Pages/ProfilePage';
 import LoginPage from '../Pages/LoginPage';
 import SignupPage from '../Pages/SignupPage';
-import NotFound from '../Component/Global/NotFound';
-import LoadingPage from '../Pages/LoadingPage';
 import EditPage from '../Pages/EditPage';
 import NewPost from '../Component/New/NewPost';
+import LoadingPage from '../Pages/LoadingPage';
+// import NotFound from '../Component/Global/NotFound';
 
 const MainRouter = ({ isSignIn }) => {
   const mainRoutes = [
@@ -35,28 +35,29 @@ const MainRouter = ({ isSignIn }) => {
   ];
   return (
     <Switch>
-      {mainRoutes.map(({ path, exact, children }, index) => (
-        <Route key={index} path={path} exact={exact}>
-          {isSignIn ? children : <LoadingPage />}
-        </Route>
-      ))}
+      {isSignIn &&
+        mainRoutes.map(({ path, exact, children }, index) => (
+          <Route key={index} path={path} exact={exact}>
+            {children}
+          </Route>
+        ))}
       {isSignIn && (
         <Route path="/new">
           <NewPost />
         </Route>
       )}
       {!isSignIn && (
-        <Route path="/signup">
+        <Route path="/signup" exact>
           <SignupPage />
         </Route>
       )}
       {!isSignIn && (
-        <Route path="/login">
+        <Route path="/login" exact>
           <LoginPage />
         </Route>
       )}
       <Route>
-        <NotFound />
+        <LoadingPage />
       </Route>
       {/* <Route render={() => <NotFound />} /> */}
     </Switch>

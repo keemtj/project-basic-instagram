@@ -24,6 +24,9 @@ const SEARCH_USER_FOLLOW = 'search/SEARCH_USER_FOLLOW';
 const SEARCH_USER_FOLLOW_SUCCESS = 'search/SEARCH_USER_FOLLOW_SUCCESS';
 const SEARCH_USER_FOLLOW_ERROR = 'search/SEARCH_USER_FOLLOW_ERROR';
 
+const FOLLOW = 'search/ADD_FOLLOW';
+const UNFOLLOW = 'search/REMOVE_FOLLOW';
+
 // action creator
 export const searchValue = value => ({ type: SEARCH_VALUE, value });
 export const clearValue = () => ({ type: CLEAR_VALUE });
@@ -47,6 +50,8 @@ export const getSearchUserFollowData = fetchDataThunk(
   SEARCH_USER_FOLLOW,
   store.getSearchUserFollowData,
 );
+export const followUser = uid => ({ type: FOLLOW, uid });
+export const unFollowUser = uid => ({ type: UNFOLLOW, uid });
 
 // initialState
 const initialState = {
@@ -136,6 +141,30 @@ const popup = (state = initialState, action) => {
       return {
         ...state,
         searchUserFollow: reducerUtils.error(action.payload),
+      };
+    case FOLLOW:
+      return {
+        ...state,
+        searchUserFollow: {
+          ...state.searchUserFollow,
+          data: {
+            ...state.searchUserFollow.data,
+            followers: [...state.searchUserFollow.data.followers, action.uid],
+          },
+        },
+      };
+    case UNFOLLOW:
+      return {
+        ...state,
+        searchUserFollow: {
+          ...state.searchUserFollow,
+          data: {
+            ...state.searchUserFollow.data,
+            followers: state.searchUserFollow.data.followers.filter(
+              uid => uid !== action.uid,
+            ),
+          },
+        },
       };
     default:
       return state;

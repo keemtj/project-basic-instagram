@@ -30,6 +30,8 @@ const ProfileContainer = () => {
       dispatch(getSearchUserPosts(uid));
     }
   }, [watchName]);
+
+  // NotFound page뜨도록 설정하기
   return <Profile watchName={watchName} />;
 };
 

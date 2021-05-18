@@ -1,4 +1,4 @@
-import { firestore } from './firebase';
+import { firebase, firestore } from './firebase';
 
 // get currentUser data to users collection of firestore
 export const getCurrentUserData = async uid => {
@@ -102,9 +102,6 @@ export const generatedId = () => {
   return result;
 };
 
-// --> follow data
-// export const
-
 // --> get user search results by name
 export const getUserSearchResultByDisplayName = async value => {
   if (value === '') return null;
@@ -121,4 +118,37 @@ export const getUserSearchResultByDisplayName = async value => {
     })
     .sort((a, b) => a.displayName.localeCompare(b.displayName));
   return result;
+};
+
+// --> follow, unfollow
+export const follow = async (currentUserUid, searchUserUid) => {
+  console.log('follow!!');
+  await firestore
+    .collection('follow')
+    .doc(currentUserUid)
+    .update({
+      following: firebase.firestore.FieldValue.arrayUnion(searchUserUid),
+    });
+  await firestore
+    .collection('follow')
+    .doc(searchUserUid)
+    .update({
+      followers: firebase.firestore.FieldValue.arrayUnion(currentUserUid),
+    });
+};
+
+export const unfollow = async (currentUserUid, searchUserUid) => {
+  console.log('unfollow');
+  await firestore
+    .collection('follow')
+    .doc(currentUserUid)
+    .update({
+      following: firebase.firestore.FieldValue.arrayRemove(searchUserUid),
+    });
+  await firestore
+    .collection('follow')
+    .doc(searchUserUid)
+    .update({
+      followers: firebase.firestore.FieldValue.arrayRemove(currentUserUid),
+    });
 };
