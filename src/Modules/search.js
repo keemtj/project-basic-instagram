@@ -93,7 +93,7 @@ const popup = (state = initialState, action) => {
     case RECENT_ADD:
       return {
         ...state,
-        recent: state.recent.length
+        recent: state.recent?.length
           ? searchUtils.addRecent(state.recent, action.user)
           : [action.user],
       };

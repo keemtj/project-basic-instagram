@@ -1,52 +1,21 @@
 import React from 'react';
 import styled, { css } from 'styled-components';
 
-const EditProfile = () => {
-  // Event
-  const handleKeyPress = e => {
-    if (e.key === 'Enter') {
-      e.preventDefault();
-    }
-  };
-
-  const onEditProfileSubmit = e => {
-    e.preventDefault();
-    console.log('프로필 변경사항 저장!');
-  };
-
-  const currentDisplayName = 'admin';
-  const inputList = [
-    { id: 'username', text: '이름' },
-    {
-      advice:
-        '사람들이 이름, 별명 또는 비즈니스 이름 등 회원님의 알려진 이름을사용하여 회원님의 계정을 찾을 수 있도록 도와주세요.',
-      position: 'down',
-    },
-    { id: 'displayName', text: '사용자 이름' },
-    {
-      advice: `대부분의 경우 14일 이내에 사용자 이름을 다시 ${currentDisplayName}(으)로 변경할 수 있습니다.`,
-      position: 'down',
-    },
-    {
-      advice:
-        '비즈니스나 반려동물 등에 사용된 계정인 경우에도 회원님의 개인 정보를 입력하세요. 공개 프로필에는 포함되지 않습니다.',
-      position: 'up',
-      advice2: '개인정보',
-    },
-    { sid: 'email', text: '이메일' },
-    { id: 'phone', text: '전화번호' },
-  ];
-
-  React.useEffect(() => {
-    document.title = '프로필 편집 • Instagram';
-  }, []);
-
+const EditProfile = ({
+  inputList,
+  photoURL,
+  presentation,
+  onChangeInput,
+  handleKeyPress,
+  onEditProfileSubmit,
+  addImage,
+}) => {
   return (
     <StEditProfileWrapper>
       <StEditProfileImage>
         <StAside>
           <StLabel htmlFor="edit">
-            <StImage src={'/images/default_profile2.jpg'} />
+            <StImage src={photoURL} />
           </StLabel>
         </StAside>
         <StProfileImageBox>
@@ -58,44 +27,55 @@ const EditProfile = () => {
             id="edit"
             type="file"
             accept="image/jpeg,  image/png, image/jpg"
+            onChange={addImage}
             hidden
           />
         </StProfileImageBox>
       </StEditProfileImage>
       <StEditProfileForm onSubmit={onEditProfileSubmit}>
-        {inputList.map(({ id, text, advice, advice2, position }, index) => (
-          <StEditProfileFormBlock key={index}>
-            <StEditProfileFormAside>
-              {advice ? (
-                <div />
-              ) : (
-                <StEditProfileFormLabel htmlFor={id}>
-                  {text}
-                </StEditProfileFormLabel>
-              )}
-            </StEditProfileFormAside>
-            <StEditProfileFormDiv>
-              {advice ? (
-                <StEditProfileAdvice position={position}>
-                  {advice2 && (
-                    <div style={{ fontSize: '1.4rem', marginBottom: '0.5rem' }}>
-                      {advice2}
-                    </div>
-                  )}
-                  <div>{advice}</div>
-                </StEditProfileAdvice>
-              ) : (
-                <StEditProfileFormInput
-                  type="text"
-                  id={id}
-                  placeholder={id === 'displayName' ? 'admin' : text}
-                  autoComplete="off"
-                  onKeyPress={handleKeyPress}
-                />
-              )}
-            </StEditProfileFormDiv>
-          </StEditProfileFormBlock>
-        ))}
+        {inputList.map(
+          (
+            { id, category, placeholder, value, advice, advice2, position },
+            index,
+          ) => (
+            <StEditProfileFormBlock key={index}>
+              <StEditProfileFormAside>
+                {advice ? (
+                  <div />
+                ) : (
+                  <StEditProfileFormLabel htmlFor={id}>
+                    {category}
+                  </StEditProfileFormLabel>
+                )}
+              </StEditProfileFormAside>
+              <StEditProfileFormDiv>
+                {advice ? (
+                  <StEditProfileAdvice position={position}>
+                    {advice2 && (
+                      <div
+                        style={{ fontSize: '1.4rem', marginBottom: '0.5rem' }}
+                      >
+                        {advice2}
+                      </div>
+                    )}
+                    <div>{advice}</div>
+                  </StEditProfileAdvice>
+                ) : (
+                  <StEditProfileFormInput
+                    type="text"
+                    id={id}
+                    name={id}
+                    placeholder={placeholder}
+                    autoComplete="off"
+                    value={value}
+                    onChange={onChangeInput}
+                    onKeyPress={handleKeyPress}
+                  />
+                )}
+              </StEditProfileFormDiv>
+            </StEditProfileFormBlock>
+          ),
+        )}
         <StEditProfileFormBlock>
           <StEditProfileFormAside>
             <StEditProfileFormLabel htmlFor="presentation">
@@ -103,7 +83,13 @@ const EditProfile = () => {
             </StEditProfileFormLabel>
           </StEditProfileFormAside>
           <StEditProfileFormDiv>
-            <StEditProfileFormTextarea type="text" id="presentation" />
+            <StEditProfileFormTextarea
+              type="text"
+              id="presentation"
+              name="presentation"
+              value={presentation}
+              onChange={onChangeInput}
+            />
           </StEditProfileFormDiv>
         </StEditProfileFormBlock>
         <StEditProfileFormBlock>
@@ -236,8 +222,7 @@ const StEditProfileFormInput = styled.input`
   color: ${({ theme }) => theme.black};
   font-size: 1.6rem;
   &::placeholder {
-    color: ${({ theme, id }) =>
-      id === 'displayName' ? theme.black : theme.darkGray};
+    color: ${({ theme }) => theme.darkGray};
     font-size: 1.6rem;
     font-weight: 300;
   }

@@ -1,12 +1,12 @@
 import React from 'react';
 import { Route, Switch } from 'react-router-dom';
-import EditProfile from '../Component/Edit/EditProfile';
+import EditProfileContainer from '../Container/Edit/EditProfileContainer';
 import EditPassword from '../Component/Edit/EditPassword';
 
 const EditRouter = () => {
   return (
     <Switch>
-      <Route path="/edit" component={EditProfile} exact />
+      <Route path="/edit" component={EditProfileContainer} exact />
       <Route path="/edit/password" component={EditPassword} />
       <Route
         render={({ location }) => (
