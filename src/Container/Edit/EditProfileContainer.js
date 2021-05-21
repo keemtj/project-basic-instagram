@@ -3,13 +3,29 @@ import { useSelector } from 'react-redux';
 import EditProfile from '../../Component/Edit/EditProfile';
 import { firebaseStorage, firestore } from '../../services/firebase';
 
+/**
+ * FIXME: Need to fix code
+ *
+ * TODO: firebaseAuth check(email, password)
+ * ! passowrd -> EditPasswordContainer component
+ * TODO: current user data of firestore
+ * TODO: current user's profile image
+ *
+ * NOTE default URL, preview URL, photo URL
+ * @param defaultProfile '/images/default_profile.png'
+ * @param previewURL preview image
+ * @param photoURL changed image
+ * @param file image's metadata
+ * @param timeCreated -> displayName, email
+ */
+
 const initialState = {
   displayName: '',
   username: '',
   phone: '',
   email: '',
   presentation: '',
-  photoURL: {},
+  photo: {},
 };
 
 const editReducer = (state = initialState, action) => {
@@ -31,7 +47,7 @@ const editReducer = (state = initialState, action) => {
 
 const EditProfileContainer = () => {
   const [state, dp] = useReducer(editReducer, initialState);
-  const { displayName, username, phone, email, photoURL, presentation } = state;
+  const { displayName, username, phone, email, photo, presentation } = state;
   console.log(state);
 
   const {
@@ -53,15 +69,10 @@ const EditProfileContainer = () => {
   const onEditProfileSubmit = e => {
     e.preventDefault();
     updateImageToStorage();
-    // updateProfileDataToFirestore();
   };
 
-  // const updateProfileDataToFirestore = async () => {
-  //   await firestore.collection('users').doc(uid).update(state);
-  // };
-
   const updateImageToStorage = () => {
-    [state.photoURL].forEach(image => {
+    [photo].forEach(image => {
       const uploadTask = firebaseStorage.ref(`/${uid}/profile`).put(image.file);
       uploadTask.on(
         'state_changed',
@@ -75,10 +86,8 @@ const EditProfileContainer = () => {
         async () => {
           const urlResult = await uploadTask.snapshot.ref.getDownloadURL();
           const photoURL = await Promise.resolve(urlResult);
-          const metadataResult = await uploadTask.snapshot.ref.getMetadata();
-          const { timeCreated } = await Promise.resolve(metadataResult);
           await firestore.collection('users').doc(uid).update({
-            photoURL: { photoURL, timeCreated },
+            photoURL,
           });
           console.log(uploadTask.snapshot.state);
         },
@@ -150,9 +159,7 @@ const EditProfileContainer = () => {
   return (
     <EditProfile
       inputList={inputList}
-      photoURL={
-        photoURL.photoURL ? photoURL.photoURL : currentPhotoURL.photoURL
-      }
+      photoURL={photo.photoURL || currentPhotoURL}
       presentation={currentPresentation ? currentPresentation : presentation}
       onChangeInput={onChangeInput}
       handleKeyPress={handleKeyPress}
