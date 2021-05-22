@@ -10,6 +10,7 @@ const ProfileImage = ({
   fontSize,
   username,
   children,
+  ...rest
 }) => {
   return (
     <StProfileImageWrapper>
@@ -18,7 +19,7 @@ const ProfileImage = ({
         alt={alt}
         width={width}
         height={height}
-        onClick={() => console.log('이미지 클릭 -> 유저 페이지로 이동')}
+        onClick={rest.onClick}
       />
       {children ? (
         children
@@ -26,7 +27,7 @@ const ProfileImage = ({
         <StUsername
           marginLeft={marginLeft}
           fontSize={fontSize}
-          onClick={() => console.log('유저네임 클릭 -> 유저 페이지로 이동')}
+          onClick={rest.onClick}
         >
           {username}
         </StUsername>

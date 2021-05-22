@@ -43,12 +43,13 @@ const ProfileContainer = () => {
   }, [watchName]);
 
   // TODO: NotFound page뜨도록 설정하기
+  // FIXME: NotFound page 재구현 필요...
   return (
     <>
-      {isFollowing === null && watchName !== currentUserData.displayName ? (
-        <NotFound />
-      ) : (
+      {isFollowing !== null || watchName === currentUserData.displayName ? (
         <Profile watchName={watchName} />
+      ) : (
+        <NotFound />
       )}
     </>
   );

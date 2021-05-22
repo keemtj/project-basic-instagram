@@ -11,6 +11,8 @@ const MainContainer = () => {
   const { data: posts, loading, error } = useSelector(
     state => state.posts.myPosts,
   );
+
+  // NOTE 팔로잉한 유저의 posts data
   const { data: followingPosts } = useSelector(
     state => state.posts.myFollowingPosts,
   );

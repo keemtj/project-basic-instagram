@@ -1,7 +1,11 @@
 import React, { useEffect, useReducer } from 'react';
 import { useSelector } from 'react-redux';
 import EditProfile from '../../Component/Edit/EditProfile';
-import { firebaseStorage, firestore } from '../../services/firebase';
+import {
+  firebaseAuth,
+  firebaseStorage,
+  firestore,
+} from '../../services/firebase';
 
 /**
  * FIXME: Need to fix code
@@ -83,6 +87,16 @@ const EditProfileContainer = () => {
         email: email !== '' ? email : currentEmail,
         presentation: presentation !== '' ? presentation : currentPresentation,
       });
+    await firebaseAuth.currentUser.updateEmail(
+      email !== '' ? email : currentEmail,
+    );
+    await firestore
+      .collection('follow')
+      .doc(uid)
+      .update({
+        displayName: displayName !== '' ? displayName : currentDisplayName,
+      });
+    // TODO: setTimeout대신 toast popup으로 대체
     setTimeout(() => {
       window.location.reload();
     }, 1000);

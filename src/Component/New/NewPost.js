@@ -19,7 +19,7 @@ const NewPost = ({ setProgress }) => {
   const history = useHistory();
   const modalRef = useRef();
   const { newPostModal, modalEntryPath } = useSelector(state => state.popup);
-  const { displayName, uid } = useSelector(state => state.user.user);
+  const { uid } = useSelector(state => state.user.user);
   const [images, setImages] = useState([]);
   const [location, setLocation] = useState('');
   const [subLocation, setSubLocation] = useState('');
@@ -37,7 +37,7 @@ const NewPost = ({ setProgress }) => {
   const createPost = () => {
     const postId = generatedId();
     // Todo: add datas to firestore
-    addPostDataToFirestore(uid, displayName, postId);
+    addPostDataToFirestore(uid, postId);
     // Todo: upload images to storage
     uploadImagesToStorage(uid, postId, images);
     // Todo: close modal
@@ -46,7 +46,7 @@ const NewPost = ({ setProgress }) => {
   };
 
   // add post data to firestore
-  const addPostDataToFirestore = (uid, displayName, postId) => {
+  const addPostDataToFirestore = (uid, postId) => {
     firestore
       .collection('posts')
       .doc(uid)
@@ -55,7 +55,6 @@ const NewPost = ({ setProgress }) => {
       .set({
         id: postId,
         uid,
-        displayName,
         date: Date.now(), // 1970~ 2021.4.1
         text,
         location,

@@ -7,6 +7,7 @@ import { Chat } from '@styled-icons/bootstrap/Chat';
 import { Bookmark } from '@styled-icons/bootstrap/Bookmark';
 import { EmojiSmile } from '@styled-icons/bootstrap/EmojiSmile';
 import Carousel from '../Global/Carousel';
+import ProfileImage from '../Global/ProfileImage';
 
 const icons = [
   { icon: <Heart /> },
@@ -27,17 +28,25 @@ const Post = ({
   isPossibleComment,
   comments,
   timeElapsed,
+  onMoveProfilePage,
 }) => {
   return (
     <StArticle>
       <StHeader>
-        <div>
-          <StProfileImage src={photoURL} alt={'#'} />
+        <ProfileImage
+          src={photoURL === '' ? '/images/default_profile.png' : photoURL}
+          alt={displayName}
+          width={3}
+          height={3}
+          onClick={onMoveProfilePage}
+        >
           <div>
-            <div>{displayName}</div>
+            <StDisplayName onClick={onMoveProfilePage}>
+              {displayName}
+            </StDisplayName>
             {location && <StLocation>{location}</StLocation>}
           </div>
-        </div>
+        </ProfileImage>
         <button style={{ width: '2rem' }}>
           <ThreeDots />
         </button>
@@ -118,11 +127,11 @@ const StHeader = styled.header`
   font-weight: 600;
 `;
 
-const StProfileImage = styled.img`
-  border: 1px solid ${({ theme }) => theme.gray};
-  border-radius: 50%;
-  width: 3rem;
-  height: 3rem;
+const StDisplayName = styled.h2`
+  &:hover {
+    text-decoration: underline;
+    cursor: pointer;
+  }
 `;
 
 const StLocation = styled.div`
