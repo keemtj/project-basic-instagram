@@ -1,13 +1,13 @@
 import React from 'react';
 import { Route, Switch } from 'react-router-dom';
 import EditProfileContainer from '../Container/Edit/EditProfileContainer';
-import EditPassword from '../Component/Edit/EditPassword';
+import EditPasswordContainer from '../Container/Edit/EditPasswordContainer';
 
 const EditRouter = () => {
   return (
     <Switch>
       <Route path="/edit" component={EditProfileContainer} exact />
-      <Route path="/edit/password" component={EditPassword} />
+      <Route path="/edit/password" component={EditPasswordContainer} />
       <Route
         render={({ location }) => (
           <div style={{ marginTop: '5.5rem' }}>

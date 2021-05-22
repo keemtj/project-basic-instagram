@@ -1,40 +1,26 @@
 import React from 'react';
 import styled, { css } from 'styled-components';
 
-const EditPassword = () => {
-  const inputList = [
-    { id: 'prevPassword', text: '이전 비밀번호' },
-    { id: 'newPassword', text: '새 비밀번호' },
-    { id: 'checkNewPassword', text: '새 비밀번호 확인' },
-  ];
-
-  const handleKeyPress = e => {
-    if (e.key === 'Enter') {
-      e.preventDefault();
-    }
-  };
-
-  const onEditPasswordSubmit = e => {
-    e.preventDefault();
-    console.log('비밀번호 변경사항 저장!');
-  };
-
-  React.useEffect(() => {
-    document.title = '비밀번호 변경 • Instagram';
-  }, []);
-
+const EditPassword = ({
+  inputList,
+  displayName,
+  photoURL,
+  handleKeyPress,
+  getASecureRandomPassword,
+  onEditPasswordSubmit,
+}) => {
   return (
     <StEditPasswordWrapper>
       <StEditPasswordImage>
         <StAside>
-          <StImage src={'/images/default_Profile.png'} />
+          <StImage src={photoURL} />
         </StAside>
         <StPasswordImageBox>
-          <StDisplayName>admin</StDisplayName>
+          <StDisplayName>{displayName}</StDisplayName>
         </StPasswordImageBox>
       </StEditPasswordImage>
       <StEditPasswordForm onSubmit={onEditPasswordSubmit}>
-        {inputList.map(({ id, text }, index) => (
+        {inputList.map(({ id, text, value }, index) => (
           <StEditPasswordFormBlock key={index}>
             <StEditPasswordFormAside>
               <StEditPasswordFormLabel htmlFor={id}>
@@ -45,7 +31,10 @@ const EditPassword = () => {
               <StEditPasswordFormInput
                 type="password"
                 id={id}
+                name={id}
                 autoComplete="off"
+                value={value}
+                onChange={getASecureRandomPassword}
                 onKeyPress={handleKeyPress}
               />
             </StEditPasswordFormDiv>
@@ -119,7 +108,6 @@ const StEditPasswordFormBlock = styled.div`
   display: flex;
   flex-flow: row nowrap;
   width: 100%;
-  /* margin-top: 1rem; */
 `;
 
 const StEditPasswordFormAside = styled.aside`
