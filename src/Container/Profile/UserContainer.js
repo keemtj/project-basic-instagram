@@ -22,16 +22,16 @@ const UserContainer = ({ watchName }) => {
   const { data: searchUserFollowData } = useSelector(
     state => state.search.searchUserFollow,
   );
+
   const isFollowing = searchUserFollowData?.followers.includes(
     currentUserData.uid,
   );
+
   const { data: searchUserPosts } = useSelector(
     state => state.posts.searchUserPosts,
   );
 
   const onToggleFollow = () => {
-    console.log(currentUserData.uid);
-    console.log(searchUserData?.uid);
     if (isFollowing) {
       console.log(
         '언팔로우 dispatch: 서치 유저의 팔로우 데이터에서 내 uid를 제거',

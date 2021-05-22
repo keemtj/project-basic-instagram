@@ -1,26 +1,24 @@
 import React from 'react';
 import { useHistory } from 'react-router';
 import styled from 'styled-components';
-import Footer from './Footer';
-import Header from './Header';
 
 const NotFound = () => {
   const history = useHistory();
   const goBack = () => {
     history.goBack();
   };
+  React.useEffect(() => {
+    document.title = '페이지를 찾을 수 없습니다 • Instagram';
+  });
+
   return (
-    <>
-      <Header />
-      <StNotFound>
-        <StH2>죄송합니다. 페이지를 사용할 수 없습니다.</StH2>
-        <StP>
-          클릭하신 링크가 잘못되었거나 페이지가 삭제되었습니다.{' '}
-          <StGoHome onClick={goBack}>Instagram으로 돌아가기.</StGoHome>
-        </StP>
-      </StNotFound>
-      <Footer />
-    </>
+    <StNotFound>
+      <StH2>죄송합니다. 페이지를 사용할 수 없습니다.</StH2>
+      <StP>
+        클릭하신 링크가 잘못되었거나 페이지가 삭제되었습니다.{' '}
+        <StGoHome onClick={goBack}>Instagram으로 돌아가기.</StGoHome>
+      </StP>
+    </StNotFound>
   );
 };
 

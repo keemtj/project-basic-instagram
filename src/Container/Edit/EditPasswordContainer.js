@@ -10,7 +10,6 @@ const EditPasswordContainer = () => {
     checkNewPassword: '',
     error: null,
   });
-  console.log(input);
 
   const handleKeyPress = e => {
     if (e.key === 'Enter') {

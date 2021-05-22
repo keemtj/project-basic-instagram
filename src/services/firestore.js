@@ -33,8 +33,8 @@ export const getSearchUserFollowData = async uid => {
     const datas = doc.data();
     return datas;
   } catch (e) {
-    console.log(e);
-    return 'no-user';
+    // console.log(e);
+    return e;
   }
 };
 

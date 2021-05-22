@@ -59,7 +59,6 @@ const MainRouter = ({ isSignIn }) => {
       <Route>
         <LoadingPage />
       </Route>
-      {/* <Route render={() => <NotFound />} /> */}
     </Switch>
   );
 };
