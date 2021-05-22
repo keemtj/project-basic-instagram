@@ -3,12 +3,14 @@ import styled, { css } from 'styled-components';
 
 const EditProfile = ({
   inputList,
+  currentDisplayName,
   photoURL,
-  presentation,
   onChangeInput,
+  presentation,
+  onChangePresentation,
   handleKeyPress,
-  onEditProfileSubmit,
-  addImage,
+  updateProfileData,
+  updateProfileImage,
 }) => {
   return (
     <StEditProfileWrapper>
@@ -19,7 +21,7 @@ const EditProfile = ({
           </StLabel>
         </StAside>
         <StProfileImageBox>
-          <StDisplayName>admin</StDisplayName>
+          <StDisplayName>{currentDisplayName}</StDisplayName>
           <StProfileImageButton htmlFor="edit">
             프로필 사진 바꾸기
           </StProfileImageButton>
@@ -27,12 +29,12 @@ const EditProfile = ({
             id="edit"
             type="file"
             accept="image/jpeg,  image/png, image/jpg"
-            onChange={addImage}
+            onChange={updateProfileImage}
             hidden
           />
         </StProfileImageBox>
       </StEditProfileImage>
-      <StEditProfileForm onSubmit={onEditProfileSubmit}>
+      <StEditProfileForm onSubmit={updateProfileData}>
         {inputList.map(
           (
             { id, category, placeholder, value, advice, advice2, position },
@@ -88,7 +90,8 @@ const EditProfile = ({
               id="presentation"
               name="presentation"
               value={presentation}
-              onChange={onChangeInput}
+              onChange={onChangePresentation}
+              onKeyPress={handleKeyPress}
             />
           </StEditProfileFormDiv>
         </StEditProfileFormBlock>
@@ -249,6 +252,9 @@ const StEditProfileFormTextarea = styled.textarea`
   color: ${({ theme }) => theme.black};
   font-size: 1.6rem;
   resize: vertical;
+  &::placeholder {
+    color: ${({ theme }) => theme.darkGray};
+  }
 `;
 
 const StSubmitButton = styled.button`

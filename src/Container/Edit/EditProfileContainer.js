@@ -25,20 +25,30 @@ const initialState = {
   phone: '',
   email: '',
   presentation: '',
-  photo: {},
 };
 
 const editReducer = (state = initialState, action) => {
   switch (action.type) {
+    case 'INITIAL_VALUE':
+      return {
+        displayName: action.data.displayName || '',
+        username: action.data.username || '',
+        phone: action.data.phone || '',
+        email: action.data.email || '',
+        presentation: action.data.presentation || '',
+      };
     case 'SET_VALUE':
       return {
         ...state,
         [action.name]: action.value,
       };
-    case 'ADD_IMAGE':
+    case 'RESET_VALUE':
       return {
-        ...state,
-        photoURL: action.data,
+        displayName: '',
+        username: '',
+        phone: '',
+        email: '',
+        presentation: '',
       };
     default:
       return state;
@@ -47,9 +57,10 @@ const editReducer = (state = initialState, action) => {
 
 const EditProfileContainer = () => {
   const [state, dp] = useReducer(editReducer, initialState);
-  const { displayName, username, phone, email, photo, presentation } = state;
-  console.log(state);
+  const { displayName, username, phone, email, presentation } = state;
+  // const [uploadState, setUploadState] = React.useState('');
 
+  const currentUserData = useSelector(state => state.user.user);
   const {
     displayName: currentDisplayName,
     email: currentEmail,
@@ -58,7 +69,52 @@ const EditProfileContainer = () => {
     phone: currentPhone,
     presentation: currentPresentation,
     uid,
-  } = useSelector(state => state.user.user);
+  } = currentUserData;
+
+  const updateProfileData = async e => {
+    e.preventDefault();
+    await firestore
+      .collection('users')
+      .doc(uid)
+      .update({
+        displayName: displayName !== '' ? displayName : currentDisplayName,
+        username: username !== '' ? username : currentUsername,
+        phone: phone !== '' ? phone : currentPhone,
+        email: email !== '' ? email : currentEmail,
+        presentation: presentation !== '' ? presentation : currentPresentation,
+      });
+    setTimeout(() => {
+      window.location.reload();
+    }, 1000);
+  };
+
+  const updateProfileImage = ({ target }) => {
+    [target.files].forEach(image => {
+      console.log(image);
+      const uploadTask = firebaseStorage.ref(`/${uid}/profile`).put(image[0]);
+      uploadTask.on(
+        'state_changed',
+        snapshot => {
+          const progress = Math.round(
+            (snapshot.bytesTransferred / snapshot.totalBytes) * 100,
+          );
+          console.log('Upload is ' + progress + '%');
+          console.log('업로드중에 taskState:', snapshot.state);
+        },
+        e => console.log(e),
+        async () => {
+          const urlResult = await uploadTask.snapshot.ref.getDownloadURL();
+          const photoURL = await Promise.resolve(urlResult);
+          await firestore.collection('users').doc(uid).update({ photoURL });
+          // reload대신에 토스트 dispatch('프로필이미지변경')
+          // currentUserData 새로가져오기
+          setTimeout(() => {
+            window.location.reload();
+          }, 1000);
+        },
+      );
+    });
+  };
 
   const handleKeyPress = e => {
     if (e.key === 'Enter') {
@@ -66,46 +122,12 @@ const EditProfileContainer = () => {
     }
   };
 
-  const onEditProfileSubmit = e => {
-    e.preventDefault();
-    updateImageToStorage();
-  };
-
-  const updateImageToStorage = () => {
-    [photo].forEach(image => {
-      const uploadTask = firebaseStorage.ref(`/${uid}/profile`).put(image.file);
-      uploadTask.on(
-        'state_changed',
-        snapshot => {
-          const progress = Math.round(
-            (snapshot.bytesTransferred / snapshot.totalBytes) * 100,
-          );
-          console.log('upload is' + progress + '%');
-        },
-        e => console.log(e.code, e.message),
-        async () => {
-          const urlResult = await uploadTask.snapshot.ref.getDownloadURL();
-          const photoURL = await Promise.resolve(urlResult);
-          await firestore.collection('users').doc(uid).update({
-            photoURL,
-          });
-          console.log(uploadTask.snapshot.state);
-        },
-      );
-    });
-  };
-
-  const addImage = ({ target }) => {
-    let data = {};
-    [...target.files].forEach(file => {
-      const previewURL = URL.createObjectURL(file);
-      data['photoURL'] = previewURL;
-      data['file'] = file;
-    });
-    dp({ type: 'ADD_IMAGE', data });
-  };
-
   const onChangeInput = ({ target }) => {
+    const { name, value } = target;
+    dp({ type: 'SET_VALUE', name, value });
+  };
+
+  const onChangePresentation = ({ target }) => {
     const { name, value } = target;
     dp({ type: 'SET_VALUE', name, value });
   };
@@ -114,7 +136,7 @@ const EditProfileContainer = () => {
     {
       id: 'username',
       category: '이름',
-      placeholder: `${currentUsername ? currentUsername : '이름'}`,
+      placeholder: '이름',
       value: `${username}`,
     },
     {
@@ -125,7 +147,7 @@ const EditProfileContainer = () => {
     {
       id: 'displayName',
       category: '사용자 이름',
-      placeholder: `${currentDisplayName ? currentDisplayName : '사용자 이름'}`,
+      placeholder: '사용자 이름',
       value: `${displayName}`,
     },
     {
@@ -141,30 +163,33 @@ const EditProfileContainer = () => {
     {
       id: 'email',
       category: '이메일',
-      placeholder: `${currentEmail ? currentEmail : '이메일'}`,
+      placeholder: '이메일',
       value: `${email}`,
     },
     {
       id: 'phone',
       category: '전화번호',
-      placeholder: `${currentPhone ? currentPhone : '전화번호'}`,
+      placeholder: '전화번호',
       value: `${phone}`,
     },
   ];
 
   useEffect(() => {
     document.title = '프로필 편집 • Instagram';
-  }, []);
+    dp({ type: 'INITIAL_VALUE', data: currentUserData });
+  }, [dp, currentUserData]);
 
   return (
     <EditProfile
       inputList={inputList}
-      photoURL={photo.photoURL || currentPhotoURL}
-      presentation={currentPresentation ? currentPresentation : presentation}
+      currentDisplayName={currentDisplayName}
+      photoURL={currentPhotoURL}
       onChangeInput={onChangeInput}
+      presentation={presentation}
+      onChangePresentation={onChangePresentation}
       handleKeyPress={handleKeyPress}
-      onEditProfileSubmit={onEditProfileSubmit}
-      addImage={addImage}
+      updateProfileData={updateProfileData}
+      updateProfileImage={updateProfileImage}
     />
   );
 };
