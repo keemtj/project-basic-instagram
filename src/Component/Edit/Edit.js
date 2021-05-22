@@ -2,19 +2,23 @@ import React from 'react';
 import styled from 'styled-components';
 import EditNavigation from './EditNavigation';
 import EditRouter from '../../Router/EditRouter';
+import ToastPopupContainer from '../../Container/Global/ToastPopupContainer';
 
 const Edit = () => {
   return (
-    <StEditWrapper>
-      <StEdit>
-        <StEditNavigationSection>
-          <EditNavigation />
-        </StEditNavigationSection>
-        <StEditSection>
-          <EditRouter />
-        </StEditSection>
-      </StEdit>
-    </StEditWrapper>
+    <>
+      <StEditWrapper>
+        <StEdit>
+          <StEditNavigationSection>
+            <EditNavigation />
+          </StEditNavigationSection>
+          <StEditSection>
+            <EditRouter />
+          </StEditSection>
+        </StEdit>
+      </StEditWrapper>
+      <ToastPopupContainer />
+    </>
   );
 };
 
