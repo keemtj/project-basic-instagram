@@ -55,7 +55,15 @@ const MainNavigation = ({
           style={{ position: 'relative', cursor: 'pointer' }}
           onClick={onPopup}
         >
-          <StProfile active={profilePopup || path === '/:displayName'}>
+          <StProfile
+            active={
+              profilePopup ||
+              path === `/${displayName}` ||
+              path === `/${displayName}/channel` ||
+              path === `/${displayName}/saved` ||
+              path === `/${displayName}/tagged`
+            }
+          >
             <StProfileImage src={photoURL} alt={displayName} />
           </StProfile>
         </li>

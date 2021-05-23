@@ -1,13 +1,13 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useRouteMatch } from 'react-router';
+import { useLocation } from 'react-router';
 import MainNavigation from '../../Component/Global/MainNavigation';
 import { openPopup } from '../../Modules/popup';
 
 const MainNavigationContainer = () => {
   const dispatch = useDispatch();
-  const match = useRouteMatch();
-  const path = match.path;
+  const location = useLocation();
+  const path = location.pathname;
   const { profilePopup, newPostModal } = useSelector(state => state.popup);
   const { photoURL, displayName } = useSelector(state => state.user.user);
 

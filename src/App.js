@@ -1,14 +1,15 @@
 import React, { useState, useEffect } from 'react';
-import MainRouter from './Router/MainRouter';
 import ResetStyle from './Style/ResetStyle';
 import PageWrapper from './Component/Global/PageWrapper';
+import HeaderContainer from './Container/Global/HeaderContainer';
+import MainRouter from './Router/MainRouter';
+import ProgressBar from './Component/Global/ProgressBar';
+import NewPost from './Component/New/NewPost';
 import { firebaseAuth } from './services/firebase';
 import { loginState } from './Modules/login';
 import { useDispatch, useSelector } from 'react-redux';
 import { currentUser, currentUserFollow } from './Modules/user';
 import { getCurrentUserData, getFollowData } from './services/firestore';
-import NewPost from './Component/New/NewPost';
-import ProgressBar from './Component/Global/ProgressBar';
 import { getPosts } from './Modules/posts';
 
 const App = () => {
@@ -38,6 +39,7 @@ const App = () => {
     <>
       <ResetStyle />
       <PageWrapper>
+        <HeaderContainer />
         <MainRouter isSignIn={isSignIn} />
         {progress !== 0 && <ProgressBar progress={progress} />}
         {newPostModalState && <NewPost setProgress={setProgress} />}
