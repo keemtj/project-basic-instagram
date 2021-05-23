@@ -2,57 +2,65 @@ import React from 'react';
 import { NavLink } from 'react-router-dom';
 import styled from 'styled-components';
 import { Home } from '@styled-icons/ionicons-outline/Home';
+import { Home as HomeFilled } from '@styled-icons/ionicons-solid/Home';
 import { PaperPlane } from '@styled-icons/ionicons-outline/PaperPlane';
+import { PaperPlane as PaperPlaneFilled } from '@styled-icons/ionicons-solid/PaperPlane';
 import { AddCircle } from '@styled-icons/ionicons-outline/AddCircle';
-import { Heart } from '@styled-icons/ionicons-outline/Heart';
+import { AddCircle as AddCircleFilled } from '@styled-icons/ionicons-sharp/AddCircle';
+// import { Heart } from '@styled-icons/ionicons-outline/Heart';
 import PopupContainer from '../../Container/Global/PopupContainer';
 
 const MainNavigation = ({
-  openModal,
   photoURL,
   displayName,
   onPopup,
-  popupState,
+  openModal,
+  profilePopup,
+  newPostModal,
+  path,
 }) => {
   return (
     <StMainNavigation>
       <ul>
         <li>
-          <NavLink to="/">
+          <NavLink to="/" exact>
             <StIcon>
-              <Home />
+              {path === '/' && !profilePopup && !newPostModal ? (
+                <HomeFilled />
+              ) : (
+                <Home />
+              )}
             </StIcon>
           </NavLink>
         </li>
         <li>
           <NavLink to="/direct">
             <StIcon>
-              <PaperPlane />
+              {path === '/direct' && !profilePopup && !newPostModal ? (
+                <PaperPlaneFilled />
+              ) : (
+                <PaperPlane />
+              )}
             </StIcon>
           </NavLink>
         </li>
         <li>
-          <StIcon>
-            <Heart />
-          </StIcon>
-        </li>
-        <li>
-          <button style={{ cursor: 'pointer' }} onClick={openModal}>
+          <StNewPostButton onClick={openModal}>
             <StIcon>
-              <AddCircle />
+              {newPostModal ? <AddCircleFilled /> : <AddCircle />}
             </StIcon>
-          </button>
+          </StNewPostButton>
         </li>
         <li
           style={{ position: 'relative', cursor: 'pointer' }}
           onClick={onPopup}
         >
-          <StProfile>
+          <StProfile active={profilePopup || path === '/:displayName'}>
             <StProfileImage src={photoURL} alt={displayName} />
           </StProfile>
         </li>
       </ul>
-      {popupState && <PopupContainer />}
+      {profilePopup && <PopupContainer />}
     </StMainNavigation>
   );
 };
@@ -80,6 +88,10 @@ const StMainNavigation = styled.nav`
   }
 `;
 
+const StNewPostButton = styled.button`
+  cursor: pointer;
+`;
+
 const StIcon = styled.div`
   width: 2.6rem;
   height: 2.6rem;
@@ -87,7 +99,8 @@ const StIcon = styled.div`
 
 const StProfile = styled.div`
   /* true면 black false면 white */
-  border: 1px solid ${({ theme }) => theme.black};
+  border: 1px solid
+    ${({ active, theme }) => (active ? theme.black : theme.white)};
   width: 2.8rem;
   height: 2.8rem;
   border-radius: 50%;
