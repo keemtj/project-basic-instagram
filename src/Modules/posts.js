@@ -14,16 +14,13 @@ const MY_FOLLOWING_POSTS_ERROR = 'main/MY_FOLLOWING_POSTS_ERROR';
 const SEARCH_USER_POSTS = 'main/SEARCH_USER_POSTS';
 const SEARCH_USER_POSTS_SUCCESS = 'main/SEARCH_USER_POSTS_SUCCESS';
 const SEARCH_USER_POSTS_ERROR = 'main/SEARCH_USER_POSTS_ERROR';
-// --> 검색된 유저의 포스트 액션
 
 // NOTE action creator
 export const getPosts = fetchDataThunk(MY_POSTS, store.getCurrentUserPostsData);
-
 export const getFollowingPosts = fetchDataThunk(
   MY_FOLLOWING_POSTS,
   store.getAllPostsByFollowing,
 );
-
 export const getSearchUserPosts = fetchDataThunk(
   SEARCH_USER_POSTS,
   store.getCurrentUserPostsData,

@@ -7,7 +7,7 @@ import LoginPage from '../Pages/LoginPage';
 import SignupPage from '../Pages/SignupPage';
 import EditPage from '../Pages/EditPage';
 import NewPost from '../Component/New/NewPost';
-import LoadingPage from '../Pages/LoadingPage';
+// import LoadingPage from '../Pages/LoadingPage';
 // import NotFound from '../Component/Global/NotFound';
 
 const MainRouter = ({ isSignIn }) => {
@@ -56,9 +56,9 @@ const MainRouter = ({ isSignIn }) => {
           <LoginPage />
         </Route>
       )}
-      <Route>
+      {/* <Route>
         <LoadingPage />
-      </Route>
+      </Route> */}
     </Switch>
   );
 };

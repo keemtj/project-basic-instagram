@@ -60,11 +60,15 @@ const PostContainer = ({ post }) => {
     history.push(`/${displayName}`);
   };
 
-  useEffect(async () => {
-    const result = await getCurrentUserData(uid);
-    const { displayName, photoURL } = await Promise.resolve(result);
-    setUserDataByPost({ displayName, photoURL });
-  }, [uid, getCurrentUserData, setUserDataByPost]);
+  // *NOTE Need to study more about useEffect clean up function
+  useEffect(() => {
+    getCurrentUserData(uid).then(({ displayName, photoURL }) =>
+      setUserDataByPost({ displayName, photoURL }),
+    );
+    return () => {
+      setUserDataByPost({ displayName: '', photoURL: '' });
+    };
+  }, []);
 
   return (
     <Post
