@@ -13,6 +13,7 @@ import { closePopup } from '../../Modules/popup';
 import PostPortal from '../../PostPortal';
 import Carousel from '../Global/Carousel';
 import ProfileImage from '../Global/ProfileImage';
+import { getPost } from '../../Modules/posts';
 
 const icons = [
   { icon: <Heart /> },
@@ -33,10 +34,12 @@ const PostModal = ({
   isPossibleComment,
   comments,
   timeElapsed,
+  postUid,
+  postId,
 }) => {
   const modalRef = useRef();
   const dispatch = useDispatch();
-  const { postModal } = useSelector(state => state.popup);
+  const { postModal: postModalState } = useSelector(state => state.popup);
 
   const handlePrev = () => {
     console.log('prev~');
@@ -51,10 +54,18 @@ const PostModal = ({
   };
 
   const onClickOutside = e => {
-    if (postModal && modalRef.current && !modalRef.current.contains(e.target)) {
+    if (
+      postModalState &&
+      modalRef.current &&
+      !modalRef.current.contains(e.target)
+    ) {
       dispatch(closePopup('postModal'));
     }
   };
+
+  useEffect(() => {
+    dispatch(getPost({ postUid, postId }));
+  }, [postUid, postId]);
 
   useEffect(() => {
     window.addEventListener('click', onClickOutside);
@@ -121,8 +132,10 @@ const PostModal = ({
                 <span key={index}>{icon.icon}</span>
               ))}
             </StSectionNav>
-            {heartCount > 0 && (
+            {heartCount > 0 ? (
               <StHeartCount>좋아요 {heartCount}개</StHeartCount>
+            ) : (
+              <StHeartCount>가장 먼저 좋아요를 눌러주세요</StHeartCount>
             )}
             <StDate>
               {'1일 전'}
@@ -166,7 +179,7 @@ const StPostModalWrapper = styled.div`
 `;
 
 const StPostBoxBlock = styled.main`
-  background: white;
+  background: ${({ theme }) => theme.white};
   width: 95rem;
   height: 65%;
   display: flex;

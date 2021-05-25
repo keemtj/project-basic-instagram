@@ -11,13 +11,14 @@ import { useDispatch, useSelector } from 'react-redux';
 import { currentUser, currentUserFollow } from './Modules/user';
 import { getCurrentUserData, getFollowData } from './services/firestore';
 import { getPosts } from './Modules/posts';
+// import PostModal from './Component/Profile/PostModal';
 
 const App = () => {
   const dispatch = useDispatch();
   const isSignIn = useSelector(state => state.login.isSignIn);
   const {
     newPostModal: newPostModalState,
-    postModal: postModalState,
+    // postModal: postModalState,
   } = useSelector(state => state.popup);
   const [progress, setProgress] = useState(0);
 
@@ -43,7 +44,7 @@ const App = () => {
         <MainRouter isSignIn={isSignIn} />
         {progress !== 0 && <ProgressBar progress={progress} />}
         {newPostModalState && <NewPost setProgress={setProgress} />}
-        {postModalState && <div>post modal~</div>}
+        {/* {postModalState && <PostModal />} */}
       </PageWrapper>
     </>
   );

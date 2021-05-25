@@ -152,3 +152,15 @@ export const unfollow = async (currentUserUid, searchUserUid) => {
       followers: firebase.firestore.FieldValue.arrayRemove(currentUserUid),
     });
 };
+
+// --> post data by single post
+export const getPostBySinglePost = async payload => {
+  const { postUid: uid, postId: postId } = payload;
+  const response = await firestore
+    .collection('posts')
+    .doc(uid)
+    .collection('my-posts')
+    .doc(postId)
+    .get();
+  return response.data();
+};

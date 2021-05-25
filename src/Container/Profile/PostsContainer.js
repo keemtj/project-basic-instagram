@@ -1,20 +1,22 @@
-import React from 'react';
-import { useSelector } from 'react-redux';
+import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import Posts from '../../Component/Profile/Posts';
+import { openPopup } from '../../Modules/popup';
 
 const PostsContainer = ({ watchName }) => {
+  const dispatch = useDispatch();
   const currentUser = useSelector(state => state.user.user);
   const {
     data: myPosts,
     loading: myPostsLoading,
     error: myPostsError,
   } = useSelector(state => state.posts.myPosts);
-
   const {
     data: searchUserPosts,
     loading: searchUserPostsloading,
     error: searchUserPostsError,
   } = useSelector(state => state.posts.searchUserPosts);
+  const { postModal: postModalState } = useSelector(state => state.popup);
 
   const sortedPosts = () => {
     if (myPosts) {
@@ -27,6 +29,18 @@ const PostsContainer = ({ watchName }) => {
     }
   };
 
+  const [postId, setPostId] = React.useState('');
+  const [postUid, setPostUid] = React.useState('');
+  const onClickPostModal = (uid, id) => {
+    setPostId(id);
+    setPostUid(uid);
+    dispatch(openPopup('postModal'));
+  };
+
+  useEffect(() => {
+    document.body.style.overflow = postModalState ? 'hidden' : 'auto';
+  }, [postModalState]);
+
   if (myPostsLoading || searchUserPostsloading)
     return <div>Posts Container 로딩중</div>;
   if (myPostsError || searchUserPostsError)
@@ -38,6 +52,10 @@ const PostsContainer = ({ watchName }) => {
           ? sortedPosts()
           : sortedSearchUserPosts()
       }
+      postModalState={postModalState}
+      onClickPostModal={onClickPostModal}
+      postId={postId}
+      postUid={postUid}
     />
   );
 };

@@ -17,7 +17,18 @@ const Carousel = ({ imagesArray, pagenation, ...rest }) => {
    * @param comments(comment.length) when hovering post image
    * FIXME: profile -> isProfile
    */
-  const { badge, profile, hover, onShow, onHide, heartCount, comments } = rest;
+  const {
+    badge,
+    profile,
+    hover,
+    onShow,
+    onHide,
+    heartCount,
+    comments,
+    postId,
+    postUid,
+    onClick,
+  } = rest;
   const ref = useRef();
   const [currentImage, setCurrentImage] = useState(0);
 
@@ -30,6 +41,7 @@ const Carousel = ({ imagesArray, pagenation, ...rest }) => {
     ref.current.style.transform = `translate(-${100 * (currentImage + 1)}%)`;
     currentImage < imagesArray.length - 1 && setCurrentImage(currentImage + 1);
   };
+
   return (
     <StCarouselWrapper>
       <StCarousel onMouseEnter={onShow} onMouseLeave={onHide}>
@@ -53,7 +65,7 @@ const Carousel = ({ imagesArray, pagenation, ...rest }) => {
             })
           )}
           {hover && (
-            <StHover hover={hover}>
+            <StHover hover={hover} onClick={() => onClick(postUid, postId)}>
               <StIconWrap>
                 <StHeartIcons />
                 {heartCount.toLocaleString() || 0}
