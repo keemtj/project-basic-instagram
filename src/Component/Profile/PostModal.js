@@ -23,23 +23,42 @@ const icons = [
 ];
 
 const PostModal = ({
-  photoURL,
-  displayName,
-  location,
-  imagesArray,
-  heartCount,
-  more,
-  text,
-  onClickMore,
-  isPossibleComment,
-  comments,
-  timeElapsed,
+  // location,
+  // imagesArray,
+  // heartCount,
+  // more,
+  // text,
+  // onClickMore,
+  // isPossibleComment,
+  // comments,
+  // timeElapsed,
   postUid,
   postId,
+  displayName,
+  photoURL,
 }) => {
   const modalRef = useRef();
   const dispatch = useDispatch();
-  const { postModal: postModalState } = useSelector(state => state.popup);
+  // const { postModal: postModalState } = useSelector(state => state.popup);
+  const { data: post, loading } = useSelector(state => state.posts.post);
+
+  const calcTimeElapsed = date => {
+    const start = new Date(date);
+    const end = Date.now();
+    const sec = Math.floor((end - start) / 1000); // 경과시간, 초
+    const min = Math.floor((end - start) / 1000 / 60); // 경과시간, 분
+    const hour = Math.floor((end - start) / 1000 / 60 / 60); // 경과시간, 시간
+    const day = Math.floor((end - start) / 1000 / 60 / 60 / 24); // 경과시간, 일
+    const elapsed =
+      sec >= 60
+        ? min >= 60
+          ? hour >= 24
+            ? day + '일 전'
+            : hour + '시간 전'
+          : min + '분 전'
+        : '방금 전';
+    return elapsed;
+  };
 
   const handlePrev = () => {
     console.log('prev~');
@@ -53,33 +72,56 @@ const PostModal = ({
     dispatch(closePopup('postModal'));
   };
 
-  const onClickOutside = e => {
-    if (
-      postModalState &&
-      modalRef.current &&
-      !modalRef.current.contains(e.target)
-    ) {
-      dispatch(closePopup('postModal'));
-    }
-  };
+  const comments = [
+    {
+      id: 'captain',
+      comment: 'hihihihihihihihihihihihihihihihihihi',
+      date: '2021-3-12',
+    },
+    { id: 'widow', comment: 'hihihihihihihihihihi', date: '2021-3-15' },
+    {
+      id: 'rocky',
+      comment: 'hihihihihihihihihihihihihihihihihihihihihihihihihihi',
+      date: '2021-3-20',
+    },
+    { id: 'ironman', comment: 'hihihihihihihihihihihihi', date: '2021-4-10' },
+    {
+      id: 'spiderman',
+      comment: 'hihihihihihihihihihihihihihihihi',
+      date: '2021-5-10',
+    },
+    { id: 'marble', comment: 'hihihihihihihihi', date: '2021-5-11' },
+    { id: 'dr_strange', comment: 'hihihihihihi', date: '2021-5-16' },
+  ];
+  // const onClickOutside = e => {
+  //   if (
+  //     postModalState &&
+  //     modalRef.current &&
+  //     !modalRef.current.contains(e.target)
+  //   ) {
+  //     console.log('outside?');
+  //     dispatch(closePopup('postModal'));
+  //   }
+  // };
+
+  // useEffect(() => {
+  //   window.addEventListener('click', onClickOutside);
+  //   return () => {
+  //     window.removeEventListener('click', onClickOutside);
+  //   };
+  // }, []);
 
   useEffect(() => {
     dispatch(getPost({ postUid, postId }));
   }, [postUid, postId]);
 
-  useEffect(() => {
-    window.addEventListener('click', onClickOutside);
-    return () => {
-      window.removeEventListener('click', onClickOutside);
-    };
-  }, []);
-
+  if (loading) return <div>로딩중</div>;
   return (
     <PostPortal>
       <StPostModalWrapper>
         <StPostBoxBlock ref={modalRef}>
           <StImagesSection>
-            <Carousel imagesArray={imagesArray} pagenation />
+            <Carousel imagesArray={post?.imagesArray} pagenation pos />
           </StImagesSection>
           <StPostSubDataSection>
             <StHeader>
@@ -90,58 +132,87 @@ const PostModal = ({
                     : photoURL
                 }
                 alt={'temp'}
-                width={3}
-                height={3}
+                width={3.5}
+                height={3.5}
               >
                 <div>
-                  <StDisplayName>
-                    {'displayName'}
-                    {displayName}
-                  </StDisplayName>
-                  {location && <StLocation>{location}</StLocation>}
+                  <StDisplayName>{displayName}</StDisplayName>
+                  {post?.location && <StLocation>{post?.location}</StLocation>}
                 </div>
               </ProfileImage>
             </StHeader>
             <StTextBox>
-              <StText more={more}>
-                <StUsername>{displayName}</StUsername> {text}{' '}
+              <StText>
+                {post?.text}
+                akdjfiejfkdjkjvidjfkejfdifjkjvkja;sdifj;eqifjdiljv;kl;jda;lkdjf;klas;jdf;lka;
               </StText>
-              {text?.length > 70 && (
-                <StMoreToggle onClick={onClickMore} more={more}>
-                  {more ? '더 보기' : '숨기기'}
-                </StMoreToggle>
-              )}
-            </StTextBox>
-            {!isPossibleComment && (
               <StCommentsBox>
-                {comments?.length > 2 && (
-                  <StMoreComments>
-                    댓글 {comments.length}개 모두 보기
-                  </StMoreComments>
-                )}
-                {comments?.slice(0, 2).map((comment, index) => (
-                  <div key={index}>
+                {/* {post?.comments?.map((comment, index) => ( */}
+                {comments?.map((comment, index) => (
+                  <div
+                    key={index}
+                    style={{
+                      marginTop: '1rem',
+                    }}
+                  >
+                    {/* <div key={index}>
                     <StUsername>{comment.id}</StUsername>{' '}
                     <span>{comment.comment}</span>
+                  </div> */}
+                    <div style={{ display: 'flex' }}>
+                      <div>
+                        <img
+                          src={
+                            photoURL === '' || !photoURL
+                              ? '/images/default_profile.png'
+                              : photoURL
+                          }
+                          alt={'temp'}
+                          style={{
+                            borderRadius: '50%',
+                            width: '3.5rem',
+                            height: '3.5rem',
+                          }}
+                        />
+                      </div>
+                      <div
+                        style={{
+                          marginLeft: '1.5rem',
+                          lineHeight: '1.4',
+                          height: 'fit-content',
+                          border: '1px solid  red',
+                        }}
+                      >
+                        <StUsername>{comment.id}</StUsername>{' '}
+                        <span>{comment.comment}</span>
+                      </div>
+                      <div
+                        style={{
+                          paddingLeft: '5rem',
+                          marginTop: '0.5rem',
+                          fontSize: '1.1rem',
+                          color: 'gray',
+                        }}
+                      >
+                        {calcTimeElapsed(comment.date)}
+                      </div>
+                    </div>
                   </div>
                 ))}
               </StCommentsBox>
-            )}
+            </StTextBox>
             <StSectionNav>
               {icons.map((icon, index) => (
                 <span key={index}>{icon.icon}</span>
               ))}
             </StSectionNav>
-            {heartCount > 0 ? (
-              <StHeartCount>좋아요 {heartCount}개</StHeartCount>
+            {post?.heartCount > 0 ? (
+              <StHeartCount>좋아요 {post?.heartCount}개</StHeartCount>
             ) : (
               <StHeartCount>가장 먼저 좋아요를 눌러주세요</StHeartCount>
             )}
-            <StDate>
-              {'1일 전'}
-              {timeElapsed}
-            </StDate>
-            {!isPossibleComment && (
+            <StDate>{calcTimeElapsed(post?.date)}</StDate>
+            {!post?.isPossibleComment && (
               <StChatCommentLabel>
                 <button>
                   <StEmojiSmile />
@@ -179,35 +250,34 @@ const StPostModalWrapper = styled.div`
 `;
 
 const StPostBoxBlock = styled.main`
-  background: ${({ theme }) => theme.white};
-  width: 95rem;
-  height: 65%;
   display: flex;
   flex-flow: row nowrap;
+  width: 95rem;
+  height: 64.9rem;
+  background: ${({ theme }) => theme.white};
 `;
 
 const StImagesSection = styled.section`
-  /* temp */
-  min-width: 61.5rem;
-  min-height: 61.5rem;
-  background: yellowgreen;
+  display: flex;
+  align-items: center;
   border-right: 1px solid ${({ theme }) => theme.gray};
+  width: 100%;
+  max-width: 65rem;
 `;
 
 const StPostSubDataSection = styled.section`
   display: flex;
   flex-flow: column nowrap;
-  flex-grow: 1;
+  align-items: flex-start;
+  width: 30rem;
 `;
 
 const StHeader = styled.header`
   display: flex;
-  justify-content: space-between;
   align-items: center;
   border-bottom: 1px solid ${({ theme }) => theme.gray};
-  padding: 0rem 1.5rem;
+  padding: 1.5rem;
   width: 100%;
-  height: 5.5rem;
   & > div {
     display: flex;
     align-items: center;
@@ -235,57 +305,37 @@ const StLocation = styled.div`
 
 const StTextBox = styled.div`
   display: flex;
-  flex-flow: row wrap;
-  margin-top: 0.5rem;
-  padding: 0rem 1.5rem;
+  flex-flow: column nowrap;
+  align-items: flex-start;
+  height: 100%;
+  padding: 1.5rem;
+  overflow: scroll;
   font-size: 1.4rem;
   word-break: break-all;
 `;
 
 const StText = styled.div`
-  width: ${({ more }) => (more ? '90%' : '100%')};
+  width: 100%;
   line-height: 1.3;
-  ${({ more }) =>
-    more &&
-    css`
-      display: -webkit-box;
-      text-overflow: ellipsis;
-      -webkit-line-clamp: 1;
-      -webkit-box-orient: vertical;
-      overflow: hidden;
-    `}
 `;
 
 const StUsername = styled.span`
   font-weight: 600;
 `;
 
-const StMoreToggle = styled.span`
-  margin-left: ${({ more }) => (more ? '0.5rem' : '0')};
-  color: ${({ theme }) => theme.darkGray};
-  line-height: 1.3;
-  cursor: pointer;
-`;
-
-const StCommentsBox = styled.section`
+const StCommentsBox = styled.article`
   width: 100%;
-  padding: 0rem 1.5rem;
   font-size: 1.4rem;
   & > div {
     margin-top: 0.5rem;
   }
 `;
 
-const StMoreComments = styled.div`
-  color: ${({ theme }) => theme.darkGray};
-`;
-
-const StSectionNav = styled.section`
+const StSectionNav = styled.article`
   display: flex;
   align-items: center;
   width: 100%;
-  height: 5rem;
-  padding: 0rem 1.5rem;
+  padding: 1.5rem;
   & > span {
     width: 2.5rem;
     height: 2.5rem;
@@ -296,6 +346,7 @@ const StSectionNav = styled.section`
   & > :last-child {
     margin-left: auto;
   }
+  border-top: 1px solid ${({ theme }) => theme.gray};
 `;
 
 const StHeartCount = styled.div`
@@ -306,7 +357,7 @@ const StHeartCount = styled.div`
 `;
 
 const StDate = styled.div`
-  padding: 1rem 1.5rem;
+  padding: 1.5rem;
   color: ${({ theme }) => theme.darkGray};
 `;
 

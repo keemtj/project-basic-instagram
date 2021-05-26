@@ -5,7 +5,10 @@ import { openPopup } from '../../Modules/popup';
 
 const PostsContainer = ({ watchName }) => {
   const dispatch = useDispatch();
-  const currentUser = useSelector(state => state.user.user);
+  const currentUserData = useSelector(state => state.user.user);
+  const { data: searchUserData } = useSelector(
+    state => state.search.searchUser,
+  );
   const {
     data: myPosts,
     loading: myPostsLoading,
@@ -48,7 +51,7 @@ const PostsContainer = ({ watchName }) => {
   return (
     <Posts
       posts={
-        currentUser.displayName === watchName
+        currentUserData.displayName === watchName
           ? sortedPosts()
           : sortedSearchUserPosts()
       }
@@ -56,6 +59,16 @@ const PostsContainer = ({ watchName }) => {
       onClickPostModal={onClickPostModal}
       postId={postId}
       postUid={postUid}
+      displayName={
+        currentUserData.displayName === watchName
+          ? currentUserData?.displayName
+          : searchUserData?.displayName
+      }
+      photoURL={
+        (currentUserData.displayName === watchName
+          ? currentUserData?.photoURL
+          : searchUserData?.photoURL) || '/images/default_profile2.jpg'
+      }
     />
   );
 };

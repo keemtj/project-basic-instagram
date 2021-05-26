@@ -10,6 +10,8 @@ const Posts = ({
   onClickPostModal,
   postUid,
   postId,
+  displayName,
+  photoURL,
 }) => {
   // isFollowing이 false면 게시물 비공개 처리하기
   return (
@@ -28,7 +30,14 @@ const Posts = ({
                 />
               );
             })}
-            {postModalState && <PostModal postUid={postUid} postId={postId} />}
+            {postModalState && (
+              <PostModal
+                postUid={postUid}
+                postId={postId}
+                displayName={displayName}
+                photoURL={photoURL}
+              />
+            )}
           </StPostsWrapper>
         </>
       )}

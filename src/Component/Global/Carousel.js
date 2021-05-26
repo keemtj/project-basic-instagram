@@ -28,6 +28,7 @@ const Carousel = ({ imagesArray, pagenation, ...rest }) => {
     postId,
     postUid,
     onClick,
+    pos,
   } = rest;
   const ref = useRef();
   const [currentImage, setCurrentImage] = useState(0);
@@ -77,32 +78,32 @@ const Carousel = ({ imagesArray, pagenation, ...rest }) => {
             </StHover>
           )}
         </StCarouselInner>
+        {!profile && (
+          <StSlideButtonWrapper>
+            {currentImage > 0 ? (
+              <StSlideButton type="button" onClick={handlePrev}>
+                <StLeftButton />
+              </StSlideButton>
+            ) : (
+              <div />
+            )}
+            {currentImage < imagesArray?.length - 1 && (
+              <StSlideButton type="button" onClick={handleNext}>
+                <StRightButton />
+              </StSlideButton>
+            )}
+          </StSlideButtonWrapper>
+        )}
+        {pagenation && imagesArray?.length >= 2 && (
+          <StPagenation pos={pos}>
+            {imagesArray.map((_, index) => (
+              <StPage key={index} currentImage={currentImage}>
+                <Dot />
+              </StPage>
+            ))}
+          </StPagenation>
+        )}
       </StCarousel>
-      {!profile && (
-        <StSlideButtonWrapper>
-          {currentImage > 0 ? (
-            <StSlideButton type="button" onClick={handlePrev}>
-              <StLeftButton />
-            </StSlideButton>
-          ) : (
-            <div />
-          )}
-          {currentImage < imagesArray?.length - 1 && (
-            <StSlideButton type="button" onClick={handleNext}>
-              <StRightButton />
-            </StSlideButton>
-          )}
-        </StSlideButtonWrapper>
-      )}
-      {pagenation && imagesArray?.length >= 2 && (
-        <StPagenation>
-          {imagesArray.map((_, index) => (
-            <StPage key={index} currentImage={currentImage}>
-              <Dot />
-            </StPage>
-          ))}
-        </StPagenation>
-      )}
     </StCarouselWrapper>
   );
 };
@@ -227,6 +228,7 @@ const StPagenation = styled.ul`
   align-items: center;
   justify-content: center;
   position: absolute;
+  bottom: ${({ pos }) => pos && '0'};
 `;
 
 const StPage = styled.li`
