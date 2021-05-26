@@ -39,7 +39,7 @@ const PostModal = ({
 }) => {
   const modalRef = useRef();
   const dispatch = useDispatch();
-  // const { postModal: postModalState } = useSelector(state => state.popup);
+  const { postModal: postModalState } = useSelector(state => state.popup);
   const { data: post, loading } = useSelector(state => state.posts.post);
 
   const calcTimeElapsed = date => {
@@ -93,23 +93,24 @@ const PostModal = ({
     { id: 'marble', comment: 'hihihihihihihihi', date: '2021-5-11' },
     { id: 'dr_strange', comment: 'hihihihihihi', date: '2021-5-16' },
   ];
-  // const onClickOutside = e => {
-  //   if (
-  //     postModalState &&
-  //     modalRef.current &&
-  //     !modalRef.current.contains(e.target)
-  //   ) {
-  //     console.log('outside?');
-  //     dispatch(closePopup('postModal'));
-  //   }
-  // };
 
-  // useEffect(() => {
-  //   window.addEventListener('click', onClickOutside);
-  //   return () => {
-  //     window.removeEventListener('click', onClickOutside);
-  //   };
-  // }, []);
+  const onClickOutside = e => {
+    if (
+      postModalState &&
+      modalRef.current &&
+      !modalRef.current.contains(e.target)
+    ) {
+      console.log('outside?');
+      dispatch(closePopup('postModal'));
+    }
+  };
+
+  useEffect(() => {
+    window.addEventListener('click', onClickOutside);
+    return () => {
+      window.removeEventListener('click', onClickOutside);
+    };
+  }, []);
 
   useEffect(() => {
     dispatch(getPost({ postUid, postId }));
@@ -143,8 +144,28 @@ const PostModal = ({
             </StHeader>
             <StTextBox>
               <StText>
-                {post?.text}
-                akdjfiejfkdjkjvidjfkejfdifjkjvkja;sdifj;eqifjdiljv;kl;jda;lkdjf;klas;jdf;lka;
+                {/* {post?.text} */}
+                {`⭐ | When your Setup looks so clean and
+                neat, your day will become more inspired and creative. Don't you
+                agree?
+                ➖➖➖➖➖➖➖➖➖➖➖➖
+                Follow for more amazing content
+                | Follow Us | 👉 @hermeshitech
+                | Follow Us | 👉 @hermeshitech
+                | Follow Us | 👉 @hermeshitech 
+                ➖➖➖➖➖➖➖➖➖➖➖➖⠀ 
+                📸 | Credits: @nvzion 
+                🏅 | Tag a Friend down below⠀ 
+                👇 | Comment Your Thoughts here
+                ➖➖➖➖➖➖➖➖➖➖➖➖⠀
+                #hermeshitech
+                #techlifestyle #desksetups #setupinspiration
+                #workspaceinspiration #productivespaces #myworkspace
+                #designyourworkspace #minimalismsource #workspacedesign
+                #minimalsetups #beautyoftechnology #designoffice #deskgoals
+                #officeinspiration #techsetup #dreamdesks #woodendesktop
+                #macbookpro #setup #pcsetup
+                `}
               </StText>
               <StCommentsBox>
                 {/* {post?.comments?.map((comment, index) => ( */}
@@ -152,35 +173,42 @@ const PostModal = ({
                   <div
                     key={index}
                     style={{
-                      marginTop: '1rem',
+                      marginTop: '2rem',
+                      display: 'flex',
                     }}
                   >
                     {/* <div key={index}>
                     <StUsername>{comment.id}</StUsername>{' '}
                     <span>{comment.comment}</span>
                   </div> */}
-                    <div style={{ display: 'flex' }}>
-                      <div>
-                        <img
-                          src={
-                            photoURL === '' || !photoURL
-                              ? '/images/default_profile.png'
-                              : photoURL
-                          }
-                          alt={'temp'}
-                          style={{
-                            borderRadius: '50%',
-                            width: '3.5rem',
-                            height: '3.5rem',
-                          }}
-                        />
-                      </div>
+                    <div>
+                      <img
+                        src={
+                          photoURL === '' || !photoURL
+                            ? '/images/default_profile.png'
+                            : photoURL
+                        }
+                        alt={'temp'}
+                        style={{
+                          borderRadius: '50%',
+                          width: '3.5rem',
+                          height: '3.5rem',
+                          objectFit: 'cover',
+                        }}
+                      />
+                    </div>
+                    <div
+                      style={{
+                        display: 'flex',
+                        flexFlow: 'column',
+                      }}
+                    >
+                      <div></div>
                       <div
                         style={{
                           marginLeft: '1.5rem',
                           lineHeight: '1.4',
                           height: 'fit-content',
-                          border: '1px solid  red',
                         }}
                       >
                         <StUsername>{comment.id}</StUsername>{' '}
@@ -188,7 +216,7 @@ const PostModal = ({
                       </div>
                       <div
                         style={{
-                          paddingLeft: '5rem',
+                          paddingLeft: '1.5rem',
                           marginTop: '0.5rem',
                           fontSize: '1.1rem',
                           color: 'gray',
@@ -253,7 +281,7 @@ const StPostBoxBlock = styled.main`
   display: flex;
   flex-flow: row nowrap;
   width: 95rem;
-  height: 64.9rem;
+  height: 59.9rem;
   background: ${({ theme }) => theme.white};
 `;
 
@@ -262,14 +290,14 @@ const StImagesSection = styled.section`
   align-items: center;
   border-right: 1px solid ${({ theme }) => theme.gray};
   width: 100%;
-  max-width: 65rem;
+  max-width: 60rem;
 `;
 
 const StPostSubDataSection = styled.section`
   display: flex;
   flex-flow: column nowrap;
   align-items: flex-start;
-  width: 30rem;
+  width: 35rem;
 `;
 
 const StHeader = styled.header`

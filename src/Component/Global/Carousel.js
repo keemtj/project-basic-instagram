@@ -33,12 +33,14 @@ const Carousel = ({ imagesArray, pagenation, ...rest }) => {
   const ref = useRef();
   const [currentImage, setCurrentImage] = useState(0);
 
-  const handlePrev = () => {
+  const handlePrev = e => {
+    e.stopPropagation();
     ref.current.style.transform = `translate(-${100 * (currentImage - 1)}%)`;
     currentImage > 0 && setCurrentImage(currentImage - 1);
   };
 
-  const handleNext = () => {
+  const handleNext = e => {
+    e.stopPropagation();
     ref.current.style.transform = `translate(-${100 * (currentImage + 1)}%)`;
     currentImage < imagesArray.length - 1 && setCurrentImage(currentImage + 1);
   };
