@@ -23,9 +23,8 @@ const UserContainer = ({ watchName }) => {
     state => state.search.searchUserFollow,
   );
 
-  const isFollowing = searchUserFollowData?.followers.includes(
-    currentUserData.uid,
-  );
+  const isFollowing =
+    searchUserFollowData?.followers.includes(currentUserData.uid) || null;
 
   const { data: searchUserPosts } = useSelector(
     state => state.posts.searchUserPosts,

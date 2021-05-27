@@ -56,9 +56,6 @@ const MainRouter = ({ isSignIn }) => {
           <LoginPage />
         </Route>
       )}
-      {/* <Route>
-        <LoadingPage />
-      </Route> */}
     </Switch>
   );
 };
