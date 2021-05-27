@@ -1,9 +1,8 @@
 import React from 'react';
 import { Route, Switch } from 'react-router-dom';
-import Channel from '../Component/Profile/Channel';
 import PostsContainer from '../Container/Profile/PostsContainer';
 import Saved from '../Component/Profile/Saved';
-import Tagged from '../Component/Profile/Tagged';
+import Heart from '../Component/Profile/Heart';
 
 const ProfileRouter = ({ watchName }) => {
   return (
@@ -11,9 +10,8 @@ const ProfileRouter = ({ watchName }) => {
       <Route path={`/:${watchName}`} exact>
         <PostsContainer watchName={watchName} />
       </Route>
-      <Route path={`/:${watchName}/channel`} component={Channel} />
       <Route path={`/:${watchName}/saved`} component={Saved} />
-      <Route path={`/:${watchName}/tagged`} component={Tagged} />
+      <Route path={`/:${watchName}/heart`} component={Heart} />
       <Route
         render={({ location }) => (
           <div>

@@ -53,6 +53,13 @@ const PostContainer = ({ post }) => {
     setMore(!more);
   };
 
+  const onClickHeart = () => {
+    console.log('heart');
+  };
+  const onClickBookmark = () => {
+    console.log('bookmark');
+  };
+
   const onMoveProfilePage = () => {
     dispatch(getSearchUserData(uid));
     dispatch(getSearchUserFollowData(uid));
@@ -84,6 +91,8 @@ const PostContainer = ({ post }) => {
       comments={comments}
       timeElapsed={calcTimeElapsed(date)}
       onMoveProfilePage={onMoveProfilePage}
+      onClickHeart={onClickHeart}
+      onClickBookmark={onClickBookmark}
     />
   );
 };

@@ -2,16 +2,14 @@ import React from 'react';
 import { NavLink } from 'react-router-dom';
 import styled from 'styled-components';
 import { Grid } from '@styled-icons/feather/Grid';
-import { TvOutline } from '@styled-icons/evaicons-outline/TvOutline';
+import { Heart } from '@styled-icons/bootstrap/Heart';
 import { Bookmark } from '@styled-icons/feather/Bookmark';
-import { User } from '@styled-icons/boxicons-regular/User';
 
 const ProfileNavigation = ({ watchName }) => {
   const subnav = [
     { name: '', text: '게시물', icon: <Grid /> },
-    { name: 'channel', text: 'IGTV', icon: <TvOutline /> },
     { name: 'saved', text: '저장됨', icon: <Bookmark /> },
-    { name: 'tagged', text: '태그됨', icon: <User /> },
+    { name: 'heart', text: '좋아요', icon: <Heart /> },
   ];
 
   return (

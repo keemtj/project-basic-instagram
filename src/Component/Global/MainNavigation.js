@@ -59,9 +59,8 @@ const MainNavigation = ({
             active={
               profilePopup ||
               path === `/${displayName}` ||
-              path === `/${displayName}/channel` ||
               path === `/${displayName}/saved` ||
-              path === `/${displayName}/tagged`
+              path === `/${displayName}/heart`
             }
           >
             <StProfileImage src={photoURL} alt={displayName} />

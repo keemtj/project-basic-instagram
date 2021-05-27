@@ -9,13 +9,6 @@ import { EmojiSmile } from '@styled-icons/bootstrap/EmojiSmile';
 import Carousel from '../Global/Carousel';
 import ProfileImage from '../Global/ProfileImage';
 
-const icons = [
-  { icon: <Heart /> },
-  { icon: <Chat /> },
-  { icon: <PaperPlane /> },
-  { icon: <Bookmark /> },
-];
-
 const Post = ({
   photoURL,
   displayName,
@@ -29,6 +22,8 @@ const Post = ({
   comments,
   timeElapsed,
   onMoveProfilePage,
+  onClickHeart,
+  onClickBookmark,
 }) => {
   return (
     <StArticle>
@@ -55,9 +50,18 @@ const Post = ({
         <Carousel imagesArray={imagesArray} pagenation />
       </StImagesSection>
       <StSectionNav>
-        {icons.map((icon, index) => (
-          <span key={index}>{icon.icon}</span>
-        ))}
+        <div onClick={onClickHeart}>
+          <Heart />
+        </div>
+        <div>
+          <Chat />
+        </div>
+        <div>
+          <PaperPlane />
+        </div>
+        <div onClick={onClickBookmark}>
+          <Bookmark />
+        </div>
       </StSectionNav>
       {heartCount > 0 && <StHeartCount>좋아요 {heartCount}개</StHeartCount>}
       <StTextBox>
@@ -151,11 +155,12 @@ const StSectionNav = styled.section`
   width: 100%;
   height: 5rem;
   padding: 0rem 1.5rem;
-  & > span {
+  & > div {
     width: 2.5rem;
     height: 2.5rem;
+    cursor: pointer;
   }
-  & > span + span {
+  & > div + div {
     margin-left: 1.5rem;
   }
   & > :last-child {

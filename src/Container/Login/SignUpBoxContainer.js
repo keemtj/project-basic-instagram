@@ -33,6 +33,8 @@ const SignUpBoxContainer = () => {
           username: '',
           displayName: '',
           photoURL: '/images/default_profile.png',
+          presentation: '',
+          phone: '',
         });
       await firebaseAuth.signOut();
       dispatch(resetForm());
@@ -66,6 +68,8 @@ const SignUpBoxContainer = () => {
             username,
             displayName,
             photoURL: '/images/default_profile.png',
+            presentation: '',
+            phone: '',
           });
         await firestore
           .collection('follow')

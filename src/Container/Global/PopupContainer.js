@@ -3,6 +3,7 @@ import Popup from '../../Component/Global/Popup';
 import { useDispatch, useSelector } from 'react-redux';
 import { User } from '@styled-icons/boxicons-regular/User';
 import { Bookmark } from '@styled-icons/boxicons-regular/Bookmark';
+import { Heart } from '@styled-icons/bootstrap/Heart';
 import { Settings } from '@styled-icons/ionicons-outline/Settings';
 import { signOut } from '../../services/firebaseAuth';
 import { useHistory } from 'react-router';
@@ -17,6 +18,7 @@ const PopupContainer = () => {
   const popupLists = [
     { link: `/${displayName}`, text: '프로필', icon: <User /> },
     { link: `/${displayName}/saved`, text: '저장됨', icon: <Bookmark /> },
+    { link: `/${displayName}/heart`, text: '좋아요', icon: <Heart /> },
     { link: '/edit', text: '설정', icon: <Settings /> },
   ];
 

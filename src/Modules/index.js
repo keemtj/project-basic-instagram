@@ -5,6 +5,8 @@ import user from './user';
 import posts from './posts';
 import popup from './popup';
 import search from './search';
+import saved from './saved';
+import heart from './heart';
 
 const rootReducer = combineReducers({
   login,
@@ -13,6 +15,8 @@ const rootReducer = combineReducers({
   posts,
   popup,
   search,
+  heart,
+  saved,
 });
 
 export default rootReducer;

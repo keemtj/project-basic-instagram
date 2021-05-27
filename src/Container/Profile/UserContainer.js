@@ -77,7 +77,7 @@ const UserContainer = ({ watchName }) => {
       presentation={
         currentUserData.displayName === watchName
           ? currentUserData?.presentation
-          : searchUserData?.displayName
+          : searchUserData?.presentation
       }
       postsCount={
         currentUserData.displayName === watchName

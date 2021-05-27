@@ -29,8 +29,8 @@ const AsideContainer = () => {
   return (
     <Aside
       handleSignOut={handleSignOut}
-      displayName={displayName || 'elon_musk'}
-      photoURL={photoURL || '/images/default_profile2.jpg'}
+      displayName={displayName}
+      photoURL={photoURL}
       followed={followed}
       onFollow={onFollow}
     />
