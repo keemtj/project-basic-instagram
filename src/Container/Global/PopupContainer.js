@@ -8,7 +8,7 @@ import { Settings } from '@styled-icons/ionicons-outline/Settings';
 import { signOut } from '../../services/firebaseAuth';
 import { useHistory } from 'react-router';
 import { loginState } from '../../Modules/login';
-import { getPosts } from '../../Modules/posts';
+import { dataClear, getPosts } from '../../Modules/posts';
 import { closePopup } from '../../Modules/popup';
 
 const PopupContainer = () => {
@@ -32,9 +32,10 @@ const PopupContainer = () => {
      * TODO: 1. 로그아웃시 localStorage의 'recent' key 기록 삭제
      * TODO: 2. 재 로그인시 검색기록을 가져오기 위해 파이어베이스에 저장하는 코드 추가
      */
-    signOut();
+    dispatch(dataClear());
     dispatch(closePopup('profilePopup'));
     dispatch(loginState(false));
+    signOut();
     localStorage.removeItem('recent');
     history.push('/login');
     console.log('sign out');

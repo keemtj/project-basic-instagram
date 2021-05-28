@@ -29,7 +29,7 @@ const Post = ({
     <StArticle>
       <StHeader>
         <ProfileImage
-          src={photoURL === '' ? '/images/default_profile.png' : photoURL}
+          src={photoURL}
           alt={displayName}
           width={3}
           height={3}

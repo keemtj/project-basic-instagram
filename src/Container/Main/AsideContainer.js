@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import Aside from '../../Component/Main/Aside';
 import { signOut } from '../../services/firebaseAuth';
 import { loginState } from '../../Modules/login';
+import { dataClear } from '../../Modules/posts';
 
 const AsideContainer = () => {
   const { displayName, photoURL } = useSelector(state => state.user.user);
@@ -13,8 +14,9 @@ const AsideContainer = () => {
   const history = useHistory();
 
   const handleSignOut = () => {
-    signOut();
+    dispatch(dataClear());
     dispatch(loginState(false));
+    signOut();
     history.push('/login');
     console.log('sign out');
   };

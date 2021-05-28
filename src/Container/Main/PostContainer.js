@@ -1,15 +1,14 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router';
 import Post from '../../Component/Main/Post';
-import { getCurrentUserData } from '../../services/firestore';
 import {
   getSearchUserData,
   getSearchUserFollowData,
 } from '../../Modules/search';
 import { getSearchUserPosts } from '../../Modules/posts';
 
-const PostContainer = ({ post }) => {
+const PostContainer = ({ post, displayName, photoURL }) => {
   const history = useHistory();
   const dispatch = useDispatch();
   const {
@@ -22,11 +21,6 @@ const PostContainer = ({ post }) => {
     location,
     uid,
   } = post;
-  const [userDataByPost, setUserDataByPost] = useState({
-    displayName: '',
-    photoURL: '',
-  });
-  const { displayName, photoURL } = userDataByPost;
 
   // NOTE 경과 시간 계산 함수
   const calcTimeElapsed = date => {
@@ -66,16 +60,6 @@ const PostContainer = ({ post }) => {
     dispatch(getSearchUserPosts(uid));
     history.push(`/${displayName}`);
   };
-
-  // *NOTE Need to study more about useEffect clean up function
-  useEffect(() => {
-    getCurrentUserData(uid).then(({ displayName, photoURL }) =>
-      setUserDataByPost({ displayName, photoURL }),
-    );
-    return () => {
-      setUserDataByPost({ displayName: '', photoURL: '' });
-    };
-  }, []);
 
   return (
     <Post

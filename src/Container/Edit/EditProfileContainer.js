@@ -96,6 +96,15 @@ const EditProfileContainer = () => {
       .update({
         displayName: displayName !== '' ? displayName : currentDisplayName,
       });
+
+    // TEST
+    await firestore
+      .collection('posts')
+      .doc(uid)
+      .update({
+        displayName: displayName !== '' ? displayName : currentDisplayName,
+      });
+
     // TODO: setTimeout대신 toast popup으로 대체
     setTimeout(() => {
       window.location.reload();
@@ -120,8 +129,13 @@ const EditProfileContainer = () => {
           const urlResult = await uploadTask.snapshot.ref.getDownloadURL();
           const photoURL = await Promise.resolve(urlResult);
           await firestore.collection('users').doc(uid).update({ photoURL });
-          // reload대신에 토스트 dispatch('프로필이미지변경')
-          // currentUserData 새로가져오기
+
+          //TEST
+          await firestore.collection('posts').doc(uid).update({
+            photoURL,
+          });
+
+          // TODO: setTimeout대신 toast popup으로 대체
           setTimeout(() => {
             window.location.reload();
           }, 1000);

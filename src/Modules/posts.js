@@ -21,6 +21,9 @@ const POST = 'main/POST';
 const POST_SUCCESS = 'main/POST_SUCCESS';
 const POST_ERROR = 'main/POST_ERROR';
 
+// --> clear
+const DATA_CLEAR = 'main/DATA_CLEAR';
+
 // NOTE action creator
 export const getPosts = fetchDataThunk(MY_POSTS, store.getCurrentUserPostsData);
 export const getFollowingPosts = fetchDataThunk(
@@ -32,6 +35,7 @@ export const getSearchUserPosts = fetchDataThunk(
   store.getCurrentUserPostsData,
 );
 export const getPost = fetchDataThunk(POST, store.getPostBySinglePost);
+export const dataClear = () => ({ type: DATA_CLEAR });
 
 // NOTE initialState
 const initialState = {
@@ -39,6 +43,7 @@ const initialState = {
   myFollowingPosts: reducerUtils.initial(),
   searchUserPosts: reducerUtils.initial(),
   post: reducerUtils.initial(),
+  combine: [],
 };
 
 // NOTE reducer
@@ -103,6 +108,14 @@ const posts = (state = initialState, action) => {
       return {
         ...state,
         post: reducerUtils.error(action.payload),
+      };
+    case DATA_CLEAR:
+      return {
+        myPosts: reducerUtils.initial(),
+        myFollowingPosts: reducerUtils.initial(),
+        searchUserPosts: reducerUtils.initial(),
+        post: reducerUtils.initial(),
+        userData: reducerUtils.initial(),
       };
     default:
       return state;
