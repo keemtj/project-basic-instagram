@@ -7,22 +7,6 @@ import {
   firestore,
 } from '../../services/firebase';
 
-/**
- * FIXME: Need to fix code
- *
- * TODO: firebaseAuth check(email, password)
- * ! passowrd -> EditPasswordContainer component
- * TODO: current user data of firestore
- * TODO: current user's profile image
- *
- * NOTE default URL, preview URL, photo URL
- * @param defaultProfile '/images/default_profile.png'
- * @param previewURL preview image
- * @param photoURL changed image
- * @param file image's metadata
- * @param timeCreated -> displayName, email
- */
-
 const initialState = {
   displayName: '',
   username: '',
@@ -64,7 +48,10 @@ const EditProfileContainer = () => {
   const { displayName, username, phone, email, presentation } = state;
   // const [uploadState, setUploadState] = React.useState('');
 
-  const currentUserData = useSelector(state => state.user.user);
+  const { data: currentUserData } = useSelector(
+    state => state.user.currentUser,
+  );
+  const { data: myPosts } = useSelector(state => state.posts.myPosts);
   const {
     displayName: currentDisplayName,
     email: currentEmail,
@@ -105,10 +92,21 @@ const EditProfileContainer = () => {
         displayName: displayName !== '' ? displayName : currentDisplayName,
       });
 
+    await myPosts.forEach(async post => {
+      await firestore
+        .collection('posts')
+        .doc(uid)
+        .collection('my-posts')
+        .doc(post.postId)
+        .update({
+          displayName: displayName !== '' ? displayName : currentDisplayName,
+        });
+    });
+
     // TODO: setTimeout대신 toast popup으로 대체
-    setTimeout(() => {
-      window.location.reload();
-    }, 1000);
+    // setTimeout(() => {
+    //   window.location.reload();
+    // }, 1000);
   };
 
   const updateProfileImage = ({ target }) => {

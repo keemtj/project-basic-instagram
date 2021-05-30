@@ -7,10 +7,10 @@ import { PaperPlane } from '@styled-icons/ionicons-outline/PaperPlane';
 import { PaperPlane as PaperPlaneFilled } from '@styled-icons/ionicons-solid/PaperPlane';
 import { AddCircle } from '@styled-icons/ionicons-outline/AddCircle';
 import { AddCircle as AddCircleFilled } from '@styled-icons/ionicons-sharp/AddCircle';
-// import { Heart } from '@styled-icons/ionicons-outline/Heart';
 import PopupContainer from '../../Container/Global/PopupContainer';
 
 const MainNavigation = ({
+  loading,
   photoURL,
   displayName,
   onPopup,
@@ -63,7 +63,10 @@ const MainNavigation = ({
               path === `/${displayName}/heart`
             }
           >
-            <StProfileImage src={photoURL} alt={displayName} />
+            <StProfileImage
+              src={loading ? '/images/default_profile.png' : photoURL}
+              alt={displayName}
+            />
           </StProfile>
         </li>
       </ul>

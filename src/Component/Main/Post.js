@@ -68,7 +68,7 @@ const Post = ({
         <StText more={more}>
           <StUsername>{displayName}</StUsername> {text}{' '}
         </StText>
-        {text.length > 70 && (
+        {text?.length > 70 && (
           <StMoreToggle onClick={onClickMore} more={more}>
             {more ? '더 보기' : '숨기기'}
           </StMoreToggle>
@@ -76,10 +76,10 @@ const Post = ({
       </StTextBox>
       {!isPossibleComment && (
         <StCommentsBox>
-          {comments.length > 2 && (
+          {comments?.length > 2 && (
             <StMoreComments>댓글 {comments.length}개 모두 보기</StMoreComments>
           )}
-          {comments.slice(0, 2).map((comment, index) => (
+          {comments?.map((comment, index) => (
             <div key={index}>
               <StUsername>{comment.id}</StUsername>{' '}
               <span>{comment.comment}</span>

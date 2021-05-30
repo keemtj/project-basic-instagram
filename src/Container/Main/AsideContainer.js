@@ -7,11 +7,9 @@ import { loginState } from '../../Modules/login';
 import { dataClear } from '../../Modules/posts';
 
 const AsideContainer = () => {
-  const { displayName, photoURL } = useSelector(state => state.user.user);
-  const { followers } = useSelector(state => state.user.follow);
-  const { data: followed } = useSelector(state => state.user.followed);
   const dispatch = useDispatch();
   const history = useHistory();
+  const { data } = useSelector(state => state.user.currentUser);
 
   const handleSignOut = () => {
     dispatch(dataClear());
@@ -21,20 +19,20 @@ const AsideContainer = () => {
     console.log('sign out');
   };
 
-  const onFollow = e => {
-    if (!followers.includes(e.target.previousSibling.innerText)) {
-      console.log('아직 내가 팔로우 안한 유저');
-      // e.target.innerText = '팔로잉';
-    }
-  };
+  // const onFollow = e => {
+  //   if (!followers.includes(e.target.previousSibling.innerText)) {
+  //     console.log('아직 내가 팔로우 안한 유저');
+  //     // e.target.innerText = '팔로잉';
+  //   }
+  // };
 
   return (
     <Aside
       handleSignOut={handleSignOut}
-      displayName={displayName}
-      photoURL={photoURL}
-      followed={followed}
-      onFollow={onFollow}
+      displayName={data?.displayName || 'displayName'}
+      photoURL={data?.photoURL || '/images/default_profile.png'}
+      // followed={followed}
+      // onFollow={onFollow}
     />
   );
 };

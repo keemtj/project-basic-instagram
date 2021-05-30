@@ -5,7 +5,6 @@ import AsideFooter from './AsideFooter';
 import AsideContainer from '../../Container/Main/AsideContainer';
 
 const Main = ({ posts }) => {
-  console.log(posts);
   return (
     <StMainWrapper>
       <StMain>

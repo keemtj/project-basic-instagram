@@ -7,23 +7,24 @@ export const getCurrentUserData = async uid => {
   return datas;
 };
 
+// get follow data of currentUser by uid
+export const getCurrentUserFollowData = async uid => {
+  const doc = await firestore.collection('follow').doc(uid).get();
+  const datas = doc.data();
+  return datas;
+};
+
+export const getUserDataByPost = async uid => {
+  const response = await firestore.collection('users').doc(uid).get();
+  const result = await Promise.resolve(response.data());
+  return result;
+};
+
 // get searchUser data to users collection of firestore
 export const getSearchUserData = async uid => {
   const doc = await firestore.collection('users').doc(uid).get();
   const datas = doc.data();
   return datas;
-};
-
-// get follow data of currentUser by uid
-export const getFollowData = async uid => {
-  try {
-    const doc = await firestore.collection('follow').doc(uid).get();
-    const datas = doc.data();
-    return datas;
-  } catch (e) {
-    console.log(e);
-    return 'no-user';
-  }
 };
 
 // get follow data of searchUser by uid

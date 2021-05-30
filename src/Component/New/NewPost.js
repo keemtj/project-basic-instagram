@@ -19,7 +19,10 @@ const NewPost = ({ setProgress }) => {
   const history = useHistory();
   const modalRef = useRef();
   const { newPostModal, modalEntryPath } = useSelector(state => state.popup);
-  const { uid } = useSelector(state => state.user.user);
+  const { data: currentUserData } = useSelector(
+    state => state.user.currentUser,
+  );
+  const { uid } = currentUserData;
   const [images, setImages] = useState([]);
   const [location, setLocation] = useState('');
   const [subLocation, setSubLocation] = useState('');

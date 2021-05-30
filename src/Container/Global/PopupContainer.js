@@ -14,7 +14,8 @@ import { closePopup } from '../../Modules/popup';
 const PopupContainer = () => {
   const dispatch = useDispatch();
   const history = useHistory();
-  const { displayName, uid } = useSelector(state => state.user.user);
+  const { data: currentUser } = useSelector(state => state.user.currentUser);
+  const { displayName, uid } = currentUser;
   const popupLists = [
     { link: `/${displayName}`, text: '프로필', icon: <User /> },
     { link: `/${displayName}/saved`, text: '저장됨', icon: <Bookmark /> },

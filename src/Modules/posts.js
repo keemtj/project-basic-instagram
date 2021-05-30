@@ -2,27 +2,23 @@ import * as store from '../services/firestore';
 import { fetchDataThunk, reducerUtils } from '../lib/asyncUtils';
 
 // NOTE action type
-// --> all posts
-const MY_POSTS = 'main/MY_POSTS';
-const MY_POSTS_SUCCESS = 'main/MY_POSTS_SUCCESS';
-const MY_POSTS_ERROR = 'main/MY_POSTS_ERROR';
+const MY_POSTS = 'posts/MY_POSTS';
+const MY_POSTS_SUCCESS = 'posts/MY_POSTS_SUCCESS';
+const MY_POSTS_ERROR = 'posts/MY_POSTS_ERROR';
 
-const MY_FOLLOWING_POSTS = 'main/MY_FOLLOWING_POSTS';
-const MY_FOLLOWING_POSTS_SUCCESS = 'main/MY_FOLLOWING_POSTS_SUCCESS';
-const MY_FOLLOWING_POSTS_ERROR = 'main/MY_FOLLOWING_POSTS_ERROR';
+const MY_FOLLOWING_POSTS = 'posts/MY_FOLLOWING_POSTS';
+const MY_FOLLOWING_POSTS_SUCCESS = 'posts/MY_FOLLOWING_POSTS_SUCCESS';
+const MY_FOLLOWING_POSTS_ERROR = 'posts/MY_FOLLOWING_POSTS_ERROR';
 
-// --> all post by searching user
-const SEARCH_USER_POSTS = 'main/SEARCH_USER_POSTS';
-const SEARCH_USER_POSTS_SUCCESS = 'main/SEARCH_USER_POSTS_SUCCESS';
-const SEARCH_USER_POSTS_ERROR = 'main/SEARCH_USER_POSTS_ERROR';
+const SEARCH_USER_POSTS = 'posts/SEARCH_USER_POSTS';
+const SEARCH_USER_POSTS_SUCCESS = 'posts/SEARCH_USER_POSTS_SUCCESS';
+const SEARCH_USER_POSTS_ERROR = 'posts/SEARCH_USER_POSTS_ERROR';
 
-// --> single post
-const POST = 'main/POST';
-const POST_SUCCESS = 'main/POST_SUCCESS';
-const POST_ERROR = 'main/POST_ERROR';
+const POST = 'posts/POST';
+const POST_SUCCESS = 'posts/POST_SUCCESS';
+const POST_ERROR = 'posts/POST_ERROR';
 
-// --> clear
-const DATA_CLEAR = 'main/DATA_CLEAR';
+const DATA_CLEAR = 'posts/DATA_CLEAR';
 
 // NOTE action creator
 export const getPosts = fetchDataThunk(MY_POSTS, store.getCurrentUserPostsData);
@@ -43,7 +39,6 @@ const initialState = {
   myFollowingPosts: reducerUtils.initial(),
   searchUserPosts: reducerUtils.initial(),
   post: reducerUtils.initial(),
-  combine: [],
 };
 
 // NOTE reducer

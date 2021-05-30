@@ -7,8 +7,9 @@ import {
   getSearchUserFollowData,
 } from '../../Modules/search';
 import { getSearchUserPosts } from '../../Modules/posts';
+import { getUserDataByPost } from '../../services/firestore';
 
-const PostContainer = ({ post, displayName, photoURL }) => {
+const PostContainer = ({ post }) => {
   const history = useHistory();
   const dispatch = useDispatch();
   const {
@@ -22,6 +23,7 @@ const PostContainer = ({ post, displayName, photoURL }) => {
     uid,
   } = post;
 
+  const [state, setState] = useState({});
   // NOTE 경과 시간 계산 함수
   const calcTimeElapsed = date => {
     const start = new Date(date);
@@ -58,13 +60,21 @@ const PostContainer = ({ post, displayName, photoURL }) => {
     dispatch(getSearchUserData(uid));
     dispatch(getSearchUserFollowData(uid));
     dispatch(getSearchUserPosts(uid));
-    history.push(`/${displayName}`);
+    history.push(`/${state.displayName}`);
   };
+
+  React.useEffect(async () => {
+    const result = await getUserDataByPost(uid);
+    const { displayName, photoURL } = result;
+    setState({ displayName, photoURL });
+    console.log(displayName);
+    return () => setState({});
+  }, []);
 
   return (
     <Post
-      displayName={displayName}
-      photoURL={photoURL}
+      displayName={state.displayName}
+      photoURL={state.photoURL}
       location={location}
       imagesArray={imagesArray}
       heartCount={heartCount}

@@ -51,7 +51,7 @@ const PostsContainer = ({ watchName }) => {
   return (
     <Posts
       posts={
-        currentUserData.displayName === watchName
+        currentUserData?.displayName === watchName
           ? sortedPosts()
           : sortedSearchUserPosts()
       }
@@ -60,12 +60,12 @@ const PostsContainer = ({ watchName }) => {
       postId={postId}
       postUid={postUid}
       displayName={
-        currentUserData.displayName === watchName
+        currentUserData?.displayName === watchName
           ? currentUserData?.displayName
           : searchUserData?.displayName
       }
       photoURL={
-        (currentUserData.displayName === watchName
+        (currentUserData?.displayName === watchName
           ? currentUserData?.photoURL
           : searchUserData?.photoURL) || '/images/default_profile2.jpg'
       }

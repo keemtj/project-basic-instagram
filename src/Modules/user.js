@@ -3,70 +3,66 @@ import * as store from '../services/firestore';
 import { fetchDataThunk, reducerUtils } from '../lib/asyncUtils';
 
 // action type
-const CURRENT_USER = 'user/CURRENT_USER';
-const FOLLOW_DATA = 'user/FOLLOW_DATA';
+const CURRENT_USER_DATA = 'user/CURRENT_USER_DATA';
+const CURRENT_USER_DATA_SUCCESS = 'user/CURRENT_USER_DATA_SUCCESS';
+const CURRENT_USER_DATA_ERROR = 'user/CURRENT_USER_DATA_ERROR';
 
-const FOLLOWED_ME = 'user/FOLLOWED_ME';
-const FOLLOWED_ME_SUCCESS = 'user/FOLLOWED_ME_SUCCESS';
-const FOLLOWED_ME_ERROR = 'user/FOLLOWED_ME_ERROR';
-
-// const FOLLOW = 'user/FOLLOW';
-// const UNFOLLOW = 'user/UNFOLLOW';
+const CURRENT_USER_FOLLOW_DATA = 'user/CURRENT_USER_FOLLOW_DATA';
+const CURRENT_USER_FOLLOW_DATA_SUCCESS =
+  'user/CURRENT_USER_FOLLOW_DATA_SUCCESS';
+const CURRENT_USER_FOLLOW_DATA_ERROR = 'user/CURRENT_USER_FOLLOW_DATA_ERROR';
 
 // action creator
-export const currentUser = currentUserData => ({
-  type: CURRENT_USER,
-  currentUserData,
-});
-export const currentUserFollow = followData => ({
-  type: FOLLOW_DATA,
-  followData,
-});
-export const followedMe = fetchDataThunk(FOLLOWED_ME, store.getFollowedMe);
-// export const followUser = uid => ({ type: FOLLOW, uid });
-// export const unFollowUser = uid => ({ type: UNFOLLOW, uid });
+export const getCurrentUserData = fetchDataThunk(
+  CURRENT_USER_DATA,
+  store.getCurrentUserData,
+);
+export const getCurrentUserFollowData = fetchDataThunk(
+  CURRENT_USER_FOLLOW_DATA,
+  store.getCurrentUserFollowData,
+);
 
 // initialState
 const initialState = {
-  user: {},
-  follow: {
-    followers: [],
-    following: [],
-  },
+  currentUser: reducerUtils.initial(),
+  currentUserFollowData: reducerUtils.initial(),
   followed: reducerUtils.initial(),
 };
 
 // reducer
 const user = (state = initialState, action) => {
   switch (action.type) {
-    case CURRENT_USER:
+    case CURRENT_USER_DATA:
       return {
         ...state,
-        user: action.currentUserData,
+        currentUser: reducerUtils.loading(),
       };
-    case FOLLOW_DATA:
+    case CURRENT_USER_DATA_SUCCESS:
       return {
         ...state,
-        follow: {
-          followers: action.followData?.followers,
-          following: action.followData?.following,
-        },
+        currentUser: reducerUtils.success(action.payload),
       };
-    case FOLLOWED_ME:
+    case CURRENT_USER_DATA_ERROR:
       return {
         ...state,
-        followed: reducerUtils.loading(),
+        currentUser: reducerUtils.error(action.payload),
       };
-    case FOLLOWED_ME_SUCCESS:
+    case CURRENT_USER_FOLLOW_DATA:
       return {
         ...state,
-        followed: reducerUtils.success(action.payload),
+        currentUserFollowData: reducerUtils.loading(),
       };
-    case FOLLOWED_ME_ERROR:
+    case CURRENT_USER_FOLLOW_DATA_SUCCESS:
       return {
         ...state,
-        followed: reducerUtils.error(action.payload),
+        currentUserFollowData: reducerUtils.success(action.payload),
       };
+    case CURRENT_USER_FOLLOW_DATA_ERROR:
+      return {
+        ...state,
+        currentUserFollowData: reducerUtils.error(action.payload),
+      };
+
     // case FOLLOW:
     //   return {
     //     ...state,
