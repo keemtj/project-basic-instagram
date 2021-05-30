@@ -1,11 +1,13 @@
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import EditPassword from '../../Component/Edit/EditPassword';
 import { firebaseAuth } from '../../services/firebase';
 
 const EditPasswordContainer = () => {
-  const { displayName, photoURL } = useSelector(state => state.user.user);
-  const [input, setInput] = React.useState({
+  const { displayName, photoURL } = useSelector(
+    state => state.user.currentUser,
+  );
+  const [input, setInput] = useState({
     newPassword: '',
     checkNewPassword: '',
     error: null,

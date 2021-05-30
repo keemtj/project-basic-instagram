@@ -48,10 +48,8 @@ const EditProfileContainer = () => {
   const { displayName, username, phone, email, presentation } = state;
   // const [uploadState, setUploadState] = React.useState('');
 
-  const { data: currentUserData } = useSelector(
-    state => state.user.currentUser,
-  );
-  const { data: myPosts } = useSelector(state => state.posts.myPosts);
+  const currentUserData = useSelector(state => state.user.currentUser);
+
   const {
     displayName: currentDisplayName,
     email: currentEmail,
@@ -84,29 +82,10 @@ const EditProfileContainer = () => {
         displayName: displayName !== '' ? displayName : currentDisplayName,
       });
 
-    // TEST
-    await firestore
-      .collection('posts')
-      .doc(uid)
-      .update({
-        displayName: displayName !== '' ? displayName : currentDisplayName,
-      });
-
-    await myPosts.forEach(async post => {
-      await firestore
-        .collection('posts')
-        .doc(uid)
-        .collection('my-posts')
-        .doc(post.postId)
-        .update({
-          displayName: displayName !== '' ? displayName : currentDisplayName,
-        });
-    });
-
     // TODO: setTimeout대신 toast popup으로 대체
-    // setTimeout(() => {
-    //   window.location.reload();
-    // }, 1000);
+    setTimeout(() => {
+      window.location.reload();
+    }, 1000);
   };
 
   const updateProfileImage = ({ target }) => {
@@ -127,11 +106,6 @@ const EditProfileContainer = () => {
           const urlResult = await uploadTask.snapshot.ref.getDownloadURL();
           const photoURL = await Promise.resolve(urlResult);
           await firestore.collection('users').doc(uid).update({ photoURL });
-
-          //TEST
-          await firestore.collection('posts').doc(uid).update({
-            photoURL,
-          });
 
           // TODO: setTimeout대신 toast popup으로 대체
           setTimeout(() => {
