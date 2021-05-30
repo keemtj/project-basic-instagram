@@ -43,19 +43,7 @@ const signup = (state = initialState, action) => {
         },
       };
     case RESET_SIGNUP_FORM:
-      return {
-        ...state,
-        form: {
-          email: '',
-          username: '',
-          displayName: '',
-          password: '',
-        },
-        error: {
-          code: '',
-          message: '',
-        },
-      };
+      return initialState;
     default:
       return state;
   }

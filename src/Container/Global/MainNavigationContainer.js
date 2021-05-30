@@ -8,7 +8,9 @@ const MainNavigationContainer = () => {
   const dispatch = useDispatch();
   const location = useLocation();
   const path = location.pathname;
-  const { data, loading } = useSelector(state => state.user.currentUser);
+  const { displayName, photoURL } = useSelector(
+    state => state.user.currentUser,
+  );
   const { profilePopup, newPostModal } = useSelector(state => state.popup);
 
   const onPopup = () => {
@@ -22,9 +24,8 @@ const MainNavigationContainer = () => {
 
   return (
     <MainNavigation
-      loading={loading}
-      photoURL={data?.photoURL || '/images/default_image.png'}
-      displayName={data?.displayName || 'displayName'}
+      photoURL={photoURL || '/images/default_image.png'}
+      displayName={displayName || 'displayName'}
       onPopup={onPopup}
       openModal={openModal}
       profilePopup={profilePopup}

@@ -46,6 +46,16 @@ const login = (state = initialState, action) => {
           message: action.error.message,
         },
       };
+    case LOGIN_STATE:
+      return {
+        ...state,
+        isSignIn: action.isSignIn,
+      };
+    case LOGOUT:
+      return {
+        ...state,
+        isSignin: false,
+      };
     case RESET_LOGIN_FORM:
       return {
         ...state,
@@ -57,16 +67,6 @@ const login = (state = initialState, action) => {
           code: '',
           message: '',
         },
-      };
-    case LOGIN_STATE:
-      return {
-        ...state,
-        isSignIn: action.isSignIn,
-      };
-    case LOGOUT:
-      return {
-        ...state,
-        isSignin: false,
       };
     default:
       return state;

@@ -10,6 +10,8 @@ const MY_FOLLOWING_POSTS = 'posts/MY_FOLLOWING_POSTS';
 const MY_FOLLOWING_POSTS_SUCCESS = 'posts/MY_FOLLOWING_POSTS_SUCCESS';
 const MY_FOLLOWING_POSTS_ERROR = 'posts/MY_FOLLOWING_POSTS_ERROR';
 
+const COMBINE_POSTS = 'posts/COMBINE_POSTS';
+
 const SEARCH_USER_POSTS = 'posts/SEARCH_USER_POSTS';
 const SEARCH_USER_POSTS_SUCCESS = 'posts/SEARCH_USER_POSTS_SUCCESS';
 const SEARCH_USER_POSTS_ERROR = 'posts/SEARCH_USER_POSTS_ERROR';
@@ -24,19 +26,24 @@ const DATA_CLEAR = 'posts/DATA_CLEAR';
 export const getPosts = fetchDataThunk(MY_POSTS, store.getCurrentUserPostsData);
 export const getFollowingPosts = fetchDataThunk(
   MY_FOLLOWING_POSTS,
-  store.getAllPostsByFollowing,
+  store.getPostsByAllFollowing,
 );
+export const combinePosts = () => ({ type: COMBINE_POSTS });
+
 export const getSearchUserPosts = fetchDataThunk(
   SEARCH_USER_POSTS,
   store.getCurrentUserPostsData,
 );
+
 export const getPost = fetchDataThunk(POST, store.getPostBySinglePost);
-export const dataClear = () => ({ type: DATA_CLEAR });
+
+export const postDataClear = () => ({ type: DATA_CLEAR });
 
 // NOTE initialState
 const initialState = {
   myPosts: reducerUtils.initial(),
   myFollowingPosts: reducerUtils.initial(),
+  combinePosts: [],
   searchUserPosts: reducerUtils.initial(),
   post: reducerUtils.initial(),
 };
@@ -74,6 +81,14 @@ const posts = (state = initialState, action) => {
         ...state,
         myFollowingPosts: reducerUtils.error(action.payload),
       };
+    case COMBINE_POSTS:
+      return {
+        ...state,
+        combinePosts: [
+          ...state.myPosts.data,
+          ...state.myFollowingPosts.data,
+        ].sort((a, b) => b.date - a.date),
+      };
     case SEARCH_USER_POSTS:
       return {
         ...state,
@@ -105,13 +120,7 @@ const posts = (state = initialState, action) => {
         post: reducerUtils.error(action.payload),
       };
     case DATA_CLEAR:
-      return {
-        myPosts: reducerUtils.initial(),
-        myFollowingPosts: reducerUtils.initial(),
-        searchUserPosts: reducerUtils.initial(),
-        post: reducerUtils.initial(),
-        userData: reducerUtils.initial(),
-      };
+      return initialState;
     default:
       return state;
   }

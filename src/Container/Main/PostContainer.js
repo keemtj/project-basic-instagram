@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router';
 import Post from '../../Component/Main/Post';
@@ -9,9 +9,35 @@ import {
 import { getSearchUserPosts } from '../../Modules/posts';
 import { getUserDataByPost } from '../../services/firestore';
 
+// NOTE 경과 시간 계산 함수
+const calcTimeElapsed = date => {
+  const start = new Date(date);
+  const end = Date.now();
+  const sec = Math.floor((end - start) / 1000); // 경과시간, 초
+  const min = Math.floor((end - start) / 1000 / 60); // 경과시간, 분
+  const hour = Math.floor((end - start) / 1000 / 60 / 60); // 경과시간, 시간
+  const day = Math.floor((end - start) / 1000 / 60 / 60 / 24); // 경과시간, 일
+  const elapsed =
+    sec >= 60
+      ? min >= 60
+        ? hour >= 24
+          ? day + '일전'
+          : hour + '시간 전'
+        : min + '분 전'
+      : '방금 전';
+  return elapsed;
+};
+
 const PostContainer = ({ post }) => {
   const history = useHistory();
   const dispatch = useDispatch();
+  const [state, setState] = useState({
+    displayName: '',
+    photoURL: '/images/default_profile.png',
+  });
+  const [more, setMore] = useState(true);
+
+  const { displayName, photoURL } = state;
   const {
     imagesArray,
     heartCount,
@@ -23,28 +49,6 @@ const PostContainer = ({ post }) => {
     uid,
   } = post;
 
-  const [state, setState] = useState({});
-  // NOTE 경과 시간 계산 함수
-  const calcTimeElapsed = date => {
-    const start = new Date(date);
-    const end = Date.now();
-    const sec = Math.floor((end - start) / 1000); // 경과시간, 초
-    const min = Math.floor((end - start) / 1000 / 60); // 경과시간, 분
-    const hour = Math.floor((end - start) / 1000 / 60 / 60); // 경과시간, 시간
-    const day = Math.floor((end - start) / 1000 / 60 / 60 / 24); // 경과시간, 일
-    const elapsed =
-      sec >= 60
-        ? min >= 60
-          ? hour >= 24
-            ? day + '일전'
-            : hour + '시간 전'
-          : min + '분 전'
-        : '방금 전';
-    return elapsed;
-  };
-
-  // NOTE 게시글 더보기, 숨기기 함수
-  const [more, setMore] = useState(true);
   const onClickMore = () => {
     setMore(!more);
   };
@@ -63,18 +67,18 @@ const PostContainer = ({ post }) => {
     history.push(`/${state.displayName}`);
   };
 
-  React.useEffect(async () => {
+  useEffect(async () => {
     const result = await getUserDataByPost(uid);
     const { displayName, photoURL } = result;
     setState({ displayName, photoURL });
-    console.log(displayName);
-    return () => setState({});
+    return () =>
+      setState({ displayName: '', photoURL: '/images/default_profile.png' });
   }, []);
 
   return (
     <Post
-      displayName={state.displayName}
-      photoURL={state.photoURL}
+      displayName={displayName}
+      photoURL={photoURL}
       location={location}
       imagesArray={imagesArray}
       heartCount={heartCount}

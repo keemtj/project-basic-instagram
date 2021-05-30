@@ -1,6 +1,7 @@
 import { firebase, firestore } from './firebase';
 
-// get currentUser data to users collection of firestore
+// NOTE main page
+// get current user data
 export const getCurrentUserData = async uid => {
   const doc = await firestore.collection('users').doc(uid).get();
   const datas = doc.data();
@@ -14,6 +15,38 @@ export const getCurrentUserFollowData = async uid => {
   return datas;
 };
 
+// get posts data
+export const getCurrentUserPostsData = async uid => {
+  let datas = [];
+  const docs = await firestore
+    .collection('posts')
+    .doc(uid)
+    .collection('my-posts')
+    .orderBy('date', 'desc')
+    .get();
+  docs.forEach(doc => datas.push(doc.data()));
+  return datas;
+};
+
+// get all posts by following
+export const getPostsByAllFollowing = async following => {
+  const arr = await following.map(async uid => {
+    let datas = [];
+    const docs = await firestore
+      .collection('posts')
+      .doc(uid)
+      .collection('my-posts')
+      .orderBy('date', 'desc')
+      .get();
+    docs.forEach(doc => datas.push(doc.data()));
+    return datas;
+  });
+  const promiseAll = await Promise.all(arr);
+  const result = await promiseAll.flatMap(v => v);
+  return result;
+};
+
+// =======================================================
 export const getUserDataByPost = async uid => {
   const response = await firestore.collection('users').doc(uid).get();
   const result = await Promise.resolve(response.data());
@@ -51,39 +84,6 @@ export const getFollowedMe = async uid => {
     followed.push({ uid, displayName });
   });
   return followed;
-};
-
-// --> function using posts module
-// get posts by currentUser
-export const getCurrentUserPostsData = async uid => {
-  let datas = [];
-  const docs = await firestore
-    .collection('posts')
-    .doc(uid)
-    .collection('my-posts')
-    .orderBy('date', 'desc')
-    .get();
-  docs.forEach(doc => datas.push(doc.data()));
-  return datas;
-};
-
-// get all posts by following
-export const getAllPostsByFollowing = async following => {
-  const arr = await following.map(async uid => {
-    let datas = [];
-    const docs = await firestore
-      .collection('posts')
-      .doc(uid)
-      .collection('my-posts')
-      .orderBy('date', 'desc')
-      .get();
-    docs.forEach(doc => datas.push(doc.data()));
-    return datas;
-  });
-  // arr = [Promise, Promise];
-  const promiseAll = await Promise.all(arr);
-  const result = await promiseAll.flatMap(v => v);
-  return result;
 };
 
 // Profile Page에서 새로고침시 watchName에 맞는 uid 가져오기

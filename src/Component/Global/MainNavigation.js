@@ -10,7 +10,6 @@ import { AddCircle as AddCircleFilled } from '@styled-icons/ionicons-sharp/AddCi
 import PopupContainer from '../../Container/Global/PopupContainer';
 
 const MainNavigation = ({
-  loading,
   photoURL,
   displayName,
   onPopup,
@@ -63,10 +62,7 @@ const MainNavigation = ({
               path === `/${displayName}/heart`
             }
           >
-            <StProfileImage
-              src={loading ? '/images/default_profile.png' : photoURL}
-              alt={displayName}
-            />
+            <StProfileImage src={photoURL} alt={displayName} />
           </StProfile>
         </li>
       </ul>
