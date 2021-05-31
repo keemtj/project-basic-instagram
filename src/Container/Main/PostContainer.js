@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router';
 import Post from '../../Component/Main/Post';
 import {
@@ -7,7 +7,7 @@ import {
   getSearchUserFollowData,
 } from '../../Modules/search';
 import { getSearchUserPosts } from '../../Modules/posts';
-import { getUserDataByPost } from '../../services/firestore';
+import { addBookmark, getUserDataByPost } from '../../services/firestore';
 
 // NOTE 경과 시간 계산 함수
 const calcTimeElapsed = date => {
@@ -31,12 +31,12 @@ const calcTimeElapsed = date => {
 const PostContainer = ({ post }) => {
   const history = useHistory();
   const dispatch = useDispatch();
+  const { uid: currentUid } = useSelector(state => state.user.currentUser);
   const [state, setState] = useState({
     displayName: '',
     photoURL: '/images/default_profile.png',
   });
   const [more, setMore] = useState(true);
-
   const { displayName, photoURL } = state;
   const {
     imagesArray,
@@ -47,6 +47,7 @@ const PostContainer = ({ post }) => {
     date,
     location,
     uid,
+    id,
   } = post;
 
   const onClickMore = () => {
@@ -56,8 +57,13 @@ const PostContainer = ({ post }) => {
   const onClickHeart = () => {
     console.log('heart');
   };
+
   const onClickBookmark = () => {
-    console.log('bookmark');
+    // id: postId
+    // uid: current user's uid
+    // isBookmarking ? arrayRemove : arrayUnion
+    console.log('bookmark', 'postId:', id, currentUid);
+    addBookmark(currentUid, id);
   };
 
   const onMoveProfilePage = () => {

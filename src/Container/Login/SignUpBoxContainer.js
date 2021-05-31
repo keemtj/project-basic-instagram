@@ -80,6 +80,10 @@ const SignUpBoxContainer = () => {
             uid: firebaseAuth.currentUser.uid,
             displayName,
           });
+        await firestore
+          .collection('bookmark')
+          .doc(firebaseAuth.currentUser.uid)
+          .set({ bookmarks: [] });
         history.push('/');
         dispatch(resetForm());
         console.log(`🎉 ${displayName}님의 회원가입을 축하합니다! 🎉`);

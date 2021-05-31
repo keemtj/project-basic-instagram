@@ -12,10 +12,8 @@ const UserContainer = ({ watchName }) => {
 
   // NOTE 현재 로그인 중인 유저의 데이터
   const currentUserData = useSelector(state => state.user.currentUser);
+  const followData = useSelector(state => state.user.currentUserFollowData);
   const { data: myPosts } = useSelector(state => state.posts.myPosts);
-  const { data: followData } = useSelector(
-    state => state.user.currentUserFollowData,
-  );
   const { following, followers } = followData || {
     following: [],
     followers: [],

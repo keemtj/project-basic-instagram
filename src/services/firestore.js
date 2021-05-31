@@ -165,3 +165,18 @@ export const getPostBySinglePost = async payload => {
     .get();
   return response.data();
 };
+
+//  --> bookmarking
+export const getBookmarksData = async uid => {
+  const response = await firestore.collection('bookmark').doc(uid).get();
+  return response.data();
+};
+
+export const addBookmark = async (uid, id) => {
+  await firestore
+    .collection('bookmark')
+    .doc(uid)
+    .update({
+      bookmarks: firebase.firestore.FieldValue.arrayUnion(id),
+    });
+};
