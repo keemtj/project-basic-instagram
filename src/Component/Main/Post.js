@@ -2,9 +2,11 @@ import React from 'react';
 import styled, { css } from 'styled-components';
 import { ThreeDots } from '@styled-icons/bootstrap/ThreeDots';
 import { Heart } from '@styled-icons/bootstrap/Heart';
+import { HeartFill } from '@styled-icons/bootstrap/HeartFill';
 import { PaperPlane } from '@styled-icons/ionicons-outline/PaperPlane';
 import { Chat } from '@styled-icons/bootstrap/Chat';
 import { Bookmark } from '@styled-icons/bootstrap/Bookmark';
+import { BookmarkFill } from '@styled-icons/bootstrap/BookmarkFill';
 import { EmojiSmile } from '@styled-icons/bootstrap/EmojiSmile';
 import Carousel from '../Global/Carousel';
 import ProfileImage from '../Global/ProfileImage';
@@ -24,6 +26,8 @@ const Post = ({
   onMoveProfilePage,
   onClickHeart,
   onClickBookmark,
+  isBookmarking,
+  isCheckingHeart,
 }) => {
   return (
     <StArticle>
@@ -51,7 +55,7 @@ const Post = ({
       </StImagesSection>
       <StSectionNav>
         <div onClick={onClickHeart}>
-          <Heart />
+          {isCheckingHeart ? <StHeartFill /> : <Heart />}
         </div>
         <div>
           <Chat />
@@ -60,7 +64,7 @@ const Post = ({
           <PaperPlane />
         </div>
         <div onClick={onClickBookmark}>
-          <Bookmark />
+          {isBookmarking ? <StBookmarkFill /> : <Bookmark />}
         </div>
       </StSectionNav>
       {heartCount > 0 && <StHeartCount>좋아요 {heartCount}개</StHeartCount>}
@@ -168,6 +172,13 @@ const StSectionNav = styled.section`
   }
 `;
 
+const StHeartFill = styled(HeartFill)`
+  color: ${({ theme }) => theme.heart};
+`;
+
+const StBookmarkFill = styled(BookmarkFill)`
+  color: ${({ theme }) => theme.heart};
+`;
 const StHeartCount = styled.div`
   width: 100%;
   padding: 0rem 1.5rem;

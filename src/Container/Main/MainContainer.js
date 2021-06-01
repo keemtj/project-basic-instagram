@@ -10,6 +10,8 @@ const MainContainer = () => {
     state => state.posts.myFollowingPosts,
   );
   const posts = useSelector(state => state.posts.combinePosts) || [];
+  const bookmarks = useSelector(state => state.saved.bookmarks);
+  const hearts = useSelector(state => state.heart.hearts);
 
   useEffect(() => {
     if (myPosts === null) return;
@@ -18,7 +20,7 @@ const MainContainer = () => {
       dispatch(combinePosts());
     }
   }, [myPosts, myFollowingPosts]);
-  return <Main posts={posts} />;
+  return <Main posts={posts} bookmarks={bookmarks} hearts={hearts} />;
 };
 
 export default MainContainer;

@@ -12,6 +12,7 @@ const theme = {
   activeBlue: '#0098fa',
   inactiveBlue: 'rgba(0,149,246,0.3)',
   google: '#385185',
+  heart: '#ED4956',
 };
 
 export default theme;

@@ -172,7 +172,7 @@ export const getBookmarksData = async uid => {
   return response.data();
 };
 
-export const addBookmark = async (currentUserUid, uid, postId) => {
+export const addBookmarkData = async (currentUserUid, uid, id) => {
   /**
    * @param currentUserUid 현재 활동중인 유저의 uid
    * @param uid 선택한 게시물을 올린 유저의 uid
@@ -182,6 +182,44 @@ export const addBookmark = async (currentUserUid, uid, postId) => {
     .collection('bookmark')
     .doc(currentUserUid)
     .update({
-      bookmarks: firebase.firestore.FieldValue.arrayUnion({ uid, postId }),
+      bookmarks: firebase.firestore.FieldValue.arrayUnion({ uid, id }),
+    });
+};
+
+export const removeBookmarkData = async (currentUserUid, uid, id) => {
+  await firestore
+    .collection('bookmark')
+    .doc(currentUserUid)
+    .update({
+      bookmarks: firebase.firestore.FieldValue.arrayRemove({ uid, id }),
+    });
+};
+
+// --> heart
+export const getHeartsData = async uid => {
+  const response = await firestore.collection('heart').doc(uid).get();
+  return response.data();
+};
+
+export const addHeartData = async (currentUserUid, uid, id) => {
+  /**
+   * @param currentUserUid 현재 활동중인 유저의 uid
+   * @param uid 선택한 게시물을 올린 유저의 uid
+   * @param postId  선택한 게시물의 postId(postId)
+   */
+  await firestore
+    .collection('heart')
+    .doc(currentUserUid)
+    .update({
+      hearts: firebase.firestore.FieldValue.arrayUnion({ uid, id }),
+    });
+};
+
+export const removeHeartData = async (currentUserUid, uid, id) => {
+  await firestore
+    .collection('heart')
+    .doc(currentUserUid)
+    .update({
+      hearts: firebase.firestore.FieldValue.arrayRemove({ uid, id }),
     });
 };

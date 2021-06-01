@@ -4,14 +4,27 @@ import PostContainer from '../../Container/Main/PostContainer';
 import AsideFooter from './AsideFooter';
 import AsideContainer from '../../Container/Main/AsideContainer';
 
-const Main = ({ posts }) => {
+const Main = ({ posts, bookmarks, hearts }) => {
   return (
     <StMainWrapper>
       <StMain>
         <StSection>
-          {posts?.map((post, index) => (
-            <PostContainer key={index} post={post} />
-          ))}
+          {posts?.map((post, index) => {
+            const bookmark = bookmarks.find(
+              bookmark => bookmark.id === post.id,
+            );
+            const bookmarkState = bookmark?.id ? true : false;
+            const heart = hearts.find(heart => heart.id === post.id);
+            const heartState = heart?.id ? true : false;
+            return (
+              <PostContainer
+                key={index}
+                post={post}
+                bookmarkState={bookmarkState}
+                heartState={heartState}
+              />
+            );
+          })}
         </StSection>
         <StAsideWrapper>
           <AsideContainer />

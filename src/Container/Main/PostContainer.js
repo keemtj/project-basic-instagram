@@ -7,7 +7,13 @@ import {
   getSearchUserFollowData,
 } from '../../Modules/search';
 import { getSearchUserPosts } from '../../Modules/posts';
-import { addBookmark, getUserDataByPost } from '../../services/firestore';
+import {
+  getUserDataByPost,
+  addHeartData,
+  removeHeartData,
+  addBookmarkData,
+  removeBookmarkData,
+} from '../../services/firestore';
 
 // NOTE 경과 시간 계산 함수
 const calcTimeElapsed = date => {
@@ -28,16 +34,18 @@ const calcTimeElapsed = date => {
   return elapsed;
 };
 
-const PostContainer = ({ post }) => {
+const PostContainer = ({ post, bookmarkState, heartState }) => {
   const history = useHistory();
   const dispatch = useDispatch();
   const { uid: currentUid } = useSelector(state => state.user.currentUser);
-  const [state, setState] = useState({
+  const [isBookmarking, setIsBookmarking] = useState(bookmarkState);
+  const [isCheckingHeart, setIsCheckingHeart] = useState(heartState);
+  const [more, setMore] = useState(true);
+  const [userState, setUserState] = useState({
     displayName: '',
     photoURL: '/images/default_profile.png',
   });
-  const [more, setMore] = useState(true);
-  const { displayName, photoURL } = state;
+  const { displayName, photoURL } = userState;
   const {
     imagesArray,
     heartCount,
@@ -55,31 +63,46 @@ const PostContainer = ({ post }) => {
   };
 
   const onClickHeart = () => {
-    console.log('heart');
+    if (isCheckingHeart) {
+      console.log('uncheck heart');
+      removeHeartData(currentUid, uid, id);
+      setIsCheckingHeart(false);
+    } else {
+      console.log('check heart');
+      addHeartData(currentUid, uid, id); // post 요청
+      setIsCheckingHeart(true);
+    }
   };
 
   const onClickBookmark = () => {
-    // id: postId
-    // uid: current user's uid
-    // isBookmarking ? arrayRemove : arrayUnion
-    addBookmark(currentUid, uid, id);
+    if (isBookmarking) {
+      console.log('remove bookmark');
+      removeBookmarkData(currentUid, uid, id); // post 요청
+      setIsBookmarking(false); // UI
+    } else {
+      console.log('add bookmark');
+      addBookmarkData(currentUid, uid, id); // post 요청
+      setIsBookmarking(true);
+    }
   };
 
   const onMoveProfilePage = () => {
     dispatch(getSearchUserData(uid));
     dispatch(getSearchUserFollowData(uid));
     dispatch(getSearchUserPosts(uid));
-    history.push(`/${state.displayName}`);
+    history.push(`/${userState.displayName}`);
   };
 
   useEffect(async () => {
     const result = await getUserDataByPost(uid);
     const { displayName, photoURL } = result;
-    setState({ displayName, photoURL });
+    setUserState({ displayName, photoURL });
     return () =>
-      setState({ displayName: '', photoURL: '/images/default_profile.png' });
+      setUserState({
+        displayName: '',
+        photoURL: '/images/default_profile.png',
+      });
   }, []);
-
   return (
     <Post
       displayName={displayName}
@@ -96,6 +119,8 @@ const PostContainer = ({ post }) => {
       onMoveProfilePage={onMoveProfilePage}
       onClickHeart={onClickHeart}
       onClickBookmark={onClickBookmark}
+      isBookmarking={isBookmarking}
+      isCheckingHeart={isCheckingHeart}
     />
   );
 };
