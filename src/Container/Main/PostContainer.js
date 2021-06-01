@@ -62,8 +62,7 @@ const PostContainer = ({ post }) => {
     // id: postId
     // uid: current user's uid
     // isBookmarking ? arrayRemove : arrayUnion
-    console.log('bookmark', 'postId:', id, currentUid);
-    addBookmark(currentUid, id);
+    addBookmark(currentUid, uid, id);
   };
 
   const onMoveProfilePage = () => {

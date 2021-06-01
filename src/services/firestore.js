@@ -172,11 +172,16 @@ export const getBookmarksData = async uid => {
   return response.data();
 };
 
-export const addBookmark = async (uid, id) => {
+export const addBookmark = async (currentUserUid, uid, postId) => {
+  /**
+   * @param currentUserUid 현재 활동중인 유저의 uid
+   * @param uid 선택한 게시물을 올린 유저의 uid
+   * @param postId  선택한 게시물의 postId(postId)
+   */
   await firestore
     .collection('bookmark')
-    .doc(uid)
+    .doc(currentUserUid)
     .update({
-      bookmarks: firebase.firestore.FieldValue.arrayUnion(id),
+      bookmarks: firebase.firestore.FieldValue.arrayUnion({ uid, postId }),
     });
 };
