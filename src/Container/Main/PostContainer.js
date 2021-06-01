@@ -13,6 +13,8 @@ import {
   removeHeartData,
   addBookmarkData,
   removeBookmarkData,
+  decreaseHeartCount,
+  increaseHeartCount,
 } from '../../services/firestore';
 
 // NOTE 경과 시간 계산 함수
@@ -35,17 +37,6 @@ const calcTimeElapsed = date => {
 };
 
 const PostContainer = ({ post, bookmarkState, heartState }) => {
-  const history = useHistory();
-  const dispatch = useDispatch();
-  const { uid: currentUid } = useSelector(state => state.user.currentUser);
-  const [isBookmarking, setIsBookmarking] = useState(bookmarkState);
-  const [isCheckingHeart, setIsCheckingHeart] = useState(heartState);
-  const [more, setMore] = useState(true);
-  const [userState, setUserState] = useState({
-    displayName: '',
-    photoURL: '/images/default_profile.png',
-  });
-  const { displayName, photoURL } = userState;
   const {
     imagesArray,
     heartCount,
@@ -57,6 +48,18 @@ const PostContainer = ({ post, bookmarkState, heartState }) => {
     uid,
     id,
   } = post;
+  const history = useHistory();
+  const dispatch = useDispatch();
+  const { uid: currentUid } = useSelector(state => state.user.currentUser);
+  const [heartCountState, setHeartCountState] = useState(heartCount);
+  const [isBookmarking, setIsBookmarking] = useState(bookmarkState);
+  const [isCheckingHeart, setIsCheckingHeart] = useState(heartState);
+  const [more, setMore] = useState(true);
+  const [userState, setUserState] = useState({
+    displayName: '',
+    photoURL: '/images/default_profile.png',
+  });
+  const { displayName, photoURL } = userState;
 
   const onClickMore = () => {
     setMore(!more);
@@ -67,10 +70,14 @@ const PostContainer = ({ post, bookmarkState, heartState }) => {
       console.log('uncheck heart');
       removeHeartData(currentUid, uid, id);
       setIsCheckingHeart(false);
+      decreaseHeartCount(uid, id);
+      setHeartCountState(heartCountState - 1);
     } else {
       console.log('check heart');
       addHeartData(currentUid, uid, id); // post 요청
       setIsCheckingHeart(true);
+      increaseHeartCount(uid, id);
+      setHeartCountState(heartCountState + 1);
     }
   };
 
@@ -109,7 +116,7 @@ const PostContainer = ({ post, bookmarkState, heartState }) => {
       photoURL={photoURL}
       location={location}
       imagesArray={imagesArray}
-      heartCount={heartCount}
+      heartCount={heartCountState}
       more={more}
       text={text}
       onClickMore={onClickMore}

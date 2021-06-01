@@ -67,7 +67,22 @@ const Post = ({
           {isBookmarking ? <StBookmarkFill /> : <Bookmark />}
         </div>
       </StSectionNav>
-      {heartCount > 0 && <StHeartCount>좋아요 {heartCount}개</StHeartCount>}
+      {/* {heartCount > 0 && <StHeartCount>좋아요 {heartCount}개</StHeartCount>} */}
+      {heartCount > 0 ? (
+        <StHeartCountWrapper>
+          좋아요 <StHeartCount>{heartCount}</StHeartCount>개
+        </StHeartCountWrapper>
+      ) : (
+        <StHeartCountWrapper>
+          <span>
+            가장 먼저{' '}
+            <StHeartCount heartCount={heartCount} onClick={onClickHeart}>
+              좋아요
+            </StHeartCount>
+            를 눌러주세요
+          </span>
+        </StHeartCountWrapper>
+      )}
       <StTextBox>
         <StText more={more}>
           <StUsername>{displayName}</StUsername> {text}{' '}
@@ -179,11 +194,18 @@ const StHeartFill = styled(HeartFill)`
 const StBookmarkFill = styled(BookmarkFill)`
   color: ${({ theme }) => theme.heart};
 `;
-const StHeartCount = styled.div`
-  width: 100%;
+
+const StHeartCountWrapper = styled.div`
+  font-size: 1.4rem;
   padding: 0rem 1.5rem;
+  font-weight: 500;
+`;
+
+const StHeartCount = styled.span`
+  width: 100%;
   font-size: 1.4rem;
   font-weight: 600;
+  cursor: ${({ heartCount }) => (heartCount === 0 ? 'pointer' : 'default')};
 `;
 
 const StTextBox = styled.div`

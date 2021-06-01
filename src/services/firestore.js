@@ -223,3 +223,21 @@ export const removeHeartData = async (currentUserUid, uid, id) => {
       hearts: firebase.firestore.FieldValue.arrayRemove({ uid, id }),
     });
 };
+
+export const increaseHeartCount = async (uid, id) => {
+  await firestore
+    .collection('posts')
+    .doc(uid)
+    .collection('my-posts')
+    .doc(id)
+    .update({ heartCount: firebase.firestore.FieldValue.increment(1) });
+};
+
+export const decreaseHeartCount = async (uid, id) => {
+  await firestore
+    .collection('posts')
+    .doc(uid)
+    .collection('my-posts')
+    .doc(id)
+    .update({ heartCount: firebase.firestore.FieldValue.increment(-1) });
+};
