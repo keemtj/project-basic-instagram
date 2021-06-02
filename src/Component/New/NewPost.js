@@ -1,6 +1,10 @@
 import React, { useEffect, useRef, useState } from 'react';
 import styled, { css } from 'styled-components';
+import { useDispatch, useSelector } from 'react-redux';
 import { Upload } from '@styled-icons/boxicons-regular/Upload';
+import { firebase, firestore, firebaseStorage } from '../../services/firebase';
+import { generatedId } from '../../services/firestore';
+import { closePopup } from '../../Modules/popup';
 import NewPostPortal from '../../NewPostPortal';
 import UploadImageInput from './UploadImageInput';
 import ImagePreview from './ImagePreview';
@@ -8,17 +12,11 @@ import Textarea from './Textarea';
 import CommentSetting from './CommentSetting';
 import PlaceSearch from './PlaceSearch';
 import PlaceAutoComplete from './PlaceAutoComplete';
-import { firebase, firestore, firebaseStorage } from '../../services/firebase';
-import { useDispatch, useSelector } from 'react-redux';
-import { generatedId } from '../../services/firestore';
-import { closePopup } from '../../Modules/popup';
-import { useHistory } from 'react-router';
 
 const NewPost = ({ setProgress }) => {
   const dispatch = useDispatch();
-  const history = useHistory();
   const modalRef = useRef();
-  const { newPostModal, modalEntryPath } = useSelector(state => state.popup);
+  const { newPostModal } = useSelector(state => state.popup);
   const { uid } = useSelector(state => state.user.currentUser);
   const [images, setImages] = useState([]);
   const [location, setLocation] = useState('');
@@ -30,7 +28,6 @@ const NewPost = ({ setProgress }) => {
   const closeModal = () => {
     console.log('close new post!');
     dispatch(closePopup('newPostModal'));
-    history.push(modalEntryPath);
   };
 
   // FIXME: create new post
