@@ -256,3 +256,18 @@ export const decreaseHeartCount = async (uid, id) => {
     .doc(id)
     .update({ heartCount: firebase.firestore.FieldValue.increment(-1) });
 };
+
+export const getPostsByHearts = async hearts => {
+  console.log('저장된 좋아요 posts 가져오기~~~~~');
+  const response = await hearts.map(async ({ uid, id }) => {
+    const doc = await firestore
+      .collection('posts')
+      .doc(uid)
+      .collection('my-posts')
+      .doc(id)
+      .get();
+    return doc.data();
+  });
+  const result = await Promise.all(response);
+  return result;
+};

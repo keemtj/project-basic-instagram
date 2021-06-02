@@ -16,7 +16,7 @@ const Saved = ({
   // isFollowing이 false면 게시물 비공개 처리하기
   return (
     <>
-      <StOnlyYou>저장한 내용은 회원님만 볼 수 있습니다</StOnlyYou>
+      <StOnlyYou>저장한 게시물은 회원님만 볼 수 있습니다</StOnlyYou>
       {posts?.length === 0 ? (
         <EmptyPosts />
       ) : (

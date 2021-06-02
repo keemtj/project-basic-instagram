@@ -14,6 +14,7 @@ export const getBookmarks = data => ({ type: GET_BOOKMARKS, data });
 export const getBookmarkPosts = fetchDataThunk(
   BOOKMARK_POSTS,
   store.getPostsByBookmarks,
+  2000,
 );
 
 // initialState
