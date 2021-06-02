@@ -68,16 +68,16 @@ const PostContainer = ({ post, bookmarkState, heartState }) => {
   const onClickHeart = () => {
     if (isCheckingHeart) {
       console.log('uncheck heart');
-      removeHeartData(currentUid, uid, id);
-      setIsCheckingHeart(false);
-      decreaseHeartCount(uid, id);
-      setHeartCountState(heartCountState - 1);
+      removeHeartData(currentUid, uid, id); // post 요청
+      setIsCheckingHeart(false); // UI
+      decreaseHeartCount(uid, id); // post 요청
+      setHeartCountState(heartCountState - 1); // UI
     } else {
       console.log('check heart');
       addHeartData(currentUid, uid, id); // post 요청
-      setIsCheckingHeart(true);
-      increaseHeartCount(uid, id);
-      setHeartCountState(heartCountState + 1);
+      setIsCheckingHeart(true); // UI
+      increaseHeartCount(uid, id); // post 요청
+      setHeartCountState(heartCountState + 1); // UI
     }
   };
 
@@ -89,7 +89,7 @@ const PostContainer = ({ post, bookmarkState, heartState }) => {
     } else {
       console.log('add bookmark');
       addBookmarkData(currentUid, uid, id); // post 요청
-      setIsBookmarking(true);
+      setIsBookmarking(true); // UI
     }
   };
 

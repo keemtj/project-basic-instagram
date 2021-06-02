@@ -30,7 +30,6 @@ const App = () => {
   useEffect(() => {
     firebaseAuth.onAuthStateChanged(async user => {
       if (user) {
-        console.log(user);
         const { uid } = user;
         const userData = await getCurrentUserData(uid);
         const followData = await getCurrentUserFollowData(uid);
