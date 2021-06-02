@@ -1,36 +1,50 @@
 // SAVED(BOOKMARK) module
+import * as store from '../services/firestore';
+import { fetchDataThunk, reducerUtils } from '../lib/asyncUtils';
+
 // action
 const GET_BOOKMARKS = 'saved/GET_BOOKMARKS';
-// const ADD_BOOKMAKR = 'saved/ADD_BOOKMARK';
-// const REMOVE_BOOKMARK = 'saved/REMOVE_BOOKMARK';
+
+const BOOKMARK_POSTS = 'saved/BOOKMARK_POSTS';
+const BOOKMARK_POSTS_SUCCESS = 'saved/BOOKMARK_POSTS_SUCCESS';
+const BOOKMARK_POSTS_ERROR = 'saved/BOOKMARK_POSTS_ERROR';
 
 // action creator
 export const getBookmarks = data => ({ type: GET_BOOKMARKS, data });
-// export const addBookmark = (uid, id) => ({ type: ADD_BOOKMAKR, uid, id });
-// export const removeBookmark = (uid, id) => ({ type: REMOVE_BOOKMARK, uid, id });
+export const getBookmarkPosts = fetchDataThunk(
+  BOOKMARK_POSTS,
+  store.getPostsByBookmarks,
+);
 
 // initialState
 const initialState = {
   bookmarks: [],
+  posts: reducerUtils.initial(),
 };
 
 // reducer
 const saved = (state = initialState, action) => {
   switch (action.type) {
     case GET_BOOKMARKS:
-      return action.data;
-    // case ADD_BOOKMAKR:
-    //   return {
-    //     ...state,
-    //     bookmarks: [...state.bookmarks, { uid: action.uid, id: action.id }],
-    //   };
-    // case REMOVE_BOOKMARK:
-    //   return {
-    //     ...state,
-    //     bookmarks: state.bookmarks.filter(
-    //       bookmark => bookmark.id !== action.id,
-    //     ),
-    //   };
+      return {
+        ...state,
+        bookmarks: action.data,
+      };
+    case BOOKMARK_POSTS:
+      return {
+        ...state,
+        posts: reducerUtils.loading(),
+      };
+    case BOOKMARK_POSTS_SUCCESS:
+      return {
+        ...state,
+        posts: reducerUtils.success(action.payload),
+      };
+    case BOOKMARK_POSTS_ERROR:
+      return {
+        ...state,
+        posts: reducerUtils.error(action.error),
+      };
     default:
       return state;
   }

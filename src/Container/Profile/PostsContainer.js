@@ -5,7 +5,7 @@ import { openPopup } from '../../Modules/popup';
 
 const PostsContainer = ({ watchName }) => {
   const dispatch = useDispatch();
-  const currentUserData = useSelector(state => state.user.user);
+  const currentUserData = useSelector(state => state.user.currentUser);
   const { data: searchUserData } = useSelector(
     state => state.search.searchUser,
   );

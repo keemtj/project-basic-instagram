@@ -195,6 +195,21 @@ export const removeBookmarkData = async (currentUserUid, uid, id) => {
     });
 };
 
+export const getPostsByBookmarks = async bookmarks => {
+  console.log('저장된 북마크 posts 가져오기~~~~~');
+  const response = await bookmarks.map(async ({ uid, id }) => {
+    const doc = await firestore
+      .collection('posts')
+      .doc(uid)
+      .collection('my-posts')
+      .doc(id)
+      .get();
+    return doc.data();
+  });
+  const result = await Promise.all(response);
+  return result;
+};
+
 // --> heart
 export const getHeartsData = async uid => {
   const response = await firestore.collection('heart').doc(uid).get();

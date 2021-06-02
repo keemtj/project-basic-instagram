@@ -38,8 +38,8 @@ const App = () => {
         dispatch(currentUserFollowData(followData)); // 현재 로그인 유저의 팔로우 데이터
         dispatch(getPosts(uid)); // 현재 로그인 유저의 포스트
         dispatch(getFollowingPosts(followData.following)); // 현재 로그인 유저의 팔로우 포스트 데이터
-        dispatch(getBookmarks(bookmarksData)); // 현재 로그인 유저의 북마크 데이터
-        dispatch(getHearts(heartsData)); // 현재 로그인 유저의 좋아요 데이터
+        dispatch(getBookmarks(bookmarksData.bookmarks)); // 현재 로그인 유저의 북마크 데이터
+        dispatch(getHearts(heartsData.hearts)); // 현재 로그인 유저의 좋아요 데이터
       }
     });
   }, []);

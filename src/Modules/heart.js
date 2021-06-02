@@ -8,13 +8,17 @@ export const getHearts = data => ({ type: GET_HEARTS, data });
 // initialState
 const initialState = {
   hearts: [],
+  posts: [],
 };
 
 // reducer
 const saved = (state = initialState, action) => {
   switch (action.type) {
     case GET_HEARTS:
-      return action.data;
+      return {
+        ...state,
+        hearts: action.data,
+      };
     default:
       return state;
   }
