@@ -16,6 +16,7 @@ const Saved = ({
   // isFollowing이 false면 게시물 비공개 처리하기
   return (
     <>
+      <StOnlyYou>저장한 내용은 회원님만 볼 수 있습니다</StOnlyYou>
       {posts?.length === 0 ? (
         <EmptyPosts />
       ) : (
@@ -50,6 +51,12 @@ const StPostsWrapper = styled.article`
   grid-template-columns: repeat(3, minmax(0, 1fr));
   grid-gap: 2.5rem;
   margin-bottom: 3rem;
+`;
+
+const StOnlyYou = styled.div`
+  padding: 2rem 0rem;
+  color: ${({ theme }) => theme.darkGray};
+  font-size: 1.2rem;
 `;
 
 export default Saved;

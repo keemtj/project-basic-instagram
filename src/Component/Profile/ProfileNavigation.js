@@ -1,34 +1,26 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 import styled from 'styled-components';
-import { Grid } from '@styled-icons/feather/Grid';
-import { Heart } from '@styled-icons/bootstrap/Heart';
-import { Bookmark } from '@styled-icons/feather/Bookmark';
 
-const ProfileNavigation = ({ watchName }) => {
-  const subnav = [
-    { name: '', text: '게시물', icon: <Grid /> },
-    { name: 'saved', text: '저장됨', icon: <Bookmark /> },
-    { name: 'heart', text: '좋아요', icon: <Heart /> },
-  ];
-
+const ProfileNavigation = ({ watchName, subnav }) => {
   return (
     <StProfileNavigation>
       <StNav>
-        {subnav.map(nav => (
-          <StNavItem key={nav.name}>
-            <NavLink
-              activeClassName="active"
-              to={
-                nav.name === '' ? `/${watchName}` : `/${watchName}/${nav.name}`
-              }
-              exact={nav.name === ''}
-            >
-              <StIcon>{nav.icon}</StIcon>
-              {nav.text}
-            </NavLink>
-          </StNavItem>
-        ))}
+        {subnav.map(({ name, icon, text, isShow }) => {
+          if (!isShow) return null;
+          return (
+            <StNavItem key={name}>
+              <NavLink
+                activeClassName="active"
+                to={name === '' ? `/${watchName}` : `/${watchName}/${name}`}
+                exact={name === ''}
+              >
+                <StIcon>{icon}</StIcon>
+                {text}
+              </NavLink>
+            </StNavItem>
+          );
+        })}
       </StNav>
     </StProfileNavigation>
   );

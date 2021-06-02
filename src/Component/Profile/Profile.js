@@ -2,14 +2,14 @@ import React from 'react';
 import styled from 'styled-components';
 import ProfileRouter from '../../Router/ProfileRouter';
 import UserContainer from '../../Container/Profile/UserContainer';
-import ProfileNavigation from './ProfileNavigation';
+import ProfileNavigationContainer from '../../Container/Profile/ProfileNavigationContainer';
 
 const Profile = ({ watchName }) => {
   return (
     <StWrapper>
       <StMain>
         <UserContainer watchName={watchName} />
-        <ProfileNavigation watchName={watchName} />
+        <ProfileNavigationContainer watchName={watchName} />
         <ProfileRouter watchName={watchName} />
       </StMain>
     </StWrapper>

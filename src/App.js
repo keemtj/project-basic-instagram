@@ -18,9 +18,11 @@ import HeaderContainer from './Container/Global/HeaderContainer';
 import MainRouter from './Router/MainRouter';
 import ProgressBar from './Component/Global/ProgressBar';
 import NewPost from './Component/New/NewPost';
+import { useHistory } from 'react-router';
 
 const App = () => {
   const dispatch = useDispatch();
+  const history = useHistory();
   const isSignIn = useSelector(state => state.login.isSignIn);
   const { newPostModal: newPostModalState } = useSelector(state => state.popup);
   const [progress, setProgress] = useState(0);
@@ -28,6 +30,7 @@ const App = () => {
   useEffect(() => {
     firebaseAuth.onAuthStateChanged(async user => {
       if (user) {
+        console.log(user);
         const { uid } = user;
         const userData = await getCurrentUserData(uid);
         const followData = await getCurrentUserFollowData(uid);
@@ -40,6 +43,8 @@ const App = () => {
         dispatch(getFollowingPosts(followData.following)); // 현재 로그인 유저의 팔로우 포스트 데이터
         dispatch(getBookmarks(bookmarksData.bookmarks)); // 현재 로그인 유저의 북마크 데이터
         dispatch(getHearts(heartsData.hearts)); // 현재 로그인 유저의 좋아요 데이터
+      } else {
+        history.push('/login');
       }
     });
   }, []);
