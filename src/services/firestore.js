@@ -182,7 +182,10 @@ export const addBookmarkData = async (currentUserUid, uid, id) => {
     .collection('bookmark')
     .doc(currentUserUid)
     .update({
-      bookmarks: firebase.firestore.FieldValue.arrayUnion({ uid, id }),
+      bookmarks: firebase.firestore.FieldValue.arrayUnion({
+        uid,
+        id,
+      }),
     });
 };
 
@@ -191,7 +194,10 @@ export const removeBookmarkData = async (currentUserUid, uid, id) => {
     .collection('bookmark')
     .doc(currentUserUid)
     .update({
-      bookmarks: firebase.firestore.FieldValue.arrayRemove({ uid, id }),
+      bookmarks: firebase.firestore.FieldValue.arrayRemove({
+        uid,
+        id,
+      }),
     });
 };
 
