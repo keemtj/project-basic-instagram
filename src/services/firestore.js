@@ -1,4 +1,4 @@
-import { firebase, firestore } from './firebase';
+import { firebase, firebaseAuth, firestore } from './firebase';
 
 // NOTE main page
 // get current user data
@@ -166,7 +166,17 @@ export const getPostBySinglePost = async payload => {
   return response.data();
 };
 
-//  --> bookmarking
+// --> bookmarking
+export const observeBookmark = (dispatch, actionCreator) => {
+  const { uid } = firebaseAuth.currentUser;
+  firestore
+    .collection('bookmark')
+    .doc(uid)
+    .onSnapshot(snapshot => {
+      dispatch(actionCreator(snapshot.data().bookmarks));
+    });
+};
+
 export const getBookmarksData = async uid => {
   const response = await firestore.collection('bookmark').doc(uid).get();
   return response.data();
@@ -217,6 +227,16 @@ export const getPostsByBookmarks = async bookmarks => {
 };
 
 // --> heart
+export const observeHeart = (dispatch, actionCreator) => {
+  const { uid } = firebaseAuth.currentUser;
+  firestore
+    .collection('heart')
+    .doc(uid)
+    .onSnapshot(snapshot => {
+      dispatch(actionCreator(snapshot.data().hearts));
+    });
+};
+
 export const getHeartsData = async uid => {
   const response = await firestore.collection('heart').doc(uid).get();
   return response.data();

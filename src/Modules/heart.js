@@ -28,7 +28,7 @@ const saved = (state = initialState, action) => {
     case GET_HEARTS:
       return {
         ...state,
-        hearts: action.data,
+        hearts: action.data.reverse(),
       };
     case HEART_POSTS:
       return {

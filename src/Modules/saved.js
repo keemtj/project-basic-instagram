@@ -29,7 +29,7 @@ const saved = (state = initialState, action) => {
     case GET_BOOKMARKS:
       return {
         ...state,
-        bookmarks: action.data,
+        bookmarks: action.data.reverse(),
       };
     case BOOKMARK_POSTS:
       return {

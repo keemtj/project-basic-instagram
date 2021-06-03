@@ -2,7 +2,8 @@ import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Saved from '../../Component/Profile/Saved';
 import { openPopup } from '../../Modules/popup';
-import { getBookmarkPosts } from '../../Modules/saved';
+import { getBookmarkPosts, getBookmarks } from '../../Modules/saved';
+import { observeBookmark } from '../../services/firestore';
 
 const SavedContainer = () => {
   const dispatch = useDispatch();
@@ -22,12 +23,16 @@ const SavedContainer = () => {
   };
 
   useEffect(() => {
-    document.body.style.overflow = postModalState ? 'hidden' : 'auto';
-  }, [postModalState]);
+    observeBookmark(dispatch, getBookmarks);
+  }, []);
 
   useEffect(() => {
     dispatch(getBookmarkPosts(bookmarks));
   }, [bookmarks]);
+
+  useEffect(() => {
+    document.body.style.overflow = postModalState ? 'hidden' : 'auto';
+  }, [postModalState]);
 
   if (loading) return <div>로딩중</div>;
   if (error) return <div>에러 발생</div>;
