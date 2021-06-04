@@ -20,6 +20,8 @@ const POST = 'posts/POST';
 const POST_SUCCESS = 'posts/POST_SUCCESS';
 const POST_ERROR = 'posts/POST_ERROR';
 
+const UPDATE_POSTS = 'posts/UPDATE_POSTS';
+
 const DATA_CLEAR = 'posts/DATA_CLEAR';
 
 // NOTE action creator
@@ -37,6 +39,7 @@ export const getSearchUserPosts = fetchDataThunk(
 
 export const getPost = fetchDataThunk(POST, store.getPostBySinglePost);
 
+export const updatePosts = data => ({ type: UPDATE_POSTS, data });
 export const postDataClear = () => ({ type: DATA_CLEAR });
 
 // NOTE initialState
@@ -119,6 +122,15 @@ const posts = (state = initialState, action) => {
         ...state,
         post: reducerUtils.error(action.payload),
       };
+    case UPDATE_POSTS: {
+      return {
+        ...state,
+        myPosts: {
+          ...state.myPosts,
+          data: action.data,
+        },
+      };
+    }
     case DATA_CLEAR:
       return initialState;
     default:

@@ -3,8 +3,9 @@ import styled, { css } from 'styled-components';
 import { useDispatch, useSelector } from 'react-redux';
 import { Upload } from '@styled-icons/boxicons-regular/Upload';
 import { firebase, firestore, firebaseStorage } from '../../services/firebase';
-import { generatedId } from '../../services/firestore';
+import { generatedId, updatePostsData } from '../../services/firestore';
 import { closePopup } from '../../Modules/popup';
+import { updatePosts } from '../../Modules/posts';
 import NewPostPortal from '../../NewPostPortal';
 import UploadImageInput from './UploadImageInput';
 import ImagePreview from './ImagePreview';
@@ -102,9 +103,10 @@ const NewPost = ({ setProgress }) => {
             '업로드를 완료했을 때 taskState:',
             uploadTask.snapshot.state,
           );
-          setTimeout(() => {
-            window.location.reload();
-          }, 1000);
+          if (uploadTask.snapshot.state === 'success') {
+            setProgress(0);
+            updatePostsData(dispatch, updatePosts);
+          }
         },
       );
     });

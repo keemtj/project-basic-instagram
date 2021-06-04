@@ -16,6 +16,20 @@ export const getCurrentUserFollowData = async uid => {
 };
 
 // get posts data
+export const updatePostsData = async (dispatch, actionCreator) => {
+  const { uid } = firebaseAuth.currentUser;
+  firestore
+    .collection('posts')
+    .doc(uid)
+    .collection('my-posts')
+    .onSnapshot(docs => {
+      const datas = docs.docChanges().map(change => {
+        return change.doc.data();
+      });
+      dispatch(actionCreator(datas));
+    });
+};
+
 export const getCurrentUserPostsData = async uid => {
   let datas = [];
   const docs = await firestore
