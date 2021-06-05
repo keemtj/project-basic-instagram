@@ -106,6 +106,7 @@ const NewPost = ({ setProgress }) => {
           if (uploadTask.snapshot.state === 'success') {
             setProgress(0);
             updatePostsData(dispatch, updatePosts);
+            // FIXME: combinePosts에 대한 수정작업 필요!!
           }
         },
       );
