@@ -36,6 +36,10 @@ const MainContainer = () => {
     setUserDatas(result);
   }, [posts]);
 
+  useEffect(() => {
+    document.title = 'Instagram';
+  }, []);
+
   return (
     <Main
       posts={posts}
