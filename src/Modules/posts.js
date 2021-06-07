@@ -21,6 +21,9 @@ const POST_SUCCESS = 'posts/POST_SUCCESS';
 const POST_ERROR = 'posts/POST_ERROR';
 
 const UPDATE_POSTS = 'posts/UPDATE_POSTS';
+const UPDATE_POST = 'posts/UPDATE_POST';
+
+const UPDATE_FOLLOWING_POST = 'posts/UPDATE_FOLLOWING_POST';
 
 const DATA_CLEAR = 'posts/DATA_CLEAR';
 
@@ -40,6 +43,12 @@ export const getSearchUserPosts = fetchDataThunk(
 export const getPost = fetchDataThunk(POST, store.getPostBySinglePost);
 
 export const updatePosts = data => ({ type: UPDATE_POSTS, data });
+export const updatePost = data => ({ type: UPDATE_POST, data });
+export const updateFollowingPost = data => ({
+  type: UPDATE_FOLLOWING_POST,
+  data,
+});
+
 export const postDataClear = () => ({ type: DATA_CLEAR });
 
 // NOTE initialState
@@ -128,6 +137,36 @@ const posts = (state = initialState, action) => {
         myPosts: {
           ...state.myPosts,
           data: action.data,
+        },
+      };
+    }
+    case UPDATE_POST: {
+      return {
+        ...state,
+        myPosts: {
+          ...state.myPosts,
+          data: state.myPosts.data.map(post => {
+            if (post.id === action.data.id) {
+              return action.data;
+            } else {
+              return post;
+            }
+          }),
+        },
+      };
+    }
+    case UPDATE_FOLLOWING_POST: {
+      return {
+        ...state,
+        myFollowingPosts: {
+          ...state.myFollowingPosts,
+          data: state.myFollowingPosts.data.map(post => {
+            if (post.id === action.data.id) {
+              return action.data;
+            } else {
+              return post;
+            }
+          }),
         },
       };
     }

@@ -26,8 +26,8 @@ const Post = ({
   onMoveProfilePage,
   onClickHeart,
   onClickBookmark,
-  isBookmarking,
-  isCheckingHeart,
+  isBookmark,
+  isHeart,
 }) => {
   return (
     <StArticle>
@@ -55,7 +55,7 @@ const Post = ({
       </StImagesSection>
       <StSectionNav>
         <div onClick={onClickHeart}>
-          {isCheckingHeart ? <StHeartFill /> : <Heart />}
+          {isHeart ? <StHeartFill /> : <Heart />}
         </div>
         <div>
           <Chat />
@@ -64,7 +64,7 @@ const Post = ({
           <PaperPlane />
         </div>
         <div onClick={onClickBookmark}>
-          {isBookmarking ? <StBookmarkFill /> : <Bookmark />}
+          {isBookmark ? <StBookmarkFill /> : <Bookmark />}
         </div>
       </StSectionNav>
       {/* {heartCount > 0 && <StHeartCount>좋아요 {heartCount}개</StHeartCount>} */}

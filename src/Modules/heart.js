@@ -4,12 +4,14 @@ import { fetchDataThunk, reducerUtils } from '../lib/asyncUtils';
 
 // action
 const GET_HEARTS = 'heart/GET_HEARTS';
+
 const HEART_POSTS = 'heart/HEART_POSTS';
 const HEART_POSTS_SUCCESS = 'heart/HEART_POSTS_SUCCESS';
 const HEART_POSTS_ERROR = 'heart/HEART_POSTS_ERROR';
 
 // action creator
 export const getHearts = data => ({ type: GET_HEARTS, data });
+
 export const getHeartPosts = fetchDataThunk(
   HEART_POSTS,
   store.getPostsByHearts,

@@ -6,7 +6,11 @@ import {
   getSearchUserData,
   getSearchUserFollowData,
 } from '../../Modules/search';
-import { getSearchUserPosts } from '../../Modules/posts';
+import {
+  getSearchUserPosts,
+  updateFollowingPost,
+  updatePost,
+} from '../../Modules/posts';
 import {
   addHeartData,
   removeHeartData,
@@ -14,7 +18,12 @@ import {
   removeBookmarkData,
   decreaseHeartCount,
   increaseHeartCount,
+  observeHeart,
+  observeBookmark,
+  observeHeartCount,
 } from '../../services/firestore';
+import { getHearts } from '../../Modules/heart';
+import { getBookmarks } from '../../Modules/saved';
 
 // NOTE 경과 시간 계산 함수
 const calcTimeElapsed = date => {
@@ -39,8 +48,8 @@ const PostContainer = ({
   post,
   displayName,
   photoURL,
-  bookmarkState,
-  heartState,
+  isBookmark,
+  isHeart,
 }) => {
   const {
     imagesArray,
@@ -56,9 +65,6 @@ const PostContainer = ({
   const history = useHistory();
   const dispatch = useDispatch();
   const { uid: currentUid } = useSelector(state => state.user.currentUser);
-  const [heartCountState, setHeartCountState] = useState(heartCount);
-  const [isBookmarking, setIsBookmarking] = useState(bookmarkState);
-  const [isCheckingHeart, setIsCheckingHeart] = useState(heartState);
   const [more, setMore] = useState(true);
 
   const onClickMore = () => {
@@ -66,31 +72,33 @@ const PostContainer = ({
   };
 
   const onClickHeart = () => {
-    if (isCheckingHeart) {
+    if (isHeart) {
       console.log('uncheck heart');
-      removeHeartData(currentUid, uid, id); // post 요청
-      setIsCheckingHeart(false); // UI
-      decreaseHeartCount(uid, id); // post 요청
-      setHeartCountState(heartCountState - 1); // UI
+      removeHeartData(currentUid, uid, id);
+      decreaseHeartCount(uid, id);
     } else {
       console.log('check heart');
-      addHeartData(currentUid, uid, id); // post 요청
-      setIsCheckingHeart(true); // UI
-      increaseHeartCount(uid, id); // post 요청
-      setHeartCountState(heartCountState + 1); // UI
+      addHeartData(currentUid, uid, id);
+      increaseHeartCount(uid, id);
     }
+    observeHeart(dispatch, getHearts);
+    observeHeartCount(
+      dispatch,
+      currentUid === uid ? updatePost : updateFollowingPost,
+      currentUid === uid ? currentUid : uid,
+      id,
+    );
   };
 
   const onClickBookmark = () => {
-    if (isBookmarking) {
+    if (isBookmark) {
       console.log('remove bookmark');
-      removeBookmarkData(currentUid, uid, id); // post 요청
-      setIsBookmarking(false); // UI
+      removeBookmarkData(currentUid, uid, id);
     } else {
       console.log('add bookmark');
-      addBookmarkData(currentUid, uid, id); // post 요청
-      setIsBookmarking(true); // UI
+      addBookmarkData(currentUid, uid, id);
     }
+    observeBookmark(dispatch, getBookmarks);
   };
 
   const onMoveProfilePage = () => {
@@ -106,7 +114,7 @@ const PostContainer = ({
       photoURL={photoURL}
       location={location}
       imagesArray={imagesArray}
-      heartCount={heartCountState}
+      heartCount={heartCount}
       more={more}
       text={text}
       onClickMore={onClickMore}
@@ -116,8 +124,8 @@ const PostContainer = ({
       onMoveProfilePage={onMoveProfilePage}
       onClickHeart={onClickHeart}
       onClickBookmark={onClickBookmark}
-      isBookmarking={isBookmarking}
-      isCheckingHeart={isCheckingHeart}
+      isBookmark={isBookmark}
+      isHeart={isHeart}
     />
   );
 };

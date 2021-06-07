@@ -60,7 +60,7 @@ export const getPostsByAllFollowing = async following => {
   return result;
 };
 
-// =======================================================
+// get user data by posts
 export const getUserDataByPost = async uid => {
   const response = await firestore.collection('users').doc(uid).get();
   const result = await Promise.resolve(response.data());
@@ -248,6 +248,18 @@ export const observeHeart = (dispatch, actionCreator) => {
     .doc(uid)
     .onSnapshot(snapshot => {
       dispatch(actionCreator(snapshot.data().hearts));
+    });
+};
+
+export const observeHeartCount = (dispatch, actionCreator, uid, postId) => {
+  console.log(uid, postId);
+  firestore
+    .collection('posts')
+    .doc(uid)
+    .collection('my-posts')
+    .doc(postId)
+    .onSnapshot(snapshot => {
+      dispatch(actionCreator(snapshot.data()));
     });
 };
 

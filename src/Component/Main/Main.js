@@ -11,20 +11,18 @@ const Main = ({ posts, userDatas, bookmarks, hearts }) => {
         <StSection>
           {posts?.map((post, index) => {
             const userData = userDatas.find(user => user.uid === post.uid);
-            const bookmark = bookmarks.find(
+            const isBookmark = bookmarks.find(
               bookmark => bookmark.id === post.id,
             );
-            const bookmarkState = bookmark?.id ? true : false;
-            const heart = hearts.find(heart => heart.id === post.id);
-            const heartState = heart?.id ? true : false;
+            const isHeart = hearts.find(heart => heart.id === post.id);
             return (
               <PostContainer
                 key={index}
                 post={post}
                 displayName={userData?.displayName}
                 photoURL={userData?.photoURL || '/images/default_profile.png'}
-                bookmarkState={bookmarkState}
-                heartState={heartState}
+                isBookmark={isBookmark}
+                isHeart={isHeart}
               />
             );
           })}
