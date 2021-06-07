@@ -68,12 +68,12 @@ const Post = ({
         </div>
       </StSectionNav>
       {/* {heartCount > 0 && <StHeartCount>좋아요 {heartCount}개</StHeartCount>} */}
-      {heartCount > 0 ? (
-        <StHeartCountWrapper>
-          좋아요 <StHeartCount>{heartCount}</StHeartCount>개
-        </StHeartCountWrapper>
-      ) : (
-        <StHeartCountWrapper>
+      <StHeartCountWrapper>
+        {heartCount > 0 ? (
+          <>
+            좋아요 <StHeartCount>{heartCount}</StHeartCount>개
+          </>
+        ) : (
           <span>
             가장 먼저{' '}
             <StHeartCount heartCount={heartCount} onClick={onClickHeart}>
@@ -81,8 +81,8 @@ const Post = ({
             </StHeartCount>
             를 눌러주세요
           </span>
-        </StHeartCountWrapper>
-      )}
+        )}
+      </StHeartCountWrapper>
       <StTextBox>
         <StText more={more}>
           <StUsername>{displayName}</StUsername> {text}{' '}
