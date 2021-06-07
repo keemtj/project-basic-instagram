@@ -4,12 +4,13 @@ import PostContainer from '../../Container/Main/PostContainer';
 import AsideFooter from './AsideFooter';
 import AsideContainer from '../../Container/Main/AsideContainer';
 
-const Main = ({ posts, bookmarks, hearts }) => {
+const Main = ({ posts, userDatas, bookmarks, hearts }) => {
   return (
     <StMainWrapper>
       <StMain>
         <StSection>
           {posts?.map((post, index) => {
+            const userData = userDatas.find(user => user.uid === post.uid);
             const bookmark = bookmarks.find(
               bookmark => bookmark.id === post.id,
             );
@@ -20,6 +21,8 @@ const Main = ({ posts, bookmarks, hearts }) => {
               <PostContainer
                 key={index}
                 post={post}
+                displayName={userData?.displayName}
+                photoURL={userData?.photoURL || '/images/default_profile.png'}
                 bookmarkState={bookmarkState}
                 heartState={heartState}
               />

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router';
 import Post from '../../Component/Main/Post';
@@ -8,7 +8,6 @@ import {
 } from '../../Modules/search';
 import { getSearchUserPosts } from '../../Modules/posts';
 import {
-  getUserDataByPost,
   addHeartData,
   removeHeartData,
   addBookmarkData,
@@ -36,7 +35,13 @@ const calcTimeElapsed = date => {
   return elapsed;
 };
 
-const PostContainer = ({ post, bookmarkState, heartState }) => {
+const PostContainer = ({
+  post,
+  displayName,
+  photoURL,
+  bookmarkState,
+  heartState,
+}) => {
   const {
     imagesArray,
     heartCount,
@@ -55,11 +60,6 @@ const PostContainer = ({ post, bookmarkState, heartState }) => {
   const [isBookmarking, setIsBookmarking] = useState(bookmarkState);
   const [isCheckingHeart, setIsCheckingHeart] = useState(heartState);
   const [more, setMore] = useState(true);
-  const [userState, setUserState] = useState({
-    displayName: '',
-    photoURL: '/images/default_profile.png',
-  });
-  const { displayName, photoURL } = userState;
 
   const onClickMore = () => {
     setMore(!more);
@@ -97,19 +97,9 @@ const PostContainer = ({ post, bookmarkState, heartState }) => {
     dispatch(getSearchUserData(uid));
     dispatch(getSearchUserFollowData(uid));
     dispatch(getSearchUserPosts(uid));
-    history.push(`/${userState.displayName}`);
+    history.push(`/${displayName}`);
   };
 
-  useEffect(async () => {
-    const result = await getUserDataByPost(uid);
-    const { displayName, photoURL } = result;
-    setUserState({ displayName, photoURL });
-    return () =>
-      setUserState({
-        displayName: '',
-        photoURL: '/images/default_profile.png',
-      });
-  }, []);
   return (
     <Post
       displayName={displayName}
