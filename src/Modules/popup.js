@@ -16,6 +16,7 @@ const initialState = {
   profilePopup: false,
   newPostModal: false,
   postModal: false,
+  postSettingModal: false,
   modalEntryPath: '/',
   active: '/',
 };

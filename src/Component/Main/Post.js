@@ -28,6 +28,7 @@ const Post = ({
   onClickBookmark,
   isBookmark,
   isHeart,
+  onClickSetting,
 }) => {
   return (
     <StArticle>
@@ -46,9 +47,9 @@ const Post = ({
             {location && <StLocation>{location}</StLocation>}
           </div>
         </ProfileImage>
-        <button style={{ width: '2rem' }}>
-          <ThreeDots />
-        </button>
+        <StSettingButton onClick={onClickSetting}>
+          <StSettingIcon />
+        </StSettingButton>
       </StHeader>
       <StImagesSection>
         <Carousel imagesArray={imagesArray} pagenation />
@@ -162,6 +163,15 @@ const StLocation = styled.div`
   font-size: 1.2rem;
   font-weight: 400;
   color: ${({ theme }) => theme.darkGray};
+`;
+
+const StSettingButton = styled.button`
+  cursor: pointer;
+`;
+
+const StSettingIcon = styled(ThreeDots)`
+  width: 2rem;
+  height: 2rem;
 `;
 
 const StImagesSection = styled.section`

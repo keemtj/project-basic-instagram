@@ -180,7 +180,9 @@ const NewPost = ({ setProgress }) => {
           )}
           <StFooter>
             {autoCompleteState ? (
-              <StNewPostButton onClick={prev}>뒤로</StNewPostButton>
+              <StNewPostButton name="prev" onClick={prev}>
+                뒤로
+              </StNewPostButton>
             ) : (
               <>
                 <StNewPostButton
@@ -297,6 +299,7 @@ const StNewPostButton = styled.button`
   color: ${({ theme, isExist }) =>
     isExist ? theme.activeBlue : theme.inactiveBlue};
   color: ${({ theme, name }) => name === 'cancel' && theme.activeBlue};
+  color: ${({ theme, name }) => name === 'prev' && theme.activeBlue};
   font-size: 1.4rem;
   font-weight: 700;
   cursor: pointer;

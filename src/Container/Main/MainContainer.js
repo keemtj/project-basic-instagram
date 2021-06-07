@@ -6,6 +6,9 @@ import { getUserDataByPost } from '../../services/firestore';
 
 const MainContainer = () => {
   const dispatch = useDispatch();
+  const { postSettingModal: postSettingModalState } = useSelector(
+    state => state.popup,
+  );
   const { data: myPosts } = useSelector(state => state.posts.myPosts);
   const { data: myFollowingPosts } = useSelector(
     state => state.posts.myFollowingPosts,
@@ -39,6 +42,10 @@ const MainContainer = () => {
   useEffect(() => {
     document.title = 'Instagram';
   }, []);
+
+  useEffect(() => {
+    document.body.style.overflow = postSettingModalState ? 'hidden' : 'auto';
+  }, [postSettingModalState]);
 
   return (
     <Main

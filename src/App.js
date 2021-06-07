@@ -19,12 +19,16 @@ import MainRouter from './Router/MainRouter';
 import ProgressBar from './Component/Global/ProgressBar';
 import NewPost from './Component/New/NewPost';
 import { useHistory } from 'react-router';
+import PostSettingModal from './Component/Main/PostSettingModal';
 
 const App = () => {
   const dispatch = useDispatch();
   const history = useHistory();
   const isSignIn = useSelector(state => state.login.isSignIn);
-  const { newPostModal: newPostModalState } = useSelector(state => state.popup);
+  const {
+    newPostModal: newPostModalState,
+    postSettingModal: postSettingModalState,
+  } = useSelector(state => state.popup);
   const [progress, setProgress] = useState(0);
 
   useEffect(() => {
@@ -56,6 +60,7 @@ const App = () => {
         <MainRouter isSignIn={isSignIn} />
         {progress !== 0 && <ProgressBar progress={progress} />}
         {newPostModalState && <NewPost setProgress={setProgress} />}
+        {postSettingModalState && <PostSettingModal />}
       </PageWrapper>
     </>
   );
