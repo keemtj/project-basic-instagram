@@ -32,38 +32,13 @@ const NewPost = ({ setProgress }) => {
   // FIXME: create new post
   const createPost = () => {
     const postId = generatedId();
-    // Todo: add datas to firestore
-    addPostDataToFirestore(uid, postId);
-    // Todo: upload images to storage
     uploadImagesToStorage(uid, postId, images);
-    // Todo: close modal
-    console.log('새 게시물이 작성되었습니다');
     closeModal();
-  };
-
-  // add post data to firestore
-  const addPostDataToFirestore = (uid, postId) => {
-    firestore
-      .collection('posts')
-      .doc(uid)
-      .collection('my-posts')
-      .doc(postId)
-      .set({
-        id: postId,
-        uid,
-        date: Date.now(), // 1970~ 2021.4.1
-        text,
-        location,
-        subLocation,
-        isPossibleComment,
-        heartCount: 0,
-        bookmarkCount: 0,
-        comments: [],
-      });
+    console.log('새 게시물이 작성되었습니다');
   };
 
   // upload images to firebase storage
-  const uploadImagesToStorage = (uid, postId) => {
+  const uploadImagesToStorage = (uid, postId, images) => {
     images.forEach(image => {
       const uploadTask = firebaseStorage
         .ref(`/${uid}/${postId}/${image.file.name}`)
@@ -85,25 +60,33 @@ const NewPost = ({ setProgress }) => {
           const url = await Promise.resolve(urlResult);
           const metadataResult = await uploadTask.snapshot.ref.getMetadata();
           const { name, timeCreated } = await Promise.resolve(metadataResult);
-          await firestore
-            .collection('posts')
-            .doc(uid)
-            .collection('my-posts')
-            .doc(postId)
-            .update({
-              imagesArray: firebase.firestore.FieldValue.arrayUnion({
-                url,
-                name,
-                timeCreated,
-              }),
-            });
-          console.log(
-            '업로드를 완료했을 때 taskState:',
-            uploadTask.snapshot.state,
-          );
+          // add post data to firestore
           if (uploadTask.snapshot.state === 'success') {
+            console.log('TASK STATE:', uploadTask.snapshot.state);
+            await firestore
+              .collection('posts')
+              .doc(uid)
+              .collection('my-posts')
+              .doc(postId)
+              .set({
+                id: postId,
+                uid,
+                date: Date.now(),
+                text,
+                location,
+                subLocation,
+                isPossibleComment,
+                heartCount: 0,
+                bookmarkCount: 0,
+                comments: [],
+                imagesArray: firebase.firestore.FieldValue.arrayUnion({
+                  url,
+                  name,
+                  timeCreated,
+                }),
+              });
+            await updatePostsData(dispatch, updatePosts);
             setProgress(0);
-            updatePostsData(dispatch, updatePosts);
           }
         },
       );

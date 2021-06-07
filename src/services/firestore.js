@@ -26,6 +26,7 @@ export const updatePostsData = async (dispatch, actionCreator) => {
       const datas = docs.docChanges().map(change => {
         return change.doc.data();
       });
+      console.log(datas);
       dispatch(actionCreator(datas));
     });
 };
