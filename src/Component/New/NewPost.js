@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled, { css } from 'styled-components';
 import { useDispatch, useSelector } from 'react-redux';
 import { Upload } from '@styled-icons/boxicons-regular/Upload';
@@ -16,8 +16,6 @@ import PlaceAutoComplete from './PlaceAutoComplete';
 
 const NewPost = ({ setProgress }) => {
   const dispatch = useDispatch();
-  const modalRef = useRef();
-  const { newPostModal } = useSelector(state => state.popup);
   const { uid } = useSelector(state => state.user.currentUser);
   const [images, setImages] = useState([]);
   const [location, setLocation] = useState('');
@@ -145,31 +143,18 @@ const NewPost = ({ setProgress }) => {
     setAutoCompleteState(false);
   };
 
-  // click outside
-  const onClickOutside = e => {
-    if (
-      newPostModal &&
-      modalRef.current &&
-      !modalRef.current.contains(e.target)
-    ) {
-      dispatch(closePopup('newPostModal'));
-    }
-  };
-
   useEffect(() => {
     const title = document.title;
     document.title = '새 게시물 작성 • Instagram';
-    window.addEventListener('click', onClickOutside);
     return () => {
       // 이전 title로 변경
       document.title = title;
-      window.removeEventListener('click', onClickOutside);
     };
   }, []);
   return (
     <NewPostPortal>
       <StModal>
-        <StNewPostBox ref={modalRef}>
+        <StNewPostBox>
           <StHeader>
             <h2>{autoCompleteState ? '장소 검색' : '새 게시물'}</h2>
           </StHeader>
@@ -215,8 +200,20 @@ const NewPost = ({ setProgress }) => {
               <StNewPostButton onClick={prev}>뒤로</StNewPostButton>
             ) : (
               <>
-                <StNewPostButton onClick={closeModal}>취소</StNewPostButton>
-                <StNewPostButton onClick={createPost}>공유</StNewPostButton>
+                <StNewPostButton
+                  type="button"
+                  name={'cancel'}
+                  onClick={closeModal}
+                >
+                  취소
+                </StNewPostButton>
+                <StNewPostButton
+                  type="button"
+                  onClick={images.length ? createPost : undefined}
+                  isExist={images.length}
+                >
+                  공유
+                </StNewPostButton>
               </>
             )}
           </StFooter>
@@ -251,7 +248,6 @@ const StNewPostBox = styled.div`
   width: 50rem;
   height: auto;
   min-height: 61.5rem;
-  transform: translateY(0%);
 `;
 
 const StHeader = styled.header`
@@ -315,8 +311,9 @@ const StFooter = styled.footer`
 const StNewPostButton = styled.button`
   /* input에 채워져있을 때 */
   /* background: #0095f6; */
-  color: ${({ theme }) => theme.inactiveBlue};
-  color: #0095f6;
+  color: ${({ theme, isExist }) =>
+    isExist ? theme.activeBlue : theme.inactiveBlue};
+  color: ${({ theme, name }) => name === 'cancel' && theme.activeBlue};
   font-size: 1.4rem;
   font-weight: 700;
   cursor: pointer;

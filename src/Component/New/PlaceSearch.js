@@ -15,10 +15,10 @@ const PlaceSearch = ({
       <div>위치 추가</div>
       {location ? (
         <StLocation>
-          <div>
+          <StLocationTextBox>
             <StMainText subLocation={subLocation}>{location}</StMainText>
             {subLocation && <StSecondaryText>{subLocation}</StSecondaryText>}
-          </div>
+          </StLocationTextBox>
           <StRemoveLocation type="button" onClick={removeLocation}>
             <Close />
           </StRemoveLocation>
@@ -42,6 +42,12 @@ const StLocation = styled.div`
   align-items: center;
   font-size: 1.4rem;
   font-weight: 400;
+`;
+
+const StLocationTextBox = styled.div`
+  display: flex;
+  flex-flow: column nowrap;
+  align-items: flex-end;
 `;
 
 const StMainText = styled.div`
