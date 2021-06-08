@@ -1,8 +1,9 @@
 import React, { useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
-import { closePopup } from '../../Modules/popup';
+import { activePostData, closePopup } from '../../Modules/popup';
 import PostSettingPortal from '../../PostSettingPortal';
+import { firebaseStorage, firestore } from '../../services/firebase';
 
 const PostSettingModal = () => {
   const modalRef = useRef();
@@ -10,6 +11,24 @@ const PostSettingModal = () => {
   const { postSettingModal: postSettingModalState } = useSelector(
     state => state.popup,
   );
+  const { uid, id, imagesArray } = useSelector(
+    state => state.popup.activePostData,
+  );
+
+  const onRemovePost = async () => {
+    console.log('remove post');
+    await firestore
+      .collection('posts')
+      .doc(uid)
+      .collection('my-posts')
+      .doc(id)
+      .delete();
+    await imagesArray.forEach(async ({ name }) => {
+      await firebaseStorage.ref(`/${uid}/${id}/${name}`).delete();
+    });
+    dispatch(closePopup('postSettingModal'));
+  };
+
   const onCilckOutside = e => {
     if (
       postSettingModalState &&
@@ -17,8 +36,10 @@ const PostSettingModal = () => {
       !modalRef.current.contains(e.target)
     ) {
       dispatch(closePopup('postSettingModal'));
+      dispatch(activePostData({}));
     }
   };
+
   useEffect(() => {
     window.addEventListener('click', onCilckOutside);
     return () => {
@@ -32,7 +53,9 @@ const PostSettingModal = () => {
         <StSettingBox ref={modalRef}>
           <ul>
             <StButtonList>
-              <StButton name="remove">삭제</StButton>
+              <StButton name="remove" onClick={onRemovePost}>
+                삭제
+              </StButton>
             </StButtonList>
             <StButtonList>
               <StButton name="unfollow">팔로우 취소</StButton>

@@ -1,12 +1,16 @@
 // NOTE action
 const OPEN_POPUP = 'popup/OPEN_POPUP';
 const CLOSE_POPUP = 'popup/CLOSE_POPUP';
+const ACTIVE_POST_DATA = 'popup/ACTIVE_POST_DATA';
+
 const MODAL_ENTRY_PATH = 'popup/MODAL_ENTRY_PATH';
 const ACTIVE_PATH = 'popup/ACTIVE_PATH';
 
 // NOTE action creator
 export const openPopup = name => ({ type: OPEN_POPUP, name });
 export const closePopup = name => ({ type: CLOSE_POPUP, name });
+export const activePostData = data => ({ type: ACTIVE_POST_DATA, data });
+
 export const modalEntryPath = path => ({ type: MODAL_ENTRY_PATH, path });
 export const activePath = path => ({ type: ACTIVE_PATH, path });
 
@@ -17,6 +21,7 @@ const initialState = {
   newPostModal: false,
   postModal: false,
   postSettingModal: false,
+  activePostData: {},
   modalEntryPath: '/',
   active: '/',
 };
@@ -33,6 +38,11 @@ const popup = (state = initialState, action) => {
       return {
         ...state,
         [action.name]: false,
+      };
+    case ACTIVE_POST_DATA:
+      return {
+        ...state,
+        activePostData: action.data,
       };
     case MODAL_ENTRY_PATH:
       return {

@@ -24,7 +24,7 @@ import {
 } from '../../services/firestore';
 import { getHearts } from '../../Modules/heart';
 import { getBookmarks } from '../../Modules/saved';
-import { openPopup } from '../../Modules/popup';
+import { activePostData, openPopup } from '../../Modules/popup';
 
 // NOTE 경과 시간 계산 함수
 const calcTimeElapsed = date => {
@@ -112,6 +112,7 @@ const PostContainer = ({
   const onClickSetting = () => {
     console.log('post setting modal Trigger');
     dispatch(openPopup('postSettingModal'));
+    dispatch(activePostData({ uid, id, imagesArray }));
   };
 
   return (
