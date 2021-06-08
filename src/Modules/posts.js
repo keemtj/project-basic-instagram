@@ -28,10 +28,15 @@ const UPDATE_FOLLOWING_POST = 'posts/UPDATE_FOLLOWING_POST';
 const DATA_CLEAR = 'posts/DATA_CLEAR';
 
 // NOTE action creator
-export const getPosts = fetchDataThunk(MY_POSTS, store.getCurrentUserPostsData);
+export const getPosts = fetchDataThunk(
+  MY_POSTS,
+  store.getCurrentUserPostsData,
+  1000,
+);
 export const getFollowingPosts = fetchDataThunk(
   MY_FOLLOWING_POSTS,
   store.getPostsByAllFollowing,
+  1000,
 );
 export const combinePosts = () => ({ type: COMBINE_POSTS });
 

@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import Loading from '../../Component/Global/Loading';
 import Saved from '../../Component/Profile/Saved';
 import { openPopup } from '../../Modules/popup';
 import { getBookmarkPosts, getBookmarks } from '../../Modules/saved';
@@ -34,7 +35,7 @@ const SavedContainer = () => {
     document.body.style.overflow = postModalState ? 'hidden' : 'auto';
   }, [postModalState]);
 
-  if (loading) return <div>로딩중</div>;
+  if (loading) return <Loading isLoading={loading} />;
   if (error) return <div>에러 발생</div>;
   return (
     <Saved

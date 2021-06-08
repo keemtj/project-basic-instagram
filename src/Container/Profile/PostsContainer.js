@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import Loading from '../../Component/Global/Loading';
 import Posts from '../../Component/Profile/Posts';
 import { openPopup } from '../../Modules/popup';
 
@@ -16,7 +17,7 @@ const PostsContainer = ({ watchName }) => {
   } = useSelector(state => state.posts.myPosts);
   const {
     data: searchUserPosts,
-    loading: searchUserPostsloading,
+    loading: searchUserPostsLoading,
     error: searchUserPostsError,
   } = useSelector(state => state.posts.searchUserPosts);
   const { postModal: postModalState } = useSelector(state => state.popup);
@@ -44,8 +45,9 @@ const PostsContainer = ({ watchName }) => {
     document.body.style.overflow = postModalState ? 'hidden' : 'auto';
   }, [postModalState]);
 
-  if (myPostsLoading || searchUserPostsloading)
-    return <div>Posts Container 로딩중</div>;
+  console.log(myPostsLoading || searchUserPostsLoading);
+  if (myPostsLoading || searchUserPostsLoading)
+    return <Loading isLoading={myPostsLoading || searchUserPostsLoading} />;
   if (myPostsError || searchUserPostsError)
     return <div>Posts Container 에러발생</div>;
   return (

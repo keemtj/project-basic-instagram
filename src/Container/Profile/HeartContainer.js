@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import Loading from '../../Component/Global/Loading';
 import Heart from '../../Component/Profile/Heart';
 import { getHeartPosts, getHearts } from '../../Modules/heart';
 import { openPopup } from '../../Modules/popup';
@@ -34,7 +35,7 @@ const HeartContainer = () => {
     document.body.style.overflow = postModalState ? 'hidden' : 'auto';
   }, [postModalState]);
 
-  if (loading) return <div>로딩중</div>;
+  if (loading) return <Loading isLoading={loading} />;
   if (error) return <div>에러 발생</div>;
   return (
     <Heart

@@ -9,10 +9,13 @@ const MainContainer = () => {
   const { postSettingModal: postSettingModalState } = useSelector(
     state => state.popup,
   );
-  const { data: myPosts } = useSelector(state => state.posts.myPosts);
-  const { data: myFollowingPosts } = useSelector(
-    state => state.posts.myFollowingPosts,
+  const { data: myPosts, loading: myPostsLoading } = useSelector(
+    state => state.posts.myPosts,
   );
+  const {
+    data: myFollowingPosts,
+    loading: myFollowingPostsLoading,
+  } = useSelector(state => state.posts.myFollowingPosts);
   const posts = useSelector(state => state.posts.combinePosts) || [];
   const bookmarks = useSelector(state => state.saved.bookmarks);
   const hearts = useSelector(state => state.heart.hearts);
@@ -49,6 +52,7 @@ const MainContainer = () => {
 
   return (
     <Main
+      isLoading={myPostsLoading || myFollowingPostsLoading}
       posts={posts}
       userDatas={userDatas}
       bookmarks={bookmarks}
