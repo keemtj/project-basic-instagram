@@ -2,8 +2,9 @@ import React, { useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { activePostData, closePopup } from '../../Modules/popup';
+import { removePost } from '../../Modules/posts';
 import PostSettingPortal from '../../PostSettingPortal';
-import { firebaseStorage, firestore } from '../../services/firebase';
+import { removePostData, updatePostsData } from '../../services/firestore';
 
 const PostSettingModal = () => {
   const modalRef = useRef();
@@ -15,18 +16,11 @@ const PostSettingModal = () => {
     state => state.popup.activePostData,
   );
 
+  // TODO: toast Popup 만들기
   const onRemovePost = async () => {
-    console.log('remove post');
-    await firestore
-      .collection('posts')
-      .doc(uid)
-      .collection('my-posts')
-      .doc(id)
-      .delete();
-    await imagesArray.forEach(async ({ name }) => {
-      await firebaseStorage.ref(`/${uid}/${id}/${name}`).delete();
-    });
     dispatch(closePopup('postSettingModal'));
+    await removePostData(imagesArray, uid, id);
+    await updatePostsData(dispatch, removePost);
   };
 
   const onCilckOutside = e => {

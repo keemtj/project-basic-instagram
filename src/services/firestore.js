@@ -1,4 +1,4 @@
-import { firebase, firebaseAuth, firestore } from './firebase';
+import { firebase, firebaseAuth, firebaseStorage, firestore } from './firebase';
 
 // NOTE main page
 // get current user data
@@ -15,7 +15,7 @@ export const getCurrentUserFollowData = async uid => {
   return datas;
 };
 
-// get posts data
+// update(add, remove) posts data
 export const updatePostsData = async (dispatch, actionCreator) => {
   const { uid } = firebaseAuth.currentUser;
   firestore
@@ -26,9 +26,20 @@ export const updatePostsData = async (dispatch, actionCreator) => {
       const datas = docs.docChanges().map(change => {
         return change.doc.data();
       });
-      console.log(datas);
       dispatch(actionCreator(datas));
     });
+};
+
+export const removePostData = async (imagesArray, uid, id) => {
+  await imagesArray.forEach(({ name }) => {
+    firebaseStorage.ref(`/${uid}/${id}/${name}`).delete();
+  });
+  await firestore
+    .collection('posts')
+    .doc(uid)
+    .collection('my-posts')
+    .doc(id)
+    .delete();
 };
 
 export const getCurrentUserPostsData = async uid => {

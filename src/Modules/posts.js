@@ -25,6 +25,8 @@ const UPDATE_POST = 'posts/UPDATE_POST';
 
 const UPDATE_FOLLOWING_POST = 'posts/UPDATE_FOLLOWING_POST';
 
+const REMOVE_POST = 'posts/REMOVE_POST';
+
 const DATA_CLEAR = 'posts/DATA_CLEAR';
 
 // NOTE action creator
@@ -53,6 +55,8 @@ export const updateFollowingPost = data => ({
   type: UPDATE_FOLLOWING_POST,
   data,
 });
+
+export const removePost = data => ({ type: REMOVE_POST, data });
 
 export const postDataClear = () => ({ type: DATA_CLEAR });
 
@@ -172,6 +176,15 @@ const posts = (state = initialState, action) => {
               return post;
             }
           }),
+        },
+      };
+    }
+    case REMOVE_POST: {
+      return {
+        ...state,
+        myPosts: {
+          ...state.myPosts,
+          data: action.data,
         },
       };
     }
