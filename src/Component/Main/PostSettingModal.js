@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import { activePostData, closePopup } from '../../Modules/popup';
 import { removePost } from '../../Modules/posts';
 import PostSettingPortal from '../../PostSettingPortal';
+import { removeImagesByPostData } from '../../services/firebaseStorage';
 import { removePostData, updatePostsData } from '../../services/firestore';
 
 const PostSettingModal = () => {
@@ -12,6 +13,7 @@ const PostSettingModal = () => {
   const { postSettingModal: postSettingModalState } = useSelector(
     state => state.popup,
   );
+  const { uid: currentUserUid } = useSelector(state => state.user.currentUser);
   const { uid, id, imagesArray } = useSelector(
     state => state.popup.activePostData,
   );
@@ -19,7 +21,8 @@ const PostSettingModal = () => {
   // TODO: toast Popup 만들기
   const onRemovePost = async () => {
     dispatch(closePopup('postSettingModal'));
-    await removePostData(imagesArray, uid, id);
+    await removePostData(uid, id);
+    await removeImagesByPostData(imagesArray, uid, id);
     await updatePostsData(dispatch, removePost);
   };
 
@@ -46,23 +49,31 @@ const PostSettingModal = () => {
       <StModal>
         <StSettingBox ref={modalRef}>
           <ul>
-            <StButtonList>
-              <StButton name="remove" onClick={onRemovePost}>
-                삭제
-              </StButton>
-            </StButtonList>
-            <StButtonList>
-              <StButton name="unfollow">팔로우 취소</StButton>
-            </StButtonList>
+            {currentUserUid === uid && (
+              <StButtonList>
+                <StButton name="remove" onClick={onRemovePost}>
+                  삭제
+                </StButton>
+              </StButtonList>
+            )}
+            {currentUserUid !== uid && (
+              <StButtonList>
+                <StButton name="unfollow">팔로우 취소</StButton>
+              </StButtonList>
+            )}
             <StButtonList>
               <StButton>저장</StButton>
             </StButtonList>
-            <StButtonList>
-              <StButton>좋아요 수 숨기기</StButton>
-            </StButtonList>
-            <StButtonList>
-              <StButton>댓글 기능 해제</StButton>
-            </StButtonList>
+            {currentUserUid === uid && (
+              <StButtonList>
+                <StButton>좋아요 수 숨기기</StButton>
+              </StButtonList>
+            )}
+            {currentUserUid === uid && (
+              <StButtonList>
+                <StButton>댓글 기능 해제</StButton>
+              </StButtonList>
+            )}
             <StButtonList>
               <StButton>링크 복사</StButton>
             </StButtonList>

@@ -26,3 +26,15 @@ export const getPostImagesUrlFromStorage = async ({ uid, id, images }) => {
   // console.log(result);
   return result;
 };
+
+// remove images by post data
+export const removeImagesByPostData = async (
+  imagesArray,
+  currentUserUid,
+  id,
+) => {
+  await imagesArray.forEach(({ name }) => {
+    firebaseStorage.ref(`/${currentUserUid}/${id}/${name}`).delete();
+  });
+  console.log('4. Remove images of storage');
+};
