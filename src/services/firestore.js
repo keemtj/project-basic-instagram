@@ -15,7 +15,7 @@ export const getCurrentUserFollowData = async uid => {
   return datas;
 };
 
-// update(add, remove) posts data
+// update(add, remove) posts data & observe data
 export const updatePostsData = async (dispatch, actionCreator) => {
   const { uid } = firebaseAuth.currentUser;
   firestore
@@ -30,6 +30,7 @@ export const updatePostsData = async (dispatch, actionCreator) => {
     });
 };
 
+// remove post data
 export const removePostData = async (imagesArray, uid, id) => {
   await imagesArray.forEach(({ name }) => {
     firebaseStorage.ref(`/${uid}/${id}/${name}`).delete();
@@ -223,6 +224,14 @@ export const addBookmarkData = async (currentUserUid, uid, id) => {
         id,
       }),
     });
+  await firestore
+    .collection('posts')
+    .doc(uid) // 내가 북마크를 누른 유저의 uid
+    .collection('my-posts')
+    .doc(id) // 내가 북마크를 누른 유저의 post id
+    .update({
+      bookmarks: firebase.firestore.FieldValue.arrayUnion(currentUserUid),
+    }); // 내 uid(current User uid)를 추가
 };
 
 export const removeBookmarkData = async (currentUserUid, uid, id) => {
@@ -235,6 +244,14 @@ export const removeBookmarkData = async (currentUserUid, uid, id) => {
         id,
       }),
     });
+  await firestore
+    .collection('posts')
+    .doc(uid) // 내가 북마크를 누른 유저의 uid
+    .collection('my-posts')
+    .doc(id) // 내가 북마크를 누른 유저의 post id
+    .update({
+      bookmarks: firebase.firestore.FieldValue.arrayRemove(currentUserUid),
+    }); // 내 uid(current User uid)를 제거
 };
 
 export const getPostsByBookmarks = async bookmarks => {
@@ -292,6 +309,14 @@ export const addHeartData = async (currentUserUid, uid, id) => {
     .update({
       hearts: firebase.firestore.FieldValue.arrayUnion({ uid, id }),
     });
+  await firestore
+    .collection('posts')
+    .doc(uid) // 내가 좋아요를 누른 유저의 uid
+    .collection('my-posts')
+    .doc(id) // 내가 좋아요를 누른 유저의 post id
+    .update({
+      hearts: firebase.firestore.FieldValue.arrayUnion(currentUserUid),
+    }); // 내 uid(current User uid)를 추가
 };
 
 export const removeHeartData = async (currentUserUid, uid, id) => {
@@ -301,6 +326,14 @@ export const removeHeartData = async (currentUserUid, uid, id) => {
     .update({
       hearts: firebase.firestore.FieldValue.arrayRemove({ uid, id }),
     });
+  await firestore
+    .collection('posts')
+    .doc(uid) // 내가 좋아요를 누른 유저의 uid
+    .collection('my-posts')
+    .doc(id) // 내가 좋아요를 누른 유저의 post id
+    .update({
+      hearts: firebase.firestore.FieldValue.arrayRemove(currentUserUid),
+    }); // 내 uid(current User uid)를 제거
 };
 
 export const increaseHeartCount = async (uid, id) => {

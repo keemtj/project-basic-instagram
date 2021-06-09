@@ -56,6 +56,9 @@ const NewPost = ({ setProgress }) => {
         heartCount: 0,
         bookmarkCount: 0,
         comments: [],
+        hearts: [],
+        bookmarks: [],
+        imagesArray: [],
       });
   };
 

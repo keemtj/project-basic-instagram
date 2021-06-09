@@ -68,20 +68,16 @@ const Post = ({
           {isBookmark ? <StBookmarkFill /> : <Bookmark />}
         </div>
       </StSectionNav>
-      {/* {heartCount > 0 && <StHeartCount>좋아요 {heartCount}개</StHeartCount>} */}
       <StHeartCountWrapper>
         {heartCount > 0 ? (
-          <>
+          <StHeartCountBox onClick={() => console.log('click heart count!!!')}>
             좋아요 <StHeartCount>{heartCount}</StHeartCount>개
-          </>
+          </StHeartCountBox>
         ) : (
-          <span>
-            가장 먼저{' '}
-            <StHeartCount heartCount={heartCount} onClick={onClickHeart}>
-              좋아요
-            </StHeartCount>
+          <div>
+            가장 먼저 <StHeartCount onClick={onClickHeart}>좋아요</StHeartCount>
             를 눌러주세요
-          </span>
+          </div>
         )}
       </StHeartCountWrapper>
       <StTextBox>
@@ -206,16 +202,21 @@ const StBookmarkFill = styled(BookmarkFill)`
 `;
 
 const StHeartCountWrapper = styled.div`
-  font-size: 1.4rem;
   padding: 0rem 1.5rem;
+  width: fit-content;
+  font-size: 1.4rem;
   font-weight: 500;
+`;
+
+const StHeartCountBox = styled.div`
+  cursor: pointer;
 `;
 
 const StHeartCount = styled.span`
   width: 100%;
   font-size: 1.4rem;
   font-weight: 600;
-  cursor: ${({ heartCount }) => (heartCount === 0 ? 'pointer' : 'default')};
+  cursor: pointer;
 `;
 
 const StTextBox = styled.div`
