@@ -20,6 +20,7 @@ import ProgressBar from './Component/Global/ProgressBar';
 import NewPost from './Component/New/NewPost';
 import { useHistory } from 'react-router';
 import PostSettingModal from './Component/Main/PostSettingModal';
+import ToastPopup from './Component/Global/ToastPopup';
 
 const App = () => {
   const dispatch = useDispatch();
@@ -61,6 +62,7 @@ const App = () => {
         {progress !== 0 && <ProgressBar progress={progress} />}
         {newPostModalState && <NewPost setProgress={setProgress} />}
         {postSettingModalState && <PostSettingModal />}
+        <ToastPopup />
       </PageWrapper>
     </>
   );

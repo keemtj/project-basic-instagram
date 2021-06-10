@@ -1,7 +1,12 @@
 import React, { useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
-import { activePostData, closePopup } from '../../Modules/popup';
+import {
+  activePostData,
+  closePopup,
+  openPopup,
+  toastMessage,
+} from '../../Modules/popup';
 import { removePost } from '../../Modules/posts';
 import PostSettingPortal from '../../PostSettingPortal';
 import { removeImagesByPostData } from '../../services/firebaseStorage';
@@ -18,12 +23,28 @@ const PostSettingModal = () => {
     state => state.popup.activePostData,
   );
 
+  const onClickToast = () => {
+    dispatch(closePopup('postSettingModal'));
+    dispatch(openPopup('toast'));
+    dispatch(toastMessage('게시글이 삭제되었습니다.'));
+    setTimeout(() => {
+      dispatch(closePopup('toast'));
+      dispatch(toastMessage(''));
+    }, 5000);
+  };
+
   // TODO: toast Popup 만들기
   const onRemovePost = async () => {
     dispatch(closePopup('postSettingModal'));
     await removePostData(uid, id);
     await removeImagesByPostData(imagesArray, uid, id);
     await updatePostsData(dispatch, removePost);
+    dispatch(openPopup('toast'));
+    dispatch(toastMessage('게시글이 삭제되었습니다.'));
+    setTimeout(() => {
+      dispatch(closePopup('toast'));
+      dispatch(toastMessage(''));
+    }, 5000);
   };
 
   const onCilckOutside = e => {
@@ -49,6 +70,11 @@ const PostSettingModal = () => {
       <StModal>
         <StSettingBox ref={modalRef}>
           <ul>
+            <StButtonList>
+              <StButton name="remove" onClick={onClickToast}>
+                토스트 트리거(TEST)
+              </StButton>
+            </StButtonList>
             {currentUserUid === uid && (
               <StButtonList>
                 <StButton name="remove" onClick={onRemovePost}>

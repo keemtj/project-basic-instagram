@@ -2,7 +2,6 @@ import React from 'react';
 import styled from 'styled-components';
 import EditNavigation from './EditNavigation';
 import EditRouter from '../../Router/EditRouter';
-import ToastPopupContainer from '../../Container/Global/ToastPopupContainer';
 
 const Edit = () => {
   return (
@@ -17,7 +16,6 @@ const Edit = () => {
           </StEditSection>
         </StEdit>
       </StEditWrapper>
-      <ToastPopupContainer />
     </>
   );
 };

@@ -313,7 +313,6 @@ export const observeHeart = (dispatch, actionCreator) => {
 };
 
 export const observeHeartCount = (dispatch, actionCreator, uid, postId) => {
-  console.log(uid, postId);
   firestore
     .collection('posts')
     .doc(uid)

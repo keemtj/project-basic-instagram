@@ -74,11 +74,11 @@ const PostContainer = ({
 
   const onClickHeart = () => {
     if (isHeart) {
-      console.log('uncheck heart');
+      console.log('Unliked!');
       removeHeartData(currentUid, uid, id);
       decreaseHeartCount(uid, id);
     } else {
-      console.log('check heart');
+      console.log('Liked!');
       addHeartData(currentUid, uid, id);
       increaseHeartCount(uid, id);
     }
@@ -93,10 +93,10 @@ const PostContainer = ({
 
   const onClickBookmark = () => {
     if (isBookmark) {
-      console.log('remove bookmark');
+      console.log('Deleted!');
       removeBookmarkData(currentUid, uid, id);
     } else {
-      console.log('add bookmark');
+      console.log('Saved!');
       addBookmarkData(currentUid, uid, id);
     }
     observeBookmark(dispatch, getBookmarks);
@@ -110,7 +110,7 @@ const PostContainer = ({
   };
 
   const onClickSetting = () => {
-    console.log('post setting modal Trigger');
+    console.log('Post Setting Modal Trigger');
     dispatch(openPopup('postSettingModal'));
     dispatch(activePostData({ uid, id, imagesArray }));
   };
