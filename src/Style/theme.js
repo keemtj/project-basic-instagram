@@ -1,5 +1,6 @@
 const theme = {
   white: '#ffffff',
+  rgbWhite: 'rgba(255,255,255, 0.5)',
   black: '#111111',
   background: '#fafafa',
   gray: 'rgba(219,219,219,1)',

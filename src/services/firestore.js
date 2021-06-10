@@ -8,6 +8,16 @@ export const getCurrentUserData = async uid => {
   return datas;
 };
 
+// update current user data
+export const updateCurrentUserData = async (dispatch, actionCreator) => {
+  const { uid } = firebaseAuth.currentUser;
+  firestore
+    .collection('users')
+    .doc(uid)
+    .onSnapshot(doc => {
+      dispatch(actionCreator(doc.data()));
+    });
+};
 // get follow data of currentUser by uid
 export const getCurrentUserFollowData = async uid => {
   const doc = await firestore.collection('follow').doc(uid).get();

@@ -45,7 +45,6 @@ const PostsContainer = ({ watchName }) => {
     document.body.style.overflow = postModalState ? 'hidden' : 'auto';
   }, [postModalState]);
 
-  console.log(myPostsLoading || searchUserPostsLoading);
   if (myPostsLoading || searchUserPostsLoading)
     return <Loading isLoading={myPostsLoading || searchUserPostsLoading} />;
   if (myPostsError || searchUserPostsError)

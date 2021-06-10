@@ -13,6 +13,7 @@ import Textarea from './Textarea';
 import CommentSetting from './CommentSetting';
 import PlaceSearch from './PlaceSearch';
 import PlaceAutoComplete from './PlaceAutoComplete';
+import useToast from '../../Hooks/useToast';
 
 const NewPost = ({ setProgress }) => {
   const dispatch = useDispatch();
@@ -23,7 +24,7 @@ const NewPost = ({ setProgress }) => {
   const [autoCompleteState, setAutoCompleteState] = useState(false);
   const [isPossibleComment, setIsPossibleComment] = useState(false);
   const [text, setText] = useState('');
-
+  const [toast] = useToast();
   const closeModal = () => {
     console.log('close new post!');
     dispatch(closePopup('newPostModal'));
@@ -35,7 +36,6 @@ const NewPost = ({ setProgress }) => {
     addPostDataToFirestore(uid, postId);
     uploadImagesToStorage(uid, postId, images);
     closeModal();
-    console.log('새 게시물이 작성되었습니다');
   };
 
   // add post data to firestore
@@ -101,6 +101,7 @@ const NewPost = ({ setProgress }) => {
           if (uploadTask.snapshot.state === 'success') {
             await updatePostsData(dispatch, updatePosts);
             setProgress(0);
+            toast('새 게시물이 작성되었습니다.');
           }
         },
       );

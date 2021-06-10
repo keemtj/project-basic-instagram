@@ -1,13 +1,18 @@
 import React from 'react';
 import styled, { css } from 'styled-components';
+import Loading from '../Global/Loading';
 
 const EditPassword = ({
+  isChange,
   inputList,
   displayName,
   photoURL,
   handleKeyPress,
   getASecureRandomPassword,
+  preventSubmit,
   onEditPasswordSubmit,
+  isLoading,
+  error,
 }) => {
   return (
     <StEditPasswordWrapper>
@@ -19,8 +24,10 @@ const EditPassword = ({
           <StDisplayName>{displayName}</StDisplayName>
         </StPasswordImageBox>
       </StEditPasswordImage>
-      <StEditPasswordForm onSubmit={onEditPasswordSubmit}>
-        {inputList.map(({ id, text, value }, index) => (
+      <StEditPasswordForm
+        onSubmit={isChange ? onEditPasswordSubmit : preventSubmit}
+      >
+        {inputList.map(({ id, text, placeholder, value }, index) => (
           <StEditPasswordFormBlock key={index}>
             <StEditPasswordFormAside>
               <StEditPasswordFormLabel htmlFor={id}>
@@ -30,6 +37,7 @@ const EditPassword = ({
             <StEditPasswordFormDiv>
               <StEditPasswordFormInput
                 type="password"
+                placeholder={placeholder}
                 id={id}
                 name={id}
                 autoComplete="off"
@@ -43,7 +51,14 @@ const EditPassword = ({
         <StEditPasswordFormBlock>
           <StEditPasswordFormAside />
           <StEditPasswordFormDiv>
-            <StSubmitButton type="submit">비밀번호 변경</StSubmitButton>
+            {error && <StErrorBox>{error}</StErrorBox>}
+            <StSubmitButton type="submit" isChange={isChange}>
+              {isLoading ? (
+                <Loading isLoading={isLoading} isSubmit />
+              ) : (
+                '비밀번호 변경'
+              )}
+            </StSubmitButton>
           </StEditPasswordFormDiv>
         </StEditPasswordFormBlock>
       </StEditPasswordForm>
@@ -139,8 +154,9 @@ const StEditPasswordFormDiv = styled.div`
   height: auto;
   min-height: 5.5rem;
   display: flex;
-  align-items: center;
-  justify-content: flex-start;
+  flex-flow: column nowrap;
+  align-items: flex-start;
+  justify-content: center;
 `;
 
 const StEditPasswordFormInput = styled.input`
@@ -155,14 +171,27 @@ const StEditPasswordFormInput = styled.input`
   &:focus {
     background: none;
   }
+  &::placeholder {
+    font-size: 1.4rem;
+    color: ${({ theme }) => theme.darkGray};
+  }
+`;
+
+const StErrorBox = styled.div`
+  padding: 0.5rem 0rem 1rem;
+  color: ${({ theme }) => theme.heart};
+  font-size: 1.4rem;
+  font-weight: 500;
+  word-break: keep-all;
 `;
 
 const StSubmitButton = styled.button`
   border: none;
   border-radius: 4px;
   padding: 0.5rem 1rem;
-  width: fit-content;
-  background: ${({ theme }) => theme.activeBlue};
+  width: 10.5rem;
+  background: ${({ isChange, theme }) =>
+    isChange ? theme.activeBlue : theme.inactiveBlue};
   color: ${({ theme }) => theme.white};
   font-size: 1.5rem;
   font-weight: 600;

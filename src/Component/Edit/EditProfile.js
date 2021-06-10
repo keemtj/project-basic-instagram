@@ -1,16 +1,21 @@
 import React from 'react';
 import styled, { css } from 'styled-components';
+import Loading from '../Global/Loading';
 
 const EditProfile = ({
   inputList,
   currentDisplayName,
   photoURL,
   onChangeInput,
+  imageLoading,
   presentation,
   onChangePresentation,
   handleKeyPress,
+  dataLoading,
+  preventSubmit,
   updateProfileData,
   updateProfileImage,
+  isChange,
 }) => {
   return (
     <StEditProfileWrapper>
@@ -18,6 +23,7 @@ const EditProfile = ({
         <StAside>
           <StLabel htmlFor="edit">
             <StImage src={photoURL} />
+            {imageLoading && <Loading isLoading={imageLoading} isProfile />}
           </StLabel>
         </StAside>
         <StProfileImageBox>
@@ -34,7 +40,9 @@ const EditProfile = ({
           />
         </StProfileImageBox>
       </StEditProfileImage>
-      <StEditProfileForm onSubmit={updateProfileData}>
+      <StEditProfileForm
+        onSubmit={isChange ? updateProfileData : preventSubmit}
+      >
         {inputList.map(
           (
             { id, category, placeholder, value, advice, advice2, position },
@@ -98,7 +106,13 @@ const EditProfile = ({
         <StEditProfileFormBlock>
           <StEditProfileFormAside />
           <StEditProfileFormDiv>
-            <StSubmitButton type="submit">제출</StSubmitButton>
+            <StSubmitButton type="submit" isChange={isChange}>
+              {dataLoading ? (
+                <Loading isLoading={dataLoading} isSubmit />
+              ) : (
+                '제출'
+              )}
+            </StSubmitButton>
           </StEditProfileFormDiv>
         </StEditProfileFormBlock>
       </StEditProfileForm>
@@ -136,6 +150,7 @@ const StLabel = styled.label`
   width: 5.5rem;
   height: 5.5rem;
   cursor: pointer;
+  position: relative;
 `;
 
 const StImage = styled.img`
@@ -263,8 +278,9 @@ const StSubmitButton = styled.button`
   margin-top: 2rem;
   margin-bottom: 2rem;
   padding: 0.5rem 1rem;
-  width: fit-content;
-  background: ${({ theme }) => theme.activeBlue};
+  width: 5rem;
+  background: ${({ isChange, theme }) =>
+    isChange ? theme.activeBlue : theme.inactiveBlue};
   color: ${({ theme }) => theme.white};
   font-size: 1.5rem;
   font-weight: 600;

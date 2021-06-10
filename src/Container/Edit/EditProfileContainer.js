@@ -1,11 +1,14 @@
-import React, { useEffect, useReducer } from 'react';
-import { useSelector } from 'react-redux';
+import React, { useEffect, useReducer, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import EditProfile from '../../Component/Edit/EditProfile';
+import useToast from '../../Hooks/useToast';
+import { currentUserData } from '../../Modules/user';
 import {
   firebaseAuth,
   firebaseStorage,
   firestore,
 } from '../../services/firebase';
+import { updateCurrentUserData } from '../../services/firestore';
 
 const initialState = {
   displayName: '',
@@ -46,9 +49,11 @@ const editReducer = (state = initialState, action) => {
 const EditProfileContainer = () => {
   const [state, dp] = useReducer(editReducer, initialState);
   const { displayName, username, phone, email, presentation } = state;
-  // const [uploadState, setUploadState] = React.useState('');
-
-  const currentUserData = useSelector(state => state.user.currentUser);
+  const [toast] = useToast();
+  const dispatch = useDispatch();
+  const currentUser = useSelector(state => state.user.currentUser);
+  const [imageLoading, setImageLoading] = useState(false);
+  const [dataLoading, setDataLoading] = useState(false);
 
   const {
     displayName: currentDisplayName,
@@ -58,39 +63,53 @@ const EditProfileContainer = () => {
     phone: currentPhone,
     presentation: currentPresentation,
     uid,
-  } = currentUserData;
+  } = currentUser;
 
+  const isChange = () => {
+    return !(
+      currentDisplayName === displayName &&
+      username === currentUsername &&
+      email === currentEmail &&
+      phone === currentPhone &&
+      presentation === currentPresentation
+    );
+  };
+
+  const preventSubmit = e => e.preventDefault();
   const updateProfileData = async e => {
     e.preventDefault();
-    await firestore
-      .collection('users')
-      .doc(uid)
-      .update({
-        displayName: displayName !== '' ? displayName : currentDisplayName,
-        username: username !== '' ? username : currentUsername,
-        phone: phone !== '' ? phone : currentPhone,
-        email: email !== '' ? email : currentEmail,
-        presentation: presentation !== '' ? presentation : currentPresentation,
-      });
-    await firebaseAuth.currentUser.updateEmail(
-      email !== '' ? email : currentEmail,
-    );
-    await firestore
-      .collection('follow')
-      .doc(uid)
-      .update({
-        displayName: displayName !== '' ? displayName : currentDisplayName,
-      });
-
-    // TODO: setTimeout대신 toast popup으로 대체
-    setTimeout(() => {
-      window.location.reload();
-    }, 1000);
+    setDataLoading(true);
+    try {
+      await firestore
+        .collection('users')
+        .doc(uid)
+        .update({
+          displayName: displayName !== '' ? displayName : currentDisplayName,
+          username: username !== '' ? username : currentUsername,
+          phone: phone !== '' ? phone : currentPhone,
+          email: email !== '' ? email : currentEmail,
+          presentation:
+            presentation !== '' ? presentation : currentPresentation,
+        });
+      await firebaseAuth.currentUser.updateEmail(
+        email !== '' ? email : currentEmail,
+      );
+      await firestore
+        .collection('follow')
+        .doc(uid)
+        .update({
+          displayName: displayName !== '' ? displayName : currentDisplayName,
+        });
+      updateCurrentUserData(dispatch, currentUserData);
+      toast('프로필 정보가 변경되었습니다.');
+      setDataLoading(false);
+    } catch (e) {
+      console.log(e);
+    }
   };
 
   const updateProfileImage = ({ target }) => {
     [target.files].forEach(image => {
-      console.log(image);
       const uploadTask = firebaseStorage.ref(`/${uid}/profile`).put(image[0]);
       uploadTask.on(
         'state_changed',
@@ -100,17 +119,18 @@ const EditProfileContainer = () => {
           );
           console.log('Upload is ' + progress + '%');
           console.log('업로드중에 taskState:', snapshot.state);
+          setImageLoading(true);
         },
         e => console.log(e),
         async () => {
           const urlResult = await uploadTask.snapshot.ref.getDownloadURL();
           const photoURL = await Promise.resolve(urlResult);
           await firestore.collection('users').doc(uid).update({ photoURL });
-
-          // TODO: setTimeout대신 toast popup으로 대체
-          setTimeout(() => {
-            window.location.reload();
-          }, 1000);
+          if (uploadTask.snapshot.state === 'success') {
+            updateCurrentUserData(dispatch, currentUserData);
+            setImageLoading(false);
+            toast('프로필 이미지가 변경되었습니다.');
+          }
         },
       );
     });
@@ -141,7 +161,7 @@ const EditProfileContainer = () => {
     },
     {
       advice:
-        '사람들이 이름, 별명 또는 비즈니스 이름 등 회원님의 알려진 이름을사용하여 회원님의 계정을 찾을 수 있도록 도와주세요.',
+        '사람들이 이름, 별명 또는 비즈니스 이름 등 회원님의 알려진 이름을 사용하여 회원님의 계정을 찾을 수 있도록 도와주세요.',
       position: 'down',
     },
     {
@@ -176,8 +196,8 @@ const EditProfileContainer = () => {
 
   useEffect(() => {
     document.title = '프로필 편집 • Instagram';
-    dp({ type: 'INITIAL_VALUE', data: currentUserData });
-  }, [dp, currentUserData]);
+    dp({ type: 'INITIAL_VALUE', data: currentUser });
+  }, [dp, currentUser]);
 
   return (
     <EditProfile
@@ -185,11 +205,15 @@ const EditProfileContainer = () => {
       currentDisplayName={currentDisplayName}
       photoURL={currentPhotoURL}
       onChangeInput={onChangeInput}
+      imageLoading={imageLoading}
       presentation={presentation}
       onChangePresentation={onChangePresentation}
       handleKeyPress={handleKeyPress}
+      dataLoading={dataLoading}
+      preventSubmit={preventSubmit}
       updateProfileData={updateProfileData}
       updateProfileImage={updateProfileImage}
+      isChange={isChange()}
     />
   );
 };

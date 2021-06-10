@@ -2,20 +2,42 @@ import React from 'react';
 import styled, { css, keyframes } from 'styled-components';
 import { Spinner3 } from '@styled-icons/icomoon/Spinner3';
 
-const Loading = ({ isLoading }) => {
+const Loading = ({ isLoading, isProfile, isSubmit }) => {
   return (
-    <StLoading>
-      <StSpinner isLoading={isLoading} />
+    <StLoading isProfile={isProfile} isSubmit={isSubmit}>
+      <StSpinner
+        isLoading={isLoading}
+        isProfile={isProfile}
+        isSubmit={isSubmit}
+      />
     </StLoading>
   );
 };
 
 const StLoading = styled.div`
-  width: 100%;
-  height: 10rem;
   display: flex;
   align-items: center;
   justify-content: center;
+  ${({ isProfile }) =>
+    isProfile
+      ? css`
+          background: ${({ theme }) => theme.rgbWhite};
+          width: 5.5rem;
+          height: 5.5rem;
+          border-radius: 50%;
+          position: absolute;
+          top: 0;
+        `
+      : css`
+          width: 100%;
+          height: 10rem;
+        `}
+  ${({ isSubmit }) =>
+    isSubmit &&
+    css`
+      width: 100%;
+      height: 2.2rem;
+    `}
 `;
 
 const rotate = keyframes`
@@ -25,8 +47,8 @@ const rotate = keyframes`
 `;
 
 const StSpinner = styled(Spinner3)`
-  width: 2.5rem;
-  color: ${({ theme }) => theme.darkGray};
+  width: ${({ isProfile }) => (isProfile ? '2.5rem' : '2.5rem')};
+  color: ${({ theme, isSubmit }) => (isSubmit ? theme.white : theme.darkGray)};
   animation: ${({ isLoading }) =>
     isLoading &&
     css`
