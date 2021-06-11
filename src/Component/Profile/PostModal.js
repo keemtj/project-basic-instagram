@@ -13,7 +13,7 @@ import { closePopup } from '../../Modules/popup';
 import PostPortal from '../../PostPortal';
 import Carousel from '../Global/Carousel';
 import ProfileImage from '../Global/ProfileImage';
-import { getPost } from '../../Modules/posts';
+import { calcTimeElapsed } from '../../lib/calcTimeElapsed';
 
 const icons = [
   { icon: <Heart /> },
@@ -22,43 +22,11 @@ const icons = [
   { icon: <Bookmark /> },
 ];
 
-const PostModal = ({
-  // location,
-  // imagesArray,
-  // heartCount,
-  // more,
-  // text,
-  // onClickMore,
-  // isPossibleComment,
-  // comments,
-  // timeElapsed,
-  postUid,
-  postId,
-  displayName,
-  photoURL,
-}) => {
+const PostModal = ({ myPosts, myBookmarks, myHearts, searchUserPosts }) => {
+  console.log(myPosts, myBookmarks, myHearts, searchUserPosts);
   const modalRef = useRef();
   const dispatch = useDispatch();
   const { postModal: postModalState } = useSelector(state => state.popup);
-  const { data: post, loading } = useSelector(state => state.posts.post);
-
-  const calcTimeElapsed = date => {
-    const start = new Date(date);
-    const end = Date.now();
-    const sec = Math.floor((end - start) / 1000); // 경과시간, 초
-    const min = Math.floor((end - start) / 1000 / 60); // 경과시간, 분
-    const hour = Math.floor((end - start) / 1000 / 60 / 60); // 경과시간, 시간
-    const day = Math.floor((end - start) / 1000 / 60 / 60 / 24); // 경과시간, 일
-    const elapsed =
-      sec >= 60
-        ? min >= 60
-          ? hour >= 24
-            ? day + '일 전'
-            : hour + '시간 전'
-          : min + '분 전'
-        : '방금 전';
-    return elapsed;
-  };
 
   const handlePrev = () => {
     console.log('prev~');
@@ -112,33 +80,26 @@ const PostModal = ({
     };
   }, []);
 
-  useEffect(() => {
-    dispatch(getPost({ postUid, postId }));
-  }, [postUid, postId]);
-
-  if (loading) return <div>로딩중</div>;
   return (
     <PostPortal>
       <StPostModalWrapper>
         <StPostBoxBlock ref={modalRef}>
           <StImagesSection>
-            <Carousel imagesArray={post?.imagesArray} pagenation pos />
+            <Carousel imagesArray={myPosts[0]?.imagesArray} pagenation pos />
           </StImagesSection>
           <StPostSubDataSection>
             <StHeader>
               <ProfileImage
-                src={
-                  photoURL === '' || !photoURL
-                    ? '/images/default_profile.png'
-                    : photoURL
-                }
+                src={'/images/default_profile.png'}
                 alt={'temp'}
                 width={3.5}
                 height={3.5}
               >
                 <div>
-                  <StDisplayName>{displayName}</StDisplayName>
-                  {post?.location && <StLocation>{post?.location}</StLocation>}
+                  <StDisplayName>{'displayName'}</StDisplayName>
+                  {myPosts[0]?.location && (
+                    <StLocation>{myPosts[0]?.location}</StLocation>
+                  )}
                 </div>
               </ProfileImage>
             </StHeader>
@@ -183,11 +144,7 @@ const PostModal = ({
                   </div> */}
                     <div>
                       <img
-                        src={
-                          photoURL === '' || !photoURL
-                            ? '/images/default_profile.png'
-                            : photoURL
-                        }
+                        src={'/images/default_profile.png'}
                         alt={'temp'}
                         style={{
                           borderRadius: '50%',
@@ -234,13 +191,13 @@ const PostModal = ({
                 <span key={index}>{icon.icon}</span>
               ))}
             </StSectionNav>
-            {post?.heartCount > 0 ? (
-              <StHeartCount>좋아요 {post?.heartCount}개</StHeartCount>
+            {myPosts[0]?.heartCount > 0 ? (
+              <StHeartCount>좋아요 {myPosts[0]?.heartCount}개</StHeartCount>
             ) : (
               <StHeartCount>가장 먼저 좋아요를 눌러주세요</StHeartCount>
             )}
-            <StDate>{calcTimeElapsed(post?.date)}</StDate>
-            {!post?.isPossibleComment && (
+            <StDate>{calcTimeElapsed(myPosts[0]?.date)}</StDate>
+            {!myPosts[0]?.isPossibleComment && (
               <StChatCommentLabel>
                 <button>
                   <StEmojiSmile />

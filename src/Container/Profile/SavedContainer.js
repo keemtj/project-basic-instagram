@@ -14,12 +14,7 @@ const SavedContainer = () => {
   );
   const { postModal: postModalState } = useSelector(state => state.popup);
 
-  const [postId, setPostId] = React.useState('');
-  const [postUid, setPostUid] = React.useState('');
-
-  const onClickPostModal = (uid, id) => {
-    setPostId(id);
-    setPostUid(uid);
+  const onClickPostModal = () => {
     dispatch(openPopup('postModal'));
   };
 
@@ -37,14 +32,7 @@ const SavedContainer = () => {
 
   if (loading) return <Loading isLoading={loading} />;
   if (error) return <div>에러 발생</div>;
-  return (
-    <Saved
-      posts={posts}
-      onClickPostModal={onClickPostModal}
-      postId={postId}
-      postUid={postUid}
-    />
-  );
+  return <Saved posts={posts} onClickPostModal={onClickPostModal} />;
 };
 
 export default SavedContainer;

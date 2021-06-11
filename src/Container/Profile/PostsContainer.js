@@ -7,14 +7,12 @@ import { openPopup } from '../../Modules/popup';
 const PostsContainer = ({ watchName }) => {
   const dispatch = useDispatch();
   const currentUserData = useSelector(state => state.user.currentUser);
-  const { data: searchUserData } = useSelector(
-    state => state.search.searchUser,
-  );
   const {
     data: myPosts,
     loading: myPostsLoading,
     error: myPostsError,
   } = useSelector(state => state.posts.myPosts);
+
   const {
     data: searchUserPosts,
     loading: searchUserPostsLoading,
@@ -33,11 +31,7 @@ const PostsContainer = ({ watchName }) => {
     }
   };
 
-  const [postId, setPostId] = React.useState('');
-  const [postUid, setPostUid] = React.useState('');
-  const onClickPostModal = (uid, id) => {
-    setPostId(id);
-    setPostUid(uid);
+  const onClickPostModal = () => {
     dispatch(openPopup('postModal'));
   };
 
@@ -56,20 +50,7 @@ const PostsContainer = ({ watchName }) => {
           ? sortedPosts()
           : sortedSearchUserPosts()
       }
-      postModalState={postModalState}
       onClickPostModal={onClickPostModal}
-      postId={postId}
-      postUid={postUid}
-      displayName={
-        currentUserData?.displayName === watchName
-          ? currentUserData?.displayName
-          : searchUserData?.displayName
-      }
-      photoURL={
-        (currentUserData?.displayName === watchName
-          ? currentUserData?.photoURL
-          : searchUserData?.photoURL) || '/images/default_profile2.jpg'
-      }
     />
   );
 };

@@ -21,13 +21,21 @@ import NewPost from './Component/New/NewPost';
 import { useHistory } from 'react-router';
 import PostSettingModal from './Component/Main/PostSettingModal';
 import ToastPopup from './Component/Global/ToastPopup';
+import PostModal from './Component/Profile/PostModal';
 
 const App = () => {
   const dispatch = useDispatch();
   const history = useHistory();
   const isSignIn = useSelector(state => state.login.isSignIn);
+  const { data: myPosts } = useSelector(state => state.posts.myPosts);
+  const { data: myBookmarks } = useSelector(state => state.saved.posts);
+  const { data: myHearts } = useSelector(state => state.heart.posts);
+  const { data: searchUserPosts } = useSelector(
+    state => state.posts.searchUserPosts,
+  );
   const {
     newPostModal: newPostModalState,
+    postModal: postModalState,
     postSettingModal: postSettingModalState,
   } = useSelector(state => state.popup);
   const [progress, setProgress] = useState(0);
@@ -62,6 +70,14 @@ const App = () => {
         {progress !== 0 && <ProgressBar progress={progress} />}
         {newPostModalState && <NewPost setProgress={setProgress} />}
         {postSettingModalState && <PostSettingModal />}
+        {postModalState && (
+          <PostModal
+            myPosts={myPosts}
+            myBookmarks={myBookmarks}
+            myHearts={myHearts}
+            searchUserPosts={searchUserPosts}
+          />
+        )}
         <ToastPopup />
       </PageWrapper>
     </>

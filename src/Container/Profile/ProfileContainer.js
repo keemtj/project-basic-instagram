@@ -35,7 +35,6 @@ const ProfileContainer = () => {
       dispatch(getSearchUserPosts(uid));
     }
   }, [watchName]);
-
   return <Profile watchName={watchName} />;
 };
 

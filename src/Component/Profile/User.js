@@ -88,6 +88,7 @@ const StUser = styled.section`
 
 const StImageWrapper = styled.div`
   width: 30rem;
+  min-width: 30rem;
   height: 100%;
   display: flex;
   align-items: center;
