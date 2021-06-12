@@ -11,12 +11,14 @@ const Posts = ({ posts, onClickPostModal }) => {
         <EmptyPosts />
       ) : (
         <StPostsWrapper>
-          {posts?.map((post, index) => {
+          {posts?.map((post, index, arr) => {
             return (
               <PostItemContainer
                 post={post}
                 key={index}
-                onClickPostModal={onClickPostModal}
+                onClickPostModal={() =>
+                  onClickPostModal(arr, post, post.id, index)
+                }
               />
             );
           })}

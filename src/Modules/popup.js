@@ -2,8 +2,11 @@
 const OPEN_POPUP = 'popup/OPEN_POPUP';
 const CLOSE_POPUP = 'popup/CLOSE_POPUP';
 
-const ACTIVE_POST_DATA = 'popup/ACTIVE_POST_DATA';
 const TOAST_MESSAGE = 'popup/TOAST_MESSAGE';
+
+const ACTIVE_POST_DATA = 'popup/ACTIVE_POST_DATA';
+const ACTIVE_POSTS_DATA = 'popup/ACTIVE_POSTS_DATA';
+const ACTIVE_INDEX = 'popup/ACTIVE_INDEX';
 
 const MODAL_ENTRY_PATH = 'popup/MODAL_ENTRY_PATH';
 const ACTIVE_PATH = 'popup/ACTIVE_PATH';
@@ -11,10 +14,10 @@ const ACTIVE_PATH = 'popup/ACTIVE_PATH';
 // NOTE action creator
 export const openPopup = name => ({ type: OPEN_POPUP, name });
 export const closePopup = name => ({ type: CLOSE_POPUP, name });
-
-export const activePostData = data => ({ type: ACTIVE_POST_DATA, data });
 export const toastMessage = message => ({ type: TOAST_MESSAGE, message });
-
+export const activePostData = data => ({ type: ACTIVE_POST_DATA, data });
+export const activePostsData = datas => ({ type: ACTIVE_POSTS_DATA, datas });
+export const activeIndex = index => ({ type: ACTIVE_INDEX, index });
 export const modalEntryPath = path => ({ type: MODAL_ENTRY_PATH, path });
 export const activePath = path => ({ type: ACTIVE_PATH, path });
 
@@ -25,8 +28,10 @@ const initialState = {
   newPostModal: false,
   postModal: false,
   postSettingModal: false,
-  activePostData: {},
   toast: false,
+  activePostData: {},
+  activePostsData: [],
+  activeIndex: 0,
   toastMessage: '',
   modalEntryPath: '/',
   active: '/',
@@ -45,15 +50,25 @@ const popup = (state = initialState, action) => {
         ...state,
         [action.name]: false,
       };
+    case TOAST_MESSAGE:
+      return {
+        ...state,
+        toastMessage: action.message,
+      };
     case ACTIVE_POST_DATA:
       return {
         ...state,
         activePostData: action.data,
       };
-    case TOAST_MESSAGE:
+    case ACTIVE_POSTS_DATA:
       return {
         ...state,
-        toastMessage: action.message,
+        activePostsData: action.datas,
+      };
+    case ACTIVE_INDEX:
+      return {
+        ...state,
+        activeIndex: action.index,
       };
     case MODAL_ENTRY_PATH:
       return {

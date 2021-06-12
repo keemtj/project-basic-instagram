@@ -27,12 +27,13 @@ const App = () => {
   const dispatch = useDispatch();
   const history = useHistory();
   const isSignIn = useSelector(state => state.login.isSignIn);
-  const { data: myPosts } = useSelector(state => state.posts.myPosts);
-  const { data: myBookmarks } = useSelector(state => state.saved.posts);
-  const { data: myHearts } = useSelector(state => state.heart.posts);
-  const { data: searchUserPosts } = useSelector(
-    state => state.posts.searchUserPosts,
-  );
+  const { activePostsData, activeIndex } = useSelector(state => state.popup);
+  // const { data: myPosts } = useSelector(state => state.posts.myPosts);
+  // const { data: myBookmarks } = useSelector(state => state.saved.posts);
+  // const { data: myHearts } = useSelector(state => state.heart.posts);
+  // const { data: searchUserPosts } = useSelector(
+  //   state => state.posts.searchUserPosts,
+  // );
   const {
     newPostModal: newPostModalState,
     postModal: postModalState,
@@ -72,10 +73,12 @@ const App = () => {
         {postSettingModalState && <PostSettingModal />}
         {postModalState && (
           <PostModal
-            myPosts={myPosts}
-            myBookmarks={myBookmarks}
-            myHearts={myHearts}
-            searchUserPosts={searchUserPosts}
+            posts={activePostsData}
+            index={activeIndex}
+            // myPosts={myPosts}
+            // myBookmarks={myBookmarks}
+            // myHearts={myHearts}
+            // searchUserPosts={searchUserPosts}
           />
         )}
         <ToastPopup />

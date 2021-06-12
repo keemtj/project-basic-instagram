@@ -22,8 +22,10 @@ const icons = [
   { icon: <Bookmark /> },
 ];
 
-const PostModal = ({ myPosts, myBookmarks, myHearts, searchUserPosts }) => {
-  console.log(myPosts, myBookmarks, myHearts, searchUserPosts);
+// const PostModal = ({ posts, myBookmarks, myHearts, searchUserPosts }) => {
+// console.log(posts, myBookmarks, myHearts, searchUserPosts);
+const PostModal = ({ posts, index }) => {
+  console.log(index);
   const modalRef = useRef();
   const dispatch = useDispatch();
   const { postModal: postModalState } = useSelector(state => state.popup);
@@ -85,7 +87,7 @@ const PostModal = ({ myPosts, myBookmarks, myHearts, searchUserPosts }) => {
       <StPostModalWrapper>
         <StPostBoxBlock ref={modalRef}>
           <StImagesSection>
-            <Carousel imagesArray={myPosts[0]?.imagesArray} pagenation pos />
+            <Carousel imagesArray={posts[index]?.imagesArray} pagenation pos />
           </StImagesSection>
           <StPostSubDataSection>
             <StHeader>
@@ -97,8 +99,8 @@ const PostModal = ({ myPosts, myBookmarks, myHearts, searchUserPosts }) => {
               >
                 <div>
                   <StDisplayName>{'displayName'}</StDisplayName>
-                  {myPosts[0]?.location && (
-                    <StLocation>{myPosts[0]?.location}</StLocation>
+                  {posts[index]?.location && (
+                    <StLocation>{posts[index]?.location}</StLocation>
                   )}
                 </div>
               </ProfileImage>
@@ -191,13 +193,13 @@ const PostModal = ({ myPosts, myBookmarks, myHearts, searchUserPosts }) => {
                 <span key={index}>{icon.icon}</span>
               ))}
             </StSectionNav>
-            {myPosts[0]?.heartCount > 0 ? (
-              <StHeartCount>좋아요 {myPosts[0]?.heartCount}개</StHeartCount>
+            {posts[index]?.heartCount > 0 ? (
+              <StHeartCount>좋아요 {posts[index]?.heartCount}개</StHeartCount>
             ) : (
               <StHeartCount>가장 먼저 좋아요를 눌러주세요</StHeartCount>
             )}
-            <StDate>{calcTimeElapsed(myPosts[0]?.date)}</StDate>
-            {!myPosts[0]?.isPossibleComment && (
+            <StDate>{calcTimeElapsed(posts[index]?.date)}</StDate>
+            {!posts[index]?.isPossibleComment && (
               <StChatCommentLabel>
                 <button>
                   <StEmojiSmile />
