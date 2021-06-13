@@ -16,9 +16,7 @@ const Saved = ({ posts, onClickPostModal }) => {
               <PostItemContainer
                 post={post}
                 key={index}
-                onClickPostModal={() =>
-                  onClickPostModal(arr, post, post.id, index)
-                }
+                onClickPostModal={() => onClickPostModal(arr, post.id, index)}
               />
             );
           })}

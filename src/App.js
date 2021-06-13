@@ -27,7 +27,10 @@ const App = () => {
   const dispatch = useDispatch();
   const history = useHistory();
   const isSignIn = useSelector(state => state.login.isSignIn);
-  const { activePostsData, activeIndex } = useSelector(state => state.popup);
+  const { activePostsData, activePostId, activeIndexValue } = useSelector(
+    state => state.popup,
+  );
+
   const {
     newPostModal: newPostModalState,
     postModal: postModalState,
@@ -66,7 +69,11 @@ const App = () => {
         {newPostModalState && <NewPost setProgress={setProgress} />}
         {postSettingModalState && <PostSettingModal />}
         {postModalState && (
-          <PostModal posts={activePostsData} index={activeIndex} />
+          <PostModal
+            posts={activePostsData}
+            id={activePostId}
+            index={activeIndexValue}
+          />
         )}
         <ToastPopup />
       </PageWrapper>

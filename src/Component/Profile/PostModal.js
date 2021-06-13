@@ -9,11 +9,12 @@ import { PaperPlane } from '@styled-icons/ionicons-outline/PaperPlane';
 import { Chat } from '@styled-icons/bootstrap/Chat';
 import { Bookmark } from '@styled-icons/bootstrap/Bookmark';
 import { EmojiSmile } from '@styled-icons/bootstrap/EmojiSmile';
-import { activeIndex, closePopup } from '../../Modules/popup';
+import { activeIndex, activePostId, closePopup } from '../../Modules/popup';
 import PostPortal from '../../PostPortal';
 import Carousel from '../Global/Carousel';
 import ProfileImage from '../Global/ProfileImage';
 import { calcTimeElapsed } from '../../lib/calcTimeElapsed';
+import { useHistory } from 'react-router';
 
 const icons = [
   { icon: <Heart /> },
@@ -22,30 +23,24 @@ const icons = [
   { icon: <Bookmark /> },
 ];
 
-const PostModal = ({ posts, index }) => {
+const PostModal = ({ posts, id, index }) => {
+  console.log(index);
   const modalRef = useRef();
   const dispatch = useDispatch();
-  const { postModal: postModalState } = useSelector(state => state.popup);
+  const his = useHistory();
+  const { postModal: postModalState, activeIndexValue } = useSelector(
+    state => state.popup,
+  );
   const lastIndex = posts.length - 1;
 
   const handlePrev = () => {
-    console.log('Previous post', index);
-    if (index === 0) {
-      // 인덱스가 0일 때 마지막 포스트로 이동
-      dispatch(activeIndex(lastIndex));
-    } else {
-      dispatch(activeIndex(index - 1));
-    }
+    dispatch(activePostId(posts[index - 1].id));
+    dispatch(activeIndex(index - 1));
   };
 
   const handleNext = () => {
-    console.log('Next post', index);
-    if (index === lastIndex) {
-      // 인덱스가 마지막일 때 처음 포스트로 이동
-      dispatch(activeIndex(0));
-    } else {
-      dispatch(activeIndex(index + 1));
-    }
+    dispatch(activePostId(posts[index + 1].id));
+    dispatch(activeIndex(index + 1));
   };
 
   const onCloseButton = () => {
@@ -73,6 +68,13 @@ const PostModal = ({ posts, index }) => {
     { id: 'marble', comment: 'hihihihihihihihi', date: '2021-5-11' },
     { id: 'dr_strange', comment: 'hihihihihihi', date: '2021-5-16' },
   ];
+
+  useEffect(() => {
+    const path = his.location.pathname;
+    dispatch(activePostId(id));
+    history.pushState('', '', `/p/${posts[activeIndexValue].id}`);
+    return () => his.push(`${path}`);
+  }, [activeIndexValue]);
 
   const onClickOutside = e => {
     if (

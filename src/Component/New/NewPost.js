@@ -142,6 +142,11 @@ const NewPost = ({ setProgress }) => {
   };
 
   useEffect(() => {
+    history.pushState('', '', '/new');
+    return () => history.back();
+  }, []);
+
+  useEffect(() => {
     const title = document.title;
     document.title = '새 게시물 작성 • Instagram';
     return () => {
@@ -149,6 +154,7 @@ const NewPost = ({ setProgress }) => {
       document.title = title;
     };
   }, []);
+
   return (
     <NewPostPortal>
       <StModal>

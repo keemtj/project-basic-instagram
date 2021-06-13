@@ -2,7 +2,12 @@ import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Loading from '../../Component/Global/Loading';
 import Posts from '../../Component/Profile/Posts';
-import { activeIndex, activePostsData, openPopup } from '../../Modules/popup';
+import {
+  openPopup,
+  activePostsData,
+  activePostId,
+  activeIndex,
+} from '../../Modules/popup';
 
 const PostsContainer = ({ watchName }) => {
   const dispatch = useDispatch();
@@ -31,10 +36,10 @@ const PostsContainer = ({ watchName }) => {
     }
   };
 
-  const onClickPostModal = (posts, post, id, index) => {
-    console.log(posts, post, id, index);
+  const onClickPostModal = (posts, id, index) => {
     dispatch(openPopup('postModal'));
     dispatch(activePostsData(posts));
+    dispatch(activePostId(id));
     dispatch(activeIndex(index));
   };
 

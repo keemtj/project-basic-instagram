@@ -7,19 +7,17 @@ const TOAST_MESSAGE = 'popup/TOAST_MESSAGE';
 const ACTIVE_POST_DATA = 'popup/ACTIVE_POST_DATA';
 const ACTIVE_POSTS_DATA = 'popup/ACTIVE_POSTS_DATA';
 const ACTIVE_INDEX = 'popup/ACTIVE_INDEX';
-
-const MODAL_ENTRY_PATH = 'popup/MODAL_ENTRY_PATH';
-const ACTIVE_PATH = 'popup/ACTIVE_PATH';
+const ACTIVE_POST_ID = 'popup/ACTIVE_POST_ID';
 
 // NOTE action creator
 export const openPopup = name => ({ type: OPEN_POPUP, name });
 export const closePopup = name => ({ type: CLOSE_POPUP, name });
 export const toastMessage = message => ({ type: TOAST_MESSAGE, message });
+
 export const activePostData = data => ({ type: ACTIVE_POST_DATA, data });
 export const activePostsData = datas => ({ type: ACTIVE_POSTS_DATA, datas });
+export const activePostId = id => ({ type: ACTIVE_POST_ID, id });
 export const activeIndex = index => ({ type: ACTIVE_INDEX, index });
-export const modalEntryPath = path => ({ type: MODAL_ENTRY_PATH, path });
-export const activePath = path => ({ type: ACTIVE_PATH, path });
 
 // NOTE initialState
 const initialState = {
@@ -31,10 +29,9 @@ const initialState = {
   toast: false,
   activePostData: {},
   activePostsData: [],
-  activeIndex: 0,
+  activePostId: '',
+  activeIndexValue: 0,
   toastMessage: '',
-  modalEntryPath: '/',
-  active: '/',
 };
 
 // NOTE reducer
@@ -65,20 +62,15 @@ const popup = (state = initialState, action) => {
         ...state,
         activePostsData: action.datas,
       };
+    case ACTIVE_POST_ID:
+      return {
+        ...state,
+        activePostId: action.id,
+      };
     case ACTIVE_INDEX:
       return {
         ...state,
-        activeIndex: action.index,
-      };
-    case MODAL_ENTRY_PATH:
-      return {
-        ...state,
-        modalEntryPath: action.path,
-      };
-    case ACTIVE_PATH:
-      return {
-        ...state,
-        active: action.path,
+        activeIndexValue: action.index,
       };
     default:
       return state;

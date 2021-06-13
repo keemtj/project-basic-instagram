@@ -3,7 +3,12 @@ import { useDispatch, useSelector } from 'react-redux';
 import Loading from '../../Component/Global/Loading';
 import Heart from '../../Component/Profile/Heart';
 import { getHeartPosts, getHearts } from '../../Modules/heart';
-import { activeIndex, activePostsData, openPopup } from '../../Modules/popup';
+import {
+  activeIndex,
+  activePostId,
+  activePostsData,
+  openPopup,
+} from '../../Modules/popup';
 import { observeHeart } from '../../services/firestore';
 
 const HeartContainer = () => {
@@ -14,10 +19,10 @@ const HeartContainer = () => {
   );
   const { postModal: postModalState } = useSelector(state => state.popup);
 
-  const onClickPostModal = (posts, post, id, index) => {
-    console.log(posts, post, id, index);
+  const onClickPostModal = (posts, id, index) => {
     dispatch(openPopup('postModal'));
     dispatch(activePostsData(posts));
+    dispatch(activePostId(id));
     dispatch(activeIndex(index));
   };
 

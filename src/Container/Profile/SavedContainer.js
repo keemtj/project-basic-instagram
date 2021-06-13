@@ -2,7 +2,12 @@ import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Loading from '../../Component/Global/Loading';
 import Saved from '../../Component/Profile/Saved';
-import { activeIndex, activePostsData, openPopup } from '../../Modules/popup';
+import {
+  activeIndex,
+  activePostId,
+  activePostsData,
+  openPopup,
+} from '../../Modules/popup';
 import { getBookmarkPosts, getBookmarks } from '../../Modules/saved';
 import { observeBookmark } from '../../services/firestore';
 
@@ -14,10 +19,10 @@ const SavedContainer = () => {
   );
   const { postModal: postModalState } = useSelector(state => state.popup);
 
-  const onClickPostModal = (posts, post, id, index) => {
-    console.log(posts, post, id, index);
+  const onClickPostModal = (posts, id, index) => {
     dispatch(openPopup('postModal'));
     dispatch(activePostsData(posts));
+    dispatch(activePostId(id));
     dispatch(activeIndex(index));
   };
 
