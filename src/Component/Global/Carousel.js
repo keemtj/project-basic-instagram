@@ -6,6 +6,7 @@ import { ArrowRightCircleFill } from '@styled-icons/bootstrap/ArrowRightCircleFi
 import { SquareMultiple } from '@styled-icons/fluentui-system-filled/SquareMultiple';
 import { Heart } from '@styled-icons/boxicons-solid/Heart';
 import { Chatbubble } from '@styled-icons/ionicons-sharp/Chatbubble';
+
 const Carousel = ({ imagesArray, pagenation, ...rest }) => {
   /**
    * @param imagesArray [image, image, ..., image]
@@ -60,6 +61,7 @@ const Carousel = ({ imagesArray, pagenation, ...rest }) => {
             </StImageWrapper>
           ) : (
             imagesArray?.map(({ url, name }, index) => {
+              console.log('currentImageIndex:', currentImage);
               return (
                 <StImageWrapper key={index}>
                   <StImage src={url} alt={name} />
@@ -224,13 +226,14 @@ const StRightButton = styled(ArrowRightCircleFill)`
 `;
 
 const StPagenation = styled.ul`
-  width: 100%;
+  width: fit-content;
   height: 4rem;
   display: flex;
   align-items: center;
   justify-content: center;
   position: absolute;
   bottom: ${({ pos }) => pos && '0'};
+  transform: translate(calc(30rem - 50%), 0);
 `;
 
 const StPage = styled.li`

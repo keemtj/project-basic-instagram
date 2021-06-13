@@ -63,7 +63,7 @@ const StArticle = styled.article`
   background: ${({ theme }) => theme.white};
   border-radius: 3px;
   margin-bottom: 6rem;
-  width: 62rem;
+  width: 60rem;
   height: fit-content;
   display: flex;
   flex-flow: column nowrap;

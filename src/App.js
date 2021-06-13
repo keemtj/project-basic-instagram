@@ -28,12 +28,6 @@ const App = () => {
   const history = useHistory();
   const isSignIn = useSelector(state => state.login.isSignIn);
   const { activePostsData, activeIndex } = useSelector(state => state.popup);
-  // const { data: myPosts } = useSelector(state => state.posts.myPosts);
-  // const { data: myBookmarks } = useSelector(state => state.saved.posts);
-  // const { data: myHearts } = useSelector(state => state.heart.posts);
-  // const { data: searchUserPosts } = useSelector(
-  //   state => state.posts.searchUserPosts,
-  // );
   const {
     newPostModal: newPostModalState,
     postModal: postModalState,
@@ -72,14 +66,7 @@ const App = () => {
         {newPostModalState && <NewPost setProgress={setProgress} />}
         {postSettingModalState && <PostSettingModal />}
         {postModalState && (
-          <PostModal
-            posts={activePostsData}
-            index={activeIndex}
-            // myPosts={myPosts}
-            // myBookmarks={myBookmarks}
-            // myHearts={myHearts}
-            // searchUserPosts={searchUserPosts}
-          />
+          <PostModal posts={activePostsData} index={activeIndex} />
         )}
         <ToastPopup />
       </PageWrapper>

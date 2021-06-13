@@ -9,7 +9,7 @@ import { PaperPlane } from '@styled-icons/ionicons-outline/PaperPlane';
 import { Chat } from '@styled-icons/bootstrap/Chat';
 import { Bookmark } from '@styled-icons/bootstrap/Bookmark';
 import { EmojiSmile } from '@styled-icons/bootstrap/EmojiSmile';
-import { closePopup } from '../../Modules/popup';
+import { activeIndex, closePopup } from '../../Modules/popup';
 import PostPortal from '../../PostPortal';
 import Carousel from '../Global/Carousel';
 import ProfileImage from '../Global/ProfileImage';
@@ -22,20 +22,30 @@ const icons = [
   { icon: <Bookmark /> },
 ];
 
-// const PostModal = ({ posts, myBookmarks, myHearts, searchUserPosts }) => {
-// console.log(posts, myBookmarks, myHearts, searchUserPosts);
 const PostModal = ({ posts, index }) => {
-  console.log(index);
   const modalRef = useRef();
   const dispatch = useDispatch();
   const { postModal: postModalState } = useSelector(state => state.popup);
+  const lastIndex = posts.length - 1;
 
   const handlePrev = () => {
-    console.log('prev~');
+    console.log('Previous post', index);
+    if (index === 0) {
+      // 인덱스가 0일 때 마지막 포스트로 이동
+      dispatch(activeIndex(lastIndex));
+    } else {
+      dispatch(activeIndex(index - 1));
+    }
   };
 
   const handleNext = () => {
-    console.log('next~');
+    console.log('Next post', index);
+    if (index === lastIndex) {
+      // 인덱스가 마지막일 때 처음 포스트로 이동
+      dispatch(activeIndex(0));
+    } else {
+      dispatch(activeIndex(index + 1));
+    }
   };
 
   const onCloseButton = () => {
@@ -70,7 +80,7 @@ const PostModal = ({ posts, index }) => {
       modalRef.current &&
       !modalRef.current.contains(e.target)
     ) {
-      console.log('outside?');
+      console.log('Modal outside');
       dispatch(closePopup('postModal'));
     }
   };
@@ -209,10 +219,20 @@ const PostModal = ({ posts, index }) => {
               </StChatCommentLabel>
             )}
           </StPostSubDataSection>
-          <StSlideButton type="button" role="prev" onClick={handlePrev}>
+          <StSlideButton
+            type="button"
+            role="prev"
+            onClick={handlePrev}
+            hidden={index === 0 ? true : false}
+          >
             <StPrevButton />
           </StSlideButton>
-          <StSlideButton type="button" role="next" onClick={handleNext}>
+          <StSlideButton
+            type="button"
+            role="next"
+            onClick={handleNext}
+            hidden={index === lastIndex ? true : false}
+          >
             <StNextButton />
           </StSlideButton>
         </StPostBoxBlock>
@@ -381,6 +401,9 @@ const buttonStyle = css`
   color: ${({ theme }) => theme.gray8};
   cursor: pointer;
   text-shadow: 5px 5px ${({ theme }) => theme.black};
+  &:active {
+    color: ${({ theme }) => theme.gray5};
+  }
 `;
 
 const StSlideButton = styled.div`
