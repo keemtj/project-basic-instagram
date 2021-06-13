@@ -5,7 +5,7 @@ import Posts from '../../Component/Profile/Posts';
 import {
   openPopup,
   activePostsData,
-  activePostId,
+  activePostIdData,
   activeIndex,
 } from '../../Modules/popup';
 
@@ -39,7 +39,7 @@ const PostsContainer = ({ watchName }) => {
   const onClickPostModal = (posts, id, index) => {
     dispatch(openPopup('postModal'));
     dispatch(activePostsData(posts));
-    dispatch(activePostId(id));
+    dispatch(activePostIdData(id));
     dispatch(activeIndex(index));
   };
 

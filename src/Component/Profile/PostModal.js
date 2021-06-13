@@ -9,7 +9,7 @@ import { PaperPlane } from '@styled-icons/ionicons-outline/PaperPlane';
 import { Chat } from '@styled-icons/bootstrap/Chat';
 import { Bookmark } from '@styled-icons/bootstrap/Bookmark';
 import { EmojiSmile } from '@styled-icons/bootstrap/EmojiSmile';
-import { activeIndex, activePostId, closePopup } from '../../Modules/popup';
+import { activeIndex, activePostIdData, closePopup } from '../../Modules/popup';
 import PostPortal from '../../PostPortal';
 import Carousel from '../Global/Carousel';
 import ProfileImage from '../Global/ProfileImage';
@@ -34,12 +34,12 @@ const PostModal = ({ posts, id, index }) => {
   const lastIndex = posts.length - 1;
 
   const handlePrev = () => {
-    dispatch(activePostId(posts[index - 1].id));
+    dispatch(activePostIdData(posts[index - 1].id));
     dispatch(activeIndex(index - 1));
   };
 
   const handleNext = () => {
-    dispatch(activePostId(posts[index + 1].id));
+    dispatch(activePostIdData(posts[index + 1].id));
     dispatch(activeIndex(index + 1));
   };
 
@@ -71,7 +71,7 @@ const PostModal = ({ posts, id, index }) => {
 
   useEffect(() => {
     const path = his.location.pathname;
-    dispatch(activePostId(id));
+    dispatch(activePostIdData(id));
     history.pushState('', '', `/p/${posts[activeIndexValue].id}`);
     return () => his.push(`${path}`);
   }, [activeIndexValue]);

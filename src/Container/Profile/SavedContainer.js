@@ -4,7 +4,7 @@ import Loading from '../../Component/Global/Loading';
 import Saved from '../../Component/Profile/Saved';
 import {
   activeIndex,
-  activePostId,
+  activePostIdData,
   activePostsData,
   openPopup,
 } from '../../Modules/popup';
@@ -22,7 +22,7 @@ const SavedContainer = () => {
   const onClickPostModal = (posts, id, index) => {
     dispatch(openPopup('postModal'));
     dispatch(activePostsData(posts));
-    dispatch(activePostId(id));
+    dispatch(activePostIdData(id));
     dispatch(activeIndex(index));
   };
 

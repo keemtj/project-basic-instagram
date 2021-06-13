@@ -5,7 +5,7 @@ import Heart from '../../Component/Profile/Heart';
 import { getHeartPosts, getHearts } from '../../Modules/heart';
 import {
   activeIndex,
-  activePostId,
+  activePostIdData,
   activePostsData,
   openPopup,
 } from '../../Modules/popup';
@@ -22,7 +22,7 @@ const HeartContainer = () => {
   const onClickPostModal = (posts, id, index) => {
     dispatch(openPopup('postModal'));
     dispatch(activePostsData(posts));
-    dispatch(activePostId(id));
+    dispatch(activePostIdData(id));
     dispatch(activeIndex(index));
   };
 

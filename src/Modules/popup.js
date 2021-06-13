@@ -16,7 +16,7 @@ export const toastMessage = message => ({ type: TOAST_MESSAGE, message });
 
 export const activePostData = data => ({ type: ACTIVE_POST_DATA, data });
 export const activePostsData = datas => ({ type: ACTIVE_POSTS_DATA, datas });
-export const activePostId = id => ({ type: ACTIVE_POST_ID, id });
+export const activePostIdData = id => ({ type: ACTIVE_POST_ID, id });
 export const activeIndex = index => ({ type: ACTIVE_INDEX, index });
 
 // NOTE initialState
