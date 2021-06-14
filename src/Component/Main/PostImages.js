@@ -2,10 +2,10 @@ import React from 'react';
 import styled from 'styled-components';
 import Carousel from '../Global/Carousel';
 
-const PostImages = ({ imagesArray }) => {
+const PostImages = ({ ...rest }) => {
   return (
     <StImagesSection>
-      <Carousel imagesArray={imagesArray} pagenation />
+      <Carousel {...rest} />
     </StImagesSection>
   );
 };
