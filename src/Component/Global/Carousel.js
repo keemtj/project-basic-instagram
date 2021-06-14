@@ -7,7 +7,7 @@ import { SquareMultiple } from '@styled-icons/fluentui-system-filled/SquareMulti
 import { Heart } from '@styled-icons/boxicons-solid/Heart';
 import { Chatbubble } from '@styled-icons/ionicons-sharp/Chatbubble';
 
-const Carousel = ({ imagesArray, pagenation, ...rest }) => {
+const Carousel = ({ ...rest }) => {
   /**
    * @param imagesArray [image, image, ..., image]
    * @param pagenation Dot pagenation
@@ -16,9 +16,13 @@ const Carousel = ({ imagesArray, pagenation, ...rest }) => {
    * @param hover image hover in profile page
    * @param heartCount when hovering post image
    * @param comments(comment.length) when hovering post image
+   * @param onClickPostModal onClickPostModal
+   * @param pos pagenation's dot position
    * FIXME: profile -> isProfile
    */
   const {
+    imagesArray,
+    pagenation,
     badge,
     profile,
     hover,
@@ -26,8 +30,6 @@ const Carousel = ({ imagesArray, pagenation, ...rest }) => {
     onHide,
     heartCount,
     comments,
-    postId,
-    postUid,
     onClick,
     pos,
   } = rest;
@@ -61,7 +63,6 @@ const Carousel = ({ imagesArray, pagenation, ...rest }) => {
             </StImageWrapper>
           ) : (
             imagesArray?.map(({ url, name }, index) => {
-              console.log('currentImageIndex:', currentImage);
               return (
                 <StImageWrapper key={index}>
                   <StImage src={url} alt={name} />
@@ -70,7 +71,7 @@ const Carousel = ({ imagesArray, pagenation, ...rest }) => {
             })
           )}
           {hover && (
-            <StHover hover={hover} onClick={() => onClick(postUid, postId)}>
+            <StHover hover={hover} onClick={onClick}>
               <StIconWrap>
                 <StHeartIcons />
                 {heartCount.toLocaleString() || 0}

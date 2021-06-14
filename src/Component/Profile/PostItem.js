@@ -9,8 +9,6 @@ const PostItem = ({
   onHide,
   heartCount,
   comments,
-  postId,
-  postUid,
   onClickPostModal,
 }) => {
   return (
@@ -24,8 +22,6 @@ const PostItem = ({
         onHide={onHide}
         heartCount={heartCount}
         comments={comments}
-        postId={postId}
-        postUid={postUid}
         onClick={onClickPostModal}
       />
     </StPostWrapper>

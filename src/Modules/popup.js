@@ -27,11 +27,11 @@ const initialState = {
   postModal: false,
   postSettingModal: false,
   toast: false,
+  toastMessage: '',
   activePostData: {},
   activePostsData: [],
   activePostId: '',
   activeIndexValue: 0,
-  toastMessage: '',
 };
 
 // NOTE reducer
