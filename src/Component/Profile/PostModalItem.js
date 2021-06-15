@@ -38,6 +38,7 @@ const StImageBox = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+  border-right: 1px solid ${({ theme }) => theme.gray8};
 `;
 
 const StPostDataBox = styled.div`

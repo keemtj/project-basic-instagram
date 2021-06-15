@@ -28,8 +28,8 @@ const initialState = {
   postSettingModal: false,
   toast: false,
   toastMessage: '',
-  activePostData: {},
-  activePostsData: [],
+  activePostData: {}, // post setting modal in main page
+  activePostsData: [], // post modal in profile page
   activePostId: '',
   activeIndexValue: 0,
 };

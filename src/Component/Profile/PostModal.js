@@ -22,7 +22,6 @@ const PostModal = ({ posts, id, index }) => {
 
   const handlePrev = e => {
     e.stopPropagation();
-    console.log('이전 포스트');
     modalRef.current.style.transform = `translate(-${95 * (index - 1)}rem)`;
     dispatch(activePostIdData(posts[index - 1].id));
     dispatch(activeIndex(index - 1));
@@ -30,7 +29,6 @@ const PostModal = ({ posts, id, index }) => {
 
   const handleNext = e => {
     e.stopPropagation();
-    console.log('다음 포스트');
     modalRef.current.style.transform = `translate(-${95 * (index + 1)}rem)`;
     dispatch(activePostIdData(posts[index + 1].id));
     dispatch(activeIndex(index + 1));
@@ -43,6 +41,9 @@ const PostModal = ({ posts, id, index }) => {
   useEffect(() => {
     const path = his.location.pathname;
     dispatch(activePostIdData(id));
+    modalRef.current.style.transform = `translate(-${
+      95 * activeIndexValue
+    }rem)`;
     history.pushState('', '', `/p/${activePostId}`);
     return () => his.push(`${path}`);
   }, [activeIndexValue]);
@@ -70,9 +71,9 @@ const PostModal = ({ posts, id, index }) => {
       <StPostModalWrapper>
         <StPostCarousel>
           <StPostCarouselInner ref={modalRef}>
-            {posts.map(post => (
-              <PostModalItem post={post} key={post.id} />
-            ))}
+            {posts.map(post => {
+              return <PostModalItem post={post} key={post.id} />;
+            })}
           </StPostCarouselInner>
           <StSlideButton
             type="button"
