@@ -27,7 +27,7 @@ const User = ({
       </StImageWrapper>
       <StDetail>
         <StIdBox>
-          <StId>{displayName}</StId>
+          <StDisplayName>{displayName}</StDisplayName>
           {displayName === currentDisplayName ? (
             <>
               <StEditBtn onClick={onEditProfile}>프로필 편집</StEditBtn>
@@ -178,7 +178,7 @@ const StSettingsBtn = styled.button`
   outline: none;
 `;
 
-const StId = styled.div`
+const StDisplayName = styled.div`
   font-size: 2.7rem;
   font-weight: 300;
 `;
@@ -186,7 +186,7 @@ const StId = styled.div`
 const StFollowBox = styled.ul`
   display: flex;
   flex-flow: row nowrap;
-  margin-top: 2.6rem;
+  margin-top: 2.5rem;
   font-size: 1.6rem;
 
   & > li + li {
@@ -195,7 +195,7 @@ const StFollowBox = styled.ul`
 `;
 
 const StUsername = styled.div`
-  margin-top: 1.5rem;
+  margin-top: 2.5rem;
   font-size: 1.6rem;
   font-weight: 600;
 `;
