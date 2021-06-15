@@ -1,12 +1,14 @@
 import React from 'react';
 import styled from 'styled-components';
 import ProfileImage from '../Global/ProfileImage';
+import Loading from '../Global/Loading';
 
 const Aside = ({
   handleSignOut,
   displayName,
   photoURL,
   followed,
+  loading,
   onFollow,
 }) => {
   return (
@@ -23,24 +25,30 @@ const Aside = ({
         />
         <StButton onClick={handleSignOut}>로그아웃</StButton>
       </StProfileImageWrapper>
-      {followed?.length > 0 && (
-        <StRecommendTitle>회원님을 위한 추천</StRecommendTitle>
+      {loading ? (
+        <Loading isLoading={loading} />
+      ) : (
+        <>
+          {followed?.length > 0 && (
+            <StRecommendTitle>회원님을 위한 추천</StRecommendTitle>
+          )}
+          <StRecommend>
+            {followed?.slice(0, 5)?.map((user, index) => (
+              <StProfileImageWrapper key={index}>
+                <ProfileImage
+                  username={user.displayName}
+                  width={3.5}
+                  height={3.5}
+                  marginLeft={1.2}
+                  fontSize={1.4}
+                  src={user.photoURL}
+                />
+                <StButton onClick={onFollow}>팔로우</StButton>
+              </StProfileImageWrapper>
+            ))}
+          </StRecommend>
+        </>
       )}
-      <StRecommend>
-        {followed?.slice(0, 5)?.map((f, index) => (
-          <StProfileImageWrapper key={index}>
-            <ProfileImage
-              username={f.displayName}
-              width={3.5}
-              height={3.5}
-              marginLeft={1.2}
-              fontSize={1.4}
-              src="/images/default_profile.png"
-            />
-            <StButton onClick={onFollow}>팔로우</StButton>
-          </StProfileImageWrapper>
-        ))}
-      </StRecommend>
     </StAside>
   );
 };

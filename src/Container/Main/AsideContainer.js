@@ -5,14 +5,22 @@ import Aside from '../../Component/Main/Aside';
 import { signOut } from '../../services/firebaseAuth';
 import { loginState } from '../../Modules/login';
 import { postDataClear } from '../../Modules/posts';
-import { userDataClear } from '../../Modules/user';
+import { userDataClear, suggestionUsersData } from '../../Modules/user';
 import { searchDataClear } from '../../Modules/search';
+import { differenceSet } from '../../lib/differenceSet';
 
 const AsideContainer = () => {
   const history = useHistory();
   const dispatch = useDispatch();
   const { displayName, photoURL } = useSelector(
     state => state.user.currentUser,
+  );
+  const { followers, following } = useSelector(
+    state => state.user.currentUserFollowData,
+  );
+
+  const { data: followed, loading } = useSelector(
+    state => state.user.suggestionUsers,
   );
 
   const handleSignOut = () => {
@@ -36,12 +44,17 @@ const AsideContainer = () => {
   //   }
   // };
 
+  React.useEffect(() => {
+    dispatch(suggestionUsersData(differenceSet(followers, following)));
+  }, [followers, following]);
+
   return (
     <Aside
       handleSignOut={handleSignOut}
       displayName={displayName}
       photoURL={photoURL}
-      // followed={followed}
+      followed={followed}
+      loading={loading}
       // onFollow={onFollow}
     />
   );

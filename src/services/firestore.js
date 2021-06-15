@@ -190,6 +190,16 @@ export const getUserSearchResultByDisplayName = async value => {
   return result;
 };
 
+// get users data by differenceSet(=uids)
+export const getUsersData = async uids => {
+  const arr = await uids.map(async uid => {
+    const doc = await firestore.collection('users').doc(uid).get();
+    return doc.data();
+  });
+  const result = await Promise.all(arr);
+  return result;
+};
+
 // --> follow, unfollow
 export const follow = async (currentUserUid, searchUserUid) => {
   console.log('follow!!');
