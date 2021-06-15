@@ -121,6 +121,7 @@ const StPostCarousel = styled.div`
 `;
 
 const StPostCarouselInner = styled.main`
+  height: 100%;
   display: flex;
   flex-flow: row nowrap;
   background: ${({ theme }) => theme.white};

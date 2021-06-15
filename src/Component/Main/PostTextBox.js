@@ -3,16 +3,20 @@ import styled, { css } from 'styled-components';
 
 const PostTextBox = ({ displayName, more, onClickMore, text }) => {
   return (
-    <StTextBox>
-      <StText more={more}>
-        <StUsername>{displayName}</StUsername> {text}{' '}
-      </StText>
-      {text?.length > 70 && (
-        <StMoreToggle onClick={onClickMore} more={more}>
-          {more ? '더 보기' : '숨기기'}
-        </StMoreToggle>
+    <>
+      {text && (
+        <StTextBox>
+          <StText more={more}>
+            <StUsername>{displayName}</StUsername> {text}{' '}
+          </StText>
+          {text?.length > 70 && (
+            <StMoreToggle onClick={onClickMore} more={more}>
+              {more ? '더 보기' : '숨기기'}
+            </StMoreToggle>
+          )}
+        </StTextBox>
       )}
-    </StTextBox>
+    </>
   );
 };
 

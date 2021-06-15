@@ -1,14 +1,14 @@
 import React from 'react';
 import styled from 'styled-components';
 import PostItemContainer from '../../Container/Profile/PostItemContainer';
-import EmptyPosts from '../Profile/EmptyPosts';
+import { EmptySaved } from '../Global/Empty';
 
 const Saved = ({ posts, onClickPostModal }) => {
   return (
     <>
-      <StOnlyYou>저장한 게시물은 회원님만 볼 수 있습니다</StOnlyYou>
+      <StOnlyYou>저장한 내용은 회원님만 볼 수 있습니다</StOnlyYou>
       {posts?.length === 0 ? (
-        <EmptyPosts />
+        <EmptySaved />
       ) : (
         <StSavedWrapper>
           {posts?.map((post, index, arr) => {

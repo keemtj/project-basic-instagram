@@ -35,6 +35,7 @@ const StPostBoxBlockInner = styled.div`
 
 const StImageBox = styled.div`
   width: 60rem;
+  height: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
