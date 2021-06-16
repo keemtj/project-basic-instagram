@@ -1,9 +1,14 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router';
 import User from '../../Component/Profile/User';
 import { followUser, unFollowUser } from '../../Modules/search';
-import { follow, unfollow } from '../../services/firestore';
+import { currentUserFollowData } from '../../Modules/user';
+import {
+  follow,
+  observeUsersFollowData,
+  unfollow,
+} from '../../services/firestore';
 
 const UserContainer = ({ watchName }) => {
   const history = useHistory();
@@ -37,18 +42,13 @@ const UserContainer = ({ watchName }) => {
 
   const onToggleFollow = () => {
     if (isFollowing) {
-      console.log(
-        '언팔로우 dispatch: 서치 유저의 팔로우 데이터에서 내 uid를 제거',
-      );
       unfollow(currentUserData.uid, searchUserData?.uid);
       dispatch(unFollowUser(currentUserData.uid));
     } else {
       follow(currentUserData.uid, searchUserData?.uid);
-      console.log(
-        '팔로우 dispatch: 서치 유저의 팔로우 데이터에서 내 uid를 추가',
-      );
       dispatch(followUser(currentUserData.uid));
     }
+    observeUsersFollowData(dispatch, currentUserFollowData);
   };
 
   const onEditProfile = () => {
@@ -59,6 +59,10 @@ const UserContainer = ({ watchName }) => {
   const onClickSettings = () => {
     setSettings(!settings);
   };
+
+  useEffect(() => {
+    observeUsersFollowData(dispatch, currentUserFollowData);
+  }, []);
 
   return (
     <User

@@ -200,9 +200,18 @@ export const getUsersData = async uids => {
   return result;
 };
 
+export const observeUsersFollowData = (dispatch, actionCreator) => {
+  const { uid } = firebaseAuth.currentUser;
+  firestore
+    .collection('follow')
+    .doc(uid)
+    .onSnapshot(snapshot => {
+      dispatch(actionCreator(snapshot.data()));
+    });
+};
+
 // --> follow, unfollow
 export const follow = async (currentUserUid, searchUserUid) => {
-  console.log('follow!!');
   await firestore
     .collection('follow')
     .doc(currentUserUid)
@@ -218,7 +227,6 @@ export const follow = async (currentUserUid, searchUserUid) => {
 };
 
 export const unfollow = async (currentUserUid, searchUserUid) => {
-  console.log('unfollow');
   await firestore
     .collection('follow')
     .doc(currentUserUid)

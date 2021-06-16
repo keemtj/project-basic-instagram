@@ -43,7 +43,9 @@ const Aside = ({
                   fontSize={1.4}
                   src={user.photoURL}
                 />
-                <StButton onClick={onFollow}>팔로우</StButton>
+                <StButton onClick={() => onFollow(user.uid, user.displayName)}>
+                  팔로우
+                </StButton>
               </StProfileImageWrapper>
             ))}
           </StRecommend>
