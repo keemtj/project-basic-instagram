@@ -27,6 +27,7 @@ const Post = ({
   isBookmark,
   isHeart,
   onClickSetting,
+  onClickHeartCount,
 }) => {
   return (
     <StArticle>
@@ -44,7 +45,11 @@ const Post = ({
         isBookmark={isBookmark}
         isHeart={isHeart}
       />
-      <PostHeartCount heartCount={heartCount} onClickHeart={onClickHeart} />
+      <PostHeartCount
+        heartCount={heartCount}
+        onClickHeartCount={onClickHeartCount}
+        onClickHeart={onClickHeart}
+      />
       <PostTextBox
         displayName={displayName}
         more={more}

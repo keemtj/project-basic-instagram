@@ -19,7 +19,7 @@ const ProfileImage = ({
         alt={alt}
         width={width}
         height={height}
-        onClick={rest.onClick}
+        onClick={rest.onClick ? rest.onClick : undefined}
       />
       {children ? (
         children

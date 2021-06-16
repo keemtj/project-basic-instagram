@@ -115,6 +115,11 @@ const PostContainer = ({
     dispatch(activePostData({ uid, id, imagesArray }));
   };
 
+  const onClickHeartCount = () => {
+    console.log('heartCount');
+    dispatch(openPopup('postHeartCountModal'));
+  };
+
   return (
     <Post
       displayName={displayName}
@@ -134,6 +139,7 @@ const PostContainer = ({
       isBookmark={isBookmark}
       isHeart={isHeart}
       onClickSetting={onClickSetting}
+      onClickHeartCount={onClickHeartCount}
     />
   );
 };

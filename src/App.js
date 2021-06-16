@@ -22,6 +22,7 @@ import { useHistory } from 'react-router';
 import PostSettingModal from './Component/Main/PostSettingModal';
 import ToastPopup from './Component/Global/ToastPopup';
 import PostModal from './Component/Profile/PostModal';
+import HeartCountModal from './Component/Main/HeartCountModal';
 
 const App = () => {
   const dispatch = useDispatch();
@@ -35,6 +36,7 @@ const App = () => {
     newPostModal: newPostModalState,
     postModal: postModalState,
     postSettingModal: postSettingModalState,
+    postHeartCountModal: postHeartCountModalState,
   } = useSelector(state => state.popup);
   const [progress, setProgress] = useState(0);
 
@@ -75,6 +77,7 @@ const App = () => {
             index={activeIndexValue}
           />
         )}
+        {postHeartCountModalState && <HeartCountModal />}
         <ToastPopup />
       </PageWrapper>
     </>

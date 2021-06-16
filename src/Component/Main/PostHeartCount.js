@@ -1,11 +1,11 @@
 import React from 'react';
 import styled from 'styled-components';
 
-const PostHeartCount = ({ heartCount, onClickHeart }) => {
+const PostHeartCount = ({ heartCount, onClickHeartCount, onClickHeart }) => {
   return (
     <StHeartCountWrapper>
       {heartCount > 0 ? (
-        <StHeartCountBox onClick={() => console.log('click heart count!!!')}>
+        <StHeartCountBox onClick={onClickHeartCount}>
           좋아요 <StHeartCount>{heartCount}</StHeartCount>개
         </StHeartCountBox>
       ) : (
