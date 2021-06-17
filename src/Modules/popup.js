@@ -27,6 +27,7 @@ const initialState = {
   postModal: false,
   postSettingModal: false,
   postHeartCountModal: false,
+  profileEditModal: false,
   toast: false,
   toastMessage: '',
   activePostData: {}, // post setting modal in main page

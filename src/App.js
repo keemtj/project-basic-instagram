@@ -23,6 +23,7 @@ import PostSettingModal from './Component/Main/PostSettingModal';
 import ToastPopup from './Component/Global/ToastPopup';
 import PostModal from './Component/Profile/PostModal';
 import HeartCountModal from './Component/Main/HeartCountModal';
+import ProfileEditModal from './Container/Profile/ProfileEditModal';
 
 const App = () => {
   const dispatch = useDispatch();
@@ -37,6 +38,7 @@ const App = () => {
     postModal: postModalState,
     postSettingModal: postSettingModalState,
     postHeartCountModal: postHeartCountModalState,
+    profileEditModal: profileEditModalState,
   } = useSelector(state => state.popup);
   const [progress, setProgress] = useState(0);
 
@@ -78,6 +80,7 @@ const App = () => {
           />
         )}
         {postHeartCountModalState && <HeartCountModal />}
+        {profileEditModalState && <ProfileEditModal />}
         <ToastPopup />
       </PageWrapper>
     </>

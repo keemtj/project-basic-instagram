@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router';
 import User from '../../Component/Profile/User';
+import { openPopup } from '../../Modules/popup';
 import { followUser, unFollowUser } from '../../Modules/search';
 import { currentUserFollowData } from '../../Modules/user';
 import {
@@ -13,7 +14,9 @@ import {
 const UserContainer = ({ watchName }) => {
   const history = useHistory();
   const dispatch = useDispatch();
-  const [settings, setSettings] = useState(false);
+  const { profileEditModal: profileEditModalState } = useSelector(
+    state => state.popup,
+  );
 
   // NOTE 현재 로그인 중인 유저의 데이터
   const currentUserData = useSelector(state => state.user.currentUser);
@@ -56,13 +59,18 @@ const UserContainer = ({ watchName }) => {
     history.push('/edit');
   };
 
-  const onClickSettings = () => {
-    setSettings(!settings);
+  const onClickProfileEditModal = () => {
+    console.log('profile edit modal trigger');
+    dispatch(openPopup('profileEditModal'));
   };
 
   useEffect(() => {
     observeUsersFollowData(dispatch, currentUserFollowData);
   }, []);
+
+  useEffect(() => {
+    document.body.style.overflow = profileEditModalState ? 'hidden' : 'auto';
+  }, [profileEditModalState]);
 
   return (
     <User
@@ -105,8 +113,8 @@ const UserContainer = ({ watchName }) => {
       }
       onEditProfile={onEditProfile}
       onToggleFollow={onToggleFollow}
-      onClickSettings={onClickSettings}
-      settings={settings}
+      onClickProfileEditModal={onClickProfileEditModal}
+      profileEditModalState={profileEditModalState}
     />
   );
 };

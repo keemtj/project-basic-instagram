@@ -17,8 +17,8 @@ const User = ({
   followingCount,
   onEditProfile,
   onToggleFollow,
-  onClickSettings,
-  settings,
+  onClickProfileEditModal,
+  profileEditModalState,
 }) => {
   return (
     <StUser>
@@ -31,8 +31,8 @@ const User = ({
           {displayName === currentDisplayName ? (
             <>
               <StEditBtn onClick={onEditProfile}>프로필 편집</StEditBtn>
-              <StSettingsBtn onClick={onClickSettings}>
-                {settings ? <Settings /> : <FilledSettings />}
+              <StSettingsBtn onClick={onClickProfileEditModal}>
+                {profileEditModalState ? <Settings /> : <FilledSettings />}
               </StSettingsBtn>
             </>
           ) : isFollowing ? (
@@ -132,7 +132,7 @@ const buttonCommonStyle = css`
   height: 100%;
   min-height: 2.9rem;
   border-radius: 4px;
-  font-size: 1.4rem;
+  font-size: 1.3rem;
   font-weight: 600;
   cursor: pointer;
 `;
@@ -142,6 +142,9 @@ const StEditBtn = styled.button`
   border: 1px solid rgba(219, 219, 219, 1);
   background: none;
   color: ${({ theme }) => theme.black};
+  &:active {
+    color: ${({ theme }) => theme.darkGray};
+  }
 `;
 
 const StFollowBtn = styled.button`
