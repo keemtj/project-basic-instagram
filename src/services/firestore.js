@@ -435,6 +435,5 @@ export const getUsersDataByHearts = async hearts => {
     return doc.data();
   });
   const result = await Promise.all(response);
-  console.log(result);
   return result;
 };

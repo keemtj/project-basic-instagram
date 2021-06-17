@@ -2,9 +2,13 @@ import React from 'react';
 import styled, { css, keyframes } from 'styled-components';
 import { Spinner3 } from '@styled-icons/icomoon/Spinner3';
 
-const Loading = ({ isLoading, isProfile, isSubmit }) => {
+const Loading = ({ isLoading, isProfile, isSubmit, isHeartCount }) => {
   return (
-    <StLoading isProfile={isProfile} isSubmit={isSubmit}>
+    <StLoading
+      isProfile={isProfile}
+      isSubmit={isSubmit}
+      isHeartCount={isHeartCount}
+    >
       <StSpinner
         isLoading={isLoading}
         isProfile={isProfile}
@@ -37,6 +41,12 @@ const StLoading = styled.div`
     css`
       width: 100%;
       height: 2.2rem;
+    `}
+  ${({ isHeartCount }) =>
+    isHeartCount &&
+    css`
+      width: 100%;
+      height: 5.5rem;
     `}
 `;
 

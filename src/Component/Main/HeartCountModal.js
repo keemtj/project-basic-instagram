@@ -45,7 +45,7 @@ const HeartCountModal = () => {
           <StHeader>좋아요</StHeader>
           <StProfileBox>
             {loading ? (
-              <Loading isLoading={loading} />
+              <Loading isLoading={loading} isHeartCount />
             ) : (
               usersWhoClickHeart.map((user, index) => {
                 return (
