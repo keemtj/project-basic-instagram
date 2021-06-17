@@ -22,7 +22,7 @@ import {
   observeBookmark,
   observeHeartCount,
 } from '../../services/firestore';
-import { getHearts } from '../../Modules/heart';
+import { getHearts, getUsersWhoClickHeart } from '../../Modules/heart';
 import { getBookmarks } from '../../Modules/saved';
 import { activePostData, openPopup } from '../../Modules/popup';
 
@@ -62,10 +62,12 @@ const PostContainer = ({
     location,
     uid,
     id,
+    hearts,
   } = post;
   const history = useHistory();
   const dispatch = useDispatch();
   const { uid: currentUid } = useSelector(state => state.user.currentUser);
+
   const [more, setMore] = useState(true);
 
   const onClickMore = () => {
@@ -117,7 +119,9 @@ const PostContainer = ({
 
   const onClickHeartCount = () => {
     console.log('heartCount');
+    console.log(hearts);
     dispatch(openPopup('postHeartCountModal'));
+    dispatch(getUsersWhoClickHeart(hearts));
   };
 
   return (

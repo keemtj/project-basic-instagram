@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { closePopup } from '../../Modules/popup';
 import PostHeartCountPortal from '../../PostHeartCountPortal';
 import ProfileImage from '../Global/ProfileImage';
+import Loading from '../Global/Loading';
 
 const HeartCountModal = () => {
   const modalRef = useRef();
@@ -12,64 +13,9 @@ const HeartCountModal = () => {
   const { postHeartCountModal: postHeartCountModalState } = useSelector(
     state => state.popup,
   );
-
-  const heartUserLists = [
-    {
-      src: '/images/default_profile.png',
-      displayName: 'displayName1',
-      username: 'username1',
-    },
-    {
-      src: '/images/default_profile.png',
-      displayName: 'displayName2',
-      username: 'username1',
-    },
-    {
-      src: '/images/default_profile.png',
-      displayName: 'displayName3',
-      username: 'username1',
-    },
-    {
-      src: '/images/default_profile.png',
-      displayName: 'displayName4',
-      username: 'username1',
-    },
-    {
-      src: '/images/default_profile.png',
-      displayName: 'displayName4',
-      username: 'username1',
-    },
-    {
-      src: '/images/default_profile.png',
-      displayName: 'displayName4',
-      username: 'username1',
-    },
-    {
-      src: '/images/default_profile.png',
-      displayName: 'displayName4',
-      username: 'username1',
-    },
-    {
-      src: '/images/default_profile.png',
-      displayName: 'displayName4',
-      username: 'username1',
-    },
-    {
-      src: '/images/default_profile.png',
-      displayName: 'displayName4',
-      username: 'username1',
-    },
-    {
-      src: '/images/default_profile.png',
-      displayName: 'displayName4',
-      username: 'username1',
-    },
-    {
-      src: '/images/default_profile.png',
-      displayName: 'displayName4',
-      username: 'username1',
-    },
-  ];
+  const { data: usersWhoClickHeart, loading } = useSelector(
+    state => state.heart.users,
+  );
 
   const onCloseModal = () => {
     dispatch(closePopup('postHeartCountModal'));
@@ -98,23 +44,29 @@ const HeartCountModal = () => {
         <StHeartListBox ref={modalRef}>
           <StHeader>좋아요</StHeader>
           <StProfileBox>
-            {heartUserLists.map((user, index) => {
-              return (
-                <StUserList key={index}>
-                  <ProfileImage
-                    src={user.src}
-                    alt={user.displayName}
-                    width={5}
-                    height={5}
-                  >
-                    <StName>
-                      <StDisplayName>{user.displayName}</StDisplayName>
-                      <StUsername>{user.username}</StUsername>
-                    </StName>
-                  </ProfileImage>
-                </StUserList>
-              );
-            })}
+            {loading ? (
+              <Loading isLoading={loading} />
+            ) : (
+              usersWhoClickHeart.map((user, index) => {
+                return (
+                  <StUserList key={index}>
+                    <ProfileImage
+                      src={user.photoURL}
+                      alt={user.displayName}
+                      width={5}
+                      height={5}
+                    >
+                      <StName>
+                        <StDisplayName>{user.displayName}</StDisplayName>
+                        {user.username && (
+                          <StUsername>{user.username}</StUsername>
+                        )}
+                      </StName>
+                    </ProfileImage>
+                  </StUserList>
+                );
+              })
+            )}
           </StProfileBox>
           <StCloseButton onClick={onCloseModal}>
             <StIcon />

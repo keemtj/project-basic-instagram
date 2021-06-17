@@ -427,3 +427,14 @@ export const getPostsByHearts = async hearts => {
   const result = await Promise.all(response);
   return result;
 };
+
+export const getUsersDataByHearts = async hearts => {
+  console.log('좋아요를 누른 유저들의 데이터 가져오기~~~~');
+  const response = await hearts.map(async uid => {
+    const doc = await firestore.collection('users').doc(uid).get();
+    return doc.data();
+  });
+  const result = await Promise.all(response);
+  console.log(result);
+  return result;
+};
