@@ -106,6 +106,10 @@ const PostContainer = ({
     dispatch(getUsersWhoClickHeart(hearts));
   };
 
+  const onClickPostModal = () => {
+    console.log('댓글 더 보기 클릭해서 open post modal');
+  };
+
   return (
     <Post
       displayName={displayName}
@@ -126,6 +130,7 @@ const PostContainer = ({
       isHeart={isHeart}
       onClickSetting={onClickSetting}
       onClickHeartCount={onClickHeartCount}
+      onClickPostModal={onClickPostModal}
     />
   );
 };

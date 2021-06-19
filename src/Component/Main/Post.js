@@ -28,6 +28,7 @@ const Post = ({
   isHeart,
   onClickSetting,
   onClickHeartCount,
+  onClickPostModal,
 }) => {
   return (
     <StArticle>
@@ -56,7 +57,11 @@ const Post = ({
         onClickMore={onClickMore}
         text={text}
       />
-      <PostComments isPossibleComment={isPossibleComment} comments={comments} />
+      <PostComments
+        isPossibleComment={isPossibleComment}
+        comments={comments}
+        onClickPostModal={onClickPostModal}
+      />
       <PostTimeElapsed timeElapsed={timeElapsed} />
       <PostChatInput isPossibleComment={isPossibleComment} />
     </StArticle>
