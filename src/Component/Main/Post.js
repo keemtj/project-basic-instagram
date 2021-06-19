@@ -5,13 +5,15 @@ import PostImages from './PostImages';
 import PostNavigation from './PostNavigation';
 import PostHeartCount from './PostHeartCount';
 import PostTextBox from './PostTextBox';
-import PostComments from './PostComments';
+import PostCommentsContainer from '../../Container/Main/PostCommentsContainer';
 import PostTimeElapsed from './PostTimeElapsed';
-import PostChatInput from './PostChatInput';
+import PostChatInputContainer from '../../Container/Main/PostChatInputContainer';
 
 const Post = ({
-  photoURL,
+  uid,
+  id,
   displayName,
+  photoURL,
   location,
   imagesArray,
   heartCount,
@@ -57,13 +59,17 @@ const Post = ({
         onClickMore={onClickMore}
         text={text}
       />
-      <PostComments
+      <PostCommentsContainer
         isPossibleComment={isPossibleComment}
         comments={comments}
         onClickPostModal={onClickPostModal}
       />
       <PostTimeElapsed timeElapsed={timeElapsed} />
-      <PostChatInput isPossibleComment={isPossibleComment} />
+      <PostChatInputContainer
+        isPossibleComment={isPossibleComment}
+        uid={uid}
+        id={id}
+      />
     </StArticle>
   );
 };

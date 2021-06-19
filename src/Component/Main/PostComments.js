@@ -1,7 +1,14 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
+import { calcTimeElapsed } from '../../lib/calcTimeElapsed';
 
-const PostComments = ({ isPossibleComment, comments, onClickPostModal }) => {
+const PostComments = ({
+  isPossibleComment,
+  displayNames,
+  comments,
+  onClickPostModal,
+}) => {
   return (
     <>
       {!isPossibleComment && (
@@ -11,12 +18,21 @@ const PostComments = ({ isPossibleComment, comments, onClickPostModal }) => {
               댓글 {comments.length}개 모두 보기
             </StMoreComments>
           )}
-          {comments?.slice(0, 2).map((comment, index) => (
-            <div key={index}>
-              <StDisplayName>{comment.displayName}</StDisplayName>{' '}
-              <span>{comment.comment}</span>
-            </div>
-          ))}
+          <StCommentsUl>
+            {comments?.slice(-2, comments?.length).map((comment, index) => {
+              const dns = displayNames.slice(-2, displayNames.length);
+              return (
+                <StComment key={index}>
+                  <StLink to={`/${displayNames[index]}`}>
+                    <StDisplayName>{dns[index]}</StDisplayName>{' '}
+                  </StLink>
+                  <StText>{comment.comment}</StText>
+                  <StTimeStamp>{calcTimeElapsed(comment.date)}</StTimeStamp>
+                  <div />
+                </StComment>
+              );
+            })}
+          </StCommentsUl>
         </StCommentsBox>
       )}
     </>
@@ -27,8 +43,38 @@ const StCommentsBox = styled.section`
   width: 100%;
   padding: 0rem 1.5rem;
   font-size: 1.4rem;
-  & > div {
+`;
+
+const StMoreComments = styled.div`
+  margin-top: 1rem;
+  width: 100%;
+  color: ${({ theme }) => theme.darkGray};
+  cursor: pointer;
+  &:hover {
+    text-decoration: underline;
+  }
+`;
+
+const StCommentsUl = styled.ul`
+  margin-top: 1rem;
+  height: fit-content;
+`;
+
+const StComment = styled.li`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  & + & {
     margin-top: 1rem;
+  }
+`;
+
+const StLink = styled(Link)`
+  align-self: flex-start;
+  color: ${({ theme }) => theme.black};
+  text-decoration: none;
+  &:hover {
+    text-decoration: underline;
   }
 `;
 
@@ -36,10 +82,21 @@ const StDisplayName = styled.span`
   font-weight: 600;
 `;
 
-const StMoreComments = styled.div`
-  width: 100%;
+const StText = styled.span`
+  align-self: flex-start;
+  flex-grow: 1;
+  margin-left: 0.5rem;
+  word-break: break-all;
+`;
+
+const StTimeStamp = styled.span`
+  align-self: flex-start;
+  margin-top: 0.2rem;
+  min-width: 6rem;
   color: ${({ theme }) => theme.darkGray};
-  cursor: pointer;
+  text-align: right;
+  font-size: 1rem;
+  line-height: 1.1;
 `;
 
 export default PostComments;

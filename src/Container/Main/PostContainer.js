@@ -112,6 +112,8 @@ const PostContainer = ({
 
   return (
     <Post
+      uid={uid}
+      id={id}
       displayName={displayName}
       photoURL={photoURL}
       location={location}

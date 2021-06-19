@@ -2,17 +2,26 @@ import React from 'react';
 import styled from 'styled-components';
 import { EmojiSmile } from '@styled-icons/bootstrap/EmojiSmile';
 
-const PostChatInput = ({ isPossibleComment }) => {
+const PostChatInput = ({ isPossibleComment, onSubmit, onChange, comment }) => {
   return (
     <>
       {!isPossibleComment && (
-        <StChatCommentLabel>
-          <button>
-            <StEmojiSmile />
-          </button>
-          <StCommentInput type="text" placeholder="댓글 달기..." />
-          <StCommentButton type="submit">게시</StCommentButton>
-        </StChatCommentLabel>
+        <form onSubmit={onSubmit}>
+          <StChatCommentLabel>
+            <div>
+              <StEmojiSmile />
+            </div>
+            <StCommentInput
+              type="text"
+              placeholder="댓글 달기..."
+              value={comment}
+              onChange={onChange}
+            />
+            <StCommentButton type="submit" comment={comment}>
+              게시
+            </StCommentButton>
+          </StChatCommentLabel>
+        </form>
       )}
     </>
   );
@@ -42,7 +51,9 @@ const StCommentButton = styled.button`
   width: 4rem;
   font-size: 1.5rem;
   font-weight: 600;
-  color: ${({ theme }) => theme.activeBlue};
+  color: ${({ theme, comment }) =>
+    comment.length > 0 ? theme.activeBlue : theme.inactiveBlue};
+  cursor: pointer;
 `;
 
 export default PostChatInput;

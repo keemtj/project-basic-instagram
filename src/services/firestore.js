@@ -437,3 +437,30 @@ export const getUsersDataByHearts = async hearts => {
   const result = await Promise.all(response);
   return result;
 };
+
+// add comment
+export const addCommentToPost = async (postUid, id, comment) => {
+  const { uid } = firebaseAuth.currentUser;
+  await firestore
+    .collection('posts')
+    .doc(postUid)
+    .collection('my-posts')
+    .doc(id)
+    .update({
+      comments: firebase.firestore.FieldValue.arrayUnion({
+        comment,
+        date: Date.now(),
+        uid,
+      }),
+    });
+};
+
+export const getDisplayName = async comments => {
+  const arr = await comments.map(async comment => {
+    const response = await firestore.collection('users').doc(comment.uid).get();
+    const result = await Promise.resolve(response);
+    return result.data().displayName;
+  });
+  const promiseAll = await Promise.all(arr);
+  return promiseAll;
+};
