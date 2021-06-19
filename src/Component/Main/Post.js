@@ -83,6 +83,7 @@ const StArticle = styled.article`
   height: fit-content;
   display: flex;
   flex-flow: column nowrap;
+  position: relative; /* Emoji */
 `;
 
 export default Post;

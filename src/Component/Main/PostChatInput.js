@@ -1,27 +1,41 @@
 import React from 'react';
 import styled from 'styled-components';
 import { EmojiSmile } from '@styled-icons/bootstrap/EmojiSmile';
+import Emoji from '../Global/Emoji';
 
-const PostChatInput = ({ isPossibleComment, onSubmit, onChange, comment }) => {
+const PostChatInput = ({
+  isPossibleComment,
+  onSubmit,
+  onChange,
+  comment,
+  onShowEmojiPicker,
+  onEmojiClick,
+  isShow,
+  inputRef,
+}) => {
   return (
     <>
       {!isPossibleComment && (
-        <form onSubmit={onSubmit}>
-          <StChatCommentLabel>
-            <div>
-              <StEmojiSmile />
-            </div>
-            <StCommentInput
-              type="text"
-              placeholder="댓글 달기..."
-              value={comment}
-              onChange={onChange}
-            />
-            <StCommentButton type="submit" comment={comment}>
-              게시
-            </StCommentButton>
-          </StChatCommentLabel>
-        </form>
+        <>
+          {isShow && <Emoji onEmojiClick={onEmojiClick} />}
+          <form onSubmit={onSubmit}>
+            <StChatCommentLabel>
+              <StEmojiPickerButton onClick={onShowEmojiPicker}>
+                <StEmojiSmile />
+              </StEmojiPickerButton>
+              <StCommentInput
+                ref={inputRef}
+                type="text"
+                placeholder="댓글 달기..."
+                value={comment}
+                onChange={onChange}
+              />
+              <StCommentButton type="submit" comment={comment}>
+                게시
+              </StCommentButton>
+            </StChatCommentLabel>
+          </form>
+        </>
       )}
     </>
   );
@@ -33,6 +47,10 @@ const StChatCommentLabel = styled.label`
   width: 100%;
   display: flex;
   align-items: center;
+`;
+
+const StEmojiPickerButton = styled.div`
+  cursor: pointer;
 `;
 
 const StEmojiSmile = styled(EmojiSmile)`
