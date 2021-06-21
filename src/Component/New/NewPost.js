@@ -40,26 +40,42 @@ const NewPost = ({ setProgress }) => {
 
   // add post data to firestore
   const addPostDataToFirestore = (uid, postId) => {
-    firestore
-      .collection('posts')
-      .doc(uid)
-      .collection('my-posts')
-      .doc(postId)
-      .set({
-        id: postId,
-        uid,
-        date: Date.now(),
-        text,
-        location,
-        subLocation,
-        isPossibleComment,
-        heartCount: 0,
-        bookmarkCount: 0,
-        comments: [],
-        hearts: [],
-        bookmarks: [],
-        imagesArray: [],
-      });
+    // firestore
+    //   .collection('posts')
+    //   .doc(uid)
+    //   .collection('my-posts')
+    //   .doc(postId)
+    //   .set({
+    //     id: postId,
+    //     uid,
+    //     date: Date.now(),
+    //     text,
+    //     location,
+    //     subLocation,
+    //     isPossibleComment,
+    //     heartCount: 0,
+    //     bookmarkCount: 0,
+    //     comments: [],
+    //     hearts: [],
+    //     bookmarks: [],
+    //     imagesArray: [],
+    //   });
+
+    firestore.collection('post').doc(postId).set({
+      id: postId,
+      uid,
+      date: Date.now(),
+      text,
+      location,
+      subLocation,
+      isPossibleComment,
+      heartCount: 0,
+      bookmarkCount: 0,
+      comments: [],
+      hearts: [],
+      bookmarks: [],
+      imagesArray: [],
+    });
   };
 
   // upload images to firebase storage
@@ -85,10 +101,20 @@ const NewPost = ({ setProgress }) => {
           const url = await Promise.resolve(urlResult);
           const metadataResult = await uploadTask.snapshot.ref.getMetadata();
           const { name, timeCreated } = await Promise.resolve(metadataResult);
+          // await firestore
+          //   .collection('posts')
+          //   .doc(uid)
+          //   .collection('my-posts')
+          //   .doc(postId)
+          //   .update({
+          //     imagesArray: firebase.firestore.FieldValue.arrayUnion({
+          //       url,
+          //       name,
+          //       timeCreated,
+          //     }),
+          //   });
           await firestore
-            .collection('posts')
-            .doc(uid)
-            .collection('my-posts')
+            .collection('post')
             .doc(postId)
             .update({
               imagesArray: firebase.firestore.FieldValue.arrayUnion({
