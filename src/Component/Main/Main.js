@@ -5,7 +5,8 @@ import AsideFooter from './AsideFooter';
 import AsideContainer from '../../Container/Main/AsideContainer';
 import Loading from '../Global/Loading';
 
-const Main = ({ isLoading, posts, userDatas, bookmarks, hearts }) => {
+const Main = ({ isLoading, mainPosts, userDatas, bookmarks, hearts }) => {
+  console.log(userDatas);
   return (
     <StMainWrapper>
       <StMain>
@@ -13,7 +14,7 @@ const Main = ({ isLoading, posts, userDatas, bookmarks, hearts }) => {
           {isLoading ? (
             <Loading isLoading={isLoading} />
           ) : (
-            posts?.map((post, index) => {
+            mainPosts?.map((post, index) => {
               const userData = userDatas.find(user => user.uid === post.uid);
               const isBookmark = bookmarks.find(
                 bookmark => bookmark.id === post.id,

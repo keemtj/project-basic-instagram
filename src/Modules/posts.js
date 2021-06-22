@@ -2,6 +2,10 @@ import * as store from '../services/firestore';
 import { fetchDataThunk, reducerUtils } from '../lib/asyncUtils';
 
 // NOTE action type
+const ALL_POSTS = 'posts/ALL_POSTS';
+const ALL_POSTS_SUCCESS = 'posts/ALL_POSTS_SUCCESS';
+const ALL_POSTS_ERROR = 'posts/ALL_POSTS_ERROR';
+
 const MY_POSTS = 'posts/MY_POSTS';
 const MY_POSTS_SUCCESS = 'posts/MY_POSTS_SUCCESS';
 const MY_POSTS_ERROR = 'posts/MY_POSTS_ERROR';
@@ -30,6 +34,7 @@ const REMOVE_POST = 'posts/REMOVE_POST';
 const DATA_CLEAR = 'posts/DATA_CLEAR';
 
 // NOTE action creator
+export const getMainPosts = fetchDataThunk(ALL_POSTS, store.getAllPosts, 1000);
 export const getPosts = fetchDataThunk(
   MY_POSTS,
   store.getCurrentUserPostsData,
@@ -62,6 +67,7 @@ export const postDataClear = () => ({ type: DATA_CLEAR });
 
 // NOTE initialState
 const initialState = {
+  mainPosts: reducerUtils.initial(),
   myPosts: reducerUtils.initial(),
   myFollowingPosts: reducerUtils.initial(),
   combinePosts: [],
@@ -72,6 +78,21 @@ const initialState = {
 // NOTE reducer
 const posts = (state = initialState, action) => {
   switch (action.type) {
+    case ALL_POSTS:
+      return {
+        ...state,
+        mainPosts: reducerUtils.loading(),
+      };
+    case ALL_POSTS_SUCCESS:
+      return {
+        ...state,
+        mainPosts: reducerUtils.success(action.payload),
+      };
+    case ALL_POSTS_ERROR:
+      return {
+        ...state,
+        mainPosts: reducerUtils.error(action.payload),
+      };
     case MY_POSTS:
       return {
         ...state,

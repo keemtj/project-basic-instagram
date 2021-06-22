@@ -70,7 +70,7 @@ const StCommentButton = styled.button`
   font-size: 1.5rem;
   font-weight: 600;
   color: ${({ theme, comment }) =>
-    comment.length > 0 ? theme.activeBlue : theme.inactiveBlue};
+    comment?.length > 0 ? theme.activeBlue : theme.inactiveBlue};
   cursor: pointer;
 `;
 

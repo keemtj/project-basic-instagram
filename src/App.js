@@ -9,7 +9,7 @@ import {
 } from './services/firestore';
 import { loginState } from './Modules/login';
 import { currentUserData, currentUserFollowData } from './Modules/user';
-import { getFollowingPosts, getPosts } from './Modules/posts';
+import { getFollowingPosts, getMainPosts, getPosts } from './Modules/posts';
 import { getBookmarks } from './Modules/saved';
 import { getHearts } from './Modules/heart';
 import ResetStyle from './Style/ResetStyle';
@@ -53,6 +53,7 @@ const App = () => {
         dispatch(loginState(true)); // 로그인 상태 true
         dispatch(currentUserData(userData)); // 현재 로그인 유저 데이터
         dispatch(currentUserFollowData(followData)); // 현재 로그인 유저의 팔로우 데이터
+        dispatch(getMainPosts(uid)); // 현재 로그인 유저와 팔로잉 유저의 전체 포스트 데이터
         dispatch(getPosts(uid)); // 현재 로그인 유저의 포스트
         dispatch(getFollowingPosts(followData.following)); // 현재 로그인 유저의 팔로우 포스트 데이터
         dispatch(getBookmarks(bookmarksData.bookmarks)); // 현재 로그인 유저의 북마크 데이터

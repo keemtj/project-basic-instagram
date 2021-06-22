@@ -1,6 +1,31 @@
+/* eslint-disable no-undef */
 import { firebase, firebaseAuth, firestore } from './firebase';
 
 // NOTE main page
+export const getAllPosts = async uid => {
+  let datas = [];
+  const mainDocs = await firestore
+    .collection('posts')
+    .doc(uid)
+    .collection('main')
+    .orderBy('date', 'desc')
+    .limit(3)
+    .get();
+  mainDocs.forEach(doc => datas.push(doc.data()));
+  const arr = datas.map(async data => {
+    const { uid, id } = data;
+    const response = await firestore
+      .collection('posts')
+      .doc(uid)
+      .collection('my-posts')
+      .doc(id)
+      .get();
+    return response.data();
+  });
+  const promiseAll = await Promise.all(arr);
+  console.log(promiseAll);
+  return promiseAll;
+};
 // get current user data
 export const getCurrentUserData = async uid => {
   const doc = await firestore.collection('users').doc(uid).get();
@@ -224,6 +249,24 @@ export const follow = async (currentUserUid, searchUserUid) => {
     .update({
       followers: firebase.firestore.FieldValue.arrayUnion(currentUserUid),
     });
+  const response = await firestore
+    .collection('posts')
+    .doc(searchUserUid)
+    .collection('my-posts')
+    .get();
+  response.docs.forEach(async doc => {
+    const { uid, id, date } = doc.data();
+    await firestore
+      .collection('posts')
+      .doc(currentUserUid)
+      .collection('main')
+      .doc(id)
+      .set({
+        uid,
+        id,
+        date,
+      });
+  });
 };
 
 export const unfollow = async (currentUserUid, searchUserUid) => {
@@ -239,6 +282,20 @@ export const unfollow = async (currentUserUid, searchUserUid) => {
     .update({
       followers: firebase.firestore.FieldValue.arrayRemove(currentUserUid),
     });
+  const response = await firestore
+    .collection('posts')
+    .doc(searchUserUid)
+    .collection('my-posts')
+    .get();
+  response.docs.forEach(async doc => {
+    const { id } = doc;
+    await firestore
+      .collection('posts')
+      .doc(currentUserUid)
+      .collection('main')
+      .doc(id)
+      .delete();
+  });
 };
 
 // --> post data by single post

@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 const sleep = n => new Promise(resolve => setTimeout(resolve, n));
 
 export const fetchDataThunk = (type, promiseCreator, n) => {
@@ -10,7 +11,7 @@ export const fetchDataThunk = (type, promiseCreator, n) => {
       const payload = await promiseCreator(param);
       dispatch({ type: SUCCESS, payload }); // 호출 성공
     } catch (e) {
-      dispatch({ type: ERROR, payload: e, error: true }); // 호출 실패
+      dispatch({ type: ERROR, payload: e.message, error: true }); // 호출 실패
     }
   };
 };
