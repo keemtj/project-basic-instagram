@@ -1,23 +1,27 @@
+/* eslint-disable no-undef */
 import React, { useEffect, useState } from 'react';
 import styled, { css } from 'styled-components';
+import { useHistory } from 'react-router';
 import { useDispatch, useSelector } from 'react-redux';
-import { Upload } from '@styled-icons/boxicons-regular/Upload';
+import useToast from '../../Hooks/useToast';
 import { firebase, firestore, firebaseStorage } from '../../services/firebase';
-import { generatedId, updatePostsData } from '../../services/firestore';
+import { generatedId } from '../../services/firestore';
 import { closePopup } from '../../Modules/popup';
-import { updatePosts } from '../../Modules/posts';
-import NewPostPortal from '../../NewPostPortal';
+import { addNewPost } from '../../Modules/posts';
+import { Upload } from '@styled-icons/boxicons-regular/Upload';
+import NewPostPortal from '../../Portals/NewPostPortal';
 import UploadImageInput from './UploadImageInput';
 import ImagePreview from './ImagePreview';
 import Textarea from './Textarea';
 import CommentSetting from './CommentSetting';
 import PlaceSearch from './PlaceSearch';
 import PlaceAutoComplete from './PlaceAutoComplete';
-import useToast from '../../Hooks/useToast';
 
 const NewPost = ({ setProgress }) => {
+  const his = useHistory();
   const dispatch = useDispatch();
   const { uid } = useSelector(state => state.user.currentUser);
+  const { followers } = useSelector(state => state.user.currentUserFollowData);
   const [images, setImages] = useState([]);
   const [location, setLocation] = useState('');
   const [subLocation, setSubLocation] = useState('');
@@ -25,9 +29,11 @@ const NewPost = ({ setProgress }) => {
   const [isPossibleComment, setIsPossibleComment] = useState(false);
   const [text, setText] = useState('');
   const [toast] = useToast();
+
   const closeModal = () => {
-    console.log('close new post!');
+    console.log('cancel new post');
     dispatch(closePopup('newPostModal'));
+    history.back();
   };
 
   // FIXME: create new post
@@ -35,11 +41,14 @@ const NewPost = ({ setProgress }) => {
     const postId = generatedId();
     addPostDataToFirestore(uid, postId);
     uploadImagesToStorage(uid, postId, images);
-    closeModal();
+    dispatch(closePopup('newPostModal'));
+    his.push('/');
+    console.log('create new post');
   };
 
   // add post data to firestore
   const addPostDataToFirestore = (uid, postId) => {
+    const date = Date.now();
     firestore
       .collection('posts')
       .doc(uid)
@@ -48,7 +57,7 @@ const NewPost = ({ setProgress }) => {
       .set({
         id: postId,
         uid,
-        date: Date.now(),
+        date,
         text,
         location,
         subLocation,
@@ -63,7 +72,19 @@ const NewPost = ({ setProgress }) => {
     firestore.collection('posts').doc(uid).collection('main').doc(postId).set({
       id: postId,
       uid,
-      date: Date.now(),
+      date,
+    });
+    followers.forEach(fUid => {
+      firestore
+        .collection('posts')
+        .doc(fUid)
+        .collection('main')
+        .doc(postId)
+        .set({
+          id: postId,
+          uid,
+          date,
+        });
     });
   };
 
@@ -73,7 +94,6 @@ const NewPost = ({ setProgress }) => {
       const uploadTask = firebaseStorage
         .ref(`/${uid}/${postId}/${image.file.name}`)
         .put(image.file);
-      // TaskState: "Error" | "Running" | "Success"
       uploadTask.on(
         'state_changed',
         snapshot => {
@@ -104,7 +124,24 @@ const NewPost = ({ setProgress }) => {
             });
           console.log('TASK STATE:', uploadTask.snapshot.state);
           if (uploadTask.snapshot.state === 'success') {
-            await updatePostsData(dispatch, updatePosts);
+            // newPost를 main page 상단에 표시
+            dispatch(
+              addNewPost({
+                id: postId,
+                uid,
+                date: Date.now(),
+                text,
+                location,
+                subLocation,
+                isPossibleComment,
+                heartCount: 0,
+                bookmarkCount: 0,
+                comments: [],
+                hearts: [],
+                bookmarks: [],
+                imagesArray: [{ url, name, timeCreated }],
+              }),
+            );
             setProgress(0);
             toast('새 게시물이 작성되었습니다.');
           }
@@ -148,14 +185,12 @@ const NewPost = ({ setProgress }) => {
 
   useEffect(() => {
     history.pushState('', '', '/new');
-    return () => history.back();
   }, []);
 
   useEffect(() => {
     const title = document.title;
     document.title = '새 게시물 작성 • Instagram';
     return () => {
-      // 이전 title로 변경
       document.title = title;
     };
   }, []);

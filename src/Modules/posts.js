@@ -2,9 +2,11 @@ import * as store from '../services/firestore';
 import { fetchDataThunk, reducerUtils } from '../lib/asyncUtils';
 
 // NOTE action type
-const ALL_POSTS = 'posts/ALL_POSTS';
-const ALL_POSTS_SUCCESS = 'posts/ALL_POSTS_SUCCESS';
-const ALL_POSTS_ERROR = 'posts/ALL_POSTS_ERROR';
+const MAIN_POSTS = 'posts/MAIN_POSTS';
+const MAIN_POSTS_SUCCESS = 'posts/MAIN_POSTS_SUCCESS';
+const MAIN_POSTS_ERROR = 'posts/MAIN_POSTS_ERROR';
+
+const NEW_POST = 'posts/NEW_POSTS';
 
 const MY_POSTS = 'posts/MY_POSTS';
 const MY_POSTS_SUCCESS = 'posts/MY_POSTS_SUCCESS';
@@ -14,8 +16,6 @@ const MY_FOLLOWING_POSTS = 'posts/MY_FOLLOWING_POSTS';
 const MY_FOLLOWING_POSTS_SUCCESS = 'posts/MY_FOLLOWING_POSTS_SUCCESS';
 const MY_FOLLOWING_POSTS_ERROR = 'posts/MY_FOLLOWING_POSTS_ERROR';
 
-const COMBINE_POSTS = 'posts/COMBINE_POSTS';
-
 const SEARCH_USER_POSTS = 'posts/SEARCH_USER_POSTS';
 const SEARCH_USER_POSTS_SUCCESS = 'posts/SEARCH_USER_POSTS_SUCCESS';
 const SEARCH_USER_POSTS_ERROR = 'posts/SEARCH_USER_POSTS_ERROR';
@@ -24,6 +24,7 @@ const POST = 'posts/POST';
 const POST_SUCCESS = 'posts/POST_SUCCESS';
 const POST_ERROR = 'posts/POST_ERROR';
 
+const UPDATE_MAIN_POSTS = 'posts/UPDATE_MAIN_POSTS';
 const UPDATE_POSTS = 'posts/UPDATE_POSTS';
 const UPDATE_POST = 'posts/UPDATE_POST';
 
@@ -34,7 +35,9 @@ const REMOVE_POST = 'posts/REMOVE_POST';
 const DATA_CLEAR = 'posts/DATA_CLEAR';
 
 // NOTE action creator
-export const getMainPosts = fetchDataThunk(ALL_POSTS, store.getAllPosts, 1000);
+export const getMainPosts = fetchDataThunk(MAIN_POSTS, store.getAllPosts, 1000);
+export const addNewPost = data => ({ type: NEW_POST, data });
+
 export const getPosts = fetchDataThunk(
   MY_POSTS,
   store.getCurrentUserPostsData,
@@ -45,15 +48,13 @@ export const getFollowingPosts = fetchDataThunk(
   store.getPostsByAllFollowing,
   1000,
 );
-export const combinePosts = () => ({ type: COMBINE_POSTS });
-
 export const getSearchUserPosts = fetchDataThunk(
   SEARCH_USER_POSTS,
   store.getCurrentUserPostsData,
 );
-
 export const getPost = fetchDataThunk(POST, store.getPostBySinglePost);
 
+export const updateMainPosts = data => ({ type: UPDATE_MAIN_POSTS, data });
 export const updatePosts = data => ({ type: UPDATE_POSTS, data });
 export const updatePost = data => ({ type: UPDATE_POST, data });
 export const updateFollowingPost = data => ({
@@ -68,6 +69,7 @@ export const postDataClear = () => ({ type: DATA_CLEAR });
 // NOTE initialState
 const initialState = {
   mainPosts: reducerUtils.initial(),
+  newPost: null,
   myPosts: reducerUtils.initial(),
   myFollowingPosts: reducerUtils.initial(),
   combinePosts: [],
@@ -78,20 +80,25 @@ const initialState = {
 // NOTE reducer
 const posts = (state = initialState, action) => {
   switch (action.type) {
-    case ALL_POSTS:
+    case MAIN_POSTS:
       return {
         ...state,
         mainPosts: reducerUtils.loading(),
       };
-    case ALL_POSTS_SUCCESS:
+    case MAIN_POSTS_SUCCESS:
       return {
         ...state,
         mainPosts: reducerUtils.success(action.payload),
       };
-    case ALL_POSTS_ERROR:
+    case MAIN_POSTS_ERROR:
       return {
         ...state,
         mainPosts: reducerUtils.error(action.payload),
+      };
+    case NEW_POST:
+      return {
+        ...state,
+        newPost: action.data,
       };
     case MY_POSTS:
       return {
@@ -123,14 +130,6 @@ const posts = (state = initialState, action) => {
         ...state,
         myFollowingPosts: reducerUtils.error(action.payload),
       };
-    case COMBINE_POSTS:
-      return {
-        ...state,
-        combinePosts: [
-          ...state.myPosts.data,
-          ...state.myFollowingPosts.data,
-        ].sort((a, b) => b.date - a.date),
-      };
     case SEARCH_USER_POSTS:
       return {
         ...state,
@@ -160,6 +159,14 @@ const posts = (state = initialState, action) => {
       return {
         ...state,
         post: reducerUtils.error(action.payload),
+      };
+    case UPDATE_MAIN_POSTS:
+      return {
+        ...state,
+        mainPosts: {
+          ...state.mainPosts,
+          data: action.data,
+        },
       };
     case UPDATE_POSTS: {
       return {

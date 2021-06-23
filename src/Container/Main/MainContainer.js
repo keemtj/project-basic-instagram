@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import Main from '../../Component/Main/Main';
@@ -5,6 +6,10 @@ import { getUserDataByPost } from '../../services/firestore';
 
 const MainContainer = () => {
   const [userDatas, setUserDatas] = useState([]);
+  const { displayName, photoURL } = useSelector(
+    state => state.user.currentUser,
+  );
+  const newPost = useSelector(state => state.posts.newPost);
   const { data: mainPosts, loading } = useSelector(
     state => state.posts.mainPosts,
   );
@@ -12,12 +17,11 @@ const MainContainer = () => {
     postSettingModal: postSettingModalState,
     postHeartCountModal: postHeartCountModalState,
   } = useSelector(state => state.popup);
-  // remove myposts, myfollowingposts, combinePosts
   const bookmarks = useSelector(state => state.saved.bookmarks);
   const hearts = useSelector(state => state.heart.hearts);
 
   useEffect(async () => {
-    if (mainPosts === null) return;
+    if (mainPosts === null || !mainPosts.length) return;
     const arr = mainPosts.map(async post => {
       const { uid } = post;
       const response = await getUserDataByPost(uid);
@@ -42,6 +46,8 @@ const MainContainer = () => {
 
   return (
     <Main
+      newPost={newPost}
+      newPostUserData={{ displayName, photoURL }}
       isLoading={loading}
       mainPosts={mainPosts}
       userDatas={userDatas}

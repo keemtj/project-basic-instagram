@@ -5,8 +5,15 @@ import AsideFooter from './AsideFooter';
 import AsideContainer from '../../Container/Main/AsideContainer';
 import Loading from '../Global/Loading';
 
-const Main = ({ isLoading, mainPosts, userDatas, bookmarks, hearts }) => {
-  console.log(userDatas);
+const Main = ({
+  newPost,
+  newPostUserData,
+  isLoading,
+  mainPosts,
+  userDatas,
+  bookmarks,
+  hearts,
+}) => {
   return (
     <StMainWrapper>
       <StMain>
@@ -14,23 +21,34 @@ const Main = ({ isLoading, mainPosts, userDatas, bookmarks, hearts }) => {
           {isLoading ? (
             <Loading isLoading={isLoading} />
           ) : (
-            mainPosts?.map((post, index) => {
-              const userData = userDatas.find(user => user.uid === post.uid);
-              const isBookmark = bookmarks.find(
-                bookmark => bookmark.id === post.id,
-              );
-              const isHeart = hearts.find(heart => heart.id === post.id);
-              return (
+            <>
+              {newPost !== null && (
                 <PostContainer
-                  key={index}
-                  post={post}
-                  displayName={userData?.displayName}
-                  photoURL={userData?.photoURL || '/images/default_profile.png'}
-                  isBookmark={isBookmark}
-                  isHeart={isHeart}
+                  post={newPost}
+                  displayName={newPostUserData.displayName}
+                  photoURL={newPostUserData.photoURL}
                 />
-              );
-            })
+              )}
+              {mainPosts?.map((post, index) => {
+                const userData = userDatas.find(user => user.uid === post?.uid);
+                const isBookmark = bookmarks.find(
+                  bookmark => bookmark.id === post.id,
+                );
+                const isHeart = hearts.find(heart => heart.id === post.id);
+                return (
+                  <PostContainer
+                    key={index}
+                    post={post}
+                    displayName={userData?.displayName}
+                    photoURL={
+                      userData?.photoURL || '/images/default_profile.png'
+                    }
+                    isBookmark={isBookmark}
+                    isHeart={isHeart}
+                  />
+                );
+              })}
+            </>
           )}
         </StSection>
         <StAsideWrapper>
