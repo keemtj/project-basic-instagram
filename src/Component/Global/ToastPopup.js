@@ -1,7 +1,7 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 import styled, { css } from 'styled-components';
-import ToastPortal from '../../ToastPortal';
+import ToastPortal from '../../Portals/ToastPortal';
 
 const ToastPopup = () => {
   const message = useSelector(state => state.popup.toastMessage);

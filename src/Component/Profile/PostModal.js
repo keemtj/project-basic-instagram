@@ -5,7 +5,7 @@ import { ChevronLeft } from '@styled-icons/entypo/ChevronLeft';
 import { ChevronRight } from '@styled-icons/entypo/ChevronRight';
 import { CloseOutline } from '@styled-icons/evaicons-outline/CloseOutline';
 import { activeIndex, activePostIdData, closePopup } from '../../Modules/popup';
-import PostPortal from '../../PostPortal';
+import PostPortal from '../../Portals/PostPortal';
 import { useHistory } from 'react-router';
 import PostModalItem from './PostModalItem';
 

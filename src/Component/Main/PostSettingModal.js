@@ -3,8 +3,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import useToast from '../../Hooks/useToast';
 import { activePostData, closePopup } from '../../Modules/popup';
-import { removePost } from '../../Modules/posts';
-import PostSettingPortal from '../../PostSettingPortal';
+import { updateMainPosts } from '../../Modules/posts';
+import PostSettingPortal from '../../Portals/PostSettingPortal';
 import { removeImagesByPostData } from '../../services/firebaseStorage';
 import { removePostData, updatePostsData } from '../../services/firestore';
 
@@ -17,15 +17,16 @@ const PostSettingModal = () => {
     state => state.popup,
   );
   const { uid: currentUserUid } = useSelector(state => state.user.currentUser);
+  const { followers } = useSelector(state => state.user.currentUserFollowData);
   const { uid, id, imagesArray } = useSelector(
     state => state.popup.activePostData,
   );
 
   const onRemovePost = async () => {
     dispatch(closePopup('postSettingModal'));
-    await removePostData(uid, id);
+    await removePostData(uid, id, followers);
     await removeImagesByPostData(imagesArray, uid, id);
-    await updatePostsData(dispatch, removePost);
+    await updatePostsData(dispatch, updateMainPosts);
     toast('게시글이 삭제되었습니다.');
   };
 

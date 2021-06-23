@@ -3,9 +3,9 @@ import styled from 'styled-components';
 import { CloseOutline } from '@styled-icons/evaicons-outline/CloseOutline';
 import { useDispatch, useSelector } from 'react-redux';
 import { closePopup } from '../../Modules/popup';
-import PostHeartCountPortal from '../../PostHeartCountPortal';
 import ProfileImage from '../Global/ProfileImage';
 import Loading from '../Global/Loading';
+import PostHeartCountPortal from '../../Portals/PostHeartCountPortal';
 
 const HeartCountModal = () => {
   const modalRef = useRef();

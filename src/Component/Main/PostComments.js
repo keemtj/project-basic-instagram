@@ -3,15 +3,10 @@ import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { calcTimeElapsed } from '../../lib/calcTimeElapsed';
 
-const PostComments = ({
-  isPossibleComment,
-  displayNames,
-  comments,
-  onClickPostModal,
-}) => {
+const PostComments = ({ displayNames, comments, onClickPostModal }) => {
   return (
     <>
-      {!isPossibleComment && (
+      {comments?.length > 0 && (
         <StCommentsBox>
           {comments?.length > 2 && (
             <StMoreComments onClick={onClickPostModal}>
@@ -40,8 +35,8 @@ const PostComments = ({
 };
 
 const StCommentsBox = styled.section`
-  width: 100%;
   padding: 0rem 1.5rem;
+  width: 100%;
   font-size: 1.4rem;
 `;
 

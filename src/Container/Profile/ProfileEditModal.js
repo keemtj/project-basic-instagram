@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import useSignOut from '../../Hooks/useSignOut';
 import { closePopup } from '../../Modules/popup';
-import ProfileEditPortal from '../../ProfileEditPortal';
+import ProfileEditPortal from '../../Portals/ProfileEditPortal';
 
 const ProfileEditModal = () => {
   const modalRef = useRef();
