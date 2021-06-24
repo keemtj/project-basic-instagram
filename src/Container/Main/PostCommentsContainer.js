@@ -14,7 +14,7 @@ const PostCommentsContainer = ({
       const result = await getDisplayName(comments);
       setDisplayNames(result);
     }
-  }, [comments]);
+  }, []);
 
   return (
     <PostComments

@@ -7,6 +7,7 @@ const MAIN_POSTS_SUCCESS = 'posts/MAIN_POSTS_SUCCESS';
 const MAIN_POSTS_ERROR = 'posts/MAIN_POSTS_ERROR';
 
 const NEW_POST = 'posts/NEW_POSTS';
+const REMOVE_NEW_POST = 'posts/REMOVE_NEW_POST';
 
 const MY_POSTS = 'posts/MY_POSTS';
 const MY_POSTS_SUCCESS = 'posts/MY_POSTS_SUCCESS';
@@ -37,6 +38,7 @@ const DATA_CLEAR = 'posts/DATA_CLEAR';
 // NOTE action creator
 export const getMainPosts = fetchDataThunk(MAIN_POSTS, store.getAllPosts, 1000);
 export const addNewPost = data => ({ type: NEW_POST, data });
+export const removeNewPost = id => ({ type: REMOVE_NEW_POST, id });
 
 export const getPosts = fetchDataThunk(
   MY_POSTS,
@@ -69,7 +71,7 @@ export const postDataClear = () => ({ type: DATA_CLEAR });
 // NOTE initialState
 const initialState = {
   mainPosts: reducerUtils.initial(),
-  newPost: null,
+  newPost: [],
   myPosts: reducerUtils.initial(),
   myFollowingPosts: reducerUtils.initial(),
   combinePosts: [],
@@ -95,10 +97,26 @@ const posts = (state = initialState, action) => {
         ...state,
         mainPosts: reducerUtils.error(action.payload),
       };
+    case UPDATE_MAIN_POSTS:
+      return {
+        ...state,
+        mainPosts: {
+          ...state.mainPosts,
+          data: action.data,
+        },
+      };
     case NEW_POST:
       return {
         ...state,
-        newPost: action.data,
+        newPost:
+          state.newPost.length === 0
+            ? [action.data]
+            : [...state.newPost, action.data].reverse(),
+      };
+    case REMOVE_NEW_POST:
+      return {
+        ...state,
+        newPost: state.newPost.filter(post => post.id !== action.id),
       };
     case MY_POSTS:
       return {
@@ -159,14 +177,6 @@ const posts = (state = initialState, action) => {
       return {
         ...state,
         post: reducerUtils.error(action.payload),
-      };
-    case UPDATE_MAIN_POSTS:
-      return {
-        ...state,
-        mainPosts: {
-          ...state.mainPosts,
-          data: action.data,
-        },
       };
     case UPDATE_POSTS: {
       return {

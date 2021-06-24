@@ -14,6 +14,28 @@ const Main = ({
   bookmarks,
   hearts,
 }) => {
+  // 비공개 계정이 아니고, 좋아요나 북마크 수가 많은 유저의 포스츠
+  const influencePosts = [
+    {
+      date: '2020-03-05',
+      text: 'influencer',
+      location: 'seoul',
+      subLocation: 'gangnam',
+      isPossibleComment: true,
+      heartCount: 100,
+      bookmarkCount: 0,
+      comments: [],
+      hearts: [],
+      bookmarks: [],
+      imagesArray: [
+        {
+          url: '/images/default_profile.png',
+          name: 'test',
+          timeCreated: '2020-03-05',
+        },
+      ],
+    },
+  ];
   return (
     <StMainWrapper>
       <StMain>
@@ -22,13 +44,17 @@ const Main = ({
             <Loading isLoading={isLoading} />
           ) : (
             <>
-              {newPost !== null && (
-                <PostContainer
-                  post={newPost}
-                  displayName={newPostUserData.displayName}
-                  photoURL={newPostUserData.photoURL}
-                />
-              )}
+              {newPost.length !== 0 &&
+                newPost.map((post, index) => {
+                  return (
+                    <PostContainer
+                      key={index}
+                      post={post}
+                      displayName={newPostUserData.displayName}
+                      photoURL={newPostUserData.photoURL}
+                    />
+                  );
+                })}
               {mainPosts?.map((post, index) => {
                 const userData = userDatas.find(user => user.uid === post?.uid);
                 const isBookmark = bookmarks.find(
@@ -48,6 +74,35 @@ const Main = ({
                   />
                 );
               })}
+              {/* {mainPosts.length === 0 && */}
+              {/* newPost.length === 0 && */}
+              {
+                <>
+                  <div
+                    style={{
+                      width: '60rem',
+                      height: '10rem',
+                      fontSize: '1.5rem',
+                      textAlign: 'center',
+                      border: '1px solid black',
+                      marginBottom: '1.5rem',
+                    }}
+                  >
+                    새 게시물을 업롣드하거나 새로운 친구를 팔로우하고 새로운
+                    피드를 받아보세요.
+                  </div>
+                  {influencePosts.map((post, index) => (
+                    <PostContainer
+                      key={index}
+                      post={post}
+                      displayName={'influencer'}
+                      photoURL={'/images/default_profile.png'}
+                      isBookmark={false}
+                      isHeart={false}
+                    />
+                  ))}
+                </>
+              }
             </>
           )}
         </StSection>

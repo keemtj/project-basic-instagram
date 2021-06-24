@@ -1,7 +1,14 @@
 /* eslint-disable no-undef */
 import { firebase, firebaseAuth, firestore } from './firebase';
 
-// NOTE main page
+// --> APP
+// get current user data
+export const getCurrentUserData = async uid => {
+  const doc = await firestore.collection('users').doc(uid).get();
+  const datas = doc.data();
+  return datas;
+};
+
 export const getAllPosts = async uid => {
   let datas = [];
   const mainDocs = await firestore
@@ -9,7 +16,7 @@ export const getAllPosts = async uid => {
     .doc(uid)
     .collection('main')
     .orderBy('date', 'desc')
-    .limit(3)
+    .limit(5)
     .get();
   mainDocs.forEach(doc => datas.push(doc.data()));
   const arr = datas.map(async data => {
@@ -22,51 +29,12 @@ export const getAllPosts = async uid => {
       .get();
     return response.data();
   });
-  const promiseAll = await Promise.all(arr);
-  console.log(promiseAll);
-  return promiseAll;
-};
-// get current user data
-export const getCurrentUserData = async uid => {
-  const doc = await firestore.collection('users').doc(uid).get();
-  const datas = doc.data();
-  return datas;
-};
-
-// update current user data
-export const updateCurrentUserData = async (dispatch, actionCreator) => {
-  const { uid } = firebaseAuth.currentUser;
-  firestore
-    .collection('users')
-    .doc(uid)
-    .onSnapshot(doc => {
-      dispatch(actionCreator(doc.data()));
-    });
-};
-// get follow data of currentUser by uid
-export const getCurrentUserFollowData = async uid => {
-  const doc = await firestore.collection('follow').doc(uid).get();
-  const datas = doc.data();
-  return datas;
-};
-
-// update(add, remove) posts data & observe data
-export const updatePostsData = async (dispatch, actionCreator) => {
-  const { uid } = firebaseAuth.currentUser;
-  firestore
-    .collection('posts')
-    .doc(uid)
-    .collection('my-posts')
-    .onSnapshot(docs => {
-      const datas = docs.docChanges().map(change => {
-        return change.doc.data();
-      });
-      dispatch(actionCreator(datas));
-    });
+  const result = await Promise.all(arr);
+  return result;
 };
 
 // remove post data
-export const removePostData = async (currentUserUid, id) => {
+export const removePostData = async (currentUserUid, id, followers) => {
   const response = await firestore
     .collection('posts')
     .doc(currentUserUid)
@@ -108,6 +76,68 @@ export const removePostData = async (currentUserUid, id) => {
     .doc(id)
     .delete();
   console.log('3. Remove post data of firestore');
+  await firestore
+    .collection('posts')
+    .doc(currentUserUid)
+    .collection('main')
+    .doc(id)
+    .delete();
+  console.log('4. Removee post data of main collection');
+  await followers.forEach(async uid => {
+    await firestore
+      .collection('posts')
+      .doc(uid)
+      .collection('main')
+      .doc(id)
+      .delete();
+  });
+  console.log('5. Remove post data to collection of followers');
+};
+
+// update(remove) posts data & observe data
+export const updatePostsData = async (dispatch, actionCreator, newPostIds) => {
+  const { uid } = firebaseAuth.currentUser;
+  const docs = await firestore
+    .collection('posts')
+    .doc(uid)
+    .collection('main')
+    .orderBy('date', 'desc')
+    .limit(5)
+    .get();
+  if (docs.size === 0) {
+    dispatch(actionCreator([]));
+  } else {
+    const arr = docs.docChanges().map(async change => {
+      const { uid, id } = change.doc.data();
+      const doc = await firestore
+        .collection('posts')
+        .doc(uid)
+        .collection('my-posts')
+        .doc(id)
+        .get();
+      return doc.data();
+    });
+    const promiseAll = await Promise.all(arr);
+    const result = promiseAll.filter(post => !newPostIds.includes(post.id));
+    await dispatch(actionCreator(result));
+  }
+};
+
+// update current user data
+export const updateCurrentUserData = async (dispatch, actionCreator) => {
+  const { uid } = firebaseAuth.currentUser;
+  firestore
+    .collection('users')
+    .doc(uid)
+    .onSnapshot(doc => {
+      dispatch(actionCreator(doc.data()));
+    });
+};
+// get follow data of currentUser by uid
+export const getCurrentUserFollowData = async uid => {
+  const doc = await firestore.collection('follow').doc(uid).get();
+  const datas = doc.data();
+  return datas;
 };
 
 export const getCurrentUserPostsData = async uid => {
