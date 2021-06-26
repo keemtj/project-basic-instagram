@@ -95,7 +95,11 @@ export const removePostData = async (currentUserUid, id, followers) => {
 };
 
 // update(remove) posts data & observe data
-export const updatePostsData = async (dispatch, actionCreator, newPostIds) => {
+export const updatePostsData = async (
+  dispatch,
+  actionCreator,
+  newPostIds = [],
+) => {
   const { uid } = firebaseAuth.currentUser;
   const docs = await firestore
     .collection('posts')
@@ -107,6 +111,7 @@ export const updatePostsData = async (dispatch, actionCreator, newPostIds) => {
   if (docs.size === 0) {
     dispatch(actionCreator([]));
   } else {
+    console.log('바뀐 데이터 가져옴?');
     const arr = docs.docChanges().map(async change => {
       const { uid, id } = change.doc.data();
       const doc = await firestore
@@ -427,17 +432,6 @@ export const observeHeart = (dispatch, actionCreator) => {
     });
 };
 
-export const observeHeartCount = (dispatch, actionCreator, uid, postId) => {
-  firestore
-    .collection('posts')
-    .doc(uid)
-    .collection('my-posts')
-    .doc(postId)
-    .onSnapshot(snapshot => {
-      dispatch(actionCreator(snapshot.data()));
-    });
-};
-
 export const getHeartsData = async uid => {
   const response = await firestore.collection('heart').doc(uid).get();
   return response.data();
@@ -480,24 +474,6 @@ export const removeHeartData = async (currentUserUid, uid, id) => {
     .update({
       hearts: firebase.firestore.FieldValue.arrayRemove(currentUserUid),
     }); // 내 uid(current User uid)를 제거
-};
-
-export const increaseHeartCount = async (uid, id) => {
-  await firestore
-    .collection('posts')
-    .doc(uid)
-    .collection('my-posts')
-    .doc(id)
-    .update({ heartCount: firebase.firestore.FieldValue.increment(1) });
-};
-
-export const decreaseHeartCount = async (uid, id) => {
-  await firestore
-    .collection('posts')
-    .doc(uid)
-    .collection('my-posts')
-    .doc(id)
-    .update({ heartCount: firebase.firestore.FieldValue.increment(-1) });
 };
 
 export const getPostsByHearts = async hearts => {

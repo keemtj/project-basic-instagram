@@ -36,7 +36,7 @@ const initialState = {
 };
 
 // reducer
-const saved = (state = initialState, action) => {
+const hearts = (state = initialState, action) => {
   switch (action.type) {
     case GET_HEARTS:
       return {
@@ -78,4 +78,4 @@ const saved = (state = initialState, action) => {
   }
 };
 
-export default saved;
+export default hearts;

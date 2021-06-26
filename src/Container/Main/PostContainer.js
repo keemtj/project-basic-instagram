@@ -6,21 +6,15 @@ import {
   getSearchUserData,
   getSearchUserFollowData,
 } from '../../Modules/search';
-import {
-  getSearchUserPosts,
-  updateFollowingPost,
-  updatePost,
-} from '../../Modules/posts';
+import { getSearchUserPosts, updateMainPosts } from '../../Modules/posts';
 import {
   addHeartData,
   removeHeartData,
   addBookmarkData,
   removeBookmarkData,
-  decreaseHeartCount,
-  increaseHeartCount,
   observeHeart,
   observeBookmark,
-  observeHeartCount,
+  updatePostsData,
 } from '../../services/firestore';
 import { getHearts, getUsersWhoClickHeart } from '../../Modules/heart';
 import { getBookmarks } from '../../Modules/saved';
@@ -36,7 +30,6 @@ const PostContainer = ({
 }) => {
   const {
     imagesArray,
-    heartCount,
     text,
     isPossibleComment,
     comments,
@@ -56,23 +49,16 @@ const PostContainer = ({
     setMore(!more);
   };
 
-  const onClickHeart = () => {
+  const onClickHeart = async () => {
     if (isHeart) {
       console.log('Unliked!');
-      removeHeartData(currentUid, uid, id);
-      decreaseHeartCount(uid, id);
+      await removeHeartData(currentUid, uid, id);
     } else {
       console.log('Liked!');
-      addHeartData(currentUid, uid, id);
-      increaseHeartCount(uid, id);
+      await addHeartData(currentUid, uid, id);
     }
-    observeHeart(dispatch, getHearts);
-    observeHeartCount(
-      dispatch,
-      currentUid === uid ? updatePost : updateFollowingPost,
-      currentUid === uid ? currentUid : uid,
-      id,
-    );
+    await updatePostsData(dispatch, updateMainPosts);
+    observeHeart(dispatch, getHearts); // 내가 hearts를 누르면서 하트 게시물 업데이트
   };
 
   const onClickBookmark = () => {
@@ -83,7 +69,7 @@ const PostContainer = ({
       console.log('Saved!');
       addBookmarkData(currentUid, uid, id);
     }
-    observeBookmark(dispatch, getBookmarks);
+    observeBookmark(dispatch, getBookmarks); // 좋아요 게시물 업데이트
   };
 
   const onMoveProfilePage = () => {
@@ -101,7 +87,6 @@ const PostContainer = ({
 
   const onClickHeartCount = () => {
     console.log('heartCount');
-    console.log(hearts);
     dispatch(openPopup('postHeartCountModal'));
     dispatch(getUsersWhoClickHeart(hearts));
   };
@@ -118,7 +103,7 @@ const PostContainer = ({
       photoURL={photoURL}
       location={location}
       imagesArray={imagesArray}
-      heartCount={heartCount}
+      heartCount={hearts.length}
       more={more}
       text={text}
       onClickMore={onClickMore}
