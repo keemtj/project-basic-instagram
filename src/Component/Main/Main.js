@@ -14,28 +14,28 @@ const Main = ({
   bookmarks,
   hearts,
 }) => {
-  // 비공개 계정이 아니고, 좋아요나 북마크 수가 많은 유저의 포스츠
-  const influencePosts = [
-    {
-      date: '2020-03-05',
-      text: 'influencer',
-      location: 'seoul',
-      subLocation: 'gangnam',
-      isPossibleComment: true,
-      heartCount: 100,
-      bookmarkCount: 0,
-      comments: [],
-      hearts: [],
-      bookmarks: [],
-      imagesArray: [
-        {
-          url: '/images/default_profile.png',
-          name: 'test',
-          timeCreated: '2020-03-05',
-        },
-      ],
-    },
-  ];
+  // // 비공개 계정이 아니고, 좋아요나 북마크 수가 많은 유저의 포스츠
+  // const influencePosts = [
+  //   {
+  //     date: '2020-03-05',
+  //     text: 'influencer',
+  //     location: 'seoul',
+  //     subLocation: 'gangnam',
+  //     isPossibleComment: true,
+  //     heartCount: 100,
+  //     bookmarkCount: 0,
+  //     comments: [],
+  //     hearts: [],
+  //     bookmarks: [],
+  //     imagesArray: [
+  //       {
+  //         url: '/images/default_profile.png',
+  //         name: 'test',
+  //         timeCreated: '2020-03-05',
+  //       },
+  //     ],
+  //   },
+  // ];
   return (
     <StMainWrapper>
       <StMain>
@@ -76,7 +76,7 @@ const Main = ({
               })}
               {/* {mainPosts.length === 0 && */}
               {/* newPost.length === 0 && */}
-              {
+              {/* {
                 <>
                   <div
                     style={{
@@ -102,7 +102,7 @@ const Main = ({
                     />
                   ))}
                 </>
-              }
+              } */}
             </>
           )}
         </StSection>
