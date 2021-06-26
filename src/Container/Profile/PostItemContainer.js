@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import PostItem from '../../Component/Profile/PostItem';
 
 const PostItemContainer = ({ post, onClickPostModal }) => {
-  const { imagesArray, heartCount, comments } = post;
+  const { imagesArray, hearts, comments } = post;
   const [hover, setHover] = useState(false);
   const onShow = () => setHover(true);
   const onHide = () => setHover(false);
@@ -13,7 +13,7 @@ const PostItemContainer = ({ post, onClickPostModal }) => {
       hover={hover}
       onShow={onShow}
       onHide={onHide}
-      heartCount={heartCount}
+      heartCount={hearts.length}
       comments={comments.length}
       onClickPostModal={onClickPostModal}
     />
