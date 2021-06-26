@@ -55,19 +55,20 @@ const PostContainer = ({
       await removeHeartData(currentUid, uid, id);
     } else {
       console.log('Liked!');
-      await addHeartData(currentUid, uid, id);
+      const a = await addHeartData(currentUid, uid, id);
+      console.log(a);
     }
     await updatePostsData(dispatch, updateMainPosts);
     observeHeart(dispatch, getHearts); // 내가 hearts를 누르면서 하트 게시물 업데이트
   };
 
-  const onClickBookmark = () => {
+  const onClickBookmark = async () => {
     if (isBookmark) {
       console.log('Deleted!');
-      removeBookmarkData(currentUid, uid, id);
+      await removeBookmarkData(currentUid, uid, id);
     } else {
       console.log('Saved!');
-      addBookmarkData(currentUid, uid, id);
+      await addBookmarkData(currentUid, uid, id);
     }
     observeBookmark(dispatch, getBookmarks); // 좋아요 게시물 업데이트
   };
