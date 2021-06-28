@@ -367,43 +367,71 @@ export const addBookmarkData = async (currentUserUid, uid, id) => {
    * @param uid 선택한 게시물을 올린 유저의 uid
    * @param postId  선택한 게시물의 postId(postId)
    */
-  await firestore
-    .collection('bookmark')
-    .doc(currentUserUid)
-    .update({
-      bookmarks: firebase.firestore.FieldValue.arrayUnion({
-        uid,
-        id,
-      }),
-    });
-  await firestore
-    .collection('posts')
-    .doc(uid) // 내가 북마크를 누른 유저의 uid
-    .collection('my-posts')
-    .doc(id) // 내가 북마크를 누른 유저의 post id
-    .update({
-      bookmarks: firebase.firestore.FieldValue.arrayUnion(currentUserUid),
-    }); // 내 uid(current User uid)를 추가
+  try {
+    await firestore
+      .collection('bookmark')
+      .doc(currentUserUid)
+      .update({
+        bookmarks: firebase.firestore.FieldValue.arrayUnion({
+          uid,
+          id,
+        }),
+      });
+    await firestore
+      .collection('posts')
+      .doc(uid) // 내가 북마크를 누른 유저의 uid
+      .collection('my-posts')
+      .doc(id) // 내가 북마크를 누른 유저의 post id
+      .update({
+        bookmarks: firebase.firestore.FieldValue.arrayUnion(currentUserUid),
+      }); // 내 uid(current User uid)를 추가
+  } catch (e) {
+    console.log('북마크 클릭시 게시글이 삭제되어 에러뜸', e.message, uid, id);
+    await firestore
+      .collection('bookmark')
+      .doc(currentUserUid)
+      .update({
+        bookmarks: firebase.firestore.FieldValue.arrayRemove({
+          uid,
+          id,
+        }),
+      });
+    return 'error';
+  }
 };
 
 export const removeBookmarkData = async (currentUserUid, uid, id) => {
-  await firestore
-    .collection('bookmark')
-    .doc(currentUserUid)
-    .update({
-      bookmarks: firebase.firestore.FieldValue.arrayRemove({
-        uid,
-        id,
-      }),
-    });
-  await firestore
-    .collection('posts')
-    .doc(uid) // 내가 북마크를 누른 유저의 uid
-    .collection('my-posts')
-    .doc(id) // 내가 북마크를 누른 유저의 post id
-    .update({
-      bookmarks: firebase.firestore.FieldValue.arrayRemove(currentUserUid),
-    }); // 내 uid(current User uid)를 제거
+  try {
+    await firestore
+      .collection('bookmark')
+      .doc(currentUserUid)
+      .update({
+        bookmarks: firebase.firestore.FieldValue.arrayRemove({
+          uid,
+          id,
+        }),
+      });
+    await firestore
+      .collection('posts')
+      .doc(uid) // 내가 북마크를 누른 유저의 uid
+      .collection('my-posts')
+      .doc(id) // 내가 북마크를 누른 유저의 post id
+      .update({
+        bookmarks: firebase.firestore.FieldValue.arrayRemove(currentUserUid),
+      }); // 내 uid(current User uid)를 제거
+  } catch (e) {
+    console.log('북마크 클릭시 게시글이 삭제되어 에러뜸', e.message, uid, id);
+    await firestore
+      .collection('bookmark')
+      .doc(currentUserUid)
+      .update({
+        bookmarks: firebase.firestore.FieldValue.arrayRemove({
+          uid,
+          id,
+        }),
+      });
+    return 'error';
+  }
 };
 
 export const getPostsByBookmarks = async bookmarks => {
@@ -443,37 +471,59 @@ export const addHeartData = async (currentUserUid, uid, id) => {
    * @param uid 선택한 게시물을 올린 유저의 uid
    * @param postId  선택한 게시물의 postId(postId)
    */
-  await firestore
-    .collection('heart')
-    .doc(currentUserUid)
-    .update({
-      hearts: firebase.firestore.FieldValue.arrayUnion({ uid, id }),
-    });
-  await firestore
-    .collection('posts')
-    .doc(uid) // 내가 좋아요를 누른 유저의 uid
-    .collection('my-posts')
-    .doc(id) // 내가 좋아요를 누른 유저의 post id
-    .update({
-      hearts: firebase.firestore.FieldValue.arrayUnion(currentUserUid),
-    }); // 내 uid(current User uid)를 추가
+  try {
+    await firestore
+      .collection('heart')
+      .doc(currentUserUid)
+      .update({
+        hearts: firebase.firestore.FieldValue.arrayUnion({ uid, id }),
+      });
+    await firestore
+      .collection('posts')
+      .doc(uid) // 내가 좋아요를 누른 유저의 uid
+      .collection('my-posts')
+      .doc(id) // 내가 좋아요를 누른 유저의 post id
+      .update({
+        hearts: firebase.firestore.FieldValue.arrayUnion(currentUserUid),
+      }); // 내 uid(current User uid)를 추가
+  } catch (e) {
+    console.log('좋아요 클릭시 게시글이 삭제되어 에러뜸', e.message, uid, id);
+    await firestore
+      .collection('heart')
+      .doc(currentUserUid)
+      .update({
+        hearts: firebase.firestore.FieldValue.arrayRemove({ uid, id }),
+      });
+    return 'error';
+  }
 };
 
 export const removeHeartData = async (currentUserUid, uid, id) => {
-  await firestore
-    .collection('heart')
-    .doc(currentUserUid)
-    .update({
-      hearts: firebase.firestore.FieldValue.arrayRemove({ uid, id }),
-    });
-  await firestore
-    .collection('posts')
-    .doc(uid) // 내가 좋아요를 누른 유저의 uid
-    .collection('my-posts')
-    .doc(id) // 내가 좋아요를 누른 유저의 post id
-    .update({
-      hearts: firebase.firestore.FieldValue.arrayRemove(currentUserUid),
-    }); // 내 uid(current User uid)를 제거
+  try {
+    await firestore
+      .collection('heart')
+      .doc(currentUserUid)
+      .update({
+        hearts: firebase.firestore.FieldValue.arrayRemove({ uid, id }),
+      });
+    await firestore
+      .collection('posts')
+      .doc(uid) // 내가 좋아요를 누른 유저의 uid
+      .collection('my-posts')
+      .doc(id) // 내가 좋아요를 누른 유저의 post id
+      .update({
+        hearts: firebase.firestore.FieldValue.arrayRemove(currentUserUid),
+      }); // 내 uid(current User uid)를 제거
+  } catch (e) {
+    console.log('좋아요 취소시 게시글이 삭제되어 에러뜸', e);
+    await firestore
+      .collection('heart')
+      .doc(currentUserUid)
+      .update({
+        hearts: firebase.firestore.FieldValue.arrayRemove({ uid, id }),
+      });
+    return 'error';
+  }
 };
 
 export const getPostsByHearts = async hearts => {

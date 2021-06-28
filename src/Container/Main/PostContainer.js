@@ -20,6 +20,7 @@ import { getHearts, getUsersWhoClickHeart } from '../../Modules/heart';
 import { getBookmarks } from '../../Modules/saved';
 import { activePostData, openPopup } from '../../Modules/popup';
 import { calcTimeElapsed } from '../../lib/calcTimeElapsed';
+import useToast from '../../Hooks/useToast';
 
 const PostContainer = ({
   post,
@@ -41,8 +42,8 @@ const PostContainer = ({
   } = post;
   const history = useHistory();
   const dispatch = useDispatch();
+  const [toast] = useToast();
   const { uid: currentUid } = useSelector(state => state.user.currentUser);
-
   const [more, setMore] = useState(true);
 
   const onClickMore = () => {
@@ -52,11 +53,16 @@ const PostContainer = ({
   const onClickHeart = async () => {
     if (isHeart) {
       console.log('Unliked!');
-      await removeHeartData(currentUid, uid, id);
+      const result = await removeHeartData(currentUid, uid, id);
+      if (result === 'error') {
+        toast('이미 삭제되었거나 존재하지 않는 게시물입니다.');
+      }
     } else {
       console.log('Liked!');
-      const a = await addHeartData(currentUid, uid, id);
-      console.log(a);
+      const result = await addHeartData(currentUid, uid, id);
+      if (result === 'error') {
+        toast('이미 삭제되었거나 존재하지 않는 게시물입니다.');
+      }
     }
     await updatePostsData(dispatch, updateMainPosts);
     observeHeart(dispatch, getHearts); // 내가 hearts를 누르면서 하트 게시물 업데이트
@@ -65,11 +71,18 @@ const PostContainer = ({
   const onClickBookmark = async () => {
     if (isBookmark) {
       console.log('Deleted!');
-      await removeBookmarkData(currentUid, uid, id);
+      const result = await removeBookmarkData(currentUid, uid, id);
+      if (result === 'error') {
+        toast('이미 삭제되었거나 존재하지 않는 게시물입니다.');
+      }
     } else {
       console.log('Saved!');
-      await addBookmarkData(currentUid, uid, id);
+      const result = await addBookmarkData(currentUid, uid, id);
+      if (result === 'error') {
+        toast('이미 삭제되었거나 존재하지 않는 게시물입니다.');
+      }
     }
+    await updatePostsData(dispatch, updateMainPosts);
     observeBookmark(dispatch, getBookmarks); // 좋아요 게시물 업데이트
   };
 
@@ -104,7 +117,7 @@ const PostContainer = ({
       photoURL={photoURL}
       location={location}
       imagesArray={imagesArray}
-      heartCount={hearts.length}
+      heartCount={isHeart && hearts.length}
       more={more}
       text={text}
       onClickMore={onClickMore}
