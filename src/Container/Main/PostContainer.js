@@ -71,7 +71,6 @@ const PostContainer = ({
     }
     await updatePostsData(dispatch, updateMainPosts);
     observeHeart(dispatch, getHearts); // 내가 hearts를 누르면서 하트 게시물 업데이트
-    console.log(newPost);
     if (newPost.length !== 0) dispatch(clearNewPost());
   };
 

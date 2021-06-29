@@ -11,10 +11,11 @@ const PostCommentsContainer = ({
 
   useEffect(async () => {
     if (comments.length > 0) {
+      console.log('comment 추가됨?');
       const result = await getDisplayName(comments);
       setDisplayNames(result);
     }
-  }, []);
+  }, [comments]);
 
   return (
     <PostComments

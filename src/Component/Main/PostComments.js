@@ -60,7 +60,7 @@ const StComment = styled.li`
   align-items: center;
   justify-content: space-between;
   & + & {
-    margin-top: 1rem;
+    margin-top: 1.2rem;
   }
 `;
 

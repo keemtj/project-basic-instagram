@@ -23,7 +23,7 @@ const PostTextBox = ({ displayName, more, onClickMore, text }) => {
 const StTextBox = styled.div`
   display: flex;
   flex-flow: row wrap;
-  margin-top: 0.5rem;
+  margin-top: 1rem;
   padding: 0rem 1.5rem;
   font-size: 1.4rem;
   word-break: break-all;
