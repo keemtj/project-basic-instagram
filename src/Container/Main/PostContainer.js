@@ -1,12 +1,17 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router';
+import useToast from '../../Hooks/useToast';
 import Post from '../../Component/Main/Post';
 import {
   getSearchUserData,
   getSearchUserFollowData,
 } from '../../Modules/search';
-import { getSearchUserPosts, updateMainPosts } from '../../Modules/posts';
+import {
+  clearNewPost,
+  getSearchUserPosts,
+  updateMainPosts,
+} from '../../Modules/posts';
 import {
   addHeartData,
   removeHeartData,
@@ -20,7 +25,6 @@ import { getHearts, getUsersWhoClickHeart } from '../../Modules/heart';
 import { getBookmarks } from '../../Modules/saved';
 import { activePostData, openPopup } from '../../Modules/popup';
 import { calcTimeElapsed } from '../../lib/calcTimeElapsed';
-import useToast from '../../Hooks/useToast';
 
 const PostContainer = ({
   post,
@@ -66,6 +70,7 @@ const PostContainer = ({
     }
     await updatePostsData(dispatch, updateMainPosts);
     observeHeart(dispatch, getHearts); // 내가 hearts를 누르면서 하트 게시물 업데이트
+    dispatch(clearNewPost());
   };
 
   const onClickBookmark = async () => {
@@ -84,6 +89,7 @@ const PostContainer = ({
     }
     await updatePostsData(dispatch, updateMainPosts);
     observeBookmark(dispatch, getBookmarks); // 좋아요 게시물 업데이트
+    dispatch(clearNewPost());
   };
 
   const onMoveProfilePage = () => {
@@ -117,7 +123,7 @@ const PostContainer = ({
       photoURL={photoURL}
       location={location}
       imagesArray={imagesArray}
-      heartCount={isHeart && hearts.length}
+      heartCount={hearts.length}
       more={more}
       text={text}
       onClickMore={onClickMore}

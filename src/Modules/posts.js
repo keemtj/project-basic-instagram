@@ -8,6 +8,7 @@ const MAIN_POSTS_ERROR = 'posts/MAIN_POSTS_ERROR';
 
 const NEW_POST = 'posts/NEW_POSTS';
 const REMOVE_NEW_POST = 'posts/REMOVE_NEW_POST';
+const CLEAR_NEW_POST = 'posts/CLEAR_NEW_POST';
 
 const MY_POSTS = 'posts/MY_POSTS';
 const MY_POSTS_SUCCESS = 'posts/MY_POSTS_SUCCESS';
@@ -39,6 +40,7 @@ const DATA_CLEAR = 'posts/DATA_CLEAR';
 export const getMainPosts = fetchDataThunk(MAIN_POSTS, store.getAllPosts, 1000);
 export const addNewPost = data => ({ type: NEW_POST, data });
 export const removeNewPost = id => ({ type: REMOVE_NEW_POST, id });
+export const clearNewPost = () => ({ type: CLEAR_NEW_POST });
 
 export const getPosts = fetchDataThunk(
   MY_POSTS,
@@ -117,6 +119,11 @@ const posts = (state = initialState, action) => {
       return {
         ...state,
         newPost: state.newPost.filter(post => post.id !== action.id),
+      };
+    case CLEAR_NEW_POST:
+      return {
+        ...state,
+        newPost: [],
       };
     case MY_POSTS:
       return {

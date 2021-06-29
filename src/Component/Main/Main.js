@@ -45,13 +45,14 @@ const Main = ({
           ) : (
             <>
               {newPost.length !== 0 &&
-                newPost.map((post, index) => {
+                newPost.map((post, index, arr) => {
                   return (
                     <PostContainer
                       key={index}
                       post={post}
                       displayName={newPostUserData.displayName}
                       photoURL={newPostUserData.photoURL}
+                      newPost={arr}
                     />
                   );
                 })}
