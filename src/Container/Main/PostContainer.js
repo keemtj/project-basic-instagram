@@ -32,6 +32,7 @@ const PostContainer = ({
   photoURL,
   isBookmark,
   isHeart,
+  newPost,
 }) => {
   const {
     imagesArray,
@@ -70,7 +71,8 @@ const PostContainer = ({
     }
     await updatePostsData(dispatch, updateMainPosts);
     observeHeart(dispatch, getHearts); // 내가 hearts를 누르면서 하트 게시물 업데이트
-    dispatch(clearNewPost());
+    console.log(newPost);
+    if (newPost.length !== 0) dispatch(clearNewPost());
   };
 
   const onClickBookmark = async () => {
@@ -89,7 +91,7 @@ const PostContainer = ({
     }
     await updatePostsData(dispatch, updateMainPosts);
     observeBookmark(dispatch, getBookmarks); // 좋아요 게시물 업데이트
-    dispatch(clearNewPost());
+    if (newPost.length !== 0) dispatch(clearNewPost());
   };
 
   const onMoveProfilePage = () => {

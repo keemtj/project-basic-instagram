@@ -45,14 +45,14 @@ const Main = ({
           ) : (
             <>
               {newPost.length !== 0 &&
-                newPost.map((post, index, arr) => {
+                newPost.map((post, index) => {
                   return (
                     <PostContainer
                       key={index}
                       post={post}
                       displayName={newPostUserData.displayName}
                       photoURL={newPostUserData.photoURL}
-                      newPost={arr}
+                      newPost={newPost}
                     />
                   );
                 })}
@@ -72,6 +72,7 @@ const Main = ({
                     }
                     isBookmark={isBookmark}
                     isHeart={isHeart}
+                    newPost={newPost}
                   />
                 );
               })}
