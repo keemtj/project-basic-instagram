@@ -26,6 +26,7 @@ const Post = ({
   onMoveProfilePage,
   onClickHeart,
   onClickBookmark,
+  onClickShare,
   isBookmark,
   isHeart,
   onClickSetting,
@@ -45,6 +46,7 @@ const Post = ({
       <PostNavigation
         onClickBookmark={onClickBookmark}
         onClickHeart={onClickHeart}
+        onClickShare={onClickShare}
         isBookmark={isBookmark}
         isHeart={isHeart}
       />

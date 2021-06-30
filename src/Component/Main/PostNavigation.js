@@ -10,6 +10,7 @@ import { BookmarkFill } from '@styled-icons/bootstrap/BookmarkFill';
 const PostNavigation = ({
   onClickBookmark,
   onClickHeart,
+  onClickShare,
   isBookmark,
   isHeart,
 }) => {
@@ -20,7 +21,7 @@ const PostNavigation = ({
         <Chat />
       </div>
       <div>
-        <PaperPlane />
+        <PaperPlane onClick={onClickShare} />
       </div>
       <div onClick={onClickBookmark}>
         {isBookmark ? <StBookmarkFill /> : <Bookmark />}

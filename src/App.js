@@ -24,6 +24,7 @@ import ToastPopup from './Component/Global/ToastPopup';
 import PostModal from './Component/Profile/PostModal';
 import HeartCountModal from './Component/Main/HeartCountModal';
 import ProfileEditModal from './Container/Profile/ProfileEditModal';
+import PostShareModal from './Component/Main/PostShareModal';
 
 const App = () => {
   const dispatch = useDispatch();
@@ -36,6 +37,7 @@ const App = () => {
     postSettingModal: postSettingModalState,
     postHeartCountModal: postHeartCountModalState,
     profileEditModal: profileEditModalState,
+    postSharePopup: postSharePopupState,
     activePostsData,
     activePostId,
     activeIndexValue,
@@ -78,6 +80,7 @@ const App = () => {
           />
         )}
         {postHeartCountModalState && <HeartCountModal />}
+        {postSharePopupState && <PostShareModal />}
         {profileEditModalState && <ProfileEditModal />}
         <ToastPopup />
       </PageWrapper>

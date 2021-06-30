@@ -127,12 +127,14 @@ const StName = styled.div`
 const StDisplayName = styled.div`
   color: ${({ theme }) => theme.black};
 `;
+
 const StUsername = styled.div`
   margin-top: 0.2rem;
   font-size: 1.3rem;
   font-weight: 500;
   color: ${({ theme }) => theme.darkGray};
 `;
+
 const StCloseButton = styled.button`
   position: absolute;
   top: 0;

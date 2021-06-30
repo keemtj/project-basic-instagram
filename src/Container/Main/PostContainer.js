@@ -93,6 +93,10 @@ const PostContainer = ({
     if (newPost.length !== 0) dispatch(clearNewPost());
   };
 
+  const onClickShare = () => {
+    dispatch(openPopup('postSharePopup'));
+  };
+
   const onMoveProfilePage = () => {
     dispatch(getSearchUserData(uid));
     dispatch(getSearchUserFollowData(uid));
@@ -134,6 +138,7 @@ const PostContainer = ({
       onMoveProfilePage={onMoveProfilePage}
       onClickHeart={onClickHeart}
       onClickBookmark={onClickBookmark}
+      onClickShare={onClickShare}
       isBookmark={isBookmark}
       isHeart={isHeart}
       onClickSetting={onClickSetting}
