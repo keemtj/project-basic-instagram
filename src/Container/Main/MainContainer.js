@@ -16,6 +16,7 @@ const MainContainer = () => {
   const {
     postSettingModal: postSettingModalState,
     postHeartCountModal: postHeartCountModalState,
+    postSharePopup: postSharePopupState,
   } = useSelector(state => state.popup);
   const bookmarks = useSelector(state => state.saved.bookmarks);
   const hearts = useSelector(state => state.heart.hearts);
@@ -39,6 +40,10 @@ const MainContainer = () => {
   useEffect(() => {
     document.body.style.overflow = postSettingModalState ? 'hidden' : 'auto';
   }, [postSettingModalState]);
+
+  useEffect(() => {
+    document.body.style.overflow = postSharePopupState ? 'hidden' : 'auto';
+  }, [postSharePopupState]);
 
   useEffect(() => {
     document.title = 'Instagram';

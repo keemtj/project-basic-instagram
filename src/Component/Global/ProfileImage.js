@@ -10,6 +10,7 @@ const ProfileImage = ({
   fontSize,
   username,
   children,
+  hover,
   ...rest
 }) => {
   return (
@@ -19,12 +20,14 @@ const ProfileImage = ({
         alt={alt}
         width={width}
         height={height}
+        hover={hover}
         onClick={rest.onClick ? rest.onClick : undefined}
       />
       {children ? (
         children
       ) : (
         <StUsername
+          hover={hover}
           marginLeft={marginLeft}
           fontSize={fontSize}
           onClick={rest.onClick}
@@ -47,11 +50,12 @@ const StProfileImage = styled.img`
   border-radius: 50%;
   width: ${({ width }) => width}rem;
   height: ${({ height }) => height}rem;
-  &:hover {
-    text-decoration: underline;
-    cursor: pointer;
-  }
   object-fit: cover;
+  &:hover {
+    /* cursor: ${({ hover }) => (hover ? 'pointer' : 'default')}; */
+    cursor: pointer;
+    text-decoration: ${({ hover }) => (hover ? 'underline' : 'none')};
+  }
 `;
 
 const StUsername = styled.div`
@@ -59,8 +63,9 @@ const StUsername = styled.div`
   font-size: ${({ fontSize }) => fontSize}rem;
   font-weight: 600;
   &:hover {
-    text-decoration: underline;
+    /* cursor: ${({ hover }) => (hover ? 'pointer' : 'default')}; */
     cursor: pointer;
+    text-decoration: ${({ hover }) => (hover ? 'underline' : 'none')};
   }
 `;
 
