@@ -1,13 +1,30 @@
-import React from 'react';
-import { Route, Switch } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { Redirect, Route, Switch } from 'react-router-dom';
 import NewChat from '../Component/Direct/NewChat';
-import Chat from '../Component/Direct/Chat';
+import MessagesContainer from '../Container/Direct/MessagesContainer';
+import { firebaseAuth } from '../services/firebase';
 
 const DirectRouter = () => {
+  const [user, setUser] = useState(false);
+  useEffect(() => {
+    firebaseAuth.onAuthStateChanged(async user => {
+      if (user) {
+        setUser(true);
+      } else {
+        setUser(false);
+      }
+    });
+  });
   return (
     <Switch>
       <Route path="/direct/" component={NewChat} exact />
-      <Route path="/direct/:username" component={Chat} />
+      <Route path="/direct/:directId">
+        {user ? (
+          <MessagesContainer />
+        ) : (
+          <Redirect to={{ pathname: '/direct' }} />
+        )}
+      </Route>
       <Route
         render={({ location }) => (
           <div style={{ marginTop: '5.5rem' }}>

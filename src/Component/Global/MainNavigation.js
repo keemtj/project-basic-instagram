@@ -35,7 +35,9 @@ const MainNavigation = ({
         <li>
           <NavLink to="/direct">
             <StIcon>
-              {path === '/direct' && !profilePopup && !newPostModal ? (
+              {document.URL.includes('/direct') &&
+              !profilePopup &&
+              !newPostModal ? (
                 <PaperPlaneFilled />
               ) : (
                 <PaperPlane />

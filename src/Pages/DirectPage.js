@@ -1,8 +1,8 @@
 import React from 'react';
-import Direct from '../Component/Direct/Direct';
+import DirectContainer from '../Container/Direct/DirectContainer';
 
 const DirectPage = () => {
-  return <Direct />;
+  return <DirectContainer />;
 };
 
 export default DirectPage;

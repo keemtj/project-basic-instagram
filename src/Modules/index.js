@@ -8,6 +8,7 @@ import search from './search';
 import saved from './saved';
 import heart from './heart';
 import share from './share';
+import direct from './direct';
 
 const rootReducer = combineReducers({
   login,
@@ -19,6 +20,7 @@ const rootReducer = combineReducers({
   heart,
   saved,
   share,
+  direct,
 });
 
 export default rootReducer;

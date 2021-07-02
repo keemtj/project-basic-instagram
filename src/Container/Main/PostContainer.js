@@ -24,7 +24,7 @@ import {
 import { getHearts, getUsersWhoClickHeart } from '../../Modules/heart';
 import { getBookmarks } from '../../Modules/saved';
 import { activePostData, openPopup } from '../../Modules/popup';
-import { calcTimeElapsed } from '../../lib/calcTimeElapsed';
+import { calcTimeElapsed } from '../../lib/calcTime';
 
 const PostContainer = ({
   post,

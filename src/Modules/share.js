@@ -26,7 +26,7 @@ export const clearUsersStack = () => ({ type: CLEAR_SHARE_USERS_STACK });
 // initialState
 const initialState = {
   searchUsers: reducerUtils.initial(),
-  usersStack: [],
+  selectedUsers: [],
 };
 
 // reducer
@@ -50,19 +50,19 @@ const share = (state = initialState, action) => {
     case ADD_SHARE_USERS_STACK:
       return {
         ...state,
-        usersStack: [...state.usersStack, action.user],
+        selectedUsers: [...state.selectedUsers, action.user],
       };
     case REMOVE_SHARE_USERS_STACK:
       return {
         ...state,
-        usersStack: state.usersStack.filter(
+        selectedUsers: state.selectedUsers.filter(
           stack => stack.uid !== action.user.uid,
         ),
       };
     case CLEAR_SHARE_USERS_STACK:
       return {
         ...state,
-        usersStack: [],
+        selectedUsers: [],
       };
     default:
       return state;

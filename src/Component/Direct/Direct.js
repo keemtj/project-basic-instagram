@@ -1,37 +1,30 @@
 import React from 'react';
 import styled from 'styled-components';
-import DirectItem from './DirectItem';
-import { NewMessage } from '@styled-icons/entypo/NewMessage';
 import DirectRouter from '../../Router/DirectRouter';
-import { Link } from 'react-router-dom';
+import { PencilSquare } from '@styled-icons/bootstrap/PencilSquare';
+import RoomContainer from '../../Container/Direct/RoomContainer';
 
-const Direct = () => {
-  // const directs = [1, 2, 3, 4];
-  const chats = [
-    { username: 'james', chats: [], lastTimeStamp: '5' },
-    { username: 'lee', chats: [], lastTimeStamp: '3' },
-  ];
-
-  React.useEffect(() => {
-    document.title = '받은 메시지함 • Direct';
-  }, []);
+const Direct = ({ displayName, onClickNewDirect, rooms, partners }) => {
   return (
     <StDirect>
       <StDirectBox>
         <StInboxSection>
           <StInboxHeader>
-            <StUsername>username</StUsername>
-            <StNewDirectButton>
-              <NewMessage />
+            <StDisplayName>{displayName}</StDisplayName>
+            <StNewDirectButton onClick={onClickNewDirect}>
+              <PencilSquare />
             </StNewDirectButton>
           </StInboxHeader>
-          <StInbox>
-            {chats.map((chat, index) => (
-              <StLink to={`/direct/${chat.username}`} key={index}>
-                <DirectItem chat={chat} />
-              </StLink>
-            ))}
-          </StInbox>
+          <StRooms>
+            {rooms?.map((room, index) => {
+              const partner = partners.find(user =>
+                room.participant.includes(user.uid),
+              );
+              return (
+                <RoomContainer key={index} room={room} partner={partner} />
+              );
+            })}
+          </StRooms>
         </StInboxSection>
         <StChatSection>
           <DirectRouter />
@@ -70,15 +63,16 @@ const StInboxSection = styled.section`
 `;
 
 const StInboxHeader = styled.header`
-  height: 5.5rem;
-  border-bottom: 1px solid ${({ theme }) => theme.gray};
   display: flex;
   flex-flow: row nowrap;
   align-items: center;
-  padding: 1rem;
+  padding: 1rem 2rem;
+  height: 6.5rem;
+  min-height: 6.5rem;
+  border-bottom: 1px solid ${({ theme }) => theme.gray};
 `;
 
-const StUsername = styled.h2`
+const StDisplayName = styled.h2`
   flex-grow: 1;
   font-size: 1.6rem;
   font-weight: 600;
@@ -92,16 +86,12 @@ const StNewDirectButton = styled.button`
   outline: none;
 `;
 
-const StInbox = styled.ul`
-  padding: 0.5rem 0rem;
+const StRooms = styled.ul`
+  width: 100%;
   height: calc(100% - 5.5rem);
   overflow: scroll;
 `;
 
-const StLink = styled(Link)`
-  text-decoration: none;
-  color: ${({ theme }) => theme.black};
-`;
 const StChatSection = styled.section`
   width: 60%;
   height: 100%;

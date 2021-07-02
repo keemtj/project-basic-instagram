@@ -15,17 +15,21 @@ import {
 import Loading from '../../Component/Global/Loading';
 import ProfileImage from '../Global/ProfileImage';
 import useToast from '../../Hooks/useToast';
+import { useLocation } from 'react-router';
 
 const PostShareModal = () => {
+  const location = useLocation();
+  const isDirect = location.pathname.includes('/direct');
   const modalRef = useRef();
   const dispatch = useDispatch();
   const { postSharePopup: postSharePopupState } = useSelector(
     state => state.popup,
   );
+  const { partners } = useSelector(state => state.direct);
   const { data: searchUsers, loading } = useSelector(
     state => state.share.searchUsers,
   );
-  const { usersStack } = useSelector(state => state.share);
+  const { selectedUsers } = useSelector(state => state.share);
   const [toast] = useToast();
   const [value, setValue] = useState('');
 
@@ -35,7 +39,7 @@ const PostShareModal = () => {
   };
 
   const onClickUser = user => {
-    if (usersStack.find(stack => stack.uid === user.uid)) {
+    if (selectedUsers.find(stack => stack.uid === user.uid)) {
       dispatch(removeUsersStack(user));
     } else {
       dispatch(addUsersStack(user));
@@ -76,13 +80,17 @@ const PostShareModal = () => {
     };
   }, []);
 
-  const tempDmLists = [];
+  useEffect(() => {
+    const URL = document.URL;
+    history.pushState('', '', '/direct/new');
+    return () => history.pushState('', '', URL);
+  }, []);
 
   return (
     <PostSharePortal>
       <StModal>
         <StShareBox ref={modalRef}>
-          <StHeader>공유</StHeader>
+          <StHeader>{isDirect ? '새로운 메시지' : '공유'}</StHeader>
           <StSearchBox>
             <StLabel htmlFor="to">받는 유저:</StLabel>
             <StInput
@@ -96,11 +104,11 @@ const PostShareModal = () => {
               autoComplete="off"
             />
           </StSearchBox>
-          {usersStack?.length > 0 && (
+          {selectedUsers?.length > 0 && (
             <>
               <StSubTitle>선택한 유저</StSubTitle>
               <StUserStack>
-                {usersStack.map((user, index) => {
+                {selectedUsers.map((user, index) => {
                   return (
                     <StStack key={index}>
                       <StDisplayName>{user.displayName}</StDisplayName>
@@ -136,7 +144,7 @@ const PostShareModal = () => {
                             fontSize={1.4}
                           />
                           <StCheckBox>
-                            {usersStack.find(stack => stack.uid === uid) ? (
+                            {selectedUsers.find(stack => stack.uid === uid) ? (
                               <StCheckFillIcon />
                             ) : (
                               <StCheckIcon />
@@ -152,14 +160,30 @@ const PostShareModal = () => {
               )
             ) : (
               <>
-                <StSubTitle>추천</StSubTitle>
+                <StSubTitle>추천된 유저</StSubTitle>
                 <StSuggetionUsers>
-                  {tempDmLists.length > 0 ? (
-                    tempDmLists.map((list, index) => {
+                  {partners.length > 0 ? (
+                    partners?.map((user, index) => {
+                      const { photoURL, displayName, uid } = user;
                       return (
-                        <li key={index}>
-                          <div>{list.list}</div>
-                        </li>
+                        <StUser key={index} onClick={() => onClickUser(user)}>
+                          <ProfileImage
+                            src={photoURL}
+                            alt={displayName}
+                            width={4}
+                            height={4}
+                            marginLeft={1}
+                            username={displayName}
+                            fontSize={1.4}
+                          />
+                          <StCheckBox>
+                            {selectedUsers.find(stack => stack.uid === uid) ? (
+                              <StCheckFillIcon />
+                            ) : (
+                              <StCheckIcon />
+                            )}
+                          </StCheckBox>
+                        </StUser>
                       );
                     })
                   ) : (
@@ -171,17 +195,19 @@ const PostShareModal = () => {
           </StSuggestionBox>
           <StFooter>
             <StSendButton
-              usersStack={usersStack}
-              onClick={usersStack.length > 0 ? onClickSend : undefined}
+              selectedUsers={selectedUsers}
+              onClick={selectedUsers.length > 0 ? onClickSend : undefined}
             >
-              <div>게시물 공유하기</div>
-              {usersStack.length > 0 && (
-                <div>
-                  {'('}
-                  {usersStack.length}
-                  {')'}
-                </div>
-              )}
+              <div>
+                {isDirect ? '다이렉트 메시지 생성하기' : '공유하기'}
+                {selectedUsers.length > 0 && (
+                  <>
+                    <span> (</span>
+                    <span>{selectedUsers.length}</span>
+                    <span>)</span>
+                  </>
+                )}
+              </div>
             </StSendButton>
           </StFooter>
           <StCloseButton onClick={onClosePopup}>
@@ -343,8 +369,8 @@ const StSendButton = styled.button`
   flex-flow: row nowrap;
   align-items: center;
   justify-content: center;
-  background: ${({ theme, usersStack }) =>
-    usersStack.length > 0 ? theme.activeBlue : theme.inactiveBlue};
+  background: ${({ theme, selectedUsers }) =>
+    selectedUsers.length > 0 ? theme.activeBlue : theme.inactiveBlue};
   border: none;
   border-radius: 3px;
   width: 100%;

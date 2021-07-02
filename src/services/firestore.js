@@ -577,3 +577,33 @@ export const getDisplayName = async comments => {
   const promiseAll = await Promise.all(arr);
   return promiseAll;
 };
+
+// --> direct.rooms
+export const getRoomsByUid = async uid => {
+  const response = await firestore
+    .collection('direct')
+    .where('participant', 'array-contains', uid)
+    .get();
+  const roomsArr = response.docs.map(doc => doc.data());
+  const roomsAll = await Promise.all(roomsArr);
+  const rooms = await roomsAll.flatMap(v => v);
+  return rooms;
+};
+
+/**
+ * Direct messages
+ * @param {string} uid current user's uid
+ * @param {string} id room id
+ * @return {array} messages
+ */
+export const getMessagesByRoomId = async id => {
+  const response = await firestore
+    .collection('direct')
+    .doc(id)
+    .collection('messages')
+    .orderBy('timeStamp', 'asc')
+    .get();
+  const messagesArr = response.docs.map(doc => doc.data());
+  const messagesAll = await Promise.all(messagesArr);
+  return messagesAll;
+};

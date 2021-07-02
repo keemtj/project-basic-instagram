@@ -15,3 +15,21 @@ export const calcTimeElapsed = date => {
       : '방금 전';
   return elapsed;
 };
+
+/**
+ * 날짜가 바뀔 경우 return값을 수정해야함
+ * @param {number} timeStamp
+ * @return {string} timeStamp(AM, PM, hours, minutes)
+ */
+export const calcTimeStamp = timeStamp => {
+  const date = new Date(timeStamp);
+  const options = {
+    year: 'numeric',
+    month: 'numeric',
+    day: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit',
+  };
+  const time = date.toLocaleTimeString('ko-KR', options);
+  return time;
+};

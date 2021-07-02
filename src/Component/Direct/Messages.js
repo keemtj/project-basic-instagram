@@ -3,54 +3,42 @@ import styled, { css } from 'styled-components';
 import ProfileImage from '../Global/ProfileImage';
 import { InformationCircle } from '@styled-icons/ionicons-outline/InformationCircle';
 import { EmojiSmile } from '@styled-icons/bootstrap/EmojiSmile';
+import { calcTimeStamp } from '../../lib/calcTime';
 
-const Chat = () => {
-  const chats = [
-    { dm: '1message', send: true },
-    { dm: '2test', send: false },
-    { dm: '3dmdm', send: true },
-    { dm: '4hi', send: true },
-    { dm: '5hello', send: false },
-    { dm: '6insta', send: false },
-    { dm: '7how are you', send: true },
-    { dm: '8im fine', send: false },
-    { dm: '9whats going on', send: false },
-    { dm: '10nothing', send: true },
-    { dm: '11yeah see you soon', send: false },
-    { dm: '12abcd', send: false },
-    { dm: '13efg', send: false },
-    { dm: '12ok bye', send: true },
-    { dm: '12ok bye', send: true },
-    { dm: '12ok bye', send: true },
-    { dm: '12ok bye', send: true },
-    { dm: '12ok bye', send: true },
-    { dm: '12ok bye', send: true },
-    { dm: '12ok bye', send: true },
-    { dm: '12ok bye', send: true },
-    { dm: '12ok bye', send: true },
-    { dm: '12ok bye', send: true },
-    { dm: '12ok bye', send: true },
-    { dm: '12ok bye', send: true },
-  ];
+const Messages = ({ uid, onClickDetails, displayName, photoURL, messages }) => {
   return (
     <StChat>
       <StChatHeader>
         <ProfileImage
-          src="/images/default_profile.png"
+          src={photoURL}
           width={2.5}
           height={2.5}
           marginLeft={1}
-          fontSize={1.8}
-          username={'username'}
+          fontSize={1.5}
+          username={displayName}
         />
-        <StIcons />
+        <StIcons onClick={onClickDetails} />
       </StChatHeader>
       <StChatBox>
-        {chats.reverse().map((chat, index) => (
-          <StChatBubble key={index} send={chat.send}>
-            {chat.dm}
-          </StChatBubble>
-        ))}
+        {messages?.map((message, index) => {
+          const { msg, timeStamp, uid: msgUid } = message;
+          return (
+            <div key={index}>
+              <StTimeStamp>{calcTimeStamp(timeStamp)}</StTimeStamp>
+              <StChatBubbleBox>
+                {msgUid !== uid && (
+                  <ProfileImage
+                    src={photoURL}
+                    width={2.5}
+                    height={2.5}
+                    marginLeft={1}
+                  />
+                )}
+                <StChatBubble send={msgUid === uid}>{msg}</StChatBubble>
+              </StChatBubbleBox>
+            </div>
+          );
+        })}
       </StChatBox>
       <StChatFooter>
         <StChatLabel>
@@ -77,9 +65,9 @@ const StChatHeader = styled.header`
   flex-flow: row nowrap;
   align-items: center;
   justify-content: flex-start;
-  padding: 0rem 2rem;
-  height: 5.5rem;
-  min-height: 5.5rem;
+  padding: 1rem 2rem;
+  height: 6.5rem;
+  min-height: 6.5rem;
   border-bottom: 1px solid ${({ theme }) => theme.gray};
 `;
 
@@ -98,6 +86,12 @@ const StChatBox = styled.div`
   overflow-y: scroll;
 `;
 
+const StChatBubbleBox = styled.div`
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: flex-end;
+`;
+
 const StChatBubble = styled.div`
   border-radius: 3rem;
   background: ${({ theme }) => theme.gray5};
@@ -110,6 +104,16 @@ const StChatBubble = styled.div`
     `}
   font-size: 1.5rem;
   margin-top: 1rem;
+`;
+
+const StTimeStamp = styled.div`
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+  font-weight: 400;
+  color: ${({ theme }) => theme.darkGray};
 `;
 
 const StChatFooter = styled.footer`
@@ -149,4 +153,4 @@ const StChatButton = styled.button`
   color: ${({ theme }) => theme.activeBlue};
 `;
 
-export default Chat;
+export default Messages;
