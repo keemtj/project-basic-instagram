@@ -227,8 +227,8 @@ export const getUid = async watchName => {
 };
 
 // --> new post
-export const generatedId = () => {
-  const result = firestore.collection('posts').doc().id;
+export const generatedId = (collectionName = 'posts') => {
+  const result = firestore.collection(collectionName).doc().id;
   return result;
 };
 
@@ -586,7 +586,9 @@ export const getRoomsByUid = async uid => {
     .get();
   const roomsArr = response.docs.map(doc => doc.data());
   const roomsAll = await Promise.all(roomsArr);
-  const rooms = await roomsAll.flatMap(v => v);
+  const rooms = await roomsAll
+    .flatMap(v => v)
+    .sort((a, b) => b.timeStamp - a.timeStamp); // TODO: re-check direct
   return rooms;
 };
 
@@ -601,7 +603,7 @@ export const getMessagesByRoomId = async id => {
     .collection('direct')
     .doc(id)
     .collection('messages')
-    .orderBy('timeStamp', 'asc')
+    .orderBy('timeStamp', 'desc') // TODO: re-check direct
     .get();
   const messagesArr = response.docs.map(doc => doc.data());
   const messagesAll = await Promise.all(messagesArr);

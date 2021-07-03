@@ -8,6 +8,7 @@ import { firestore } from '../../services/firebase';
 const DirectContainer = () => {
   const dispatch = useDispatch();
   const { displayName, uid } = useSelector(state => state.user.currentUser);
+  const currentUser = useSelector(state => state.user.currentUser);
   const { postSharePopup: postSharePopupState } = useSelector(
     state => state.popup,
   );
@@ -25,10 +26,14 @@ const DirectContainer = () => {
   useEffect(async () => {
     if (!rooms) return;
     const arr = rooms.map(async room => {
+      const isMe = room.participant.length === 1 && room.participant[0] === uid;
+      if (isMe) {
+        return { ...currentUser, timeStamp: room.timeStamp }; // TODO: re-check direct
+      }
       const partner = room.participant.find(partUid => partUid !== uid);
       const response = await firestore.collection('users').doc(partner).get();
       const data = response.data();
-      return data;
+      return { ...data, timeStamp: room.timeStamp }; // TODO: re-check direct
     });
     // eslint-disable-next-line no-undef
     const promiseAll = await Promise.all(arr);
@@ -45,6 +50,7 @@ const DirectContainer = () => {
 
   return (
     <Direct
+      uid={uid}
       displayName={displayName}
       onClickNewDirect={onClickNewDirect}
       rooms={rooms}

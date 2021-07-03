@@ -4,7 +4,13 @@ import DirectRouter from '../../Router/DirectRouter';
 import { PencilSquare } from '@styled-icons/bootstrap/PencilSquare';
 import RoomContainer from '../../Container/Direct/RoomContainer';
 
-const Direct = ({ displayName, onClickNewDirect, rooms, partners }) => {
+const Direct = ({
+  //uid,
+  displayName,
+  onClickNewDirect,
+  rooms,
+  partners,
+}) => {
   return (
     <StDirect>
       <StDirectBox>
@@ -17,8 +23,9 @@ const Direct = ({ displayName, onClickNewDirect, rooms, partners }) => {
           </StInboxHeader>
           <StRooms>
             {rooms?.map((room, index) => {
-              const partner = partners.find(user =>
-                room.participant.includes(user.uid),
+              // TODO: re-check direct
+              const partner = partners.find(
+                partner => partner.timeStamp === room.timeStamp,
               );
               return (
                 <RoomContainer key={index} room={room} partner={partner} />

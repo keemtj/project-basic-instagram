@@ -16,13 +16,16 @@ import Loading from '../../Component/Global/Loading';
 import ProfileImage from '../Global/ProfileImage';
 import useToast from '../../Hooks/useToast';
 import { useLocation } from 'react-router';
+import { firebase, firestore } from '../../services/firebase';
+import { generatedId } from '../../services/firestore';
 
 const PostShareModal = () => {
   const location = useLocation();
   const isDirect = location.pathname.includes('/direct');
   const modalRef = useRef();
   const dispatch = useDispatch();
-  const { postSharePopup: postSharePopupState } = useSelector(
+  const { uid } = useSelector(state => state.user.currentUser);
+  const { postSharePopup: postSharePopupState, activePostId } = useSelector(
     state => state.popup,
   );
   const { partners } = useSelector(state => state.direct);
@@ -31,7 +34,7 @@ const PostShareModal = () => {
   );
   const { selectedUsers } = useSelector(state => state.share);
   const [toast] = useToast();
-  const [value, setValue] = useState('');
+  const [value, setValue] = useState(''); // input text
 
   const onChangeSearchInput = ({ target }) => {
     setValue(target.value);
@@ -50,8 +53,39 @@ const PostShareModal = () => {
     dispatch(removeUsersStack(user));
   };
 
-  const onClickSend = () => {
-    console.log('send & share');
+  const onClickSendPost = () => {
+    console.log(
+      `Send "http://localhost:3000/p/$activePostId${activePostId}" post link to user`,
+    );
+  };
+
+  const onClickSend = async () => {
+    // onSnapshot 필요
+    console.log('send or share');
+    const partnersArr = partners.map(partner => partner.uid);
+    await selectedUsers.forEach(async user => {
+      const directId = generatedId('direct');
+      const { uid: selectedUid, displayName } = user;
+      const isPartner = partnersArr.includes(selectedUid);
+      if (!isPartner) {
+        await firestore
+          .collection('direct')
+          .doc(directId)
+          .set({
+            id: directId,
+            participant: firebase.firestore.FieldValue.arrayUnion(
+              uid,
+              selectedUid,
+            ),
+            timeStamp: Date.now(),
+          });
+        console.log(`${displayName}과 direct방이 생성`);
+      } else if (selectedUid === uid) {
+        console.log('it is me!');
+      } else {
+        console.log('이미 direct 존재');
+      }
+    });
     dispatch(clearUsersStack());
     dispatch(closePopup('postSharePopup'));
     toast('전송됨');
@@ -82,7 +116,9 @@ const PostShareModal = () => {
 
   useEffect(() => {
     const URL = document.URL;
-    history.pushState('', '', '/direct/new');
+    if (document.URL.includes('/direct')) {
+      history.pushState('', '', '/direct/new');
+    }
     return () => history.pushState('', '', URL);
   }, []);
 
@@ -196,7 +232,13 @@ const PostShareModal = () => {
           <StFooter>
             <StSendButton
               selectedUsers={selectedUsers}
-              onClick={selectedUsers.length > 0 ? onClickSend : undefined}
+              onClick={
+                selectedUsers.length > 0
+                  ? document.URL.includes('/direct')
+                    ? onClickSend
+                    : onClickSendPost
+                  : undefined
+              }
             >
               <div>
                 {isDirect ? '다이렉트 메시지 생성하기' : '공유하기'}
