@@ -20,6 +20,7 @@ const PostChatInputContainer = ({ isPossibleComment, uid, id }) => {
     await updatePostsData(dispatch, updateMainPosts);
     if (newPost.length !== 0) dispatch(clearNewPost());
     setComment('');
+    setIsShow(false);
     toast('댓글 작성이 완료되었습니다.');
   };
 

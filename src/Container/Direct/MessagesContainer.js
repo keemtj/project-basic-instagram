@@ -22,9 +22,11 @@ const MessagesContainer = () => {
   useEffect(() => {
     dispatch(getMessages(id));
   }, [id]);
+
   return (
     <Messages
       uid={uid}
+      id={id}
       onClickDetails={onClickDetails}
       displayName={displayName}
       photoURL={photoURL}

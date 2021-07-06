@@ -14,9 +14,9 @@ const groupNames = {
   recently_used: '최근에 사용한 항목',
 };
 
-const Emoji = ({ onEmojiClick }) => {
+const Emoji = ({ onEmojiClick, direct }) => {
   return (
-    <StEmoji>
+    <StEmoji direct={direct}>
       <StPicker
         onEmojiClick={onEmojiClick}
         disableSearchBar
@@ -31,6 +31,8 @@ const StEmoji = styled.div`
   position: absolute;
   bottom: 6rem;
   left: 0.5rem;
+  left: ${({ direct }) => direct && '1rem'};
+  bottom: ${({ direct }) => direct && '6.5rem'};
   z-index: 1;
 `;
 
