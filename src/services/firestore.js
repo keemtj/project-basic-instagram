@@ -609,3 +609,19 @@ export const getMessagesByRoomId = async id => {
   const messagesAll = await Promise.all(messagesArr);
   return messagesAll;
 };
+
+export const updateMsgs = async (dispatch, actionCreator, id) => {
+  firestore
+    .collection('direct')
+    .doc(id) // roomId
+    .collection('messages')
+    .orderBy('timeStamp', 'desc')
+    .onSnapshot(snapshot => {
+      const messages = [];
+      snapshot.forEach(doc => {
+        const data = doc.data();
+        messages.push(data);
+      });
+      dispatch(actionCreator(messages));
+    });
+};

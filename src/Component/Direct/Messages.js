@@ -20,7 +20,7 @@ const Messages = ({
         photoURL={photoURL}
       />
       <MessageBox messages={messages} uid={uid} photoURL={photoURL} />
-      <MessageFooterContainer id={id} />
+      <MessageFooterContainer uid={uid} id={id} />
     </StMessages>
   );
 };

@@ -1,32 +1,57 @@
 import React, { useRef, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import MessageFooter from '../../Component/Direct/MessageFooter';
+import { clearDirectText, directText, emojiText } from '../../Modules/direct';
+import { firestore } from '../../services/firebase';
+import { generatedId } from '../../services/firestore';
 
-const MessageFooterContainer = ({ id }) => {
-  console.log(id);
+const MessageFooterContainer = ({ uid, id }) => {
+  console.log('roomid:', id);
+  const dispatch = useDispatch();
+  const { text: comment } = useSelector(state => state.direct);
   const inputRef = useRef(null);
-  const [comment, setComment] = useState('');
   const [isShow, setIsShow] = useState(false);
 
-  const onSubmit = async e => {
-    e.preventDefault();
+  const onSubmit = async () => {
     console.log('send', comment);
     if (comment.length === 0) return;
-    setComment('');
+    const msgId = generatedId();
+    await firestore
+      .collection('direct')
+      .doc(id)
+      .collection('messages')
+      .doc(msgId)
+      .set({
+        id: msgId,
+        msg: comment,
+        uid,
+        timeStamp: Date.now(),
+      });
+    console.log('message 전송(firestore에 저장)');
+    dispatch(clearDirectText());
     setIsShow(false);
   };
 
   const onChange = ({ target }) => {
-    setComment(target.value);
+    dispatch(directText(target.value));
   };
 
+  const onClickInput = () => {
+    setIsShow(false);
+  };
   const onShowEmojiPicker = e => {
     e.preventDefault();
     setIsShow(!isShow);
   };
 
   const onEmojiClick = (e, emojiObject) => {
-    setComment(comment + emojiObject.emoji);
+    dispatch(emojiText(emojiObject.emoji));
     inputRef.current.focus();
+  };
+
+  const onKeyPress = e => {
+    if (e.key !== 'Enter') return;
+    onSubmit();
   };
 
   return (
@@ -38,6 +63,8 @@ const MessageFooterContainer = ({ id }) => {
       isShow={isShow}
       inputRef={inputRef}
       comment={comment}
+      onKeyPress={onKeyPress}
+      onClickInput={onClickInput}
     />
   );
 };

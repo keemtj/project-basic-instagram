@@ -1,13 +1,16 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Messages from '../../Component/Direct/Messages';
-import { getMessages } from '../../Modules/direct';
+import { getMessages, updateMessages } from '../../Modules/direct';
+import { updateMsgs } from '../../services/firestore';
 
 const MessagesContainer = () => {
   const dispatch = useDispatch();
   const { uid } = useSelector(state => state.user.currentUser);
   const { room, partner } = useSelector(state => state.direct);
-  const { data: messages } = useSelector(state => state.direct.messages);
+  const { data: messages, loading } = useSelector(
+    state => state.direct.messages,
+  );
 
   const { displayName, photoURL } = partner || {
     displayName: '',
@@ -20,9 +23,14 @@ const MessagesContainer = () => {
   };
 
   useEffect(() => {
+    updateMsgs(dispatch, updateMessages, id);
+  }, [id]);
+
+  useEffect(() => {
     dispatch(getMessages(id));
   }, [id]);
 
+  if (loading) return <div>로딩중</div>;
   return (
     <Messages
       uid={uid}
