@@ -5,6 +5,7 @@ import { getPartner, getRoom } from '../../Modules/direct';
 
 const RoomContainer = ({ room, partner }) => {
   const dispatch = useDispatch();
+  const { id, timeStamp, msg } = room;
   const { displayName, photoURL } = partner || {
     displayName: '',
     photoURL: '/images/default_profile.png',
@@ -18,7 +19,9 @@ const RoomContainer = ({ room, partner }) => {
   return (
     <Room
       onClickRoom={onClickRoom}
-      room={room}
+      id={id}
+      timeStamp={timeStamp}
+      msg={msg}
       displayName={displayName}
       photoURL={photoURL}
     />

@@ -583,6 +583,7 @@ export const getRoomsByUid = async uid => {
   const response = await firestore
     .collection('direct')
     .where('participant', 'array-contains', uid)
+    .orderBy('timeStamp', 'desc')
     .get();
   const roomsArr = response.docs.map(doc => doc.data());
   const roomsAll = await Promise.all(roomsArr);

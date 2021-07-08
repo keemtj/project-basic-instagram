@@ -16,6 +16,7 @@ const MessageFooterContainer = ({ uid, id }) => {
     console.log('send', comment);
     if (comment.length === 0) return;
     const msgId = generatedId();
+    const timeStamp = Date.now();
     await firestore
       .collection('direct')
       .doc(id)
@@ -25,8 +26,12 @@ const MessageFooterContainer = ({ uid, id }) => {
         id: msgId,
         msg: comment,
         uid,
-        timeStamp: Date.now(),
+        timeStamp,
       });
+    await firestore.collection('direct').doc(id).update({
+      timeStamp,
+      msg: comment,
+    });
     console.log('message 전송(firestore에 저장)');
     dispatch(clearDirectText());
     setIsShow(false);

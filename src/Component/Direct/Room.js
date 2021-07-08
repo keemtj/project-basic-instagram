@@ -3,18 +3,18 @@ import styled from 'styled-components';
 import { NavLink } from 'react-router-dom';
 import ProfileImage from '../Global/ProfileImage';
 import { Dot } from '@styled-icons/bootstrap/Dot';
+import { calcTimeStamp } from '../../lib/calcTime';
 
-const Room = ({ onClickRoom, room, displayName, photoURL }) => {
+const Room = ({ onClickRoom, id, timeStamp, msg, displayName, photoURL }) => {
   return (
     <StRoom onClick={onClickRoom}>
-      <StLink to={`/direct/${room.id}`} activeClassName={'active'}>
+      <StLink to={`/direct/${id}`} activeClassName={'active'}>
         <ProfileImage src={photoURL} alt={displayName} width={6} height={6}>
           <StRoomPreview>
             <StDisplayName>{displayName}</StDisplayName>
             <StMsgInfo>
-              msg <StDot />
-              {/* {room.lastTimeStamp}일전 */}
-              1일전
+              {msg} <StDot />
+              {calcTimeStamp(timeStamp)}
             </StMsgInfo>
           </StRoomPreview>
         </ProfileImage>
