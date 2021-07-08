@@ -1,9 +1,10 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Direct from '../../Component/Direct/Direct';
-import { getPartners, getRooms } from '../../Modules/direct';
+import { getPartners, getRooms, updateRooms } from '../../Modules/direct';
 import { openPopup } from '../../Modules/popup';
 import { firestore } from '../../services/firebase';
+import { updateDirectRooms } from '../../services/firestore';
 
 const DirectContainer = () => {
   const dispatch = useDispatch();
@@ -20,6 +21,10 @@ const DirectContainer = () => {
   };
 
   useEffect(() => {
+    updateDirectRooms(dispatch, updateRooms, uid);
+  }, [uid]);
+
+  useEffect(() => {
     dispatch(getRooms(uid));
   }, [uid]);
 
@@ -28,12 +33,12 @@ const DirectContainer = () => {
     const arr = rooms.map(async room => {
       const isMe = room.participant.length === 1 && room.participant[0] === uid;
       if (isMe) {
-        return { ...currentUser, timeStamp: room.timeStamp }; // TODO: re-check direct
+        return { ...currentUser, timeStamp: room.timeStamp };
       }
       const partner = room.participant.find(partUid => partUid !== uid);
       const response = await firestore.collection('users').doc(partner).get();
       const data = response.data();
-      return { ...data, timeStamp: room.timeStamp }; // TODO: re-check direct
+      return { ...data, timeStamp: room.timeStamp };
     });
     // eslint-disable-next-line no-undef
     const promiseAll = await Promise.all(arr);

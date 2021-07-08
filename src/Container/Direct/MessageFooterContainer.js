@@ -44,6 +44,7 @@ const MessageFooterContainer = ({ uid, id }) => {
   const onClickInput = () => {
     setIsShow(false);
   };
+
   const onShowEmojiPicker = e => {
     e.preventDefault();
     setIsShow(!isShow);

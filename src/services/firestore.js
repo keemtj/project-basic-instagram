@@ -587,9 +587,7 @@ export const getRoomsByUid = async uid => {
     .get();
   const roomsArr = response.docs.map(doc => doc.data());
   const roomsAll = await Promise.all(roomsArr);
-  const rooms = await roomsAll
-    .flatMap(v => v)
-    .sort((a, b) => b.timeStamp - a.timeStamp); // TODO: re-check direct
+  const rooms = await roomsAll.flatMap(v => v);
   return rooms;
 };
 
@@ -604,11 +602,27 @@ export const getMessagesByRoomId = async id => {
     .collection('direct')
     .doc(id)
     .collection('messages')
-    .orderBy('timeStamp', 'desc') // TODO: re-check direct
+    .orderBy('timeStamp', 'desc')
     .get();
   const messagesArr = response.docs.map(doc => doc.data());
   const messagesAll = await Promise.all(messagesArr);
   return messagesAll;
+};
+
+export const updateDirectRooms = async (dispatch, actionCreator, uid) => {
+  firestore
+    .collection('direct')
+    .where('participant', 'array-contains', uid)
+    .orderBy('timeStamp', 'desc')
+    .onSnapshot(snapshot => {
+      const rooms = [];
+      snapshot.forEach(doc => {
+        const data = doc.data();
+        rooms.push(data);
+      });
+      console.log(rooms);
+      dispatch(actionCreator(rooms));
+    });
 };
 
 export const updateMsgs = async (dispatch, actionCreator, id) => {

@@ -20,6 +20,7 @@ const DIRECT_TEXT = 'direct/DIRECT_TEXT';
 const EMOJI_TEXT = 'direct/EMOJI_TEXT';
 const CLEAR_DIRECT_TEXT = 'direct/CLEAR_DIRECT_TEXT';
 
+const UPDATE_ROOMS = 'direct/UPDATE_ROOMS';
 const UPDATE_MESSAGES = 'direct/UPDATE_MESSAGES';
 
 // action creator
@@ -35,6 +36,7 @@ export const directText = data => ({ type: DIRECT_TEXT, data });
 export const emojiText = emoji => ({ type: EMOJI_TEXT, emoji });
 export const clearDirectText = () => ({ type: CLEAR_DIRECT_TEXT });
 
+export const updateRooms = datas => ({ type: UPDATE_ROOMS, datas });
 export const updateMessages = datas => ({ type: UPDATE_MESSAGES, datas });
 
 // initialState
@@ -94,6 +96,15 @@ const direct = (state = initialState, action) => {
       return {
         ...state,
         messages: reducerUtils.error(action.payload),
+      };
+    case UPDATE_ROOMS:
+      return {
+        ...state,
+        rooms: {
+          loading: state.rooms.loading,
+          error: state.rooms.error,
+          data: action.datas,
+        },
       };
     case UPDATE_MESSAGES:
       return {
