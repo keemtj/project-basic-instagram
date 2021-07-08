@@ -95,7 +95,7 @@ const StNewDirectButton = styled.button`
 
 const StRooms = styled.ul`
   width: 100%;
-  height: calc(100% - 5.5rem);
+  height: calc(100% - 6.5rem);
   overflow: scroll;
 `;
 

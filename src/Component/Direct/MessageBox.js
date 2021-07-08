@@ -10,7 +10,6 @@ const MessageBox = ({ messages, uid, photoURL }) => {
         const { msg, timeStamp, uid: msgUid } = message;
         return (
           <div key={index}>
-            <StTimeStamp>{calcTimeStamp(timeStamp)}</StTimeStamp>
             <StChatBubbleBox>
               {msgUid !== uid && (
                 <ProfileImage
@@ -20,7 +19,15 @@ const MessageBox = ({ messages, uid, photoURL }) => {
                   marginLeft={1}
                 />
               )}
-              <StChatBubble send={msgUid === uid}>{msg}</StChatBubble>
+              <StChatBubbleWrapper send={msgUid === uid}>
+                {msgUid === uid && (
+                  <StTimeStamp>{calcTimeStamp(timeStamp)}</StTimeStamp>
+                )}
+                <StChatBubble send={msgUid === uid}>{msg}</StChatBubble>
+                {msgUid !== uid && (
+                  <StTimeStamp>{calcTimeStamp(timeStamp)}</StTimeStamp>
+                )}
+              </StChatBubbleWrapper>
             </StChatBubbleBox>
           </div>
         );
@@ -44,26 +51,34 @@ const StChatBubbleBox = styled.div`
   align-items: flex-end;
 `;
 
-const StChatBubble = styled.div`
-  border-radius: 3rem;
-  background: ${({ send, theme }) => (send ? theme.activeBlue : theme.gray5)};
-  color: ${({ send, theme }) => (send ? theme.white : theme.black)};
-  width: fit-content;
-  padding: 1.5rem;
+const StChatBubbleWrapper = styled.div`
+  display: flex;
+  flex-flow: row nowrap;
+  margin-top: 1rem;
+  max-width: 60%;
   ${({ send }) =>
     send &&
     css`
       margin-left: auto;
     `}
+`;
+
+const StChatBubble = styled.div`
+  border-radius: 1rem;
+  background: ${({ send, theme }) => (send ? theme.activeBlue : theme.gray5)};
+  color: ${({ send, theme }) => (send ? theme.white : theme.black)};
+  width: fit-content;
+  padding: 1.5rem;
   font-size: 1.5rem;
-  margin-top: 1rem;
+  line-height: 1.2;
 `;
 
 const StTimeStamp = styled.div`
-  width: 100%;
   display: flex;
-  align-items: center;
+  align-items: flex-end;
   justify-content: center;
+  padding: 0.5rem;
+  min-width: fit-content;
   font-size: 1.2rem;
   font-weight: 400;
   color: ${({ theme }) => theme.darkGray};

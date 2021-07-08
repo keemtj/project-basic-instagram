@@ -620,7 +620,6 @@ export const updateDirectRooms = async (dispatch, actionCreator, uid) => {
         const data = doc.data();
         rooms.push(data);
       });
-      console.log(rooms);
       dispatch(actionCreator(rooms));
     });
 };

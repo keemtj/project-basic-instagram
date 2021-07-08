@@ -6,7 +6,6 @@ import { firestore } from '../../services/firebase';
 import { generatedId } from '../../services/firestore';
 
 const MessageFooterContainer = ({ uid, id }) => {
-  console.log('roomid:', id);
   const dispatch = useDispatch();
   const { text: comment } = useSelector(state => state.direct);
   const inputRef = useRef(null);
@@ -32,7 +31,7 @@ const MessageFooterContainer = ({ uid, id }) => {
       timeStamp,
       msg: comment,
     });
-    console.log('message 전송(firestore에 저장)');
+    console.log('Send Message');
     dispatch(clearDirectText());
     setIsShow(false);
   };

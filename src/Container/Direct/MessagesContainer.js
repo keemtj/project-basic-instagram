@@ -8,9 +8,7 @@ const MessagesContainer = () => {
   const dispatch = useDispatch();
   const { uid } = useSelector(state => state.user.currentUser);
   const { room, partner } = useSelector(state => state.direct);
-  const { data: messages, loading } = useSelector(
-    state => state.direct.messages,
-  );
+  const { data: messages } = useSelector(state => state.direct.messages);
 
   const { displayName, photoURL } = partner || {
     displayName: '',
@@ -30,7 +28,6 @@ const MessagesContainer = () => {
     dispatch(getMessages(id));
   }, [id]);
 
-  if (loading) return <div>로딩중</div>;
   return (
     <Messages
       uid={uid}

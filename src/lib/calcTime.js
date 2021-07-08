@@ -21,15 +21,27 @@ export const calcTimeElapsed = date => {
  * @param {number} timeStamp
  * @return {string} timeStamp(AM, PM, hours, minutes)
  */
-export const calcTimeStamp = timeStamp => {
+
+export const calcRecentTime = timeStamp => {
   const date = new Date(timeStamp);
   const options = {
-    year: 'numeric',
-    month: 'numeric',
-    day: 'numeric',
     hour: '2-digit',
     minute: '2-digit',
   };
   const time = date.toLocaleTimeString('ko-KR', options);
   return time;
+};
+
+export const calcTimeStamp = timeStamp => {
+  const date = new Date(timeStamp);
+  const options1 = {
+    // year: 'numeric',
+    // month: 'numeric',
+    // day: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit',
+  };
+  const time1 = date.toLocaleTimeString('ko-KR', options1);
+  console.log('time1:', time1);
+  return time1;
 };
