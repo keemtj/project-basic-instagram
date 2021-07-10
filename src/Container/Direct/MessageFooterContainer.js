@@ -14,7 +14,7 @@ const MessageFooterContainer = ({ uid, id }) => {
   const onSubmit = async () => {
     console.log('send', comment);
     if (comment.length === 0) return;
-    const msgId = generatedId();
+    const msgId = generatedId('messages');
     const timeStamp = Date.now();
     await firestore
       .collection('direct')

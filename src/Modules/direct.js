@@ -23,6 +23,8 @@ const CLEAR_DIRECT_TEXT = 'direct/CLEAR_DIRECT_TEXT';
 const UPDATE_ROOMS = 'direct/UPDATE_ROOMS';
 const UPDATE_MESSAGES = 'direct/UPDATE_MESSAGES';
 
+const GET_ROOM_ALREADY_CREATED = 'direct/GET_ROOM_ALREADY_CREATED';
+
 // action creator
 export const getRooms = fetchDataThunk(GET_ROOMS, store.getRoomsByUid);
 export const getRoom = data => ({ type: GET_ROOM, data });
@@ -38,6 +40,11 @@ export const clearDirectText = () => ({ type: CLEAR_DIRECT_TEXT });
 
 export const updateRooms = datas => ({ type: UPDATE_ROOMS, datas });
 export const updateMessages = datas => ({ type: UPDATE_MESSAGES, datas });
+
+export const getRoomAlreadyCreated = data => ({
+  type: GET_ROOM_ALREADY_CREATED,
+  data,
+});
 
 // initialState
 const initialState = {
@@ -114,6 +121,11 @@ const direct = (state = initialState, action) => {
           error: state.messages.error,
           data: action.datas,
         },
+      };
+    case GET_ROOM_ALREADY_CREATED:
+      return {
+        ...state,
+        room: action.data,
       };
     case DIRECT_TEXT:
       return {

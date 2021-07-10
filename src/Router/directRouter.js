@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { Redirect, Route, Switch } from 'react-router-dom';
-import NewChat from '../Component/Direct/NewChat';
+
 import MessagesContainer from '../Container/Direct/MessagesContainer';
+import NewDirectContainer from '../Container/Direct/NewDirectContainer';
 import { firebaseAuth } from '../services/firebase';
 
 const DirectRouter = () => {
@@ -17,7 +18,7 @@ const DirectRouter = () => {
   });
   return (
     <Switch>
-      <Route path="/direct/" component={NewChat} exact />
+      <Route path="/direct/" component={NewDirectContainer} exact />
       <Route path="/direct/:directId">
         {user ? (
           <MessagesContainer />

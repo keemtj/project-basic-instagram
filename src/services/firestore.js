@@ -594,7 +594,7 @@ export const getRoomsByUid = async uid => {
 /**
  * Direct messages
  * @param {string} uid current user's uid
- * @param {string} id room id
+ * @param {string} id room id(directId)
  * @return {array} messages
  */
 export const getMessagesByRoomId = async id => {
@@ -627,7 +627,7 @@ export const updateDirectRooms = async (dispatch, actionCreator, uid) => {
 export const updateMsgs = async (dispatch, actionCreator, id) => {
   firestore
     .collection('direct')
-    .doc(id) // roomId
+    .doc(id) // directId
     .collection('messages')
     .orderBy('timeStamp', 'desc')
     .onSnapshot(snapshot => {
@@ -638,4 +638,17 @@ export const updateMsgs = async (dispatch, actionCreator, id) => {
       });
       dispatch(actionCreator(messages));
     });
+};
+
+export const getRoomDataAlreadyCreated = async (uid, selectedUid) => {
+  const response = await firestore
+    .collection('direct')
+    .where('from', '==', uid)
+    .where('participant', 'array-contains', selectedUid)
+    .get();
+  let data = {};
+  response.docs.forEach(doc => {
+    data = doc.data();
+  });
+  return data;
 };

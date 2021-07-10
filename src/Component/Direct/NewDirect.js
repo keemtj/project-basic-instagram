@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { PaperPlane } from '@styled-icons/ionicons-outline/PaperPlane';
 
-const NewChat = () => {
+const NewDirect = ({ onClickNewDirect }) => {
   return (
     <StNewChat>
       <StIconWrapper>
@@ -10,7 +10,9 @@ const NewChat = () => {
       </StIconWrapper>
       <StTitle>내 메시지</StTitle>
       <StText>친구나 그룹에 비공개 사진과 메시지를 보내보세요.</StText>
-      <StNewChatButton>메시지 보내기</StNewChatButton>
+      <StNewChatButton onClick={onClickNewDirect}>
+        메시지 보내기
+      </StNewChatButton>
     </StNewChat>
   );
 };
@@ -63,4 +65,4 @@ const StNewChatButton = styled.button`
   outline: none;
 `;
 
-export default NewChat;
+export default NewDirect;

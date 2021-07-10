@@ -17,12 +17,17 @@ import ProfileImage from '../Global/ProfileImage';
 import useToast from '../../Hooks/useToast';
 import { useLocation } from 'react-router';
 import { firebase, firestore } from '../../services/firebase';
-import { generatedId } from '../../services/firestore';
+import {
+  generatedId,
+  getRoomDataAlreadyCreated,
+} from '../../services/firestore';
+import { getPartner, getRoomAlreadyCreated } from '../../Modules/direct';
 
 const PostShareModal = () => {
   const location = useLocation();
   const isDirect = location.pathname.includes('/direct');
   const modalRef = useRef();
+  const inputRef = useRef();
   const dispatch = useDispatch();
   const { uid } = useSelector(state => state.user.currentUser);
   const { postSharePopup: postSharePopupState, activePostId } = useSelector(
@@ -47,27 +52,28 @@ const PostShareModal = () => {
     } else {
       dispatch(addUsersStack(user));
     }
+    inputRef.current.focus();
   };
 
   const onClickRemoveStack = user => {
     dispatch(removeUsersStack(user));
   };
 
-  const onClickSendPost = () => {
+  const onCreateDirectRoomAndSharePost = async () => {
+    console.log('onCreateDirectRoomAndSharePost');
+    // 1. direct방 생성
+    // 2. post 링크 공유
     console.log(
       `Send "http://localhost:3000/p/$activePostId${activePostId}" post link to user`,
     );
-  };
-
-  const onClickSend = async () => {
-    // onSnapshot 필요
-    console.log('send or share');
+    const timeStamp = Date.now();
     const partnersArr = partners.map(partner => partner.uid);
     await selectedUsers.forEach(async user => {
       const directId = generatedId('direct');
       const { uid: selectedUid, displayName } = user;
       const isPartner = partnersArr.includes(selectedUid);
       if (!isPartner) {
+        console.log(`${displayName}님과의 direct방이 생성됨`);
         await firestore
           .collection('direct')
           .doc(directId)
@@ -77,18 +83,66 @@ const PostShareModal = () => {
               uid,
               selectedUid,
             ),
-            timeStamp: Date.now(),
+            timeStamp,
+            msg: `http://localhost:3000/p/${activePostId}`,
           });
-        console.log(`${displayName}과 direct방이 생성`);
       } else if (selectedUid === uid) {
-        console.log('it is me!');
+        console.log('내 direct방이 생성됨!');
       } else {
-        console.log('이미 direct 존재');
+        console.log('이미 direct방이 존재');
       }
     });
     dispatch(clearUsersStack());
     dispatch(closePopup('postSharePopup'));
-    toast('전송됨');
+    toast('게시물 전송됨');
+  };
+
+  const onCreateDirectRoom = async () => {
+    console.log('onCreateDirectRoom');
+    const timeStamp = Date.now();
+    const partnersArr = partners.map(partner => partner.uid);
+    await selectedUsers.forEach(async user => {
+      const directId = generatedId('direct');
+      const { uid: selectedUid } = user;
+      const isPartner = partnersArr.includes(selectedUid);
+      if (!isPartner) {
+        console.log('create direct room with new partner');
+        await firestore
+          .collection('direct')
+          .doc(directId)
+          .set({
+            from: uid,
+            id: directId,
+            participant: firebase.firestore.FieldValue.arrayUnion(
+              uid,
+              selectedUid,
+            ),
+            timeStamp,
+          });
+        toast('전송됨');
+      } else if (selectedUid === uid) {
+        console.log('my direct room');
+        const roomAlreadyCreated = await getRoomDataAlreadyCreated(
+          uid,
+          selectedUid,
+        );
+        const partner = partners.find(partner => partner.uid === selectedUid);
+        dispatch(getRoomAlreadyCreated(roomAlreadyCreated));
+        dispatch(getPartner(partner));
+      } else {
+        console.log('has room already created');
+        const roomAlreadyCreated = await getRoomDataAlreadyCreated(
+          uid,
+          selectedUid,
+        );
+        const partner = partners.find(partner => partner.uid === selectedUid);
+        dispatch(getRoomAlreadyCreated(roomAlreadyCreated));
+        dispatch(getPartner(partner));
+      }
+    });
+    dispatch(clearUsersStack());
+    dispatch(closePopup('postSharePopup'));
+    toast('새로운 Direct가 생성되었습니다');
   };
 
   const onClosePopup = () => {
@@ -130,6 +184,7 @@ const PostShareModal = () => {
           <StSearchBox>
             <StLabel htmlFor="to">받는 유저:</StLabel>
             <StInput
+              ref={inputRef}
               type="text"
               name="share"
               id="to"
@@ -235,8 +290,8 @@ const PostShareModal = () => {
               onClick={
                 selectedUsers.length > 0
                   ? document.URL.includes('/direct')
-                    ? onClickSend
-                    : onClickSendPost
+                    ? onCreateDirectRoom
+                    : onCreateDirectRoomAndSharePost
                   : undefined
               }
             >
