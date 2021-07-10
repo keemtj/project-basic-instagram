@@ -25,19 +25,18 @@ export const calcTimeElapsed = date => {
 export const calcRecentTime = timeStamp => {
   const date = new Date(timeStamp);
   const options = {
-    hour: '2-digit',
-    minute: '2-digit',
+    year: 'numeric',
+    month: 'numeric',
+    day: 'numeric',
+    weekday: 'long',
   };
-  const time = date.toLocaleTimeString('ko-KR', options);
+  const time = date.toLocaleDateString('ko-KR', options);
   return time;
 };
 
 export const calcTimeStamp = timeStamp => {
   const date = new Date(timeStamp);
   const options = {
-    // year: 'numeric',
-    // month: 'numeric',
-    // day: 'numeric',
     hour: '2-digit',
     minute: '2-digit',
   };

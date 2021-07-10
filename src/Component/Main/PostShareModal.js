@@ -40,10 +40,15 @@ const PostShareModal = () => {
   const { selectedUsers } = useSelector(state => state.share);
   const [toast] = useToast();
   const [value, setValue] = useState(''); // input text
+  const [msg, setMsg] = useState('');
 
   const onChangeSearchInput = ({ target }) => {
     setValue(target.value);
     dispatch(getSearchUsers(target.value));
+  };
+
+  const onChangeMessageInput = ({ target }) => {
+    setMsg(target.value);
   };
 
   const onClickUser = user => {
@@ -99,14 +104,17 @@ const PostShareModal = () => {
 
   const onCreateDirectRoom = async () => {
     console.log('onCreateDirectRoom');
-    const timeStamp = Date.now();
     const partnersArr = partners.map(partner => partner.uid);
     await selectedUsers.forEach(async user => {
       const directId = generatedId('direct');
+      const msgId1 = generatedId('message');
+      const msgId2 = generatedId('message');
       const { uid: selectedUid } = user;
       const isPartner = partnersArr.includes(selectedUid);
       if (!isPartner) {
+        const timeStamp = Date.now();
         console.log('create direct room with new partner');
+        console.log('1. direct filed 생성');
         await firestore
           .collection('direct')
           .doc(directId)
@@ -117,11 +125,47 @@ const PostShareModal = () => {
               uid,
               selectedUid,
             ),
+            msg: '새로운 다이렉트 생성',
             timeStamp,
           });
-        toast('전송됨');
+        console.log('2. 시스템 direct 생성');
+        await firestore
+          .collection('direct')
+          .doc(directId)
+          .collection('messages')
+          .doc(msgId1)
+          .set({
+            id: msgId1,
+            uid: 'system',
+            msg: '새로운 다이렉트가 생성되었습니다.',
+            timeStamp,
+          });
+        if (msg.length > 0) {
+          setTimeout(async () => {
+            const timeStamp = Date.now();
+            console.log(
+              '3. 메시지를 작성해서 생성할 경우 direct filed 업데이트',
+            );
+            await firestore.collection('direct').doc(directId).update({
+              msg,
+              timeStamp,
+            });
+            console.log('4. messages에 새로운 message 문서 생성');
+            await firestore
+              .collection('direct')
+              .doc(directId)
+              .collection('messages')
+              .doc(msgId2)
+              .set({
+                id: msgId2,
+                msg,
+                uid,
+                timeStamp,
+              });
+          }, 1000);
+        }
       } else if (selectedUid === uid) {
-        console.log('my direct room');
+        console.log('have my direct room');
         const roomAlreadyCreated = await getRoomDataAlreadyCreated(
           uid,
           selectedUid,
@@ -142,7 +186,7 @@ const PostShareModal = () => {
     });
     dispatch(clearUsersStack());
     dispatch(closePopup('postSharePopup'));
-    toast('새로운 Direct가 생성되었습니다');
+    toast('전송됨');
   };
 
   const onClosePopup = () => {
@@ -169,6 +213,7 @@ const PostShareModal = () => {
   }, []);
 
   useEffect(() => {
+    inputRef.current.focus();
     const URL = document.URL;
     if (document.URL.includes('/direct')) {
       history.pushState('', '', '/direct/new');
@@ -181,7 +226,7 @@ const PostShareModal = () => {
       <StModal>
         <StShareBox ref={modalRef}>
           <StHeader>{isDirect ? '새로운 메시지' : '공유'}</StHeader>
-          <StSearchBox>
+          <StInputBox>
             <StLabel htmlFor="to">받는 유저:</StLabel>
             <StInput
               ref={inputRef}
@@ -194,7 +239,7 @@ const PostShareModal = () => {
               autoFocus
               autoComplete="off"
             />
-          </StSearchBox>
+          </StInputBox>
           {selectedUsers?.length > 0 && (
             <>
               <StSubTitle>선택한 유저</StSubTitle>
@@ -284,12 +329,23 @@ const PostShareModal = () => {
               </>
             )}
           </StSuggestionBox>
+          <StMessageInput
+            type="text"
+            name="message"
+            id="message"
+            placeholder="메시지 작성..."
+            value={msg}
+            onChange={onChangeMessageInput}
+            autoFocus
+            autoComplete="off"
+            selectedUsers={selectedUsers}
+          />
           <StFooter>
             <StSendButton
               selectedUsers={selectedUsers}
               onClick={
                 selectedUsers.length > 0
-                  ? document.URL.includes('/direct')
+                  ? isDirect
                     ? onCreateDirectRoom
                     : onCreateDirectRoomAndSharePost
                   : undefined
@@ -353,7 +409,7 @@ const StHeader = styled.header`
   border-bottom: 1px solid ${({ theme }) => theme.gray8};
 `;
 
-const StSearchBox = styled.div`
+const StInputBox = styled.div`
   display: flex;
   align-items: center;
   padding: 0rem 1.5rem;
@@ -364,8 +420,26 @@ const StSearchBox = styled.div`
 
 const StLabel = styled.label`
   min-width: fit-content;
+  padding-right: 1rem;
   font-size: 1.5rem;
   font-weight: 500;
+`;
+
+const StInput = styled.input`
+  flex-grow: 1;
+  width: 100%;
+  height: 100%;
+  border: none;
+  outline: none;
+`;
+
+const StMessageInput = styled.input`
+  padding: 1.5rem 1.5rem 0rem 1.5rem;
+  width: 100%;
+  height: fit-content;
+  min-height: 5rem;
+  border: none;
+  outline: none;
 `;
 
 const StUserStack = styled.ul`
@@ -397,15 +471,6 @@ const StRemoveStackButton = styled.button`
   width: 1.5rem;
   color: ${({ theme }) => theme.activeBlue};
   cursor: pointer;
-`;
-
-const StInput = styled.input`
-  flex-grow: 1;
-  padding-left: 1rem;
-  width: 100%;
-  height: 100%;
-  border: none;
-  outline: none;
 `;
 
 const StSuggestionBox = styled.div`

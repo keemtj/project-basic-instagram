@@ -6,6 +6,7 @@ import { Dot } from '@styled-icons/bootstrap/Dot';
 import { calcTimeStamp } from '../../lib/calcTime';
 
 const Room = ({ onClickRoom, id, timeStamp, msg, displayName, photoURL }) => {
+  // FIXME: msg length가 길어질 때 elapsed 필요
   return (
     <StRoom onClick={onClickRoom}>
       <StLink to={`/direct/${id}`} activeClassName={'active'}>

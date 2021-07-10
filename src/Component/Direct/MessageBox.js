@@ -1,7 +1,7 @@
 import React from 'react';
 import styled, { css } from 'styled-components';
 import ProfileImage from '../Global/ProfileImage';
-import { calcTimeStamp } from '../../lib/calcTime';
+import { calcRecentTime, calcTimeStamp } from '../../lib/calcTime';
 
 const MessageBox = ({ messages, uid, photoURL }) => {
   return (
@@ -10,25 +10,32 @@ const MessageBox = ({ messages, uid, photoURL }) => {
         const { msg, timeStamp, uid: msgUid } = message;
         return (
           <div key={index}>
-            <StChatBubbleBox>
-              {msgUid !== uid && (
-                <ProfileImage
-                  src={photoURL}
-                  width={2.5}
-                  height={2.5}
-                  marginLeft={1}
-                />
-              )}
-              <StChatBubbleWrapper send={msgUid === uid}>
-                {msgUid === uid && (
-                  <StTimeStamp>{calcTimeStamp(timeStamp)}</StTimeStamp>
-                )}
-                <StChatBubble send={msgUid === uid}>{msg}</StChatBubble>
+            {msgUid !== 'system' ? (
+              <StChatBubbleBox>
                 {msgUid !== uid && (
-                  <StTimeStamp>{calcTimeStamp(timeStamp)}</StTimeStamp>
+                  <ProfileImage
+                    src={photoURL}
+                    width={2.5}
+                    height={2.5}
+                    marginLeft={1}
+                  />
                 )}
-              </StChatBubbleWrapper>
-            </StChatBubbleBox>
+                <StChatBubbleWrapper send={msgUid === uid}>
+                  {msgUid === uid && (
+                    <StTimeStamp>{calcTimeStamp(timeStamp)}</StTimeStamp>
+                  )}
+                  <StChatBubble send={msgUid === uid}>{msg}</StChatBubble>
+                  {msgUid !== uid && (
+                    <StTimeStamp>{calcTimeStamp(timeStamp)}</StTimeStamp>
+                  )}
+                </StChatBubbleWrapper>
+              </StChatBubbleBox>
+            ) : (
+              <>
+                <StSystemMessage>{msg}</StSystemMessage>
+                <StSystemMessage>{calcRecentTime(timeStamp)}</StSystemMessage>
+              </>
+            )}
           </div>
         );
       })}
@@ -82,6 +89,17 @@ const StTimeStamp = styled.div`
   font-size: 1.2rem;
   font-weight: 400;
   color: ${({ theme }) => theme.darkGray};
+`;
+
+const StSystemMessage = styled.div`
+  margin: 0.5rem auto;
+  padding: 0.5rem 2rem;
+  width: fit-content;
+  height: auto;
+  color: ${({ theme }) => theme.darkGray};
+  font-size: 1.3rem;
+  font-weight: 500;
+  line-height: 1.2;
 `;
 
 export default MessageBox;
