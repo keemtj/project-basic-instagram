@@ -49,6 +49,7 @@ const StMessageBox = styled.div`
   flex-flow: column-reverse nowrap;
   padding: 2rem 2rem;
   overflow-y: scroll;
+  overflow-x: hidden;
   border-bottom: 1px solid ${({ theme }) => theme.gray};
 `;
 
@@ -78,6 +79,7 @@ const StChatBubble = styled.div`
   padding: 1.5rem;
   font-size: 1.5rem;
   line-height: 1.2;
+  word-break: break-all;
 `;
 
 const StTimeStamp = styled.div`

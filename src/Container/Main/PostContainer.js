@@ -23,7 +23,11 @@ import {
 } from '../../services/firestore';
 import { getHearts, getUsersWhoClickHeart } from '../../Modules/heart';
 import { getBookmarks } from '../../Modules/saved';
-import { activePostData, openPopup } from '../../Modules/popup';
+import {
+  activePostData,
+  activePostIdData,
+  openPopup,
+} from '../../Modules/popup';
 import { calcTimeElapsed } from '../../lib/calcTime';
 
 const PostContainer = ({
@@ -94,7 +98,9 @@ const PostContainer = ({
   };
 
   const onClickShare = () => {
+    console.log('onClickShare!', id);
     dispatch(openPopup('postSharePopup'));
+    dispatch(activePostIdData(id));
   };
 
   const onMoveProfilePage = () => {

@@ -2,11 +2,9 @@ import React from 'react';
 import styled from 'styled-components';
 import { NavLink } from 'react-router-dom';
 import ProfileImage from '../Global/ProfileImage';
-import { Dot } from '@styled-icons/bootstrap/Dot';
 import { calcTimeStamp } from '../../lib/calcTime';
 
 const Room = ({ onClickRoom, id, timeStamp, msg, displayName, photoURL }) => {
-  // FIXME: msg length가 길어질 때 elapsed 필요
   return (
     <StRoom onClick={onClickRoom}>
       <StLink to={`/direct/${id}`} activeClassName={'active'}>
@@ -14,9 +12,9 @@ const Room = ({ onClickRoom, id, timeStamp, msg, displayName, photoURL }) => {
           <StRoomPreview>
             <StDisplayName>{displayName}</StDisplayName>
             <StMsgInfo>
-              {msg} <StDot />
-              {calcTimeStamp(timeStamp)}
+              <StMsgPreview>{msg}</StMsgPreview>
             </StMsgInfo>
+            <StTimeStamp>{calcTimeStamp(timeStamp)}</StTimeStamp>
           </StRoomPreview>
         </ProfileImage>
       </StLink>
@@ -74,12 +72,25 @@ const StDisplayName = styled.div`
 `;
 
 const StMsgInfo = styled.div`
-  color: ${({ theme }) => theme.darkGray};
+  display: flex;
+  flex-flow: row wrap;
+  font-size: 1.4rem;
+  word-break: break-all;
 `;
 
-const StDot = styled(Dot)`
-  width: 1rem;
-  height: 1rem;
+const StMsgPreview = styled.div`
+  width: 90%;
+  line-height: 1.2;
+  color: ${({ theme }) => theme.darkGray};
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+`;
+
+const StTimeStamp = styled.div`
+  color: ${({ theme }) => theme.darkGray};
 `;
 
 export default Room;

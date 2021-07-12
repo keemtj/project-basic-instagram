@@ -15,7 +15,7 @@ import {
 import Loading from '../../Component/Global/Loading';
 import ProfileImage from '../Global/ProfileImage';
 import useToast from '../../Hooks/useToast';
-import { useLocation } from 'react-router';
+import { useHistory, useLocation } from 'react-router';
 import { firebase, firestore } from '../../services/firebase';
 import {
   generatedId,
@@ -24,6 +24,7 @@ import {
 import { getPartner, getRoomAlreadyCreated } from '../../Modules/direct';
 
 const PostShareModal = () => {
+  const his = useHistory();
   const location = useLocation();
   const isDirect = location.pathname.includes('/direct');
   const modalRef = useRef();
@@ -34,6 +35,7 @@ const PostShareModal = () => {
     state => state.popup,
   );
   const { partners } = useSelector(state => state.direct);
+  const { data: rooms } = useSelector(state => state.direct.rooms);
   const { data: searchUsers, loading } = useSelector(
     state => state.share.searchUsers,
   );
@@ -66,98 +68,308 @@ const PostShareModal = () => {
 
   const onCreateDirectRoomAndSharePost = async () => {
     console.log('onCreateDirectRoomAndSharePost');
-    // 1. direct방 생성
-    // 2. post 링크 공유
-    console.log(
-      `Send "http://localhost:3000/p/$activePostId${activePostId}" post link to user`,
-    );
-    const timeStamp = Date.now();
     const partnersArr = partners.map(partner => partner.uid);
     await selectedUsers.forEach(async user => {
-      const directId = generatedId('direct');
-      const { uid: selectedUid, displayName } = user;
+      const { uid: selectedUid } = user;
       const isPartner = partnersArr.includes(selectedUid);
       if (!isPartner) {
-        console.log(`${displayName}님과의 direct방이 생성됨`);
+        console.log('create direct room with new partner and share post');
+        const newRoomId = generatedId('direct');
+        const systemMsgId = generatedId('message');
+        const msgId = generatedId('message');
+        const sharePostId = generatedId('message');
+        const timeStamp = Date.now();
+        console.log('new direct room, system');
         await firestore
           .collection('direct')
-          .doc(directId)
+          .doc(newRoomId)
           .set({
-            id: directId,
+            from: uid,
+            id: newRoomId,
             participant: firebase.firestore.FieldValue.arrayUnion(
               uid,
               selectedUid,
             ),
+            msg: '새로운 다이렉트 메시지',
             timeStamp,
-            msg: `http://localhost:3000/p/${activePostId}`,
           });
+        await firestore
+          .collection('direct')
+          .doc(newRoomId)
+          .collection('messages')
+          .doc(systemMsgId)
+          .set({
+            id: systemMsgId,
+            uid: 'system',
+            msg: '다이렉트 메시지가 생성되었습니다.',
+            timeStamp,
+          });
+        if (msg.length > 0) {
+          console.log('new direct room, system + share post + msg');
+          setTimeout(async () => {
+            const timeStamp = Date.now();
+            await firestore
+              .collection('direct')
+              .doc(newRoomId)
+              .update({
+                msg: `https://localhost:3000/p/${activePostId}`,
+                timeStamp,
+              });
+            await firestore
+              .collection('direct')
+              .doc(newRoomId)
+              .collection('messages')
+              .doc(sharePostId)
+              .set({
+                id: sharePostId,
+                msg: `https://localhost:3000/p/${activePostId}`,
+                uid,
+                timeStamp,
+              });
+          }, 1000);
+          setTimeout(async () => {
+            const timeStamp = Date.now();
+            await firestore.collection('direct').doc(newRoomId).update({
+              msg,
+              timeStamp,
+            });
+            await firestore
+              .collection('direct')
+              .doc(newRoomId)
+              .collection('messages')
+              .doc(msgId)
+              .set({
+                id: msgId,
+                msg,
+                uid,
+                timeStamp,
+              });
+          }, 1000);
+        } else {
+          console.log('new direct room, system + share post - msg');
+          setTimeout(async () => {
+            const timeStamp = Date.now();
+            await firestore
+              .collection('direct')
+              .doc(newRoomId)
+              .update({
+                msg: `https://localhost:3000/p/${activePostId}`,
+                timeStamp,
+              });
+            await firestore
+              .collection('direct')
+              .doc(newRoomId)
+              .collection('messages')
+              .doc(sharePostId)
+              .set({
+                id: sharePostId,
+                msg: `https://localhost:3000/p/${activePostId}`,
+                uid,
+                timeStamp,
+              });
+          }, 1000);
+        }
       } else if (selectedUid === uid) {
-        console.log('내 direct방이 생성됨!');
+        console.log('have my direct room');
+        const roomId = rooms.find(room => room.participant.length === 1).id;
+        const msgId = generatedId('message');
+        const sharePostId = generatedId('message');
+        if (msg.length > 0) {
+          console.log('share post + msg');
+          setTimeout(async () => {
+            const timeStamp = Date.now();
+            await firestore.collection('direct').doc(roomId).update({
+              msg,
+              timeStamp,
+            });
+            await firestore
+              .collection('direct')
+              .doc(roomId)
+              .collection('messages')
+              .doc(msgId)
+              .set({
+                id: msgId,
+                msg,
+                uid,
+                timeStamp,
+              });
+          }, 1000);
+          setTimeout(async () => {
+            const timeStamp = Date.now();
+            await firestore
+              .collection('direct')
+              .doc(roomId)
+              .update({
+                msg: `https://localhost:3000/p/${activePostId}`,
+                timeStamp,
+              });
+            await firestore
+              .collection('direct')
+              .doc(roomId)
+              .collection('messages')
+              .doc(sharePostId)
+              .set({
+                id: sharePostId,
+                msg: `https://localhost:3000/p/${activePostId}`,
+                uid,
+                timeStamp,
+              });
+          }, 1000);
+        } else {
+          console.log('share post - msg');
+          setTimeout(async () => {
+            const timeStamp = Date.now();
+            await firestore
+              .collection('direct')
+              .doc(roomId)
+              .update({
+                msg: `https://localhost:3000/p/${activePostId}`,
+                timeStamp,
+              });
+            await firestore
+              .collection('direct')
+              .doc(roomId)
+              .collection('messages')
+              .doc(sharePostId)
+              .set({
+                id: sharePostId,
+                msg: `https://localhost:3000/p/${activePostId}`,
+                uid,
+                timeStamp,
+              });
+          }, 1000);
+        }
       } else {
-        console.log('이미 direct방이 존재');
+        console.log('has room already created and not my direct room');
+        const roomId = rooms.find(room =>
+          room.participant.includes(selectedUid),
+        ).id;
+        const msgId = generatedId('message');
+        const sharePostId = generatedId('message');
+        if (msg.length > 0) {
+          console.log('share post + msg');
+          setTimeout(async () => {
+            const timeStamp = Date.now();
+            await firestore.collection('direct').doc(roomId).update({
+              msg,
+              timeStamp,
+            });
+            await firestore
+              .collection('direct')
+              .doc(roomId)
+              .collection('messages')
+              .doc(msgId)
+              .set({
+                id: msgId,
+                msg,
+                uid,
+                timeStamp,
+              });
+          }, 1000);
+          setTimeout(async () => {
+            const timeStamp = Date.now();
+            await firestore
+              .collection('direct')
+              .doc(roomId)
+              .update({
+                msg: `https://localhost:3000/p/${activePostId}`,
+                timeStamp,
+              });
+            await firestore
+              .collection('direct')
+              .doc(roomId)
+              .collection('messages')
+              .doc(sharePostId)
+              .set({
+                id: sharePostId,
+                msg: `https://localhost:3000/p/${activePostId}`,
+                uid,
+                timeStamp,
+              });
+          }, 1000);
+        } else {
+          console.log('share post - msg');
+          setTimeout(async () => {
+            const timeStamp = Date.now();
+            await firestore
+              .collection('direct')
+              .doc(roomId)
+              .update({
+                msg: `https://localhost:3000/p/${activePostId}`,
+                timeStamp,
+              });
+            await firestore
+              .collection('direct')
+              .doc(roomId)
+              .collection('messages')
+              .doc(sharePostId)
+              .set({
+                id: sharePostId,
+                msg: `https://localhost:3000/p/${activePostId}`,
+                uid,
+                timeStamp,
+              });
+          }, 1000);
+        }
       }
     });
     dispatch(clearUsersStack());
     dispatch(closePopup('postSharePopup'));
-    toast('게시물 전송됨');
+    toast('전송됨');
   };
 
   const onCreateDirectRoom = async () => {
     console.log('onCreateDirectRoom');
     const partnersArr = partners.map(partner => partner.uid);
     await selectedUsers.forEach(async user => {
-      const directId = generatedId('direct');
-      const msgId1 = generatedId('message');
-      const msgId2 = generatedId('message');
       const { uid: selectedUid } = user;
       const isPartner = partnersArr.includes(selectedUid);
       if (!isPartner) {
-        const timeStamp = Date.now();
         console.log('create direct room with new partner');
-        console.log('1. direct filed 생성');
+        console.log('new direct room, system');
+        const newRoomId = generatedId('direct');
+        const systemMsgId = generatedId('message');
+        const msgId = generatedId('message');
+        const timeStamp = Date.now();
         await firestore
           .collection('direct')
-          .doc(directId)
+          .doc(newRoomId)
           .set({
             from: uid,
-            id: directId,
+            id: newRoomId,
             participant: firebase.firestore.FieldValue.arrayUnion(
               uid,
               selectedUid,
             ),
-            msg: '새로운 다이렉트 생성',
+            msg: '새로운 다이렉트 메시지',
             timeStamp,
           });
-        console.log('2. 시스템 direct 생성');
         await firestore
           .collection('direct')
-          .doc(directId)
+          .doc(newRoomId)
           .collection('messages')
-          .doc(msgId1)
+          .doc(systemMsgId)
           .set({
-            id: msgId1,
+            id: systemMsgId,
             uid: 'system',
-            msg: '새로운 다이렉트가 생성되었습니다.',
+            msg: '다이렉트 메시지가 생성되었습니다.',
             timeStamp,
           });
         if (msg.length > 0) {
+          console.log('new direct room, system + msg');
           setTimeout(async () => {
             const timeStamp = Date.now();
-            console.log(
-              '3. 메시지를 작성해서 생성할 경우 direct filed 업데이트',
-            );
-            await firestore.collection('direct').doc(directId).update({
+            await firestore.collection('direct').doc(newRoomId).update({
               msg,
               timeStamp,
             });
-            console.log('4. messages에 새로운 message 문서 생성');
             await firestore
               .collection('direct')
-              .doc(directId)
+              .doc(newRoomId)
               .collection('messages')
-              .doc(msgId2)
+              .doc(msgId)
               .set({
-                id: msgId2,
+                id: msgId,
                 msg,
                 uid,
                 timeStamp,
@@ -173,8 +385,31 @@ const PostShareModal = () => {
         const partner = partners.find(partner => partner.uid === selectedUid);
         dispatch(getRoomAlreadyCreated(roomAlreadyCreated));
         dispatch(getPartner(partner));
+        const roomId = rooms.find(room => room.participant.length === 1).id;
+        const msgId = generatedId('message');
+        if (msg.length > 0) {
+          console.log('+ msg');
+          setTimeout(async () => {
+            const timeStamp = Date.now();
+            await firestore.collection('direct').doc(roomId).update({
+              msg,
+              timeStamp,
+            });
+            await firestore
+              .collection('direct')
+              .doc(roomId)
+              .collection('messages')
+              .doc(msgId)
+              .set({
+                id: msgId,
+                msg,
+                uid,
+                timeStamp,
+              });
+          }, 1000);
+        }
       } else {
-        console.log('has room already created');
+        console.log('has room already created and not my direct room');
         const roomAlreadyCreated = await getRoomDataAlreadyCreated(
           uid,
           selectedUid,
@@ -182,11 +417,37 @@ const PostShareModal = () => {
         const partner = partners.find(partner => partner.uid === selectedUid);
         dispatch(getRoomAlreadyCreated(roomAlreadyCreated));
         dispatch(getPartner(partner));
+        const roomId = rooms.find(room =>
+          room.participant.includes(selectedUid),
+        ).id;
+        const msgId = generatedId('message');
+        if (msg.length > 0) {
+          console.log('+ msg');
+          setTimeout(async () => {
+            const timeStamp = Date.now();
+            await firestore.collection('direct').doc(roomId).update({
+              msg,
+              timeStamp,
+            });
+            await firestore
+              .collection('direct')
+              .doc(roomId)
+              .collection('messages')
+              .doc(msgId)
+              .set({
+                id: msgId,
+                msg,
+                uid,
+                timeStamp,
+              });
+          }, 1000);
+        }
       }
     });
     dispatch(clearUsersStack());
     dispatch(closePopup('postSharePopup'));
     toast('전송됨');
+    his.push('/direct');
   };
 
   const onClosePopup = () => {
