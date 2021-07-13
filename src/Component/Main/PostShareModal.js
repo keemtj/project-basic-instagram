@@ -21,7 +21,11 @@ import {
   generatedId,
   getRoomDataAlreadyCreated,
 } from '../../services/firestore';
-import { getPartner, getRoomAlreadyCreated } from '../../Modules/direct';
+import {
+  getPartner,
+  getPartners,
+  getRoomAlreadyCreated,
+} from '../../Modules/direct';
 
 const PostShareModal = () => {
   const his = useHistory();
@@ -31,6 +35,7 @@ const PostShareModal = () => {
   const inputRef = useRef();
   const dispatch = useDispatch();
   const { uid } = useSelector(state => state.user.currentUser);
+  const currentUser = useSelector(state => state.user.currentUser);
   const { postSharePopup: postSharePopupState, activePostId } = useSelector(
     state => state.popup,
   );
@@ -481,6 +486,23 @@ const PostShareModal = () => {
     }
     return () => history.pushState('', '', URL);
   }, []);
+
+  useEffect(async () => {
+    if (!rooms) return;
+    const arr = rooms.map(async room => {
+      const isMe = room.participant.length === 1 && room.participant[0] === uid;
+      if (isMe) {
+        return { ...currentUser, timeStamp: room.timeStamp };
+      }
+      const partner = room.participant.find(partUid => partUid !== uid);
+      const response = await firestore.collection('users').doc(partner).get();
+      const data = response.data();
+      return { ...data, timeStamp: room.timeStamp };
+    });
+    // eslint-disable-next-line no-undef
+    const promiseAll = await Promise.all(arr);
+    dispatch(getPartners(promiseAll));
+  }, [rooms]);
 
   return (
     <PostSharePortal>

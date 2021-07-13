@@ -22,10 +22,6 @@ const ProfileContainer = () => {
     state => state.search.searchUser,
   );
 
-  useEffect(() => {
-    document.title = `@${watchName} • Instagram 사진 및 동영상`;
-  }, []);
-
   useEffect(async () => {
     if (!searchUserData && !searchUserDataLoading) {
       console.log('새로고침했는데 데이터 없어서 새로가져옴');
@@ -35,6 +31,11 @@ const ProfileContainer = () => {
       dispatch(getSearchUserPosts(uid));
     }
   }, [watchName]);
+
+  useEffect(() => {
+    document.title = `@${watchName} • Instagram 사진 및 동영상`;
+  }, []);
+
   return <Profile watchName={watchName} />;
 };
 

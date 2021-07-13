@@ -8,6 +8,7 @@ import {
   activePostIdData,
   activeIndex,
 } from '../../Modules/popup';
+import { getPosts } from '../../Modules/posts';
 
 const PostsContainer = ({ watchName }) => {
   const dispatch = useDispatch();
@@ -46,6 +47,12 @@ const PostsContainer = ({ watchName }) => {
   useEffect(() => {
     document.body.style.overflow = postModalState ? 'hidden' : 'auto';
   }, [postModalState]);
+
+  useEffect(() => {
+    if (!myPosts) {
+      dispatch(getPosts(currentUserData?.uid));
+    }
+  }, [currentUserData?.uid]);
 
   if (myPostsLoading || searchUserPostsLoading)
     return <Loading isLoading={myPostsLoading || searchUserPostsLoading} />;

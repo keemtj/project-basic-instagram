@@ -25,6 +25,7 @@ import PostModal from './Component/Profile/PostModal';
 import HeartCountModal from './Component/Main/HeartCountModal';
 import ProfileEditModal from './Container/Profile/ProfileEditModal';
 import PostShareModal from './Component/Main/PostShareModal';
+import { getRooms } from './Modules/direct';
 
 const App = () => {
   const dispatch = useDispatch();
@@ -57,6 +58,7 @@ const App = () => {
         dispatch(getBookmarks(bookmarksData.bookmarks)); // 현재 로그인 유저의 북마크 데이터
         dispatch(getHearts(heartsData.hearts)); // 현재 로그인 유저의 좋아요 데이터
         dispatch(currentUserFollowData(followData)); // 현재 로그인 유저의 팔로우 데이터
+        dispatch(getRooms(uid));
       } else {
         history.push('/login');
       }
