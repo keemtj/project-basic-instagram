@@ -1,10 +1,14 @@
 import React from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import Room from '../../Component/Direct/Room';
 import { getPartner, getRoom } from '../../Modules/direct';
+import { closePopup } from '../../Modules/popup';
 
 const RoomContainer = ({ room, partner }) => {
   const dispatch = useDispatch();
+  const { directDetails: directDetailsState } = useSelector(
+    state => state.popup,
+  );
   const { id, timeStamp, msg } = room;
   const { displayName, photoURL } = partner || {
     displayName: '',
@@ -14,6 +18,9 @@ const RoomContainer = ({ room, partner }) => {
   const onClickRoom = () => {
     dispatch(getPartner(partner));
     dispatch(getRoom(room));
+    if (directDetailsState) {
+      dispatch(closePopup('directDetails'));
+    }
   };
 
   return (

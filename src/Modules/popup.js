@@ -29,6 +29,7 @@ const initialState = {
   postHeartCountModal: false,
   profileEditModal: false,
   postSharePopup: false,
+  directDetails: false,
   toast: false,
   toastMessage: '',
   activePostData: {}, // post setting modal in main page

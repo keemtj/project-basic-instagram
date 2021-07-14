@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Direct from '../../Component/Direct/Direct';
 import { getPartners, getRooms, updateRooms } from '../../Modules/direct';
-import { openPopup } from '../../Modules/popup';
+import { closePopup, openPopup } from '../../Modules/popup';
 import { firestore } from '../../services/firebase';
 import { updateDirectRooms } from '../../services/firestore';
 
@@ -44,6 +44,10 @@ const DirectContainer = () => {
     const promiseAll = await Promise.all(arr);
     dispatch(getPartners(promiseAll));
   }, [rooms]);
+
+  useEffect(() => {
+    return () => dispatch(closePopup('directDetails'));
+  }, []);
 
   useEffect(() => {
     document.body.style.overflow = postSharePopupState ? 'hidden' : 'auto';

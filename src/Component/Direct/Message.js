@@ -42,7 +42,9 @@ const Message = ({
                     <StCopy onClick={() => onCopyMessage(msg)} />
                   </StTimeStamp>
                 ) : (
-                  <StTimeStamp>{calcTimeStamp(timeStamp)}</StTimeStamp>
+                  <StTimeStamp send={msgUid === uid}>
+                    {calcTimeStamp(timeStamp)}
+                  </StTimeStamp>
                 )}
               </>
             )}
@@ -54,7 +56,9 @@ const Message = ({
                     <StCopy onClick={() => onCopyMessage(msg)} />
                   </StTimeStamp>
                 ) : (
-                  <StTimeStamp>{calcTimeStamp(timeStamp)}</StTimeStamp>
+                  <StTimeStamp send={msgUid === uid}>
+                    {calcTimeStamp(timeStamp)}
+                  </StTimeStamp>
                 )}
               </>
             )}
@@ -109,7 +113,15 @@ const StTimeStamp = styled.div`
   font-weight: 400;
   color: ${({ theme }) => theme.darkGray};
   ${({ hover, send }) => {
-    return hover && send
+    return hover
+      ? send
+        ? css`
+            justify-content: flex-end;
+          `
+        : css`
+            justify-content: flex-start;
+          `
+      : send
       ? css`
           justify-content: flex-end;
         `
