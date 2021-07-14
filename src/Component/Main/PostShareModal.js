@@ -69,6 +69,7 @@ const PostShareModal = () => {
 
   const onClickRemoveStack = user => {
     dispatch(removeUsersStack(user));
+    inputRef.current.focus();
   };
 
   const onCreateDirectRoomAndSharePost = async () => {
@@ -95,6 +96,7 @@ const PostShareModal = () => {
               uid,
               selectedUid,
             ),
+            msgId: systemMsgId,
             msg: '새로운 다이렉트 메시지',
             timeStamp,
           });
@@ -117,6 +119,7 @@ const PostShareModal = () => {
               .collection('direct')
               .doc(newRoomId)
               .update({
+                msgId: sharePostId,
                 msg: `https://localhost:3000/p/${activePostId}`,
                 timeStamp,
               });
@@ -135,6 +138,7 @@ const PostShareModal = () => {
           setTimeout(async () => {
             const timeStamp = Date.now();
             await firestore.collection('direct').doc(newRoomId).update({
+              msgId,
               msg,
               timeStamp,
             });
@@ -158,6 +162,7 @@ const PostShareModal = () => {
               .collection('direct')
               .doc(newRoomId)
               .update({
+                msgId: sharePostId,
                 msg: `https://localhost:3000/p/${activePostId}`,
                 timeStamp,
               });
@@ -184,6 +189,7 @@ const PostShareModal = () => {
           setTimeout(async () => {
             const timeStamp = Date.now();
             await firestore.collection('direct').doc(roomId).update({
+              msgId,
               msg,
               timeStamp,
             });
@@ -205,6 +211,7 @@ const PostShareModal = () => {
               .collection('direct')
               .doc(roomId)
               .update({
+                msgId: sharePostId,
                 msg: `https://localhost:3000/p/${activePostId}`,
                 timeStamp,
               });
@@ -228,6 +235,7 @@ const PostShareModal = () => {
               .collection('direct')
               .doc(roomId)
               .update({
+                msgId: sharePostId,
                 msg: `https://localhost:3000/p/${activePostId}`,
                 timeStamp,
               });
@@ -256,6 +264,7 @@ const PostShareModal = () => {
           setTimeout(async () => {
             const timeStamp = Date.now();
             await firestore.collection('direct').doc(roomId).update({
+              msgId,
               msg,
               timeStamp,
             });
@@ -277,6 +286,7 @@ const PostShareModal = () => {
               .collection('direct')
               .doc(roomId)
               .update({
+                msgId: sharePostId,
                 msg: `https://localhost:3000/p/${activePostId}`,
                 timeStamp,
               });
@@ -300,6 +310,7 @@ const PostShareModal = () => {
               .collection('direct')
               .doc(roomId)
               .update({
+                msgId: sharePostId,
                 msg: `https://localhost:3000/p/${activePostId}`,
                 timeStamp,
               });
@@ -346,6 +357,7 @@ const PostShareModal = () => {
               uid,
               selectedUid,
             ),
+            msgId: systemMsgId,
             msg: '새로운 다이렉트 메시지',
             timeStamp,
           });
@@ -365,6 +377,7 @@ const PostShareModal = () => {
           setTimeout(async () => {
             const timeStamp = Date.now();
             await firestore.collection('direct').doc(newRoomId).update({
+              msgId,
               msg,
               timeStamp,
             });
@@ -397,6 +410,7 @@ const PostShareModal = () => {
           setTimeout(async () => {
             const timeStamp = Date.now();
             await firestore.collection('direct').doc(roomId).update({
+              msgId,
               msg,
               timeStamp,
             });
@@ -431,6 +445,7 @@ const PostShareModal = () => {
           setTimeout(async () => {
             const timeStamp = Date.now();
             await firestore.collection('direct').doc(roomId).update({
+              msgId,
               msg,
               timeStamp,
             });

@@ -12,8 +12,11 @@ const MessageFooterContainer = ({ uid, id }) => {
   const [isShow, setIsShow] = useState(false);
 
   const onSubmit = async () => {
-    console.log('send', comment);
-    if (comment.length === 0) return;
+    console.log('onSubmit', comment);
+    if (comment.length === 0 || comment.trim() === '') {
+      dispatch(clearDirectText());
+      return;
+    }
     const msgId = generatedId('messages');
     const timeStamp = Date.now();
     await firestore
@@ -30,6 +33,7 @@ const MessageFooterContainer = ({ uid, id }) => {
     await firestore.collection('direct').doc(id).update({
       timeStamp,
       msg: comment,
+      msgId,
     });
     console.log('Send Message');
     dispatch(clearDirectText());
