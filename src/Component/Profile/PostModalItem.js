@@ -1,24 +1,23 @@
 import React from 'react';
 import styled from 'styled-components';
 import PostImages from '../Main/PostImages';
-import PostHeader from '../Main/PostHeader';
-import PostTextBox from '../Main/PostTextBox';
-import PostComments from '../Main/PostComments';
 import PostNavigation from '../Main/PostNavigation';
 import PostTimeElapsed from '../Main/PostTimeElapsed';
 import PostChatInput from '../Main/PostChatInput';
+import PostHeaderContainer from '../../Container/Main/PostHeaderContainer';
+import PostTextBoxContainer from '../../Container/Main/PostTextBoxContainer';
+import PostCommentsInModalContainer from '../../Container/Main/PostCommentsInModalContainer';
 
-const PostModalItem = ({ post }) => {
-  const { imagesArray } = post;
+const PostModalItem = ({ post, user }) => {
   return (
     <StPostBoxBlockInner>
       <StImageBox>
-        <PostImages imagesArray={imagesArray} pagenation pos />
+        <PostImages imagesArray={post.imagesArray} pagenation pos />
       </StImageBox>
       <StPostDataBox>
-        <PostHeader />
-        <PostTextBox />
-        <PostComments />
+        <PostHeaderContainer user={user} post={post} />
+        <PostTextBoxContainer user={user} post={post} />
+        <PostCommentsInModalContainer post={post} />
         <PostNavigation />
         <PostTimeElapsed />
         <PostChatInput />
@@ -43,6 +42,9 @@ const StImageBox = styled.div`
 `;
 
 const StPostDataBox = styled.div`
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: center;
   width: 35rem;
 `;
 

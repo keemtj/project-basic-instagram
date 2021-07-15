@@ -26,6 +26,7 @@ import { getBookmarks } from '../../Modules/saved';
 import {
   activePostData,
   activePostIdData,
+  activePostUserData,
   openPopup,
 } from '../../Modules/popup';
 import { calcTimeElapsed } from '../../lib/calcTime';
@@ -74,7 +75,7 @@ const PostContainer = ({
       }
     }
     await updatePostsData(dispatch, updateMainPosts);
-    observeHeart(dispatch, getHearts); // 내가 hearts를 누르면서 하트 게시물 업데이트
+    observeHeart(dispatch, getHearts);
     if (newPost.length !== 0) dispatch(clearNewPost());
   };
 
@@ -123,7 +124,11 @@ const PostContainer = ({
   };
 
   const onClickPostModal = () => {
-    console.log('댓글 더 보기 클릭해서 open post modal');
+    console.log('open post modal', id);
+    dispatch(openPopup('postModal'));
+    dispatch(activePostData({ ...post }));
+    dispatch(activePostIdData(id));
+    dispatch(activePostUserData({ displayName, photoURL, uid }));
   };
 
   return (

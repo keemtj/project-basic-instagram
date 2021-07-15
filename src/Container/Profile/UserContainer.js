@@ -79,7 +79,7 @@ const UserContainer = ({ watchName }) => {
       photoURL={
         (currentUserData.displayName === watchName
           ? currentUserData?.photoURL
-          : searchUserData?.photoURL) || '/images/default_profile2.jpg'
+          : searchUserData?.photoURL) || '/images/default_profile.png'
       }
       username={
         currentUserData.displayName === watchName

@@ -47,6 +47,7 @@ const Post = ({
         onClickBookmark={onClickBookmark}
         onClickHeart={onClickHeart}
         onClickShare={onClickShare}
+        onClickPostModal={onClickPostModal}
         isBookmark={isBookmark}
         isHeart={isHeart}
       />
@@ -60,9 +61,9 @@ const Post = ({
         more={more}
         onClickMore={onClickMore}
         text={text}
+        onMoveProfilePage={onMoveProfilePage}
       />
       <PostCommentsContainer
-        isPossibleComment={isPossibleComment}
         comments={comments}
         onClickPostModal={onClickPostModal}
       />

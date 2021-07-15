@@ -19,9 +19,7 @@ const PostSettingModal = () => {
   );
   const { uid: currentUserUid } = useSelector(state => state.user.currentUser);
   const { followers } = useSelector(state => state.user.currentUserFollowData);
-  const { uid, id, imagesArray } = useSelector(
-    state => state.popup.activePostData,
-  );
+  const { uid, id, imagesArray } = useSelector(state => state.popup.activePost);
 
   const onRemovePost = async () => {
     const isNewPost = newPost.some(post => post.id === id); // 클릭한 포스트가 new post?
@@ -37,6 +35,10 @@ const PostSettingModal = () => {
     }
     dispatch(closePopup('postSettingModal'));
     toast('게시글이 삭제되었습니다.');
+  };
+
+  const onCancel = () => {
+    dispatch(closePopup('postSettingModal'));
   };
 
   const onCilckOutside = e => {
@@ -109,10 +111,7 @@ const PostSettingModal = () => {
         <StSettingBox>
           <ul>
             <StButtonList>
-              <StButton
-                name="cancel"
-                onClick={() => dispatch(closePopup('postSettingModal'))}
-              >
+              <StButton name="cancel" onClick={onCancel}>
                 취소
               </StButton>
             </StButtonList>

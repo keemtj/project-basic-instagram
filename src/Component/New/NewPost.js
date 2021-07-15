@@ -123,6 +123,7 @@ const NewPost = ({ setProgress }) => {
           console.log('TASK STATE:', uploadTask.snapshot.state);
           if (uploadTask.snapshot.state === 'success') {
             // newPost를 main page 상단에 표시
+            // FIXME: 게시물이 여러개 올라가는 버그 수정 필요
             dispatch(
               addNewPost({
                 id: postId,

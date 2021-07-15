@@ -578,6 +578,26 @@ export const getDisplayName = async comments => {
   return promiseAll;
 };
 
+export const getPhotoURL = async comments => {
+  const arr = await comments.map(async comment => {
+    const response = await firestore.collection('users').doc(comment.uid).get();
+    const result = await Promise.resolve(response);
+    return result.data().photoURL;
+  });
+  const promiseAll = await Promise.all(arr);
+  return promiseAll;
+};
+
+export const getUids = async comments => {
+  const arr = await comments.map(async comment => {
+    const response = await firestore.collection('users').doc(comment.uid).get();
+    const result = await Promise.resolve(response);
+    return result.data().uid;
+  });
+  const promiseAll = await Promise.all(arr);
+  return promiseAll;
+};
+
 // --> direct.rooms
 export const getRoomsByUid = async uid => {
   const response = await firestore

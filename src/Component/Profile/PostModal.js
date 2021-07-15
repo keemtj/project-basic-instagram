@@ -1,69 +1,76 @@
 import React, { useEffect, useRef } from 'react';
-import styled, { css } from 'styled-components';
+import styled from 'styled-components';
 import { useDispatch, useSelector } from 'react-redux';
-import { ChevronLeft } from '@styled-icons/entypo/ChevronLeft';
-import { ChevronRight } from '@styled-icons/entypo/ChevronRight';
+// import { ChevronLeft } from '@styled-icons/entypo/ChevronLeft';
+// import { ChevronRight } from '@styled-icons/entypo/ChevronRight';
 import { CloseOutline } from '@styled-icons/evaicons-outline/CloseOutline';
-import { activeIndex, activePostIdData, closePopup } from '../../Modules/popup';
+import { closePopup } from '../../Modules/popup';
 import PostPortal from '../../Portals/PostPortal';
 import { useHistory } from 'react-router';
 import PostModalItem from './PostModalItem';
 
-const PostModal = ({ posts, id, index }) => {
+const PostModal = () => {
   const his = useHistory();
   const modalRef = useRef();
   const dispatch = useDispatch();
   const {
+    postSettingModal: postSettingModalState,
     postModal: postModalState,
     activeIndexValue,
     activePostId,
+    activePost,
+    activePostUser,
   } = useSelector(state => state.popup);
-  const lastIndex = posts.length - 1;
+  const path = his.location.pathname;
+  // const lastIndex = posts.length - 1;
 
-  const handlePrev = e => {
-    e.stopPropagation();
-    modalRef.current.style.transform = `translate(-${95 * (index - 1)}rem)`;
-    dispatch(activePostIdData(posts[index - 1].id));
-    dispatch(activeIndex(index - 1));
-  };
+  // const handlePrev = e => {
+  //   e.stopPropagation();
+  //   modalRef.current.style.transform = `translate(-${95 * (index - 1)}rem)`;
+  //   dispatch(activePostIdData(posts[index - 1].id));
+  //   dispatch(activeIndex(index - 1));
+  // };
 
-  const handleNext = e => {
-    e.stopPropagation();
-    modalRef.current.style.transform = `translate(-${95 * (index + 1)}rem)`;
-    dispatch(activePostIdData(posts[index + 1].id));
-    dispatch(activeIndex(index + 1));
-  };
-
-  const onCloseButton = () => {
-    dispatch(closePopup('postModal'));
-  };
+  // const handleNext = e => {
+  //   e.stopPropagation();
+  //   modalRef.current.style.transform = `translate(-${95 * (index + 1)}rem)`;
+  //   dispatch(activePostIdData(posts[index + 1].id));
+  //   dispatch(activeIndex(index + 1));
+  // };
 
   useEffect(() => {
-    const path = his.location.pathname;
-    dispatch(activePostIdData(id));
     modalRef.current.style.transform = `translate(-${
       95 * activeIndexValue
     }rem)`;
-    history.pushState('', '', `/p/${activePostId}`);
-    return () => his.push(`${path}`);
   }, [activeIndexValue]);
 
+  const onCloseButton = () => {
+    dispatch(closePopup('postModal'));
+    his.push(`${path}`);
+  };
+
   const onClickOutside = e => {
+    if (e.target.name === 'cancel') return;
     if (
       postModalState &&
       modalRef.current &&
       !modalRef.current.contains(e.target)
     ) {
-      console.log('Modal outside');
       dispatch(closePopup('postModal'));
+      his.push(`${path}`);
     }
   };
 
   useEffect(() => {
     window.addEventListener('click', onClickOutside);
     return () => {
+      if (postModalState && !postSettingModalState) return;
       window.removeEventListener('click', onClickOutside);
     };
+  }, []);
+
+  useEffect(() => {
+    history.pushState('', '', `/p/${activePostId}`);
   }, []);
 
   return (
@@ -71,11 +78,12 @@ const PostModal = ({ posts, id, index }) => {
       <StPostModalWrapper>
         <StPostCarousel>
           <StPostCarouselInner ref={modalRef}>
-            {posts.map(post => {
+            {/* {posts.map(post => {
               return <PostModalItem post={post} key={post.id} />;
-            })}
+            })} */}
+            <PostModalItem post={activePost} user={activePostUser} />
           </StPostCarouselInner>
-          <StSlideButton
+          {/* <StSlideButton
             type="button"
             role="prev"
             onClick={handlePrev}
@@ -90,7 +98,7 @@ const PostModal = ({ posts, id, index }) => {
             hidden={index === lastIndex ? true : false}
           >
             <StNextButtonIcon />
-          </StSlideButton>
+          </StSlideButton> */}
           <StCloseButton type="button" onClick={onCloseButton}>
             <CloseOutline />
           </StCloseButton>
@@ -127,35 +135,35 @@ const StPostCarouselInner = styled.main`
   background: ${({ theme }) => theme.white};
 `;
 
-const buttonStyle = css`
-  width: 4rem;
-  height: 4rem;
-  color: ${({ theme }) => theme.gray8};
-  cursor: pointer;
-  text-shadow: 5px 5px ${({ theme }) => theme.black};
-  &:active {
-    color: ${({ theme }) => theme.gray5};
-  }
-`;
+// const buttonStyle = css`
+//   width: 4rem;
+//   height: 4rem;
+//   color: ${({ theme }) => theme.gray8};
+//   cursor: pointer;
+//   text-shadow: 5px 5px ${({ theme }) => theme.black};
+//   &:active {
+//     color: ${({ theme }) => theme.gray5};
+//   }
+// `;
 
-const StSlideButton = styled.div`
-  width: 4rem;
-  height: 4rem;
+// const StSlideButton = styled.div`
+//   width: 4rem;
+//   height: 4rem;
 
-  position: absolute;
-  top: calc(50% - 2rem);
-  right: ${({ role }) => role === 'next' && 'calc((100vw - 95rem) / 2 - 4rem)'};
-  left: ${({ role }) => role === 'prev' && 'calc((100vw - 95rem) / 2 - 4rem)'};
-  z-index: 4;
-`;
+//   position: absolute;
+//   top: calc(50% - 2rem);
+//   right: ${({ role }) => role === 'next' && 'calc((100vw - 95rem) / 2 - 4rem)'};
+//   left: ${({ role }) => role === 'prev' && 'calc((100vw - 95rem) / 2 - 4rem)'};
+//   z-index: 4;
+// `;
 
-const StNextButtonIcon = styled(ChevronRight)`
-  ${buttonStyle}
-`;
+// const StNextButtonIcon = styled(ChevronRight)`
+//   ${buttonStyle}
+// `;
 
-const StPrevButtonIcon = styled(ChevronLeft)`
-  ${buttonStyle}
-`;
+// const StPrevButtonIcon = styled(ChevronLeft)`
+//   ${buttonStyle}
+// `;
 
 const StCloseButton = styled.button`
   position: absolute;

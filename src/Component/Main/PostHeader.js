@@ -6,8 +6,8 @@ import ProfileImage from '../Global/ProfileImage';
 const PostHeader = ({
   photoURL,
   displayName,
-  onMoveProfilePage,
   location,
+  onMoveProfilePage,
   onClickSetting,
 }) => {
   return (
@@ -15,8 +15,8 @@ const PostHeader = ({
       <ProfileImage
         src={photoURL}
         alt={displayName}
-        width={3}
-        height={3}
+        width={3.5}
+        height={3.5}
         onClick={onMoveProfilePage}
       >
         <div>
@@ -38,14 +38,14 @@ const StHeader = styled.header`
   justify-content: space-between;
   align-items: center;
   border-bottom: 1px solid ${({ theme }) => theme.gray};
-  padding: 0rem 1.5rem;
+  padding: 1rem 1.5rem;
   width: 100%;
   height: 5.5rem;
   & > div {
     display: flex;
     align-items: center;
     & > div {
-      margin-left: 1.5rem;
+      margin-left: 1rem;
     }
   }
   font-size: 1.4rem;
@@ -60,7 +60,7 @@ const StDisplayName = styled.h2`
 `;
 
 const StLocation = styled.div`
-  margin-top: 0.2rem;
+  margin-top: 0.3rem;
   font-size: 1.2rem;
   font-weight: 400;
   color: ${({ theme }) => theme.darkGray};

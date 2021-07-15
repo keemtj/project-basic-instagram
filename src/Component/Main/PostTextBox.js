@@ -1,15 +1,23 @@
 import React from 'react';
 import styled, { css } from 'styled-components';
 
-const PostTextBox = ({ displayName, more, onClickMore, text }) => {
+const PostTextBox = ({
+  displayName,
+  text,
+  more,
+  onClickMore,
+  postModalState,
+  onMoveProfilePage,
+}) => {
   return (
     <>
       {text && (
         <StTextBox>
-          <StText more={more}>
-            <StUsername>{displayName}</StUsername> {text}{' '}
+          <StText more={more} postModalState={postModalState}>
+            <StUsername onClick={onMoveProfilePage}>{displayName}</StUsername>{' '}
+            {text}{' '}
           </StText>
-          {text?.length > 70 && (
+          {!postModalState && text?.length > 70 && (
             <StMoreToggle onClick={onClickMore} more={more}>
               {more ? '더 보기' : '숨기기'}
             </StMoreToggle>
@@ -23,15 +31,17 @@ const PostTextBox = ({ displayName, more, onClickMore, text }) => {
 const StTextBox = styled.div`
   display: flex;
   flex-flow: row wrap;
-  margin-top: 1rem;
-  padding: 0rem 1.5rem;
+  margin: 1rem 0rem;
+  padding: ${({ postModalState }) =>
+    postModalState ? '1rem 1.5rem' : '0rem 1.5rem'};
   font-size: 1.4rem;
   word-break: break-all;
 `;
 
 const StText = styled.div`
+  flex-grow: 1;
   width: ${({ more }) => (more ? '90%' : '100%')};
-  line-height: 1.3;
+  line-height: 1.4;
   ${({ more }) =>
     more &&
     css`
@@ -41,10 +51,19 @@ const StText = styled.div`
       -webkit-box-orient: vertical;
       overflow: hidden;
     `}
+  ${({ postModalState }) =>
+    postModalState &&
+    css`
+      font-size: 1.5rem;
+    `}
 `;
 
 const StUsername = styled.span`
   font-weight: 600;
+  &:hover {
+    text-decoration: underline;
+    cursor: pointer;
+  }
 `;
 
 const StMoreToggle = styled.span`

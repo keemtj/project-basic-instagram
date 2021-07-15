@@ -39,9 +39,6 @@ const App = () => {
     postHeartCountModal: postHeartCountModalState,
     profileEditModal: profileEditModalState,
     postSharePopup: postSharePopupState,
-    activePostsData,
-    activePostId,
-    activeIndexValue,
   } = useSelector(state => state.popup);
 
   useEffect(() => {
@@ -74,13 +71,7 @@ const App = () => {
         {progress !== 0 && <ProgressBar progress={progress} />}
         {newPostModalState && <NewPost setProgress={setProgress} />}
         {postSettingModalState && <PostSettingModal />}
-        {postModalState && (
-          <PostModal
-            posts={activePostsData}
-            id={activePostId}
-            index={activeIndexValue}
-          />
-        )}
+        {postModalState && <PostModal />}
         {postHeartCountModalState && <HeartCountModal />}
         {postSharePopupState && <PostShareModal />}
         {profileEditModalState && <ProfileEditModal />}

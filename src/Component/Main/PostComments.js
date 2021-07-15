@@ -41,7 +41,6 @@ const StCommentsBox = styled.section`
 `;
 
 const StMoreComments = styled.div`
-  margin-top: 1rem;
   width: 100%;
   color: ${({ theme }) => theme.darkGray};
   cursor: pointer;

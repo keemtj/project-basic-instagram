@@ -11,6 +11,7 @@ const PostNavigation = ({
   onClickBookmark,
   onClickHeart,
   onClickShare,
+  onClickPostModal,
   isBookmark,
   isHeart,
 }) => {
@@ -18,7 +19,7 @@ const PostNavigation = ({
     <StSectionNav>
       <div onClick={onClickHeart}>{isHeart ? <StHeartFill /> : <Heart />}</div>
       <div>
-        <Chat />
+        <Chat onClick={onClickPostModal} />
       </div>
       <div>
         <PaperPlane onClick={onClickShare} />
