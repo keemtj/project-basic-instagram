@@ -80,13 +80,12 @@ const StText = styled.span`
   align-self: flex-start;
   flex-grow: 1;
   margin-left: 0.5rem;
-  word-break: break-all;
 `;
 
 const StTimeStamp = styled.span`
   align-self: flex-start;
   margin-top: 0.2rem;
-  min-width: 6rem;
+  min-width: 5rem;
   color: ${({ theme }) => theme.darkGray};
   text-align: right;
   font-size: 1rem;

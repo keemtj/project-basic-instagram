@@ -79,14 +79,13 @@ const StText = styled.div`
   flex-grow: 1;
   margin-left: 0.5rem;
   margin-top: 1rem;
-  word-break: break-all;
   line-height: 1.2;
 `;
 
 const StTimeStamp = styled.div`
   align-self: flex-start;
   margin-top: 1.1rem;
-  min-width: 6rem;
+  min-width: fit-content;
   color: ${({ theme }) => theme.darkGray};
   text-align: right;
   font-size: 1rem;

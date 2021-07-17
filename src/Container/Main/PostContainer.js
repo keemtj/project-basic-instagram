@@ -69,6 +69,7 @@ const PostContainer = ({
       }
     } else {
       console.log('Liked!');
+      console.log(currentUid, uid, id);
       const result = await addHeartData(currentUid, uid, id);
       if (result === 'error') {
         toast('이미 삭제되었거나 존재하지 않는 게시물입니다.');

@@ -36,6 +36,7 @@ const StSectionNav = styled.section`
   align-items: center;
   width: 100%;
   height: 5rem;
+  min-height: 5rem;
   padding: 0rem 1.5rem;
   & > div {
     width: 2.5rem;

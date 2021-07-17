@@ -1,12 +1,13 @@
 import React from 'react';
 import styled from 'styled-components';
 import PostImages from '../Main/PostImages';
-import PostNavigation from '../Main/PostNavigation';
 import PostTimeElapsed from '../Main/PostTimeElapsed';
 import PostChatInput from '../Main/PostChatInput';
 import PostHeaderContainer from '../../Container/Main/PostHeaderContainer';
 import PostTextBoxContainer from '../../Container/Main/PostTextBoxContainer';
 import PostCommentsInModalContainer from '../../Container/Main/PostCommentsInModalContainer';
+import PostHeartCount from '../Main/PostHeartCount';
+import PostNavigationContainer from '../../Container/Main/PostNavigationContainer';
 
 const PostModalItem = ({ post, user }) => {
   return (
@@ -18,8 +19,9 @@ const PostModalItem = ({ post, user }) => {
         <PostHeaderContainer user={user} post={post} />
         <PostTextBoxContainer user={user} post={post} />
         <PostCommentsInModalContainer post={post} />
-        <PostNavigation />
-        <PostTimeElapsed />
+        <PostNavigationContainer />
+        <PostHeartCount />
+        <PostTimeElapsed post={post} />
         <PostChatInput />
       </StPostDataBox>
     </StPostBoxBlockInner>
