@@ -28,7 +28,6 @@ const PostCommentsInModalContainer = ({ post }) => {
   };
 
   useEffect(async () => {
-    console.log(comments);
     if (comments.length > 0) {
       console.log('comment 추가됨?');
       const displayNamesArray = await getDisplayName(comments);

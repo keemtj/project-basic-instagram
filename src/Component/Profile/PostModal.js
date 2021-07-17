@@ -14,7 +14,6 @@ const PostModal = () => {
   const modalRef = useRef();
   const dispatch = useDispatch();
   const {
-    postSettingModal: postSettingModalState,
     postModal: postModalState,
     activeIndexValue,
     activePostId,
@@ -62,10 +61,9 @@ const PostModal = () => {
   };
 
   useEffect(() => {
-    window.addEventListener('click', onClickOutside);
+    window.addEventListener('click', onClickOutside, { capture: true });
     return () => {
-      if (postModalState && !postSettingModalState) return;
-      window.removeEventListener('click', onClickOutside);
+      window.removeEventListener('click', onClickOutside, { capture: true });
     };
   }, []);
 
