@@ -10,7 +10,6 @@ import PostTimeElapsed from './PostTimeElapsed';
 import PostChatInputContainer from '../../Container/Main/PostChatInputContainer';
 
 const Post = ({
-  uid,
   id,
   displayName,
   photoURL,
@@ -20,8 +19,10 @@ const Post = ({
   more,
   text,
   onClickMore,
-  isPossibleComment,
+  isPossibleToComment,
   comments,
+  newComments,
+  setNewComments,
   timeElapsed,
   onMoveProfilePage,
   onClickHeart,
@@ -66,13 +67,20 @@ const Post = ({
       <PostCommentsContainer
         comments={comments}
         onClickPostModal={onClickPostModal}
+        newComments={newComments}
       />
-      <PostTimeElapsed timeElapsed={timeElapsed} comments={comments} />
-      <PostChatInputContainer
-        isPossibleComment={isPossibleComment}
-        uid={uid}
-        id={id}
+      <PostTimeElapsed
+        timeElapsed={timeElapsed}
+        comments={comments}
+        newComments={newComments}
       />
+      {isPossibleToComment && (
+        <PostChatInputContainer
+          id={id}
+          newComments={newComments}
+          setNewComments={setNewComments}
+        />
+      )}
     </StArticle>
   );
 };

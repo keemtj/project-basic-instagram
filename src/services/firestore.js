@@ -33,18 +33,33 @@ export const getAllPosts = async uids => {
 
 /**
  * 각각의 post에서 comments 가져오는 함수
- * @param {id} id postId
+ * @param {string} id postId
  */
 export const getCommentsByPost = async id => {
   const response = await firestore
     .collection('posts')
     .doc(id)
     .collection('comments')
-    .orderBy('date', 'desc')
+    .orderBy('date', 'asc')
     .get();
   let datas = [];
   response.forEach(res => datas.push(res.data()));
   return datas;
+};
+
+/**
+ * post에 댓글 추가하는 함수
+ * @param {string} id postId
+ * @param {string} text comment
+ * @param {number} date time stamp
+ */
+export const addCommentToPost = async (id, text, date) => {
+  const { uid } = firebaseAuth.currentUser;
+  await firestore.collection('posts').doc(id).collection('comments').doc().set({
+    uid,
+    date,
+    text,
+  });
 };
 
 // remove post data
@@ -563,23 +578,6 @@ export const getUsersDataByHearts = async hearts => {
   });
   const result = await Promise.all(response);
   return result;
-};
-
-// add comment
-export const addCommentToPost = async (postUid, id, comment) => {
-  const { uid } = firebaseAuth.currentUser;
-  await firestore
-    .collection('posts')
-    .doc(postUid)
-    .collection('my-posts')
-    .doc(id)
-    .update({
-      comments: firebase.firestore.FieldValue.arrayUnion({
-        comment,
-        date: Date.now(),
-        uid,
-      }),
-    });
 };
 
 export const getDisplayName = async comments => {

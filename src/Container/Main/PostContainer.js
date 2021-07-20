@@ -58,6 +58,7 @@ const PostContainer = ({
   const [toast] = useToast();
   const { uid: currentUid } = useSelector(state => state.user.currentUser);
   const [comments, setComments] = useState([]);
+  const [newComments, setNewComments] = useState([]);
   const [more, setMore] = useState(true);
 
   const onClickMore = () => {
@@ -138,7 +139,6 @@ const PostContainer = ({
 
   return (
     <Post
-      uid={uid}
       id={id}
       displayName={displayName}
       photoURL={photoURL}
@@ -150,6 +150,8 @@ const PostContainer = ({
       onClickMore={onClickMore}
       isPossibleToComment={isPossibleToComment}
       comments={comments}
+      newComments={newComments}
+      setNewComments={setNewComments}
       timeElapsed={calcTimeElapsed(date)}
       onMoveProfilePage={onMoveProfilePage}
       onClickHeart={onClickHeart}

@@ -55,7 +55,7 @@ const NewPost = ({ setProgress }) => {
       text,
       location,
       subLocation,
-      isPossibleToComment,
+      isPossibleToComment: !isPossibleToComment,
       hearts: [],
       bookmarks: [],
       imagesArray: [],

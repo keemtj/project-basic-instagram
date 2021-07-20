@@ -1,29 +1,34 @@
 import React, { useState, useRef } from 'react';
-import { useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 import PostChatInput from '../../Component/Main/PostChatInput';
 import useToast from '../../Hooks/useToast';
-import { updateMainPosts } from '../../Modules/posts';
-import { addCommentToPost, updatePostsData } from '../../services/firestore';
+import { addCommentToPost } from '../../services/firestore';
 
-const PostChatInputContainer = ({ isPossibleComment, uid, id }) => {
-  const dispatch = useDispatch();
+const PostChatInputContainer = ({
+  isPossibleToComment,
+  id,
+  newComments,
+  setNewComments,
+}) => {
   const inputRef = useRef(null);
-  const [comment, setComment] = useState('');
+  const { displayName } = useSelector(state => state.user.currentUser);
+  const [text, setText] = useState('');
   const [isShow, setIsShow] = useState(false);
   const [toast] = useToast();
 
   const onSubmit = async e => {
     e.preventDefault();
-    if (comment.length === 0) return;
-    await addCommentToPost(uid, id, comment);
-    await updatePostsData(dispatch, updateMainPosts);
-    setComment('');
+    if (text.length === 0) return;
+    const date = Date.now();
+    await addCommentToPost(id, text, date);
+    setNewComments([...newComments, { displayName, text, date }]);
+    setText('');
     setIsShow(false);
     toast('댓글 작성이 완료되었습니다.');
   };
 
   const onChange = ({ target }) => {
-    setComment(target.value);
+    setText(target.value);
   };
 
   const onShowEmojiPicker = () => {
@@ -31,16 +36,16 @@ const PostChatInputContainer = ({ isPossibleComment, uid, id }) => {
   };
 
   const onEmojiClick = (e, emojiObject) => {
-    setComment(comment + emojiObject.emoji);
+    setText(text + emojiObject.emoji);
     inputRef.current.focus();
   };
 
   return (
     <PostChatInput
-      isPossibleComment={isPossibleComment}
+      isPossibleToComment={isPossibleToComment}
       onSubmit={onSubmit}
       onChange={onChange}
-      comment={comment}
+      text={text}
       onShowEmojiPicker={onShowEmojiPicker}
       onEmojiClick={onEmojiClick}
       isShow={isShow}

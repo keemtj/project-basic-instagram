@@ -3,7 +3,12 @@ import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { calcTimeElapsed } from '../../lib/calcTime';
 
-const PostComments = ({ displayNames, comments, onClickPostModal }) => {
+const PostComments = ({
+  displayNames,
+  comments,
+  onClickPostModal,
+  newComments,
+}) => {
   return (
     <>
       {comments?.length > 0 && (
@@ -13,7 +18,7 @@ const PostComments = ({ displayNames, comments, onClickPostModal }) => {
               댓글 {comments.length}개 모두 보기
             </StMoreComments>
           )}
-          <StCommentsUl>
+          <StCommentsUl comments={comments}>
             {comments?.slice(-2, comments?.length).map((comment, index) => {
               const dns = displayNames.slice(-2, displayNames.length);
               return (
@@ -28,6 +33,24 @@ const PostComments = ({ displayNames, comments, onClickPostModal }) => {
               );
             })}
           </StCommentsUl>
+        </StCommentsBox>
+      )}
+      {newComments.length > 0 && (
+        <StCommentsBox>
+          <StNewCommentsUl newComments={newComments}>
+            {newComments.map((comment, index) => {
+              return (
+                <StComment key={index}>
+                  <StLink to={`/${comment.displayName}`}>
+                    <StDisplayName>{comment.displayName}</StDisplayName>{' '}
+                  </StLink>
+                  <StText>{comment.text}</StText>
+                  <StTimeStamp>{calcTimeElapsed(comment.date)}</StTimeStamp>
+                  <div />
+                </StComment>
+              );
+            })}
+          </StNewCommentsUl>
         </StCommentsBox>
       )}
     </>
@@ -50,6 +73,12 @@ const StMoreComments = styled.div`
 `;
 
 const StCommentsUl = styled.ul`
+  margin-top: ${({ comments }) => comments?.length > 2 && '1rem'};
+  height: fit-content;
+`;
+
+const StNewCommentsUl = styled.ul`
+  margin-top: ${({ newComments }) => newComments?.length > 0 && '1rem'};
   height: fit-content;
 `;
 

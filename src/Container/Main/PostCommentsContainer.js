@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import PostComments from '../../Component/Main/PostComments';
 import { getDisplayName } from '../../services/firestore';
 
-const PostCommentsContainer = ({ comments, onClickPostModal }) => {
+const PostCommentsContainer = ({ comments, onClickPostModal, newComments }) => {
   const [displayNames, setDisplayNames] = useState([]);
 
   useEffect(async () => {
@@ -18,6 +18,7 @@ const PostCommentsContainer = ({ comments, onClickPostModal }) => {
       displayNames={displayNames}
       comments={comments}
       onClickPostModal={onClickPostModal}
+      newComments={newComments}
     />
   );
 };
