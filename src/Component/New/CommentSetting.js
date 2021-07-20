@@ -1,18 +1,18 @@
 import React from 'react';
 import styled from 'styled-components';
 
-const CommentSetting = ({ isPossibleComment, handleToggle }) => {
+const CommentSetting = ({ isPossibleToComment, handleToggle }) => {
   return (
     <>
       <StCommentTitle>댓글 기능 해제</StCommentTitle>
-      <StToggle checked={isPossibleComment}>
+      <StToggle checked={isPossibleToComment}>
         <input
           type="checkbox"
-          checked={isPossibleComment}
+          checked={isPossibleToComment}
           onChange={handleToggle}
           hidden
         />
-        <StCircle checked={isPossibleComment} />
+        <StCircle checked={isPossibleToComment} />
       </StToggle>
     </>
   );

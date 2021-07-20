@@ -7,7 +7,6 @@ import useToast from '../../Hooks/useToast';
 import { firebase, firestore, firebaseStorage } from '../../services/firebase';
 import { generatedId } from '../../services/firestore';
 import { closePopup } from '../../Modules/popup';
-import { addNewPost } from '../../Modules/posts';
 import { Upload } from '@styled-icons/boxicons-regular/Upload';
 import NewPostPortal from '../../Portals/NewPostPortal';
 import UploadImageInput from './UploadImageInput';
@@ -21,12 +20,12 @@ const NewPost = ({ setProgress }) => {
   const his = useHistory();
   const dispatch = useDispatch();
   const { uid } = useSelector(state => state.user.currentUser);
-  const { followers } = useSelector(state => state.user.currentUserFollowData);
   const [images, setImages] = useState([]);
+  // const [hover, setHover] = useState(false);
   const [location, setLocation] = useState('');
   const [subLocation, setSubLocation] = useState('');
   const [autoCompleteState, setAutoCompleteState] = useState(false);
-  const [isPossibleComment, setIsPossibleComment] = useState(false);
+  const [isPossibleToComment, setisPossibleToComment] = useState(false);
   const [text, setText] = useState('');
   const [toast] = useToast();
 
@@ -49,40 +48,17 @@ const NewPost = ({ setProgress }) => {
   // add post data to firestore
   const addPostDataToFirestore = (uid, postId) => {
     const date = Date.now();
-    firestore
-      .collection('posts')
-      .doc(uid)
-      .collection('my-posts')
-      .doc(postId)
-      .set({
-        id: postId,
-        uid,
-        date,
-        text,
-        location,
-        subLocation,
-        isPossibleComment,
-        comments: [],
-        hearts: [],
-        bookmarks: [],
-        imagesArray: [],
-      });
-    firestore.collection('posts').doc(uid).collection('main').doc(postId).set({
+    firestore.collection('posts').doc(postId).set({
       id: postId,
       uid,
       date,
-    });
-    followers.forEach(fUid => {
-      firestore
-        .collection('posts')
-        .doc(fUid)
-        .collection('main')
-        .doc(postId)
-        .set({
-          id: postId,
-          uid,
-          date,
-        });
+      text,
+      location,
+      subLocation,
+      isPossibleToComment,
+      hearts: [],
+      bookmarks: [],
+      imagesArray: [],
     });
   };
 
@@ -110,8 +86,6 @@ const NewPost = ({ setProgress }) => {
           const { name, timeCreated } = await Promise.resolve(metadataResult);
           await firestore
             .collection('posts')
-            .doc(uid)
-            .collection('my-posts')
             .doc(postId)
             .update({
               imagesArray: firebase.firestore.FieldValue.arrayUnion({
@@ -121,27 +95,8 @@ const NewPost = ({ setProgress }) => {
               }),
             });
           console.log('TASK STATE:', uploadTask.snapshot.state);
-          if (uploadTask.snapshot.state === 'success') {
-            // newPost를 main page 상단에 표시
-            // FIXME: 게시물이 여러개 올라가는 버그 수정 필요
-            dispatch(
-              addNewPost({
-                id: postId,
-                uid,
-                date: Date.now(),
-                text,
-                location,
-                subLocation,
-                isPossibleComment,
-                comments: [],
-                hearts: [],
-                bookmarks: [],
-                imagesArray: [{ url, name, timeCreated }],
-              }),
-            );
-            setProgress(0);
-            toast('새 게시물이 작성되었습니다.');
-          }
+          setProgress(0);
+          toast('새 게시물이 작성되었습니다.');
         },
       );
     });
@@ -157,6 +112,11 @@ const NewPost = ({ setProgress }) => {
     setImages([...images, ...datas]);
   };
 
+  // const onShow = () => setHover(true);
+  // const onHide = () => setHover(false);
+
+  // // remove image
+  // const onRemoveImage = () => {};
   // Textareas
   const addText = ({ target }) => {
     setText(target.value);
@@ -173,7 +133,7 @@ const NewPost = ({ setProgress }) => {
 
   // Commnet setting toggle
   const handleToggle = () => {
-    setIsPossibleComment(!isPossibleComment);
+    setisPossibleToComment(!isPossibleToComment);
   };
 
   const prev = () => {
@@ -213,7 +173,13 @@ const NewPost = ({ setProgress }) => {
                 </UploadImageInput>
               </StUploadSection>
               <StImagePreviewSection>
-                <ImagePreview images={images}>
+                <ImagePreview
+                  images={images}
+                  // onShow={onShow}
+                  // onHide={onHide}
+                  // hover={hover}
+                  // onRemoveImage={onRemoveImage}
+                >
                   <StUploadIcon width={3} height={3} />
                 </ImagePreview>
               </StImagePreviewSection>
@@ -230,7 +196,7 @@ const NewPost = ({ setProgress }) => {
               </StLocationSection>
               <StCommentSettingSection>
                 <CommentSetting
-                  isPossibleComment={isPossibleComment}
+                  isPossibleToComment={isPossibleToComment}
                   handleToggle={handleToggle}
                 />
               </StCommentSettingSection>
@@ -288,7 +254,7 @@ const StNewPostBox = styled.div`
   position: relative;
   background: ${({ theme }) => theme.white};
   border-radius: 5px;
-  width: 50rem;
+  width: 95rem;
   height: auto;
   min-height: 61.5rem;
 `;

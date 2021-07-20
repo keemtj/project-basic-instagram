@@ -67,7 +67,7 @@ const Post = ({
         comments={comments}
         onClickPostModal={onClickPostModal}
       />
-      <PostTimeElapsed timeElapsed={timeElapsed} />
+      <PostTimeElapsed timeElapsed={timeElapsed} comments={comments} />
       <PostChatInputContainer
         isPossibleComment={isPossibleComment}
         uid={uid}

@@ -1,13 +1,13 @@
 import React from 'react';
 import styled from 'styled-components';
-import { calcTimeElapsed } from '../../lib/calcTime';
 
-const PostTimeElapsed = ({ post }) => {
-  return <StDate>{calcTimeElapsed(post?.date)}</StDate>;
+const PostTimeElapsed = ({ timeElapsed, comments }) => {
+  return <StDate comments={comments}>{timeElapsed}</StDate>;
 };
 
 const StDate = styled.div`
   padding: 1rem 1.5rem;
+  padding: ${({ comments }) => comments.length === 0 && '0rem 1.5rem 1rem'};
   color: ${({ theme }) => theme.darkGray};
 `;
 

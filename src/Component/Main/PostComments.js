@@ -21,7 +21,7 @@ const PostComments = ({ displayNames, comments, onClickPostModal }) => {
                   <StLink to={`/${displayNames[index]}`}>
                     <StDisplayName>{dns[index]}</StDisplayName>{' '}
                   </StLink>
-                  <StText>{comment.comment}</StText>
+                  <StText>{comment.text}</StText>
                   <StTimeStamp>{calcTimeElapsed(comment.date)}</StTimeStamp>
                   <div />
                 </StComment>
@@ -50,7 +50,6 @@ const StMoreComments = styled.div`
 `;
 
 const StCommentsUl = styled.ul`
-  margin-top: 1rem;
   height: fit-content;
 `;
 

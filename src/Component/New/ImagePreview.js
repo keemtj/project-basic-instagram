@@ -1,7 +1,14 @@
 import React from 'react';
 import styled from 'styled-components';
 
-const ImagePreview = ({ images, children }) => {
+const ImagePreview = ({
+  images,
+  onShow,
+  onHide,
+  // hover,
+  // onRemoveImage,
+  children,
+}) => {
   return (
     <>
       {images.length ? (
@@ -10,6 +17,8 @@ const ImagePreview = ({ images, children }) => {
             return (
               <StImage
                 key={index}
+                onMouseEnter={onShow}
+                onMouseLeave={onHide}
                 src={image.previewUrl}
                 alt={image.file.name}
               />
@@ -58,7 +67,6 @@ const StImagePreviewLabel = styled.label`
 `;
 
 const StImage = styled.img`
-  width: 25rem;
   height: 25rem;
 `;
 

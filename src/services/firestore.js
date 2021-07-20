@@ -9,28 +9,42 @@ export const getCurrentUserData = async uid => {
   return datas;
 };
 
-export const getAllPosts = async uid => {
-  let datas = [];
-  const mainDocs = await firestore
-    .collection('posts')
-    .doc(uid)
-    .collection('main')
-    .orderBy('date', 'desc')
-    .limit(5)
-    .get();
-  mainDocs.forEach(doc => datas.push(doc.data()));
-  const arr = datas.map(async data => {
-    const { uid, id } = data;
+// --> MAIN
+/**
+ * main page에서 posts(my posts, following users posts) 데이터 가져오는 함수
+ * @param {Array} uids combined my uid and following users uid
+ * @returns {Array} main posts
+ */
+export const getAllPosts = async uids => {
+  const arr = uids.map(async uid => {
+    let datas = [];
     const response = await firestore
       .collection('posts')
-      .doc(uid)
-      .collection('my-posts')
-      .doc(id)
+      .where('uid', '==', uid)
+      .limit(10)
       .get();
-    return response.data();
+    response.forEach(doc => datas.push(doc.data()));
+    return datas;
   });
-  const result = await Promise.all(arr);
+  const promiseAll = await Promise.all(arr);
+  const result = promiseAll.flatMap(v => v).sort((a, b) => b.date - a.date);
   return result;
+};
+
+/**
+ * 각각의 post에서 comments 가져오는 함수
+ * @param {id} id postId
+ */
+export const getCommentsByPost = async id => {
+  const response = await firestore
+    .collection('posts')
+    .doc(id)
+    .collection('comments')
+    .orderBy('date', 'desc')
+    .get();
+  let datas = [];
+  response.forEach(res => datas.push(res.data()));
+  return datas;
 };
 
 // remove post data

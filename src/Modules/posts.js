@@ -6,10 +6,6 @@ const MAIN_POSTS = 'posts/MAIN_POSTS';
 const MAIN_POSTS_SUCCESS = 'posts/MAIN_POSTS_SUCCESS';
 const MAIN_POSTS_ERROR = 'posts/MAIN_POSTS_ERROR';
 
-const NEW_POST = 'posts/NEW_POSTS';
-const REMOVE_NEW_POST = 'posts/REMOVE_NEW_POST';
-const CLEAR_NEW_POST = 'posts/CLEAR_NEW_POST';
-
 const MY_POSTS = 'posts/MY_POSTS';
 const MY_POSTS_SUCCESS = 'posts/MY_POSTS_SUCCESS';
 const MY_POSTS_ERROR = 'posts/MY_POSTS_ERROR';
@@ -38,24 +34,24 @@ const DATA_CLEAR = 'posts/DATA_CLEAR';
 
 // NOTE action creator
 export const getMainPosts = fetchDataThunk(MAIN_POSTS, store.getAllPosts, 1000);
-export const addNewPost = data => ({ type: NEW_POST, data });
-export const removeNewPost = id => ({ type: REMOVE_NEW_POST, id });
-export const clearNewPost = () => ({ type: CLEAR_NEW_POST });
 
 export const getPosts = fetchDataThunk(
   MY_POSTS,
   store.getCurrentUserPostsData,
   1000,
 );
+
 export const getFollowingPosts = fetchDataThunk(
   MY_FOLLOWING_POSTS,
   store.getPostsByAllFollowing,
   1000,
 );
+
 export const getSearchUserPosts = fetchDataThunk(
   SEARCH_USER_POSTS,
   store.getCurrentUserPostsData,
 );
+
 export const getPost = fetchDataThunk(POST, store.getPostBySinglePost);
 
 export const updateMainPosts = data => ({ type: UPDATE_MAIN_POSTS, data });
@@ -106,24 +102,6 @@ const posts = (state = initialState, action) => {
           ...state.mainPosts,
           data: action.data,
         },
-      };
-    case NEW_POST:
-      return {
-        ...state,
-        newPost:
-          state.newPost.length === 0
-            ? [action.data]
-            : [...state.newPost, action.data].reverse(),
-      };
-    case REMOVE_NEW_POST:
-      return {
-        ...state,
-        newPost: state.newPost.filter(post => post.id !== action.id),
-      };
-    case CLEAR_NEW_POST:
-      return {
-        ...state,
-        newPost: [],
       };
     case MY_POSTS:
       return {

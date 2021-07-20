@@ -1,13 +1,12 @@
 import React, { useState, useRef } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import PostChatInput from '../../Component/Main/PostChatInput';
 import useToast from '../../Hooks/useToast';
-import { clearNewPost, updateMainPosts } from '../../Modules/posts';
+import { updateMainPosts } from '../../Modules/posts';
 import { addCommentToPost, updatePostsData } from '../../services/firestore';
 
 const PostChatInputContainer = ({ isPossibleComment, uid, id }) => {
   const dispatch = useDispatch();
-  const newPost = useSelector(state => state.posts.newPost);
   const inputRef = useRef(null);
   const [comment, setComment] = useState('');
   const [isShow, setIsShow] = useState(false);
@@ -18,7 +17,6 @@ const PostChatInputContainer = ({ isPossibleComment, uid, id }) => {
     if (comment.length === 0) return;
     await addCommentToPost(uid, id, comment);
     await updatePostsData(dispatch, updateMainPosts);
-    if (newPost.length !== 0) dispatch(clearNewPost());
     setComment('');
     setIsShow(false);
     toast('댓글 작성이 완료되었습니다.');

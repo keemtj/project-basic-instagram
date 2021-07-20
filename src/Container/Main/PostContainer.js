@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router';
 import useToast from '../../Hooks/useToast';
@@ -7,11 +7,7 @@ import {
   getSearchUserData,
   getSearchUserFollowData,
 } from '../../Modules/search';
-import {
-  clearNewPost,
-  getSearchUserPosts,
-  updateMainPosts,
-} from '../../Modules/posts';
+import { getSearchUserPosts } from '../../Modules/posts';
 import {
   addHeartData,
   removeHeartData,
@@ -19,7 +15,7 @@ import {
   removeBookmarkData,
   observeHeart,
   observeBookmark,
-  updatePostsData,
+  getCommentsByPost,
 } from '../../services/firestore';
 import { getHearts, getUsersWhoClickHeart } from '../../Modules/heart';
 import { getBookmarks } from '../../Modules/saved';
@@ -37,23 +33,31 @@ const PostContainer = ({
   photoURL,
   isBookmark,
   isHeart,
-  newPost,
 }) => {
   const {
     imagesArray,
     text,
-    isPossibleComment,
-    comments,
+    isPossibleToComment,
     date,
     location,
     uid,
     id,
     hearts,
-  } = post;
+  } = post || {
+    imagesArray: [],
+    text: '',
+    isPossibleToComment: false,
+    date: '',
+    location: '',
+    uid: '',
+    id: '',
+    hearts: [],
+  };
   const history = useHistory();
   const dispatch = useDispatch();
   const [toast] = useToast();
   const { uid: currentUid } = useSelector(state => state.user.currentUser);
+  const [comments, setComments] = useState([]);
   const [more, setMore] = useState(true);
 
   const onClickMore = () => {
@@ -74,9 +78,7 @@ const PostContainer = ({
         toast('이미 삭제되었거나 존재하지 않는 게시물입니다.');
       }
     }
-    await updatePostsData(dispatch, updateMainPosts);
     observeHeart(dispatch, getHearts);
-    if (newPost.length !== 0) dispatch(clearNewPost());
   };
 
   const onClickBookmark = async () => {
@@ -93,9 +95,7 @@ const PostContainer = ({
         toast('이미 삭제되었거나 존재하지 않는 게시물입니다.');
       }
     }
-    await updatePostsData(dispatch, updateMainPosts);
     observeBookmark(dispatch, getBookmarks); // 좋아요 게시물 업데이트
-    if (newPost.length !== 0) dispatch(clearNewPost());
   };
 
   const onClickShare = () => {
@@ -131,6 +131,11 @@ const PostContainer = ({
     dispatch(activePostUserData({ displayName, photoURL, uid }));
   };
 
+  useEffect(async () => {
+    const datas = await getCommentsByPost(id);
+    setComments(datas);
+  }, []);
+
   return (
     <Post
       uid={uid}
@@ -143,7 +148,7 @@ const PostContainer = ({
       more={more}
       text={text}
       onClickMore={onClickMore}
-      isPossibleComment={isPossibleComment}
+      isPossibleToComment={isPossibleToComment}
       comments={comments}
       timeElapsed={calcTimeElapsed(date)}
       onMoveProfilePage={onMoveProfilePage}

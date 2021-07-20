@@ -6,10 +6,6 @@ import { getUserDataByPost } from '../../services/firestore';
 
 const MainContainer = () => {
   const [userDatas, setUserDatas] = useState([]);
-  const { displayName, photoURL } = useSelector(
-    state => state.user.currentUser,
-  );
-  const newPost = useSelector(state => state.posts.newPost);
   const { data: mainPosts, loading } = useSelector(
     state => state.posts.mainPosts,
   );
@@ -56,8 +52,6 @@ const MainContainer = () => {
 
   return (
     <Main
-      newPost={newPost}
-      newPostUserData={{ displayName, photoURL }}
       isLoading={loading}
       mainPosts={mainPosts}
       userDatas={userDatas}

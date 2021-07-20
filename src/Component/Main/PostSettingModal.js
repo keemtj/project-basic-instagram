@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import useToast from '../../Hooks/useToast';
 import { activePostData, closePopup } from '../../Modules/popup';
-import { removeNewPost, updateMainPosts } from '../../Modules/posts';
+import { updateMainPosts } from '../../Modules/posts';
 import PostSettingPortal from '../../Portals/PostSettingPortal';
 import { removeImagesByPostData } from '../../services/firebaseStorage';
 import { removePostData, updatePostsData } from '../../services/firestore';
@@ -22,17 +22,10 @@ const PostSettingModal = () => {
   const { uid, id, imagesArray } = useSelector(state => state.popup.activePost);
 
   const onRemovePost = async () => {
-    const isNewPost = newPost.some(post => post.id === id); // 클릭한 포스트가 new post?
     const newPostIds = newPost.map(post => post.id);
-    if (isNewPost) {
-      dispatch(removeNewPost(id)); // local 삭제
-      await removePostData(uid, id, followers); // db삭제
-      await removeImagesByPostData(imagesArray, uid, id); // image삭제
-    } else {
-      await removePostData(uid, id, followers); // db삭제
-      await removeImagesByPostData(imagesArray, uid, id); // image삭제
-      await updatePostsData(dispatch, updateMainPosts, newPostIds); // onSnapshot
-    }
+    await removePostData(uid, id, followers); // db삭제
+    await removeImagesByPostData(imagesArray, uid, id); // image삭제
+    await updatePostsData(dispatch, updateMainPosts, newPostIds); // onSnapshot
     dispatch(closePopup('postSettingModal'));
     toast('게시글이 삭제되었습니다.');
   };
