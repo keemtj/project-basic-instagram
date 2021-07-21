@@ -13,12 +13,12 @@ const PostNavigation = ({
   onClickHeart,
   onClickPostModal,
   onClickShare,
-  isBookmark,
-  isHeart,
+  isSaved,
+  isLiked,
 }) => {
   return (
     <StSectionNav>
-      <div onClick={onClickHeart}>{isHeart ? <StHeartFill /> : <Heart />}</div>
+      <div onClick={onClickHeart}>{isLiked ? <StHeartFill /> : <Heart />}</div>
       {!postModalState && (
         <>
           <div>
@@ -30,7 +30,7 @@ const PostNavigation = ({
         </>
       )}
       <div onClick={onClickBookmark}>
-        {isBookmark ? <StBookmarkFill /> : <Bookmark />}
+        {isSaved ? <StBookmarkFill /> : <Bookmark />}
       </div>
     </StSectionNav>
   );

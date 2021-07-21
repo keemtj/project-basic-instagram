@@ -8,8 +8,10 @@ import {
   activePostsData,
   openPopup,
 } from '../../Modules/popup';
-import { getBookmarkPosts, getBookmarks } from '../../Modules/saved';
-import { observeBookmark } from '../../services/firestore';
+import {
+  getBookmarkPosts, //getBookmarks
+} from '../../Modules/saved';
+// import { observeBookmark } from '../../services/firestore';
 
 const SavedContainer = () => {
   const dispatch = useDispatch();
@@ -26,9 +28,9 @@ const SavedContainer = () => {
     dispatch(activeIndex(index));
   };
 
-  useEffect(() => {
-    observeBookmark(dispatch, getBookmarks);
-  }, []);
+  // useEffect(() => {
+  //   observeBookmark(dispatch, getBookmarks);
+  // }, []);
 
   useEffect(() => {
     dispatch(getBookmarkPosts(bookmarks));

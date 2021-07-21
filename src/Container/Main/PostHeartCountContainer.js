@@ -2,39 +2,38 @@ import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import PostHeartCount from '../../Component/Main/PostHeartCount';
 import useToast from '../../Hooks/useToast';
-import { getHearts, getUsersWhoClickHeart } from '../../Modules/heart';
+import { getUsersWhoClickHeart } from '../../Modules/heart';
 import { openPopup } from '../../Modules/popup';
+import { updateMainPosts } from '../../Modules/posts';
 import {
   addHeartData,
-  observeHeart,
+  observeMainPost,
   removeHeartData,
 } from '../../services/firestore';
 
-const PostHeartCountContainer = ({ post, user, heartCount, setHeartCount }) => {
-  const { uid: currentUid } = user;
-  const { uid, id, hearts: heartsInPost } = post;
+const PostHeartCountContainer = ({ post, heartCount }) => {
+  const { id, hearts: heartsInPost } = post;
   const dispatch = useDispatch();
+  const { uid: currentUid } = useSelector(state => state.user.currentUser);
   const hearts = useSelector(state => state.heart.hearts);
-  const isHeart = hearts.find(heart => heart.id === post.id);
+  const isLiked = () => hearts.includes(currentUid);
   const [toast] = useToast();
 
   const onClickHeart = async () => {
-    if (isHeart) {
-      console.log('Unliked!');
-      setHeartCount(heartCount - 1);
-      const result = await removeHeartData(currentUid, uid, id);
+    if (!isLiked()) {
+      console.log('Liked!');
+      const result = await addHeartData(id);
       if (result === 'error') {
         toast('이미 삭제되었거나 존재하지 않는 게시물입니다.');
       }
     } else {
-      console.log('Liked!');
-      setHeartCount(heartCount + 1);
-      const result = await addHeartData(currentUid, uid, id);
+      console.log('Unliked!');
+      const result = await removeHeartData(id);
       if (result === 'error') {
         toast('이미 삭제되었거나 존재하지 않는 게시물입니다.');
       }
     }
-    observeHeart(dispatch, getHearts);
+    observeMainPost(dispatch, updateMainPosts, id);
   };
 
   const onClickHeartCount = () => {

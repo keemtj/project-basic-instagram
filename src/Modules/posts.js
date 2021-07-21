@@ -34,7 +34,7 @@ const DATA_CLEAR = 'posts/DATA_CLEAR';
 
 // NOTE action creator
 export const getMainPosts = fetchDataThunk(MAIN_POSTS, store.getAllPosts, 1000);
-
+export const updateMainPosts = data => ({ type: UPDATE_MAIN_POSTS, data });
 export const getPosts = fetchDataThunk(
   MY_POSTS,
   store.getCurrentUserPostsData,
@@ -54,7 +54,6 @@ export const getSearchUserPosts = fetchDataThunk(
 
 export const getPost = fetchDataThunk(POST, store.getPostBySinglePost);
 
-export const updateMainPosts = data => ({ type: UPDATE_MAIN_POSTS, data });
 export const updatePosts = data => ({ type: UPDATE_POSTS, data });
 export const updatePost = data => ({ type: UPDATE_POST, data });
 export const updateFollowingPost = data => ({
@@ -100,7 +99,9 @@ const posts = (state = initialState, action) => {
         ...state,
         mainPosts: {
           ...state.mainPosts,
-          data: action.data,
+          data: state.mainPosts.data.map(post =>
+            post.id === action.data.id ? action.data : post,
+          ),
         },
       };
     case MY_POSTS:

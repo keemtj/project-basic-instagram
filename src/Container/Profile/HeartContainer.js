@@ -2,14 +2,13 @@ import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Loading from '../../Component/Global/Loading';
 import Heart from '../../Component/Profile/Heart';
-import { getHeartPosts, getHearts } from '../../Modules/heart';
+import { getHeartPosts } from '../../Modules/heart';
 import {
   activeIndex,
   activePostIdData,
   activePostsData,
   openPopup,
 } from '../../Modules/popup';
-import { observeHeart } from '../../services/firestore';
 
 const HeartContainer = () => {
   const dispatch = useDispatch();
@@ -26,9 +25,9 @@ const HeartContainer = () => {
     dispatch(activeIndex(index));
   };
 
-  useEffect(() => {
-    observeHeart(dispatch, getHearts);
-  }, []);
+  // useEffect(() => {
+  //   observeHeart(dispatch, getHearts);
+  // }, []);
 
   useEffect(() => {
     dispatch(getHeartPosts(hearts));

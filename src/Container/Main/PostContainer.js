@@ -7,18 +7,16 @@ import {
   getSearchUserData,
   getSearchUserFollowData,
 } from '../../Modules/search';
-import { getSearchUserPosts } from '../../Modules/posts';
+import { getSearchUserPosts, updateMainPosts } from '../../Modules/posts';
 import {
   addHeartData,
   removeHeartData,
   addBookmarkData,
   removeBookmarkData,
-  observeHeart,
-  observeBookmark,
+  observeMainPost,
   getCommentsByPost,
 } from '../../services/firestore';
-import { getHearts, getUsersWhoClickHeart } from '../../Modules/heart';
-import { getBookmarks } from '../../Modules/saved';
+import { getUsersWhoClickHeart } from '../../Modules/heart';
 import {
   activePostData,
   activePostIdData,
@@ -27,13 +25,7 @@ import {
 } from '../../Modules/popup';
 import { calcTimeElapsed } from '../../lib/calcTime';
 
-const PostContainer = ({
-  post,
-  displayName,
-  photoURL,
-  isBookmark,
-  isHeart,
-}) => {
+const PostContainer = ({ post, displayName, photoURL }) => {
   const {
     imagesArray,
     text,
@@ -43,6 +35,7 @@ const PostContainer = ({
     uid,
     id,
     hearts,
+    bookmarks,
   } = post || {
     imagesArray: [],
     text: '',
@@ -60,43 +53,44 @@ const PostContainer = ({
   const [comments, setComments] = useState([]);
   const [newComments, setNewComments] = useState([]);
   const [more, setMore] = useState(true);
-
+  const isLiked = () => hearts.includes(currentUid);
+  const isSaved = () => bookmarks.includes(currentUid);
   const onClickMore = () => {
     setMore(!more);
   };
 
   const onClickHeart = async () => {
-    if (isHeart) {
-      console.log('Unliked!');
-      const result = await removeHeartData(currentUid, uid, id);
+    if (!isLiked()) {
+      console.log('Liked!');
+      const result = await addHeartData(id);
       if (result === 'error') {
         toast('이미 삭제되었거나 존재하지 않는 게시물입니다.');
       }
     } else {
-      console.log('Liked!');
-      const result = await addHeartData(currentUid, uid, id);
+      console.log('Unliked!');
+      const result = await removeHeartData(id);
       if (result === 'error') {
         toast('이미 삭제되었거나 존재하지 않는 게시물입니다.');
       }
     }
-    observeHeart(dispatch, getHearts);
+    observeMainPost(dispatch, updateMainPosts, id);
   };
 
   const onClickBookmark = async () => {
-    if (isBookmark) {
-      console.log('Deleted!');
-      const result = await removeBookmarkData(currentUid, uid, id);
+    if (!isSaved()) {
+      console.log('Saved!');
+      const result = await addBookmarkData(id);
       if (result === 'error') {
         toast('이미 삭제되었거나 존재하지 않는 게시물입니다.');
       }
     } else {
-      console.log('Saved!');
-      const result = await addBookmarkData(currentUid, uid, id);
+      console.log('Deleted!');
+      const result = await removeBookmarkData(id);
       if (result === 'error') {
         toast('이미 삭제되었거나 존재하지 않는 게시물입니다.');
       }
     }
-    observeBookmark(dispatch, getBookmarks); // 좋아요 게시물 업데이트
+    observeMainPost(dispatch, updateMainPosts, id);
   };
 
   const onClickShare = () => {
@@ -157,8 +151,8 @@ const PostContainer = ({
       onClickHeart={onClickHeart}
       onClickBookmark={onClickBookmark}
       onClickShare={onClickShare}
-      isBookmark={isBookmark}
-      isHeart={isHeart}
+      isSaved={isSaved()}
+      isLiked={isLiked()}
       onClickSetting={onClickSetting}
       onClickHeartCount={onClickHeartCount}
       onClickPostModal={onClickPostModal}

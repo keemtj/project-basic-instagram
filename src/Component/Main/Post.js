@@ -28,8 +28,8 @@ const Post = ({
   onClickHeart,
   onClickBookmark,
   onClickShare,
-  isBookmark,
-  isHeart,
+  isSaved,
+  isLiked,
   onClickSetting,
   onClickHeartCount,
   onClickPostModal,
@@ -49,8 +49,8 @@ const Post = ({
         onClickHeart={onClickHeart}
         onClickShare={onClickShare}
         onClickPostModal={onClickPostModal}
-        isBookmark={isBookmark}
-        isHeart={isHeart}
+        isSaved={isSaved}
+        isLiked={isLiked}
       />
       <PostHeartCount
         heartCount={heartCount}

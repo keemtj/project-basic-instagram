@@ -5,7 +5,7 @@ import AsideFooter from './AsideFooter';
 import AsideContainer from '../../Container/Main/AsideContainer';
 import Loading from '../Global/Loading';
 
-const Main = ({ isLoading, mainPosts, userDatas, bookmarks, hearts }) => {
+const Main = ({ isLoading, mainPosts, userDatas }) => {
   // // 비공개 계정이 아니고, 좋아요나 북마크 수가 많은 유저의 포스츠
   // const influencePosts = [
   //   {
@@ -38,20 +38,15 @@ const Main = ({ isLoading, mainPosts, userDatas, bookmarks, hearts }) => {
             <>
               {mainPosts?.map((post, index) => {
                 const userData = userDatas.find(user => user.uid === post?.uid);
-                const isBookmark = bookmarks.find(
-                  bookmark => bookmark.id === post.id,
-                );
-                const isHeart = hearts.find(heart => heart.id === post.id);
                 return (
                   <PostContainer
                     key={index}
                     post={post}
+                    userDatas={userDatas}
                     displayName={userData?.displayName}
                     photoURL={
                       userData?.photoURL || '/images/default_profile.png'
                     }
-                    isBookmark={isBookmark}
-                    isHeart={isHeart}
                   />
                 );
               })}
