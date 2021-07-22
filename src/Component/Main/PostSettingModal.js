@@ -30,6 +30,37 @@ const PostSettingModal = () => {
     toast('게시글이 삭제되었습니다.');
   };
 
+  const isSaved = () => false;
+  const onClickBookmark = async () => {
+    console.log('북마크/북마크 취소');
+    // if (!isSaved()) {
+    //   console.log('Saved!');
+    //   const result = await addBookmarkData(id);
+    //   if (result === 'error') {
+    //     toast('이미 삭제되었거나 존재하지 않는 게시물입니다.');
+    //   }
+    // } else {
+    //   console.log('Deleted!');
+    //   const result = await removeBookmarkData(id);
+    //   if (result === 'error') {
+    //     toast('이미 삭제되었거나 존재하지 않는 게시물입니다.');
+    //   }
+    // }
+    // observeMainPost(dispatch, updateMainPosts, id);
+  };
+
+  const onToggleCommentInput = () => {
+    console.log('댓글 인풋 on/off');
+  };
+
+  const onClickCopyLink = () => {
+    console.log('포스트 링크 복사');
+  };
+
+  const onMovePostPage = () => {
+    console.log('포스트 페이지로 이동');
+  };
+
   const onCancel = () => {
     dispatch(closePopup('postSettingModal'));
   };
@@ -80,24 +111,24 @@ const PostSettingModal = () => {
                 <StButton name="unfollow">팔로우 취소</StButton>
               </StButtonList>
             )}
-            <StButtonList>
-              <StButton>저장</StButton>
+            <StButtonList onClick={onClickBookmark}>
+              <StButton>{isSaved() ? '북마크 취소' : '북마크'}</StButton>
             </StButtonList>
             {currentUserUid === uid && (
               <StButtonList>
-                <StButton>좋아요 수 숨기기</StButton>
+                <StButton>좋아요 수 숨기기(준비중)</StButton>
               </StButtonList>
             )}
             {currentUserUid === uid && (
-              <StButtonList>
+              <StButtonList onClick={onToggleCommentInput}>
                 <StButton>댓글 기능 해제</StButton>
               </StButtonList>
             )}
-            <StButtonList>
+            <StButtonList onClick={onClickCopyLink}>
               <StButton>링크 복사</StButton>
             </StButtonList>
-            <StButtonList>
-              <StButton>게시물로 이동</StButton>
+            <StButtonList onClick={onMovePostPage}>
+              <StButton>게시물로 이동(준비중)</StButton>
             </StButtonList>
           </ul>
         </StSettingBox>

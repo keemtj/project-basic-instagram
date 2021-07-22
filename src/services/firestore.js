@@ -2,9 +2,22 @@
 import { firebase, firebaseAuth, firestore } from './firebase';
 
 // --> APP
-// get current user data
+/**
+ * get current user data
+ * @param {string} uid
+ */
 export const getCurrentUserData = async uid => {
   const doc = await firestore.collection('users').doc(uid).get();
+  const datas = doc.data();
+  return datas;
+};
+
+/**
+ * get follower, following user's uid of currentUser
+ * @param {string} uid
+ */
+export const getCurrentUserFollowData = async uid => {
+  const doc = await firestore.collection('follow').doc(uid).get();
   const datas = doc.data();
   return datas;
 };
@@ -154,10 +167,6 @@ export const observeMainPost = (dispatch, actionCreator, id) => {
     });
 };
 
-export const getHeartsData = async uid => {
-  const response = await firestore.collection('hearts').doc(uid).get();
-  return response.data();
-};
 // remove post data
 export const removePostData = async (currentUserUid, id, followers) => {
   const response = await firestore
@@ -262,12 +271,6 @@ export const updateCurrentUserData = async (dispatch, actionCreator) => {
     .onSnapshot(doc => {
       dispatch(actionCreator(doc.data()));
     });
-};
-// get follow data of currentUser by uid
-export const getCurrentUserFollowData = async uid => {
-  const doc = await firestore.collection('follow').doc(uid).get();
-  const datas = doc.data();
-  return datas;
 };
 
 export const getCurrentUserPostsData = async uid => {
@@ -492,6 +495,22 @@ export const getPostsByBookmarks = async bookmarks => {
 };
 
 // --> heart
+// --> Profile page(hearts)
+/**
+ * get posts you liked
+ * @param {string} uid uid or others
+ * @returns
+ */
+export const getHeartsData = async uid => {
+  const response = await firestore
+    .collection('posts')
+    .where('hearts', 'array-contains', uid)
+    .get();
+  let datas = [];
+  response.forEach(res => datas.push(res.data()));
+  return datas;
+};
+
 export const getPostsByHearts = async hearts => {
   console.log('저장된 좋아요 posts 가져오기~~~~~');
   const response = await hearts.map(async ({ uid, id }) => {
