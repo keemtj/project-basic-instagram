@@ -153,7 +153,7 @@ export const removeBookmarkData = async id => {
 };
 
 /**
- * update main post
+ * update main post(상태 변화를 감시하고 즉시 변경)
  * @param {function} dispatch
  * @param {function} actionCreator
  * @param {string} id  상태값이 바뀐 게시물의 post id
@@ -165,6 +165,63 @@ export const observeMainPost = (dispatch, actionCreator, id) => {
     .onSnapshot(snapshot => {
       dispatch(actionCreator(snapshot.data()));
     });
+};
+
+// --> PROFILE PAGE
+// --> posts
+/**
+ * 클릭한 유저의 uid, profile page의 User에서 렌더링
+ * @param {string} uid user's uid
+ * @returns user object
+ */
+export const getProfileUserData = async uid => {
+  const response = await firestore.collection('users').doc(uid).get();
+  return response.data();
+};
+
+/**
+ * 클릭한 유저의 uid, profile page에서 렌더링
+ * @param {string} uid user's uid
+ * @returns posts array
+ */
+export const getProfilePosts = async uid => {
+  const response = await firestore
+    .collection('posts')
+    .where('uid', '==', uid)
+    .get();
+  let datas = [];
+  response.forEach(res => datas.push(res.data()));
+  return datas;
+};
+
+/**
+ * 클릭한 유저의 uid, profile page에서 렌더링
+ * @param {string} uid user's uid
+ * @returns bookmarks array
+ */
+export const getProfileBookmarkPosts = async uid => {
+  const response = await firestore
+    .collection('posts')
+    .where('bookmarks', 'array-contains', uid)
+    .get();
+  let datas = [];
+  response.forEach(res => datas.push(res.data()));
+  return datas;
+};
+
+/**
+ * 클릭한 유저의 uid, profile page에서 렌더링
+ * @param {string} uid user's uid
+ * @returns hearts array
+ */
+export const getProfileHeartPosts = async uid => {
+  const response = await firestore
+    .collection('posts')
+    .where('hearts', 'array-contains', uid)
+    .get();
+  let datas = [];
+  response.forEach(res => datas.push(res.data()));
+  return datas;
 };
 
 // remove post data
