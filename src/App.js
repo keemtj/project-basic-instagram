@@ -46,8 +46,8 @@ const App = () => {
         const uids = [uid, ...followData.following];
         dispatch(loginState(true)); // 로그인 상태 true
         dispatch(currentUserData(userData)); // 현재 로그인 유저 데이터
-        dispatch(getMainPosts(uids)); // 현재 로그인 유저와 팔로잉 유저의 전체 포스트 데이터
         dispatch(currentUserFollowData(followData)); // 현재 로그인 유저의 팔로우 데이터
+        dispatch(getMainPosts(uids)); // 현재 로그인 유저와 팔로잉 유저의 전체 포스트 데이터
         dispatch(getRooms(uid));
       } else {
         history.push('/login');

@@ -8,6 +8,7 @@ const PostComments = ({
   comments,
   onClickPostModal,
   newComments,
+  onMoveProfilePage,
 }) => {
   return (
     <>
@@ -23,9 +24,11 @@ const PostComments = ({
               const dns = displayNames.slice(-2, displayNames.length);
               return (
                 <StComment key={index}>
-                  <StLink to={`/${displayNames[index]}`}>
-                    <StDisplayName>{dns[index]}</StDisplayName>{' '}
-                  </StLink>
+                  <StDisplayName
+                    onClick={() => onMoveProfilePage(comment.uid, dns[index])}
+                  >
+                    {dns[index]}
+                  </StDisplayName>
                   <StText>{comment.text}</StText>
                   <StTimeStamp>{calcTimeElapsed(comment.date)}</StTimeStamp>
                   <div />
@@ -102,6 +105,10 @@ const StLink = styled(Link)`
 
 const StDisplayName = styled.span`
   font-weight: 600;
+  cursor: pointer;
+  &:hover {
+    text-decoration: underline;
+  }
 `;
 
 const StText = styled.span`

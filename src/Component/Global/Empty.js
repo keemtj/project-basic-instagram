@@ -1,7 +1,20 @@
 import React from 'react';
 import styled from 'styled-components';
+import { Grid } from '@styled-icons/feather/Grid';
 import { Heart } from '@styled-icons/feather/Heart';
 import { Bookmark } from '@styled-icons/feather/Bookmark';
+
+const EmptyPost = () => {
+  return (
+    <StEmpty>
+      <StIconWrapper>
+        <StGrid />
+      </StIconWrapper>
+      <StHeader>게시물 없음</StHeader>
+      <StText>업로드한 게시물이 존재하지 않습니다.</StText>
+    </StEmpty>
+  );
+};
 
 const EmptyHeart = () => {
   return (
@@ -52,6 +65,11 @@ const StIconWrapper = styled.div`
   justify-content: center;
 `;
 
+const StGrid = styled(Grid)`
+  width: 3rem;
+  height: 3rem;
+`;
+
 const StHeartIcon = styled(Heart)`
   width: 3rem;
   height: 3rem;
@@ -77,4 +95,4 @@ const StText = styled.p`
   text-align: center;
 `;
 
-export { EmptyHeart, EmptySaved };
+export { EmptyPost, EmptyHeart, EmptySaved };

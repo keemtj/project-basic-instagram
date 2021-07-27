@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router';
 import PostHeader from '../../Component/Main/PostHeader';
 import { closePopup, openPopup } from '../../Modules/popup';
-import { getSearchUserPosts } from '../../Modules/posts';
+import { getProfilePosts } from '../../Modules/posts';
 import {
   getSearchUserData,
   getSearchUserFollowData,
@@ -16,11 +16,11 @@ const PostHeaderContainer = ({ user, post }) => {
   const dispatch = useDispatch();
 
   const onMoveProfilePage = () => {
-    history.push(`/${displayName}`);
     dispatch(closePopup('postModal'));
     dispatch(getSearchUserData(uid));
     dispatch(getSearchUserFollowData(uid));
-    dispatch(getSearchUserPosts(uid));
+    dispatch(getProfilePosts(uid));
+    history.push(`/${displayName}`);
   };
 
   const onClickSetting = () => {

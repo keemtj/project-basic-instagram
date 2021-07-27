@@ -8,7 +8,7 @@ import {
   getSearchUserData,
   getSearchUserFollowData,
 } from '../../Modules/search';
-import { getSearchUserPosts } from '../../Modules/posts';
+import { getProfilePosts } from '../../Modules/posts';
 import { firestore } from '../../services/firebase';
 import { updateMsgs } from '../../services/firestore';
 
@@ -40,7 +40,7 @@ const MessagesContainer = () => {
   const onMoveProfilePage = () => {
     dispatch(getSearchUserData(partnerUid));
     dispatch(getSearchUserFollowData(partnerUid));
-    dispatch(getSearchUserPosts(partnerUid));
+    dispatch(getProfilePosts(partnerUid));
     history.push(`/${displayName}`);
   };
 

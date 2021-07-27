@@ -6,6 +6,7 @@ import { User as UserIcon } from '@styled-icons/boxicons-regular/User';
 import { Check as CheckIcon } from '@styled-icons/boxicons-regular/Check';
 
 const User = ({
+  loading,
   isFollowing,
   currentDisplayName,
   photoURL,
@@ -23,7 +24,14 @@ const User = ({
   return (
     <StUser>
       <StImageWrapper>
-        <StImage src={photoURL} alt={displayName} />
+        {loading ? (
+          <StImage
+            src={'/images/default_profile.png'}
+            alt={'default profile image'}
+          />
+        ) : (
+          <StImage src={photoURL} alt={displayName} />
+        )}
       </StImageWrapper>
       <StDetail>
         <StIdBox>

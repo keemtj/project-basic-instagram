@@ -3,11 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router';
 import useToast from '../../Hooks/useToast';
 import Post from '../../Component/Main/Post';
-import {
-  getSearchUserData,
-  getSearchUserFollowData,
-} from '../../Modules/search';
-import { getSearchUserPosts, updateMainPosts } from '../../Modules/posts';
+import { getProfilePosts, updateMainPosts } from '../../Modules/posts';
 import {
   addHeartData,
   removeHeartData,
@@ -24,6 +20,7 @@ import {
   openPopup,
 } from '../../Modules/popup';
 import { calcTimeElapsed } from '../../lib/calcTime';
+import { getProfileUserData } from '../../Modules/user';
 
 const PostContainer = ({ post, displayName, photoURL }) => {
   const {
@@ -53,11 +50,22 @@ const PostContainer = ({ post, displayName, photoURL }) => {
   const [comments, setComments] = useState([]);
   const [newComments, setNewComments] = useState([]);
   const [more, setMore] = useState(true);
+
+  const onMoveProfilePage = () => {
+    console.log(uid);
+    dispatch(getProfileUserData(uid));
+    dispatch(getProfilePosts(uid));
+    history.push(`/${displayName}`);
+  };
+
+  const onClickSetting = () => {
+    console.log('Post Setting Modal Trigger');
+    dispatch(openPopup('postSettingModal'));
+    dispatch(activePostData({ uid, id, imagesArray }));
+  };
+
   const isLiked = () => hearts.includes(currentUid);
   const isSaved = () => bookmarks.includes(currentUid);
-  const onClickMore = () => {
-    setMore(!more);
-  };
 
   const onClickHeart = async () => {
     if (!isLiked()) {
@@ -99,19 +107,6 @@ const PostContainer = ({ post, displayName, photoURL }) => {
     dispatch(activePostIdData(id));
   };
 
-  const onMoveProfilePage = () => {
-    dispatch(getSearchUserData(uid));
-    dispatch(getSearchUserFollowData(uid));
-    dispatch(getSearchUserPosts(uid));
-    history.push(`/${displayName}`);
-  };
-
-  const onClickSetting = () => {
-    console.log('Post Setting Modal Trigger');
-    dispatch(openPopup('postSettingModal'));
-    dispatch(activePostData({ uid, id, imagesArray }));
-  };
-
   const onClickHeartCount = () => {
     console.log('heartCount');
     dispatch(openPopup('postHeartCountModal'));
@@ -124,6 +119,10 @@ const PostContainer = ({ post, displayName, photoURL }) => {
     dispatch(activePostData({ ...post }));
     dispatch(activePostIdData(id));
     dispatch(activePostUserData({ displayName, photoURL, uid }));
+  };
+
+  const onClickMore = () => {
+    setMore(!more);
   };
 
   useEffect(async () => {
@@ -141,21 +140,21 @@ const PostContainer = ({ post, displayName, photoURL }) => {
       heartCount={hearts.length}
       more={more}
       text={text}
-      onClickMore={onClickMore}
       isPossibleToComment={isPossibleToComment}
       comments={comments}
       newComments={newComments}
       setNewComments={setNewComments}
       timeElapsed={calcTimeElapsed(date)}
       onMoveProfilePage={onMoveProfilePage}
-      onClickHeart={onClickHeart}
-      onClickBookmark={onClickBookmark}
-      onClickShare={onClickShare}
-      isSaved={isSaved()}
-      isLiked={isLiked()}
       onClickSetting={onClickSetting}
+      onClickHeart={onClickHeart}
+      isLiked={isLiked()}
+      onClickBookmark={onClickBookmark}
+      isSaved={isSaved()}
+      onClickShare={onClickShare}
       onClickHeartCount={onClickHeartCount}
       onClickPostModal={onClickPostModal}
+      onClickMore={onClickMore}
     />
   );
 };

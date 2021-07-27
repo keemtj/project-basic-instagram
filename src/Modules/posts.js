@@ -5,24 +5,28 @@ import { fetchDataThunk, reducerUtils } from '../lib/asyncUtils';
 const MAIN_POSTS = 'posts/MAIN_POSTS';
 const MAIN_POSTS_SUCCESS = 'posts/MAIN_POSTS_SUCCESS';
 const MAIN_POSTS_ERROR = 'posts/MAIN_POSTS_ERROR';
+const UPDATE_MAIN_POSTS = 'posts/UPDATE_MAIN_POSTS';
 
-const MY_POSTS = 'posts/MY_POSTS';
-const MY_POSTS_SUCCESS = 'posts/MY_POSTS_SUCCESS';
-const MY_POSTS_ERROR = 'posts/MY_POSTS_ERROR';
+const PROFILE_POSTS = 'posts/PROFILE_POSTS';
+const PROFILE_POSTS_SUCCESS = 'posts/PROFILE_POSTS_SUCCESS';
+const PROFILE_POSTS_ERROR = 'posts/PROFILE_POSTS_ERROR';
+
+const PROFILE_BOOKMARK_POSTS = 'posts/PROFILE_BOOKMARK_POSTS';
+const PROFILE_BOOKMARK_POSTS_SUCCESS = 'posts/PROFILE_BOOKMARK_POSTS_SUCCESS';
+const PROFILE_BOOKMARK_POSTS_ERROR = 'posts/PROFILE_BOOKMARK_POSTS_ERROR';
+
+const PROFILE_HEART_POSTS = 'posts/PROFILE_HEART_POSTS';
+const PROFILE_HEART_POSTS_SUCCESS = 'posts/PROFILE_HEART_POSTS_SUCCESS';
+const PROFILE_HEART_POSTS_ERROR = 'posts/PROFILE_HEART_POSTS_ERROR';
 
 const MY_FOLLOWING_POSTS = 'posts/MY_FOLLOWING_POSTS';
 const MY_FOLLOWING_POSTS_SUCCESS = 'posts/MY_FOLLOWING_POSTS_SUCCESS';
 const MY_FOLLOWING_POSTS_ERROR = 'posts/MY_FOLLOWING_POSTS_ERROR';
 
-const SEARCH_USER_POSTS = 'posts/SEARCH_USER_POSTS';
-const SEARCH_USER_POSTS_SUCCESS = 'posts/SEARCH_USER_POSTS_SUCCESS';
-const SEARCH_USER_POSTS_ERROR = 'posts/SEARCH_USER_POSTS_ERROR';
-
 const POST = 'posts/POST';
 const POST_SUCCESS = 'posts/POST_SUCCESS';
 const POST_ERROR = 'posts/POST_ERROR';
 
-const UPDATE_MAIN_POSTS = 'posts/UPDATE_MAIN_POSTS';
 const UPDATE_POSTS = 'posts/UPDATE_POSTS';
 const UPDATE_POST = 'posts/UPDATE_POST';
 
@@ -32,12 +36,23 @@ const REMOVE_POST = 'posts/REMOVE_POST';
 
 const DATA_CLEAR = 'posts/DATA_CLEAR';
 
-// NOTE action creator
+// action creator
 export const getMainPosts = fetchDataThunk(MAIN_POSTS, store.getAllPosts, 1000);
 export const updateMainPosts = data => ({ type: UPDATE_MAIN_POSTS, data });
-export const getPosts = fetchDataThunk(
-  MY_POSTS,
-  store.getCurrentUserPostsData,
+
+export const getProfilePosts = fetchDataThunk(
+  PROFILE_POSTS,
+  store.getProfilePosts,
+  1000,
+);
+export const getProfileBookmarkPosts = fetchDataThunk(
+  PROFILE_BOOKMARK_POSTS,
+  store.getProfileBookmarkPosts,
+  1000,
+);
+export const getProfileHeartPosts = fetchDataThunk(
+  PROFILE_HEART_POSTS,
+  store.getProfileHeartPosts,
   1000,
 );
 
@@ -45,11 +60,6 @@ export const getFollowingPosts = fetchDataThunk(
   MY_FOLLOWING_POSTS,
   store.getPostsByAllFollowing,
   1000,
-);
-
-export const getSearchUserPosts = fetchDataThunk(
-  SEARCH_USER_POSTS,
-  store.getCurrentUserPostsData,
 );
 
 export const getPost = fetchDataThunk(POST, store.getPostBySinglePost);
@@ -68,11 +78,11 @@ export const postDataClear = () => ({ type: DATA_CLEAR });
 // NOTE initialState
 const initialState = {
   mainPosts: reducerUtils.initial(),
-  newPost: [],
-  myPosts: reducerUtils.initial(),
+  profilePosts: reducerUtils.initial(),
+  profileBookmarkPosts: reducerUtils.initial(),
+  profileHeartPosts: reducerUtils.initial(),
   myFollowingPosts: reducerUtils.initial(),
   combinePosts: [],
-  searchUserPosts: reducerUtils.initial(),
   post: reducerUtils.initial(),
 };
 
@@ -104,21 +114,53 @@ const posts = (state = initialState, action) => {
           ),
         },
       };
-    case MY_POSTS:
+
+    case PROFILE_POSTS:
       return {
         ...state,
-        myPosts: reducerUtils.loading(),
+        profilePosts: reducerUtils.loading(),
       };
-    case MY_POSTS_SUCCESS:
+    case PROFILE_POSTS_SUCCESS:
       return {
         ...state,
-        myPosts: reducerUtils.success(action.payload),
+        profilePosts: reducerUtils.success(action.payload),
       };
-    case MY_POSTS_ERROR:
+    case PROFILE_POSTS_ERROR:
       return {
         ...state,
-        myPosts: reducerUtils.error(action.payload),
+        profilePosts: reducerUtils.error(action.payload),
       };
+    case PROFILE_BOOKMARK_POSTS:
+      return {
+        ...state,
+        profileBookmarkPosts: reducerUtils.loading(),
+      };
+    case PROFILE_BOOKMARK_POSTS_SUCCESS:
+      return {
+        ...state,
+        profileBookmarkPosts: reducerUtils.success(action.payload),
+      };
+    case PROFILE_BOOKMARK_POSTS_ERROR:
+      return {
+        ...state,
+        profileBookmarkPosts: reducerUtils.error(action.payload),
+      };
+    case PROFILE_HEART_POSTS:
+      return {
+        ...state,
+        profileHeartPosts: reducerUtils.loading(),
+      };
+    case PROFILE_HEART_POSTS_SUCCESS:
+      return {
+        ...state,
+        profileHeartPosts: reducerUtils.success(action.payload),
+      };
+    case PROFILE_HEART_POSTS_ERROR:
+      return {
+        ...state,
+        profileHeartPosts: reducerUtils.error(action.payload),
+      };
+
     case MY_FOLLOWING_POSTS:
       return {
         ...state,
@@ -133,21 +175,6 @@ const posts = (state = initialState, action) => {
       return {
         ...state,
         myFollowingPosts: reducerUtils.error(action.payload),
-      };
-    case SEARCH_USER_POSTS:
-      return {
-        ...state,
-        searchUserPosts: reducerUtils.loading(),
-      };
-    case SEARCH_USER_POSTS_SUCCESS:
-      return {
-        ...state,
-        searchUserPosts: reducerUtils.success(action.payload),
-      };
-    case SEARCH_USER_POSTS_ERROR:
-      return {
-        ...state,
-        searchUserPosts: reducerUtils.error(action.payload),
       };
     case POST:
       return {

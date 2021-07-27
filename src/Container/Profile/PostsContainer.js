@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useRouteMatch } from 'react-router';
 import Loading from '../../Component/Global/Loading';
 import Posts from '../../Component/Profile/Posts';
 import {
@@ -8,34 +9,15 @@ import {
   activePostIdData,
   activeIndex,
 } from '../../Modules/popup';
-import { getPosts } from '../../Modules/posts';
 
-const PostsContainer = ({ watchName }) => {
+const PostsContainer = () => {
   const dispatch = useDispatch();
-  const currentUserData = useSelector(state => state.user.currentUser);
-  const {
-    data: myPosts,
-    loading: myPostsLoading,
-    error: myPostsError,
-  } = useSelector(state => state.posts.myPosts);
-
-  const {
-    data: searchUserPosts,
-    loading: searchUserPostsLoading,
-    error: searchUserPostsError,
-  } = useSelector(state => state.posts.searchUserPosts);
+  const { params } = useRouteMatch();
   const { postModal: postModalState } = useSelector(state => state.popup);
-
-  const sortedPosts = () => {
-    if (myPosts) {
-      return [...myPosts].sort((a, b) => b.date - a.date);
-    }
-  };
-  const sortedSearchUserPosts = () => {
-    if (searchUserPosts) {
-      return [...searchUserPosts].sort((a, b) => b.date - a.date);
-    }
-  };
+  const { displayName } = useSelector(state => state.user.currentUser);
+  const { data: profilePosts, loading, error } = useSelector(
+    state => state.posts.profilePosts,
+  );
 
   const onClickPostModal = (posts, id, index) => {
     dispatch(openPopup('postModal'));
@@ -48,24 +30,13 @@ const PostsContainer = ({ watchName }) => {
     document.body.style.overflow = postModalState ? 'hidden' : 'auto';
   }, [postModalState]);
 
-  useEffect(() => {
-    if (!myPosts) {
-      dispatch(getPosts(currentUserData?.uid));
-    }
-  }, [currentUserData?.uid]);
-
-  if (myPostsLoading || searchUserPostsLoading)
-    return <Loading isLoading={myPostsLoading || searchUserPostsLoading} />;
-  if (myPostsError || searchUserPostsError)
-    return <div>Posts Container 에러발생</div>;
+  if (loading) return <Loading isLoading={loading} />;
+  if (error) return <div>에러 발생</div>;
   return (
     <Posts
-      posts={
-        currentUserData?.displayName === watchName
-          ? sortedPosts()
-          : sortedSearchUserPosts()
-      }
+      posts={profilePosts}
       onClickPostModal={onClickPostModal}
+      isMe={params[displayName]}
     />
   );
 };

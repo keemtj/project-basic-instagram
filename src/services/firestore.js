@@ -435,9 +435,13 @@ export const getUserSearchResultByDisplayName = async value => {
   return result;
 };
 
-// get users data by differenceSet(=uids)
-export const getUsersData = async uids => {
-  const arr = await uids.map(async uid => {
+// --> ASIDE
+/**
+ * get suggetion users data by differenceSet(=uids)
+ * @param {array} uids
+ */
+export const getSuggestionUsersData = async uids => {
+  const arr = uids.map(async uid => {
     const doc = await firestore.collection('users').doc(uid).get();
     return doc.data();
   });
@@ -445,6 +449,11 @@ export const getUsersData = async uids => {
   return result;
 };
 
+/**
+ * update state of follow
+ * @param {function} dispatch useDispatch react-redux hook
+ * @param {function} actionCreator
+ */
 export const observeUsersFollowData = (dispatch, actionCreator) => {
   const { uid } = firebaseAuth.currentUser;
   firestore

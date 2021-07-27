@@ -6,11 +6,10 @@ import {
   addRecent,
   allclearRecent,
   removeRecent,
-  getSearchUserData,
-  getSearchUserFollowData,
   clearValue,
 } from '../../Modules/search';
-import { getSearchUserPosts } from '../../Modules/posts';
+import { getProfileUserData, profileUserFollowData } from '../../Modules/user';
+import { getProfilePosts } from '../../Modules/posts';
 
 const SearchPopupContainer = () => {
   const dispatch = useDispatch();
@@ -21,9 +20,10 @@ const SearchPopupContainer = () => {
   const recent = useSelector(state => state.search.recent);
 
   const onClickUser = user => {
-    dispatch(getSearchUserData(user.uid));
-    dispatch(getSearchUserFollowData(user.uid));
-    dispatch(getSearchUserPosts(user.uid));
+    console.log('user searching');
+    dispatch(getProfileUserData(user.uid));
+    dispatch(profileUserFollowData(user.uid));
+    dispatch(getProfilePosts(user.uid));
     dispatch(addRecent(user));
     dispatch(clearValue());
     dispatch(closePopup('searchPopup'));

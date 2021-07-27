@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router';
 import PostTextBox from '../../Component/Main/PostTextBox';
 import { closePopup } from '../../Modules/popup';
-import { getSearchUserPosts } from '../../Modules/posts';
+import { getProfilePosts } from '../../Modules/posts';
 import {
   getSearchUserData,
   getSearchUserFollowData,
@@ -21,7 +21,7 @@ const PostTextBoxContainer = ({ user, post }) => {
     dispatch(closePopup('postModal'));
     dispatch(getSearchUserData(uid));
     dispatch(getSearchUserFollowData(uid));
-    dispatch(getSearchUserPosts(uid));
+    dispatch(getProfilePosts(uid));
   };
 
   return (

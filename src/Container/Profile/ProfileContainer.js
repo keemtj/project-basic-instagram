@@ -3,32 +3,26 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useRouteMatch } from 'react-router';
 import Profile from '../../Component/Profile/Profile';
 import { getUid } from '../../services/firestore';
-import {
-  getSearchUserData,
-  getSearchUserFollowData,
-} from '../../Modules/search';
-import { getSearchUserPosts } from '../../Modules/posts';
+import { getSearchUserFollowData } from '../../Modules/search';
+import { getProfilePosts } from '../../Modules/posts';
+import { getProfileUserData } from '../../Modules/user';
 
 const ProfileContainer = () => {
   const { params } = useRouteMatch();
   const dispatch = useDispatch();
   const watchName = params.displayName;
 
-  // NOTE 현재 로그인 중인 유저의 데이터
-  // const currentUserData = useSelector(state => state.user.user);
-
-  // NOTE 서칭한 유저의 데이터
-  const { data: searchUserData, loading: searchUserDataLoading } = useSelector(
-    state => state.search.searchUser,
+  const { data: profileUserData } = useSelector(
+    state => state.user.profileUserData,
   );
 
   useEffect(async () => {
-    if (!searchUserData && !searchUserDataLoading) {
+    if (!profileUserData) {
       console.log('새로고침했는데 데이터 없어서 새로가져옴');
       const uid = await getUid(watchName);
-      dispatch(getSearchUserData(uid));
       dispatch(getSearchUserFollowData(uid));
-      dispatch(getSearchUserPosts(uid));
+      dispatch(getProfilePosts(uid));
+      dispatch(getProfileUserData(uid));
     }
   }, [watchName]);
 

@@ -8,18 +8,13 @@ import {
   activePostsData,
   openPopup,
 } from '../../Modules/popup';
-import {
-  getBookmarkPosts, //getBookmarks
-} from '../../Modules/saved';
-// import { observeBookmark } from '../../services/firestore';
 
 const SavedContainer = () => {
   const dispatch = useDispatch();
-  const bookmarks = useSelector(state => state.saved.bookmarks);
-  const { data: posts, loading, error } = useSelector(
-    state => state.saved.posts,
-  );
   const { postModal: postModalState } = useSelector(state => state.popup);
+  const { data: profileBookmarkPosts, loading, error } = useSelector(
+    state => state.posts.profileBookmarkPosts,
+  );
 
   const onClickPostModal = (posts, id, index) => {
     dispatch(openPopup('postModal'));
@@ -28,21 +23,15 @@ const SavedContainer = () => {
     dispatch(activeIndex(index));
   };
 
-  // useEffect(() => {
-  //   observeBookmark(dispatch, getBookmarks);
-  // }, []);
-
-  useEffect(() => {
-    dispatch(getBookmarkPosts(bookmarks));
-  }, [bookmarks]);
-
   useEffect(() => {
     document.body.style.overflow = postModalState ? 'hidden' : 'auto';
   }, [postModalState]);
 
   if (loading) return <Loading isLoading={loading} />;
   if (error) return <div>에러 발생</div>;
-  return <Saved posts={posts} onClickPostModal={onClickPostModal} />;
+  return (
+    <Saved posts={profileBookmarkPosts} onClickPostModal={onClickPostModal} />
+  );
 };
 
 export default SavedContainer;

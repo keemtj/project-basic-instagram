@@ -6,7 +6,7 @@ const ProfileNavigation = ({ watchName, subnav }) => {
   return (
     <StProfileNavigation>
       <StNav>
-        {subnav.map(({ name, icon, text, isShow }) => {
+        {subnav.map(({ name, icon, text, isShow, onClick }) => {
           if (!isShow) return null;
           return (
             <StNavItem key={name}>
@@ -14,6 +14,7 @@ const ProfileNavigation = ({ watchName, subnav }) => {
                 activeClassName="active"
                 to={name === '' ? `/${watchName}` : `/${watchName}/${name}`}
                 exact={name === ''}
+                onClick={onClick}
               >
                 <StIcon>{icon}</StIcon>
                 {text}

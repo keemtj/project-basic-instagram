@@ -1,14 +1,15 @@
 import React from 'react';
 import styled from 'styled-components';
 import PostItemContainer from '../../Container/Profile/PostItemContainer';
+import { EmptyPost } from '../Global/Empty';
 import EmptyPosts from '../Profile/EmptyPosts';
 
-const Posts = ({ posts, onClickPostModal }) => {
+const Posts = ({ posts, onClickPostModal, isMe }) => {
   // isFollowing이 false면 게시물 비공개 처리하기
   return (
     <>
       {posts?.length === 0 ? (
-        <EmptyPosts />
+        <>{isMe ? <EmptyPosts /> : <EmptyPost />}</>
       ) : (
         <StPostsWrapper>
           {posts?.map((post, index, arr) => {

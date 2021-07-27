@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router';
 import PostCommentsInModal from '../../Component/Main/PostCommentsInModal';
 import { closePopup } from '../../Modules/popup';
-import { getSearchUserPosts } from '../../Modules/posts';
+import { getProfilePosts } from '../../Modules/posts';
 import {
   getSearchUserData,
   getSearchUserFollowData,
@@ -24,7 +24,7 @@ const PostCommentsInModalContainer = ({ post }) => {
     dispatch(closePopup('postModal'));
     dispatch(getSearchUserData(uid));
     dispatch(getSearchUserFollowData(uid));
-    dispatch(getSearchUserPosts(uid));
+    dispatch(getProfilePosts(uid));
   };
 
   useEffect(async () => {

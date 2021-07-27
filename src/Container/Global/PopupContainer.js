@@ -8,7 +8,12 @@ import { Settings } from '@styled-icons/ionicons-outline/Settings';
 import { signOut } from '../../services/firebaseAuth';
 import { useHistory } from 'react-router';
 import { loginState } from '../../Modules/login';
-import { postDataClear, getPosts } from '../../Modules/posts';
+import {
+  postDataClear,
+  getProfilePosts,
+  getProfileBookmarkPosts,
+  getProfileHeartPosts,
+} from '../../Modules/posts';
 import { closePopup } from '../../Modules/popup';
 import { userDataClear } from '../../Modules/user';
 import { searchDataClear } from '../../Modules/search';
@@ -18,15 +23,18 @@ const PopupContainer = () => {
   const history = useHistory();
   const { displayName, uid } = useSelector(state => state.user.currentUser);
 
-  const popupLists = [
-    { link: `/${displayName}`, text: '프로필', icon: <User /> },
-    { link: `/${displayName}/saved`, text: '저장됨', icon: <Bookmark /> },
-    { link: `/${displayName}/heart`, text: '좋아요', icon: <Heart /> },
-    { link: '/edit', text: '설정', icon: <Settings /> },
-  ];
+  const onMoveProfilePage = () => {
+    dispatch(getProfilePosts(uid));
+    dispatch(closePopup('profilePopup'));
+  };
 
-  const onClickList = () => {
-    dispatch(getPosts(uid));
+  const onMoveBookmarkPage = () => {
+    dispatch(getProfileBookmarkPosts(uid));
+    dispatch(closePopup('profilePopup'));
+  };
+
+  const onMoveHeartPage = () => {
+    dispatch(getProfileHeartPosts(uid));
     dispatch(closePopup('profilePopup'));
   };
 
@@ -57,13 +65,29 @@ const PopupContainer = () => {
     };
   }, []);
 
-  return (
-    <Popup
-      popupLists={popupLists}
-      onClickList={onClickList}
-      onClickSignOut={onClickSignOut}
-    />
-  );
+  const popupLists = [
+    {
+      link: `/${displayName}`,
+      text: '프로필',
+      icon: <User />,
+      onClick: onMoveProfilePage,
+    },
+    {
+      link: `/${displayName}/saved`,
+      text: '저장됨',
+      icon: <Bookmark />,
+      onClick: onMoveBookmarkPage,
+    },
+    {
+      link: `/${displayName}/heart`,
+      text: '좋아요',
+      icon: <Heart />,
+      onClick: onMoveHeartPage,
+    },
+    { link: '/edit', text: '설정', icon: <Settings /> },
+  ];
+
+  return <Popup popupLists={popupLists} onClickSignOut={onClickSignOut} />;
 };
 
 export default PopupContainer;
