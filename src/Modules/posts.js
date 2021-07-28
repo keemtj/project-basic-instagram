@@ -19,18 +19,11 @@ const PROFILE_HEART_POSTS = 'posts/PROFILE_HEART_POSTS';
 const PROFILE_HEART_POSTS_SUCCESS = 'posts/PROFILE_HEART_POSTS_SUCCESS';
 const PROFILE_HEART_POSTS_ERROR = 'posts/PROFILE_HEART_POSTS_ERROR';
 
-const MY_FOLLOWING_POSTS = 'posts/MY_FOLLOWING_POSTS';
-const MY_FOLLOWING_POSTS_SUCCESS = 'posts/MY_FOLLOWING_POSTS_SUCCESS';
-const MY_FOLLOWING_POSTS_ERROR = 'posts/MY_FOLLOWING_POSTS_ERROR';
+const ACTIVE_POST_ID = 'posts/ACTIVE_POST_ID';
 
 const POST = 'posts/POST';
 const POST_SUCCESS = 'posts/POST_SUCCESS';
 const POST_ERROR = 'posts/POST_ERROR';
-
-const UPDATE_POSTS = 'posts/UPDATE_POSTS';
-const UPDATE_POST = 'posts/UPDATE_POST';
-
-const UPDATE_FOLLOWING_POST = 'posts/UPDATE_FOLLOWING_POST';
 
 const REMOVE_POST = 'posts/REMOVE_POST';
 
@@ -55,21 +48,8 @@ export const getProfileHeartPosts = fetchDataThunk(
   store.getProfileHeartPosts,
   1000,
 );
-
-export const getFollowingPosts = fetchDataThunk(
-  MY_FOLLOWING_POSTS,
-  store.getPostsByAllFollowing,
-  1000,
-);
-
+export const activePostId = id => ({ type: ACTIVE_POST_ID, id });
 export const getPost = fetchDataThunk(POST, store.getPostBySinglePost);
-
-export const updatePosts = data => ({ type: UPDATE_POSTS, data });
-export const updatePost = data => ({ type: UPDATE_POST, data });
-export const updateFollowingPost = data => ({
-  type: UPDATE_FOLLOWING_POST,
-  data,
-});
 
 export const removePost = data => ({ type: REMOVE_POST, data });
 
@@ -81,8 +61,6 @@ const initialState = {
   profilePosts: reducerUtils.initial(),
   profileBookmarkPosts: reducerUtils.initial(),
   profileHeartPosts: reducerUtils.initial(),
-  myFollowingPosts: reducerUtils.initial(),
-  combinePosts: [],
   post: reducerUtils.initial(),
 };
 
@@ -161,21 +139,12 @@ const posts = (state = initialState, action) => {
         profileHeartPosts: reducerUtils.error(action.payload),
       };
 
-    case MY_FOLLOWING_POSTS:
+    case ACTIVE_POST_ID:
       return {
         ...state,
-        myFollowingPosts: reducerUtils.loading(),
+        activePostId: action.id,
       };
-    case MY_FOLLOWING_POSTS_SUCCESS:
-      return {
-        ...state,
-        myFollowingPosts: reducerUtils.success(action.payload),
-      };
-    case MY_FOLLOWING_POSTS_ERROR:
-      return {
-        ...state,
-        myFollowingPosts: reducerUtils.error(action.payload),
-      };
+
     case POST:
       return {
         ...state,
@@ -191,45 +160,7 @@ const posts = (state = initialState, action) => {
         ...state,
         post: reducerUtils.error(action.payload),
       };
-    case UPDATE_POSTS: {
-      return {
-        ...state,
-        myPosts: {
-          ...state.myPosts,
-          data: action.data,
-        },
-      };
-    }
-    case UPDATE_POST: {
-      return {
-        ...state,
-        myPosts: {
-          ...state.myPosts,
-          data: state.myPosts.data.map(post => {
-            if (post.id === action.data.id) {
-              return action.data;
-            } else {
-              return post;
-            }
-          }),
-        },
-      };
-    }
-    case UPDATE_FOLLOWING_POST: {
-      return {
-        ...state,
-        myFollowingPosts: {
-          ...state.myFollowingPosts,
-          data: state.myFollowingPosts.data.map(post => {
-            if (post.id === action.data.id) {
-              return action.data;
-            } else {
-              return post;
-            }
-          }),
-        },
-      };
-    }
+
     case REMOVE_POST: {
       return {
         ...state,
