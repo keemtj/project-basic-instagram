@@ -19,8 +19,11 @@ import PostSettingModal from './Component/Main/PostSettingModal';
 import ToastPopup from './Component/Global/ToastPopup';
 import PostModal from './Component/Profile/PostModal';
 import HeartCountModal from './Component/Main/HeartCountModal';
-import ProfileEditModal from './Container/Profile/ProfileEditModal';
 import PostShareModal from './Component/Main/PostShareModal';
+import ProfileEditModal from './Container/Profile/ProfileEditModal';
+import PostsModal from './Component/Profile/PostsModal';
+import BookmarksModal from './Component/Profile/BookmarksModal';
+import HeartsModal from './Component/Profile/HeartsModal';
 import { getRooms } from './Modules/direct';
 
 const App = () => {
@@ -35,6 +38,9 @@ const App = () => {
     postHeartCountModal: postHeartCountModalState,
     profileEditModal: profileEditModalState,
     postSharePopup: postSharePopupState,
+    postsModal: postsModalState,
+    bookmarksModal: bookmarksModalState,
+    heartsModal: heartsModalState,
   } = useSelector(state => state.popup);
 
   useEffect(() => {
@@ -68,6 +74,9 @@ const App = () => {
         {postHeartCountModalState && <HeartCountModal />}
         {postSharePopupState && <PostShareModal />}
         {profileEditModalState && <ProfileEditModal />}
+        {postsModalState && <PostsModal />}
+        {bookmarksModalState && <BookmarksModal />}
+        {heartsModalState && <HeartsModal />}
         <ToastPopup />
       </PageWrapper>
     </>
