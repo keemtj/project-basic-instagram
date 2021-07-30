@@ -3,32 +3,28 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useRouteMatch } from 'react-router';
 import Loading from '../../Component/Global/Loading';
 import Posts from '../../Component/Profile/Posts';
-import {
-  openPopup,
-  activePostsData,
-  activePostIdData,
-  activeIndex,
-} from '../../Modules/popup';
+import { openPopup } from '../../Modules/popup';
+import { activeIndexOfPost, activeIdOfPost } from '../../Modules/posts';
 
 const PostsContainer = () => {
   const dispatch = useDispatch();
   const { params } = useRouteMatch();
-  const { postModal: postModalState } = useSelector(state => state.popup);
+  const { postsModal: postsModalState } = useSelector(state => state.popup);
   const { displayName } = useSelector(state => state.user.currentUser);
   const { data: profilePosts, loading, error } = useSelector(
     state => state.posts.profilePosts,
   );
 
   const onClickPostModal = (posts, id, index) => {
-    dispatch(openPopup('postModal'));
-    dispatch(activePostsData(posts));
-    dispatch(activePostIdData(id));
-    dispatch(activeIndex(index));
+    console.log(posts[index]);
+    dispatch(openPopup('postsModal'));
+    dispatch(activeIndexOfPost(index));
+    dispatch(activeIdOfPost(id));
   };
 
   useEffect(() => {
-    document.body.style.overflow = postModalState ? 'hidden' : 'auto';
-  }, [postModalState]);
+    document.body.style.overflow = postsModalState ? 'hidden' : 'auto';
+  }, [postsModalState]);
 
   if (loading) return <Loading isLoading={loading} />;
   if (error) return <div>에러 발생</div>;
@@ -36,7 +32,7 @@ const PostsContainer = () => {
     <Posts
       posts={profilePosts}
       onClickPostModal={onClickPostModal}
-      isMe={params[displayName]}
+      isMypage={params[displayName]}
     />
   );
 };

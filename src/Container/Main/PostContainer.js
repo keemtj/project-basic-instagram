@@ -14,9 +14,9 @@ import {
 } from '../../services/firestore';
 import { getUsersWhoClickHeart } from '../../Modules/heart';
 import {
-  activePostData,
-  activePostIdData,
-  activePostUserData,
+  // activePostData,
+  // activePostIdData,
+  // activePostUserData,
   openPopup,
 } from '../../Modules/popup';
 import { calcTimeElapsed } from '../../lib/calcTime';
@@ -61,7 +61,7 @@ const PostContainer = ({ post, displayName, photoURL }) => {
   const onClickSetting = () => {
     console.log('Post Setting Modal Trigger');
     dispatch(openPopup('postSettingModal'));
-    dispatch(activePostData({ uid, id, imagesArray }));
+    // dispatch(activePostData({ uid, id, imagesArray }));
   };
 
   const isLiked = () => hearts.includes(currentUid);
@@ -104,7 +104,7 @@ const PostContainer = ({ post, displayName, photoURL }) => {
   const onClickShare = () => {
     console.log('onClickShare!', id);
     dispatch(openPopup('postSharePopup'));
-    dispatch(activePostIdData(id));
+    // dispatch(activePostIdData(id));
   };
 
   const onClickHeartCount = () => {
@@ -116,9 +116,9 @@ const PostContainer = ({ post, displayName, photoURL }) => {
   const onClickPostModal = () => {
     console.log('open post modal', id);
     dispatch(openPopup('postModal'));
-    dispatch(activePostData({ ...post }));
-    dispatch(activePostIdData(id));
-    dispatch(activePostUserData({ displayName, photoURL, uid }));
+    // dispatch(activePostData({ ...post }));
+    // dispatch(activePostIdData(id));
+    // dispatch(activePostUserData({ displayName, photoURL, uid }));
   };
 
   const onClickMore = () => {

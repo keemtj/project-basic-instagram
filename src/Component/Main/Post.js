@@ -43,7 +43,7 @@ const Post = ({
         onMoveProfilePage={onMoveProfilePage}
         onClickSetting={onClickSetting}
       />
-      <PostImages imagesArray={imagesArray} pagenation pos />
+      <PostImages imagesArray={imagesArray} pagination pos />
       <PostNavigation
         onClickBookmark={onClickBookmark}
         onClickHeart={onClickHeart}

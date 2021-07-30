@@ -4,12 +4,12 @@ import PostItemContainer from '../../Container/Profile/PostItemContainer';
 import { EmptyPost } from '../Global/Empty';
 import EmptyPosts from '../Profile/EmptyPosts';
 
-const Posts = ({ posts, onClickPostModal, isMe }) => {
+const Posts = ({ posts, onClickPostModal, isMypage }) => {
   // isFollowing이 false면 게시물 비공개 처리하기
   return (
     <>
       {posts?.length === 0 ? (
-        <>{isMe ? <EmptyPosts /> : <EmptyPost />}</>
+        <>{isMypage ? <EmptyPosts /> : <EmptyPost />}</>
       ) : (
         <StPostsWrapper>
           {posts?.map((post, index, arr) => {

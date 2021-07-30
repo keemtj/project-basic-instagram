@@ -14,13 +14,11 @@ import {
 const PostNavigationContainer = ({ post, user }) => {
   const dispatch = useDispatch();
   const { uid: currentUid } = user;
-  const { uid, id } = post;
+  const { uid, id, hearts, bookmarks } = post;
   const { postModal: postModalState } = useSelector(state => state.popup);
-  const bookmarks = useSelector(state => state.saved.bookmarks);
-  const hearts = useSelector(state => state.heart.hearts);
   const [toast] = useToast();
-  const isLiked = () => hearts.includes(currentUid);
-  const isSaved = () => bookmarks.includes(currentUid);
+  const isLiked = () => hearts?.includes(currentUid);
+  const isSaved = () => bookmarks?.includes(currentUid);
 
   const onClickHeart = async () => {
     if (!isLiked()) {

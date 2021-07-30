@@ -10,19 +10,20 @@ import { Chatbubble } from '@styled-icons/ionicons-sharp/Chatbubble';
 const Carousel = ({ ...rest }) => {
   /**
    * @param imagesArray [image, image, ..., image]
-   * @param pagenation Dot pagenation
+   * @param pagination Dot pagination
    * @param badge images icon
    * @param profile using posts in profile page
    * @param hover image hover in profile page
    * @param heartCount when hovering post image
    * @param comments(comment.length) when hovering post image
-   * @param onClickPostModal onClickPostModal
-   * @param pos pagenation's dot position
+   * @param onClick onClickPostModal
+   * @param pos pagination's dot position
+   * @param currentImage at profile Post modal
    * FIXME: profile -> isProfile
    */
   const {
     imagesArray,
-    pagenation,
+    pagination,
     badge,
     profile,
     hover,
@@ -99,7 +100,7 @@ const Carousel = ({ ...rest }) => {
             )}
           </StSlideButtonWrapper>
         )}
-        {pagenation && imagesArray?.length >= 2 && (
+        {pagination && imagesArray?.length >= 2 && (
           <StPagenation pos={pos}>
             {imagesArray.map((_, index) => (
               <StPage key={index} currentImage={currentImage}>

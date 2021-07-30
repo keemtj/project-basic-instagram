@@ -15,8 +15,6 @@ const MainContainer = () => {
     postSharePopup: postSharePopupState,
     postModal: postModalState,
   } = useSelector(state => state.popup);
-  const bookmarks = useSelector(state => state.saved.bookmarks);
-  const hearts = useSelector(state => state.heart.hearts);
 
   useEffect(async () => {
     if (mainPosts === null || !mainPosts.length) return;
@@ -51,13 +49,7 @@ const MainContainer = () => {
   }, []);
 
   return (
-    <Main
-      isLoading={loading}
-      mainPosts={mainPosts}
-      userDatas={userDatas}
-      bookmarks={bookmarks}
-      hearts={hearts}
-    />
+    <Main isLoading={loading} mainPosts={mainPosts} userDatas={userDatas} />
   );
 };
 

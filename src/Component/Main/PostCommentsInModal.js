@@ -37,7 +37,7 @@ const PostComments = ({
             >
               {displayNames[index]}
             </StDisplayName>
-            <StText>{comment.comment}</StText>
+            <StText>{comment.text}</StText>
             <StTimeStamp>{calcTimeElapsed(comment.date)}</StTimeStamp>
           </StComment>
         );

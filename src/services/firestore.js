@@ -342,24 +342,6 @@ export const getCurrentUserPostsData = async uid => {
   return datas;
 };
 
-// get all posts by following
-export const getPostsByAllFollowing = async following => {
-  const arr = await following.map(async uid => {
-    let datas = [];
-    const docs = await firestore
-      .collection('posts')
-      .doc(uid)
-      .collection('my-posts')
-      .orderBy('date', 'desc')
-      .get();
-    docs.forEach(doc => datas.push(doc.data()));
-    return datas;
-  });
-  const promiseAll = await Promise.all(arr);
-  const result = await promiseAll.flatMap(v => v);
-  return result;
-};
-
 // get user data by posts
 export const getUserDataByPost = async uid => {
   const response = await firestore.collection('users').doc(uid).get();
@@ -545,21 +527,6 @@ export const getBookmarksData = async uid => {
   return response.data();
 };
 
-export const getPostsByBookmarks = async bookmarks => {
-  console.log('저장된 북마크 posts 가져오기~~~~~');
-  const response = await bookmarks.map(async ({ uid, id }) => {
-    const doc = await firestore
-      .collection('posts')
-      .doc(uid)
-      .collection('my-posts')
-      .doc(id)
-      .get();
-    return doc.data();
-  });
-  const result = await Promise.all(response);
-  return result;
-};
-
 // --> heart
 // --> Profile page(hearts)
 /**
@@ -575,21 +542,6 @@ export const getHeartsData = async uid => {
   let datas = [];
   response.forEach(res => datas.push(res.data()));
   return datas;
-};
-
-export const getPostsByHearts = async hearts => {
-  console.log('저장된 좋아요 posts 가져오기~~~~~');
-  const response = await hearts.map(async ({ uid, id }) => {
-    const doc = await firestore
-      .collection('posts')
-      .doc(uid)
-      .collection('my-posts')
-      .doc(id)
-      .get();
-    return doc.data();
-  });
-  const result = await Promise.all(response);
-  return result;
 };
 
 export const getUsersDataByHearts = async hearts => {

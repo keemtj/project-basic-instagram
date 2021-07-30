@@ -15,7 +15,7 @@ const PostTextBox = ({
         <StTextBox>
           <StText more={more} postModalState={postModalState}>
             <StUsername onClick={onMoveProfilePage}>{displayName}</StUsername>{' '}
-            {text}{' '}
+            <span>{text}</span>
           </StText>
           {!postModalState && text?.length > 70 && (
             <StMoreToggle onClick={onClickMore} more={more}>

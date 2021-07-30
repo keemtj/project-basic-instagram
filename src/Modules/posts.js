@@ -20,6 +20,7 @@ const PROFILE_HEART_POSTS_SUCCESS = 'posts/PROFILE_HEART_POSTS_SUCCESS';
 const PROFILE_HEART_POSTS_ERROR = 'posts/PROFILE_HEART_POSTS_ERROR';
 
 const ACTIVE_POST_ID = 'posts/ACTIVE_POST_ID';
+const ACTIVE_POST_INDEX = 'posts/ACTIVE_POST_INDEX';
 
 const POST = 'posts/POST';
 const POST_SUCCESS = 'posts/POST_SUCCESS';
@@ -48,11 +49,16 @@ export const getProfileHeartPosts = fetchDataThunk(
   store.getProfileHeartPosts,
   1000,
 );
-export const activePostId = id => ({ type: ACTIVE_POST_ID, id });
+
+export const activeIdOfPost = id => ({ type: ACTIVE_POST_ID, id });
+export const activeIndexOfPost = index => ({
+  type: ACTIVE_POST_INDEX,
+  index,
+});
+
+// FIXME: 아래는 수정 가능성이 있는 action creator
 export const getPost = fetchDataThunk(POST, store.getPostBySinglePost);
-
 export const removePost = data => ({ type: REMOVE_POST, data });
-
 export const postDataClear = () => ({ type: DATA_CLEAR });
 
 // NOTE initialState
@@ -61,6 +67,8 @@ const initialState = {
   profilePosts: reducerUtils.initial(),
   profileBookmarkPosts: reducerUtils.initial(),
   profileHeartPosts: reducerUtils.initial(),
+  activePostId: '',
+  activePostIndex: 0,
   post: reducerUtils.initial(),
 };
 
@@ -144,6 +152,11 @@ const posts = (state = initialState, action) => {
         ...state,
         activePostId: action.id,
       };
+    case ACTIVE_POST_INDEX:
+      return {
+        ...state,
+        activePostIndex: action.index,
+      };
 
     case POST:
       return {
@@ -160,7 +173,6 @@ const posts = (state = initialState, action) => {
         ...state,
         post: reducerUtils.error(action.payload),
       };
-
     case REMOVE_POST: {
       return {
         ...state,

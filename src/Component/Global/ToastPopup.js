@@ -29,6 +29,7 @@ const StToastPopupWrapper = styled.div`
 
   position: fixed;
   bottom: 0rem;
+  z-index: 9999;
 
   opacity: 0;
   overflow: hidden;
