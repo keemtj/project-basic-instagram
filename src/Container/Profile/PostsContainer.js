@@ -15,8 +15,7 @@ const PostsContainer = () => {
     state => state.posts.profilePosts,
   );
 
-  const onClickPostModal = (posts, id, index) => {
-    console.log(posts[index]);
+  const onClickPostModal = (id, index) => {
     dispatch(openPopup('postsModal'));
     dispatch(activeIndexOfPost(index));
     dispatch(activeIdOfPost(id));

@@ -21,6 +21,7 @@ const PROFILE_HEART_POSTS_ERROR = 'posts/PROFILE_HEART_POSTS_ERROR';
 
 const ACTIVE_POST_ID = 'posts/ACTIVE_POST_ID';
 const ACTIVE_POST_INDEX = 'posts/ACTIVE_POST_INDEX';
+const CURRENT_IMAGE = 'posts/CURRENT_IMAGE';
 
 const POST = 'posts/POST';
 const POST_SUCCESS = 'posts/POST_SUCCESS';
@@ -55,6 +56,7 @@ export const activeIndexOfPost = index => ({
   type: ACTIVE_POST_INDEX,
   index,
 });
+export const currentImageIndex = index => ({ type: CURRENT_IMAGE, index });
 
 // FIXME: 아래는 수정 가능성이 있는 action creator
 export const getPost = fetchDataThunk(POST, store.getPostBySinglePost);
@@ -69,6 +71,7 @@ const initialState = {
   profileHeartPosts: reducerUtils.initial(),
   activePostId: '',
   activePostIndex: 0,
+  currentImage: 0,
   post: reducerUtils.initial(),
 };
 
@@ -156,6 +159,11 @@ const posts = (state = initialState, action) => {
       return {
         ...state,
         activePostIndex: action.index,
+      };
+    case CURRENT_IMAGE:
+      return {
+        ...state,
+        currentImage: action.index,
       };
 
     case POST:

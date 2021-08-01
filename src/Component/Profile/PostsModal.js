@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import styled, { css } from 'styled-components';
 import PostPortal from '../../Portals/PostPortal';
 import PostContainer from '../../Container/Profile/PostContainer';
@@ -8,7 +8,11 @@ import { CloseOutline } from '@styled-icons/evaicons-outline/CloseOutline';
 import { useHistory } from 'react-router';
 import { useDispatch, useSelector } from 'react-redux';
 import { closePopup } from '../../Modules/popup';
-import { activeIndexOfPost, activeIdOfPost } from '../../Modules/posts';
+import {
+  activeIndexOfPost,
+  activeIdOfPost,
+  currentImageIndex,
+} from '../../Modules/posts';
 
 const PostsModal = () => {
   const modalRef = useRef();
@@ -19,17 +23,26 @@ const PostsModal = () => {
   const { activePostIndex, activePostId } = useSelector(state => state.posts);
   const path = his.location.pathname;
   const lastIndex = posts.length - 1;
+  const [modalLoading, setModalLoading] = useState(false);
 
   const handlePrev = e => {
     e.stopPropagation();
     dispatch(activeIndexOfPost(activePostIndex - 1));
     dispatch(activeIdOfPost(posts[activePostIndex - 1].id));
+    dispatch(currentImageIndex(0));
+    setModalLoading(true);
+    setTimeout(() => setModalLoading(false), 1000);
+    console.log('prev');
   };
 
   const handleNext = e => {
     e.stopPropagation();
     dispatch(activeIndexOfPost(activePostIndex + 1));
     dispatch(activeIdOfPost(posts[activePostIndex + 1].id));
+    dispatch(currentImageIndex(0));
+    setModalLoading(true);
+    setTimeout(() => setModalLoading(false), 1000);
+    console.log('next');
   };
 
   const onCloseButton = () => {
@@ -64,7 +77,10 @@ const PostsModal = () => {
       <StPostModalWrapper>
         <StPostCarousel>
           <StPostBox ref={modalRef}>
-            <PostContainer post={posts[activePostIndex]} />
+            <PostContainer
+              post={posts[activePostIndex]}
+              modalLoading={modalLoading}
+            />
           </StPostBox>
           <StSlideButton
             type="button"

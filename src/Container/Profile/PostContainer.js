@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import Post from '../../Component/Profile/Post';
 import { getCommentsByPost } from '../../services/firestore';
 
-const PostContainer = ({ post }) => {
+const PostContainer = ({ post, modalLoading }) => {
   const {
     date,
     uid,
@@ -24,6 +24,7 @@ const PostContainer = ({ post }) => {
 
   return (
     <Post
+      modalLoading={modalLoading}
       date={date}
       uid={uid}
       isPossibleToComment={isPossibleToComment}

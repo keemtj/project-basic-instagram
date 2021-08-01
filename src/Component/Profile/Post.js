@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
-import PostImages from '../Main/PostImages';
+import Loading from '../Global/Loading';
+import ProfileCarousel from '../Global/ProfileCarousel';
 // import PostTimeElapsed from '../Main/PostTimeElapsed';
 // import PostHeaderContainer from '../../Container/Main/PostHeaderContainer';
 // import PostTextBoxContainer from '../../Container/Main/PostTextBoxContainer';
@@ -10,6 +11,7 @@ import PostImages from '../Main/PostImages';
 // import PostChatInputInModalContainer from '../../Container/Main/PostChatInputInModalContainer';
 
 const Post = ({
+  modalLoading,
   date,
   uid,
   isPossibleToComment,
@@ -21,6 +23,7 @@ const Post = ({
   heartsCount,
   bookmarks,
   subLocation,
+  comments,
 }) => {
   console.log({
     date,
@@ -34,12 +37,19 @@ const Post = ({
     heartsCount,
     bookmarks,
     subLocation,
+    comments,
   });
 
   return (
     <StPostBoxBlockInner>
       <StImageBox>
-        <PostImages imagesArray={imagesArray} pagination pos />
+        <StImagesSection>
+          {modalLoading ? (
+            <Loading isLoading={modalLoading} />
+          ) : (
+            <ProfileCarousel imagesArray={imagesArray} pagination pos />
+          )}
+        </StImagesSection>
       </StImageBox>
       <StPostDataBox>
         {/* <PostHeaderContainer />
@@ -67,6 +77,10 @@ const StImageBox = styled.div`
   align-items: center;
   justify-content: center;
   border-right: 1px solid ${({ theme }) => theme.gray8};
+`;
+
+const StImagesSection = styled.section`
+  width: 100%;
 `;
 
 const StPostDataBox = styled.div`
