@@ -195,6 +195,21 @@ export const getProfilePosts = async uid => {
 };
 
 /**
+ * update main post(상태 변화를 감시하고 즉시 변경)
+ * @param {function} dispatch
+ * @param {function} actionCreator
+ * @param {string} id  상태값이 바뀐 게시물의 post id
+ */
+export const observeProfilePost = (dispatch, actionCreator, id) => {
+  firestore
+    .collection('posts')
+    .doc(id)
+    .onSnapshot(snapshot => {
+      dispatch(actionCreator(snapshot.data()));
+    });
+};
+
+/**
  * 클릭한 유저의 uid, profile page에서 렌더링
  * @param {string} uid user's uid
  * @returns bookmarks array
@@ -210,6 +225,21 @@ export const getProfileBookmarkPosts = async uid => {
 };
 
 /**
+ * update profile bookmark post(상태 변화를 감시하고 즉시 변경)
+ * @param {function} dispatch
+ * @param {function} actionCreator
+ * @param {string} id  상태값이 바뀐 게시물의 post id
+ */
+export const observeProfileBookmarkPost = (dispatch, actionCreator, id) => {
+  firestore
+    .collection('posts')
+    .doc(id)
+    .onSnapshot(snapshot => {
+      dispatch(actionCreator(snapshot.data()));
+    });
+};
+
+/**
  * 클릭한 유저의 uid, profile page에서 렌더링
  * @param {string} uid user's uid
  * @returns hearts array
@@ -222,6 +252,21 @@ export const getProfileHeartPosts = async uid => {
   let datas = [];
   response.forEach(res => datas.push(res.data()));
   return datas;
+};
+
+/**
+ * update profile heart post(상태 변화를 감시하고 즉시 변경)
+ * @param {function} dispatch
+ * @param {function} actionCreator
+ * @param {string} id  상태값이 바뀐 게시물의 post id
+ */
+export const observeProfileHeartPost = (dispatch, actionCreator, id) => {
+  firestore
+    .collection('posts')
+    .doc(id)
+    .onSnapshot(snapshot => {
+      dispatch(actionCreator(snapshot.data()));
+    });
 };
 
 // remove post data

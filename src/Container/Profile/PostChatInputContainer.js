@@ -1,13 +1,18 @@
-import React, { useState, useRef } from 'react';
+import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
 import PostChatInput from '../../Component/Main/PostChatInput';
 import useToast from '../../Hooks/useToast';
 import { addCommentToPost } from '../../services/firestore';
 
-const PostChatInputContainer = ({ id, newComments, setNewComments }) => {
-  const inputRef = useRef(null);
+const PostChatInputContainer = ({
+  post,
+  newComments,
+  setNewComments,
+  inputRef,
+}) => {
+  const { id } = post;
   const { displayName } = useSelector(state => state.user.currentUser);
-  const [comment, setText] = useState('');
+  const [comment, setComment] = useState('');
   const [isShow, setIsShow] = useState(false);
   const [toast] = useToast();
 
@@ -17,13 +22,13 @@ const PostChatInputContainer = ({ id, newComments, setNewComments }) => {
     const date = Date.now();
     await addCommentToPost(id, comment, date);
     setNewComments([...newComments, { displayName, comment, date }]);
-    setText('');
+    setComment('');
     setIsShow(false);
     toast('댓글 작성이 완료되었습니다.');
   };
 
   const onChange = ({ target }) => {
-    setText(target.value);
+    setComment(target.value);
   };
 
   const onShowEmojiPicker = () => {
@@ -31,7 +36,7 @@ const PostChatInputContainer = ({ id, newComments, setNewComments }) => {
   };
 
   const onEmojiClick = (e, emojiObject) => {
-    setText(comment + emojiObject.emoji);
+    setComment(comment + emojiObject.emoji);
     inputRef.current.focus();
   };
 

@@ -10,14 +10,17 @@ const UPDATE_MAIN_POSTS = 'posts/UPDATE_MAIN_POSTS';
 const PROFILE_POSTS = 'posts/PROFILE_POSTS';
 const PROFILE_POSTS_SUCCESS = 'posts/PROFILE_POSTS_SUCCESS';
 const PROFILE_POSTS_ERROR = 'posts/PROFILE_POSTS_ERROR';
+const UPDATE_PROFILE_POSTS = 'posts/UPDATE_PROFILE_POSTS';
 
 const PROFILE_BOOKMARK_POSTS = 'posts/PROFILE_BOOKMARK_POSTS';
 const PROFILE_BOOKMARK_POSTS_SUCCESS = 'posts/PROFILE_BOOKMARK_POSTS_SUCCESS';
 const PROFILE_BOOKMARK_POSTS_ERROR = 'posts/PROFILE_BOOKMARK_POSTS_ERROR';
+const UPDATE_PROFILE_BOOKMARK_POSTS = 'posts/UPDATE_PROFILE_BOOKMARK_POSTS';
 
 const PROFILE_HEART_POSTS = 'posts/PROFILE_HEART_POSTS';
 const PROFILE_HEART_POSTS_SUCCESS = 'posts/PROFILE_HEART_POSTS_SUCCESS';
 const PROFILE_HEART_POSTS_ERROR = 'posts/PROFILE_HEART_POSTS_ERROR';
+const UPDATE_PROFILE_HEART_POSTS = 'posts/UPDATE_PROFILE_HEART_POSTS';
 
 const ACTIVE_POST_ID = 'posts/ACTIVE_POST_ID';
 const ACTIVE_POST_INDEX = 'posts/ACTIVE_POST_INDEX';
@@ -40,16 +43,30 @@ export const getProfilePosts = fetchDataThunk(
   store.getProfilePosts,
   1000,
 );
+export const updateProfilePosts = data => ({
+  type: UPDATE_PROFILE_POSTS,
+  data,
+});
+
 export const getProfileBookmarkPosts = fetchDataThunk(
   PROFILE_BOOKMARK_POSTS,
   store.getProfileBookmarkPosts,
   1000,
 );
+export const updateProfileBookmarkPosts = data => ({
+  type: UPDATE_PROFILE_BOOKMARK_POSTS,
+  data,
+});
+
 export const getProfileHeartPosts = fetchDataThunk(
   PROFILE_HEART_POSTS,
   store.getProfileHeartPosts,
   1000,
 );
+export const updateProfileHeartPosts = data => ({
+  type: UPDATE_PROFILE_HEART_POSTS,
+  data,
+});
 
 export const activeIdOfPost = id => ({ type: ACTIVE_POST_ID, id });
 export const activeIndexOfPost = index => ({
@@ -119,6 +136,17 @@ const posts = (state = initialState, action) => {
         ...state,
         profilePosts: reducerUtils.error(action.payload),
       };
+    case UPDATE_PROFILE_POSTS:
+      return {
+        ...state,
+        profilePosts: {
+          ...state.profilePosts,
+          data: state.profilePosts.data.map(post =>
+            post.id === action.data.id ? action.data : post,
+          ),
+        },
+      };
+
     case PROFILE_BOOKMARK_POSTS:
       return {
         ...state,
@@ -134,6 +162,17 @@ const posts = (state = initialState, action) => {
         ...state,
         profileBookmarkPosts: reducerUtils.error(action.payload),
       };
+    case UPDATE_PROFILE_BOOKMARK_POSTS:
+      return {
+        ...state,
+        profileBookmarkPosts: {
+          ...state.profileBookmarkPosts,
+          data: state.profileBookmarkPosts.data.map(post =>
+            post.id === action.data.id ? action.data : post,
+          ),
+        },
+      };
+
     case PROFILE_HEART_POSTS:
       return {
         ...state,
@@ -148,6 +187,16 @@ const posts = (state = initialState, action) => {
       return {
         ...state,
         profileHeartPosts: reducerUtils.error(action.payload),
+      };
+    case UPDATE_PROFILE_HEART_POSTS:
+      return {
+        ...state,
+        profileHeartPosts: {
+          ...state.profileHeartPosts,
+          data: state.profileHeartPosts.data.map(post =>
+            post.id === action.data.id ? action.data : post,
+          ),
+        },
       };
 
     case ACTIVE_POST_ID:

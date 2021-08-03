@@ -22,8 +22,9 @@ const PostsModal = () => {
   const { data: posts } = useSelector(state => state.posts.profilePosts);
   const { activePostIndex, activePostId } = useSelector(state => state.posts);
   const path = his.location.pathname;
-  const lastIndex = posts.length - 1;
+  const lastIndex = posts?.length - 1;
   const [modalLoading, setModalLoading] = useState(false);
+  const [newComments, setNewComments] = useState([]);
 
   const handlePrev = e => {
     e.stopPropagation();
@@ -78,8 +79,10 @@ const PostsModal = () => {
         <StPostCarousel>
           <StPostBox ref={modalRef}>
             <PostContainer
-              post={posts[activePostIndex]}
+              post={posts?.[activePostIndex]}
               modalLoading={modalLoading}
+              newComments={newComments}
+              setNewComments={setNewComments}
             />
           </StPostBox>
           <StSlideButton

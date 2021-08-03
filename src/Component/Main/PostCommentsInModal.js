@@ -1,47 +1,94 @@
 import React from 'react';
 import styled from 'styled-components';
 import { calcTimeElapsed } from '../../lib/calcTime';
+import Loading from '../Global/Loading';
 import ProfileImage from '../Global/ProfileImage';
 
 const PostComments = ({
+  modalLoading,
   displayNames,
   photoURLs,
   uids,
   comments,
+  newComments,
   onMoveProfilePage,
+  displayName,
+  photoURL,
+  uid,
 }) => {
   return (
     <StCommentsUl>
-      {comments.map((comment, index) => {
-        return (
-          <StComment key={index}>
-            <ProfileImage
-              src={photoURLs[index] || '/images/default_profile.png'}
-              alt={displayNames[index]}
-              width={3.5}
-              height={3.5}
-              onClick={() =>
-                onMoveProfilePage({
-                  displayName: displayNames[index],
-                  uid: uids[index],
-                })
-              }
-            />
-            <StDisplayName
-              onClick={() =>
-                onMoveProfilePage({
-                  displayName: displayNames[index],
-                  uid: uids[index],
-                })
-              }
-            >
-              {displayNames[index]}
-            </StDisplayName>
-            <StText>{comment.text}</StText>
-            <StTimeStamp>{calcTimeElapsed(comment.date)}</StTimeStamp>
-          </StComment>
-        );
-      })}
+      {modalLoading ? (
+        <Loading isLoading={modalLoading} />
+      ) : (
+        <>
+          {comments.map((comment, index) => {
+            return (
+              <StComment key={index}>
+                <ProfileImage
+                  src={photoURLs[index] || '/images/default_profile.png'}
+                  alt={displayNames[index]}
+                  width={3.5}
+                  height={3.5}
+                  onClick={() =>
+                    onMoveProfilePage({
+                      displayName: displayNames[index],
+                      uid: uids[index],
+                    })
+                  }
+                />
+                <StDisplayName
+                  onClick={() =>
+                    onMoveProfilePage({
+                      displayName: displayNames[index],
+                      uid: uids[index],
+                    })
+                  }
+                >
+                  {displayNames[index]}
+                </StDisplayName>
+                <StText>{comment.text}</StText>
+                <StTimeStamp>{calcTimeElapsed(comment.date)}</StTimeStamp>
+              </StComment>
+            );
+          })}
+          {newComments.length > 0 && (
+            <>
+              {newComments.map((comment, index) => {
+                return (
+                  <StComment key={index}>
+                    <ProfileImage
+                      src={photoURL || '/images/default_profile.png'}
+                      alt={displayName}
+                      width={3.5}
+                      height={3.5}
+                      onClick={() =>
+                        onMoveProfilePage({
+                          displayName: displayName,
+                          uid: uid,
+                        })
+                      }
+                    />
+                    <StDisplayName
+                      onClick={() =>
+                        onMoveProfilePage({
+                          displayName: displayName,
+                          uid: uid,
+                        })
+                      }
+                    >
+                      {comment.displayName}
+                    </StDisplayName>{' '}
+                    <StText>{comment.comment}</StText>
+                    <StTimeStamp>{calcTimeElapsed(comment.date)}</StTimeStamp>
+                    <div />
+                  </StComment>
+                );
+              })}
+            </>
+          )}
+        </>
+      )}
     </StCommentsUl>
   );
 };

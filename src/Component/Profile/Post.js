@@ -2,44 +2,23 @@ import React from 'react';
 import styled from 'styled-components';
 import Loading from '../Global/Loading';
 import ProfileCarousel from '../Global/ProfileCarousel';
-// import PostTimeElapsed from '../Main/PostTimeElapsed';
-// import PostHeaderContainer from '../../Container/Main/PostHeaderContainer';
-// import PostTextBoxContainer from '../../Container/Main/PostTextBoxContainer';
-// import PostCommentsInModalContainer from '../../Container/Main/PostCommentsInModalContainer';
-// import PostNavigationContainer from '../../Container/Main/PostNavigationContainer';
-// import PostHeartCountContainer from '../../Container/Main/PostHeartCountContainer';
-// import PostChatInputInModalContainer from '../../Container/Main/PostChatInputInModalContainer';
+import PostHeaderContainer from '../../Container/Profile/PostHeaderContainer';
+import PostTextBoxContainer from '../../Container/Profile/PostTextBoxContainer';
+import PostCommentsContainer from '../../Container/Profile/PostCommentsContainer';
+import PostNavigationContainer from '../../Container/Profile/PostNavigationContainer';
+import PostHeartCountContainer from '../../Container/Profile/PostHeartCountContainer';
+import PostTimeElapsed from '../Main/PostTimeElapsed';
+import { calcTimeElapsed } from '../../lib/calcTime';
+import PostChatInputContainer from '../../Container/Profile/PostChatInputContainer';
 
 const Post = ({
   modalLoading,
-  date,
-  uid,
-  isPossibleToComment,
-  location,
-  id,
-  text,
-  imagesArray,
-  hearts,
-  heartsCount,
-  bookmarks,
-  subLocation,
+  post,
   comments,
+  newComments,
+  setNewComments,
+  inputRef,
 }) => {
-  console.log({
-    date,
-    uid,
-    isPossibleToComment,
-    location,
-    id,
-    text,
-    imagesArray,
-    hearts,
-    heartsCount,
-    bookmarks,
-    subLocation,
-    comments,
-  });
-
   return (
     <StPostBoxBlockInner>
       <StImageBox>
@@ -47,18 +26,29 @@ const Post = ({
           {modalLoading ? (
             <Loading isLoading={modalLoading} />
           ) : (
-            <ProfileCarousel imagesArray={imagesArray} pagination pos />
+            <ProfileCarousel imagesArray={post?.imagesArray} pagination pos />
           )}
         </StImagesSection>
       </StImageBox>
       <StPostDataBox>
-        {/* <PostHeaderContainer />
-        <PostTextBoxContainer />
-        <PostCommentsInModalContainer />
-        <PostNavigationContainer heartsCount={heartsCount} />
-        <PostHeartCountContainer heartsCount={heartsCount} />
-        <PostTimeElapsed />
-        <PostChatInputInModalContainer /> */}
+        <PostHeaderContainer post={post} />
+        <PostTextBoxContainer post={post} />
+        <PostCommentsContainer
+          comments={comments}
+          modalLoading={modalLoading}
+          newComments={newComments}
+        />
+        <PostNavigationContainer post={post} inputRef={inputRef} />
+        <PostHeartCountContainer post={post} />
+        <PostTimeElapsed timeElapsed={calcTimeElapsed(post?.date)} />
+        {post?.isPossibleToComment && (
+          <PostChatInputContainer
+            post={post}
+            newComments={newComments}
+            setNewComments={setNewComments}
+            inputRef={inputRef}
+          />
+        )}
       </StPostDataBox>
     </StPostBoxBlockInner>
   );

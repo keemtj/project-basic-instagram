@@ -1,42 +1,27 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import Post from '../../Component/Profile/Post';
+import { useSelector } from 'react-redux';
 import { getCommentsByPost } from '../../services/firestore';
 
-const PostContainer = ({ post, modalLoading }) => {
-  const {
-    date,
-    uid,
-    isPossibleToComment,
-    location,
-    id,
-    text,
-    imagesArray,
-    hearts,
-    bookmarks,
-    subLocation,
-  } = post;
+const PostContainer = ({ post, modalLoading, newComments, setNewComments }) => {
+  const inputRef = useRef(null);
   const [comments, setComments] = useState([]);
+  const { activePostId } = useSelector(state => state.posts);
 
   useEffect(async () => {
-    const datas = await getCommentsByPost(id);
+    const datas = await getCommentsByPost(post.id);
     setComments(datas);
-  }, []);
+    setNewComments([]);
+  }, [activePostId]);
 
   return (
     <Post
       modalLoading={modalLoading}
-      date={date}
-      uid={uid}
-      isPossibleToComment={isPossibleToComment}
-      location={location}
-      id={id}
-      text={text}
-      imagesArray={imagesArray}
-      hearts={hearts}
-      heartsCount={hearts.length}
-      bookmarks={bookmarks}
-      subLocation={subLocation}
+      post={post}
       comments={comments}
+      newComments={newComments}
+      setNewComments={setNewComments}
+      inputRef={inputRef}
     />
   );
 };

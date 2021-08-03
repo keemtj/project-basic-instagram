@@ -6,7 +6,7 @@ import Emoji from '../Global/Emoji';
 const PostChatInput = ({
   onSubmit,
   onChange,
-  text,
+  comment,
   onShowEmojiPicker,
   onEmojiClick,
   isShow,
@@ -24,10 +24,10 @@ const PostChatInput = ({
             ref={inputRef}
             type="text"
             placeholder="댓글 달기..."
-            value={text}
+            value={comment}
             onChange={onChange}
           />
-          <StCommentButton type="submit" text={text}>
+          <StCommentButton type="submit" text={comment}>
             게시
           </StCommentButton>
         </StChatCommentLabel>
