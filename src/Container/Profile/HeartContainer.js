@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import Loading from '../../Component/Global/Loading';
 import Heart from '../../Component/Profile/Heart';
 import { openPopup } from '../../Modules/popup';
+import { activeIdOfPost, activeIndexOfPost } from '../../Modules/posts';
 
 const HeartContainer = () => {
   const dispatch = useDispatch();
@@ -11,12 +12,11 @@ const HeartContainer = () => {
     state => state.posts.profileHeartPosts,
   );
 
-  const onClickPostModal = (posts, id, index) => {
-    console.log('hearts modal up!', posts, id, index);
+  const onClickPostModal = (id, index) => {
+    console.log('hearts modal up!');
     dispatch(openPopup('heartsModal'));
-    // dispatch(activePostsData(posts));
-    // dispatch(activePostIdData(id));
-    // dispatch(activeIndex(index));
+    dispatch(activeIndexOfPost(index));
+    dispatch(activeIdOfPost(id));
   };
 
   useEffect(() => {

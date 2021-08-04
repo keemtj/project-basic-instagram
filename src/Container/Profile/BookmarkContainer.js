@@ -5,7 +5,7 @@ import Saved from '../../Component/Profile/Saved';
 import { openPopup } from '../../Modules/popup';
 import { activeIdOfPost, activeIndexOfPost } from '../../Modules/posts';
 
-const SavedContainer = () => {
+const BookmarkContainer = () => {
   const dispatch = useDispatch();
   const { bookmarksModal: bookmarksModalState } = useSelector(
     state => state.popup,
@@ -15,6 +15,7 @@ const SavedContainer = () => {
   );
 
   const onClickPostModal = (id, index) => {
+    console.log('bookmarks modal up!');
     dispatch(openPopup('bookmarksModal'));
     dispatch(activeIndexOfPost(index));
     dispatch(activeIdOfPost(id));
@@ -31,4 +32,4 @@ const SavedContainer = () => {
   );
 };
 
-export default SavedContainer;
+export default BookmarkContainer;

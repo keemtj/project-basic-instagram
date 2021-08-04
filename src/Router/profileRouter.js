@@ -1,7 +1,7 @@
 import React from 'react';
 import { Route, Switch } from 'react-router-dom';
 import PostsContainer from '../Container/Profile/PostsContainer';
-import SavedContainer from '../Container/Profile/SavedContainer';
+import BookmarkContainer from '../Container/Profile/BookmarkContainer';
 import HeartContainer from '../Container/Profile/HeartContainer';
 
 const ProfileRouter = ({ watchName }) => {
@@ -10,7 +10,7 @@ const ProfileRouter = ({ watchName }) => {
       <Route path={`/:${watchName}`} exact>
         <PostsContainer watchName={watchName} />
       </Route>
-      <Route path={`/:${watchName}/saved`} component={SavedContainer} />
+      <Route path={`/:${watchName}/saved`} component={BookmarkContainer} />
       <Route path={`/:${watchName}/heart`} component={HeartContainer} />
       <Route
         render={({ location }) => (

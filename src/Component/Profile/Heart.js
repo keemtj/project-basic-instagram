@@ -11,12 +11,12 @@ const Heart = ({ posts, onClickPostModal }) => {
         <EmptyHeart />
       ) : (
         <StPostsWrapper>
-          {posts?.map((post, index, arr) => {
+          {posts?.map((post, index) => {
             return (
               <PostItemContainer
                 post={post}
                 key={index}
-                onClickPostModal={() => onClickPostModal(arr, post.id, index)}
+                onClickPostModal={() => onClickPostModal(post.id, index)}
               />
             );
           })}
