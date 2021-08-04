@@ -8,7 +8,6 @@ import { Bookmark } from '@styled-icons/bootstrap/Bookmark';
 import { BookmarkFill } from '@styled-icons/bootstrap/BookmarkFill';
 
 const PostNavigation = ({
-  postModalState,
   onClickBookmark,
   onClickHeart,
   onClickPostModal,
@@ -19,16 +18,12 @@ const PostNavigation = ({
   return (
     <StSectionNav>
       <div onClick={onClickHeart}>{isLiked ? <StHeartFill /> : <Heart />}</div>
-      {!postModalState && (
-        <>
-          <div>
-            <Chat onClick={onClickPostModal} />
-          </div>
-          <div>
-            <PaperPlane onClick={onClickShare} />
-          </div>
-        </>
-      )}
+      <div>
+        <Chat onClick={onClickPostModal} />
+      </div>
+      <div>
+        <PaperPlane onClick={onClickShare} />
+      </div>
       <div onClick={onClickBookmark}>
         {isSaved ? <StBookmarkFill /> : <Bookmark />}
       </div>

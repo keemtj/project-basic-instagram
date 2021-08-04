@@ -90,12 +90,16 @@ const PostContainer = ({ post, displayName, photoURL }) => {
       const result = await addBookmarkData(id);
       if (result === 'error') {
         toast('이미 삭제되었거나 존재하지 않는 게시물입니다.');
+      } else {
+        toast('게시물이 저장되었습니다.');
       }
     } else {
       console.log('Deleted!');
       const result = await removeBookmarkData(id);
       if (result === 'error') {
         toast('이미 삭제되었거나 존재하지 않는 게시물입니다.');
+      } else {
+        toast('게시물 저장이 취소되었습니다.');
       }
     }
     observeMainPost(dispatch, updateMainPosts, id);

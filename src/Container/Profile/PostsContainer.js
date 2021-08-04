@@ -9,8 +9,8 @@ import { activeIndexOfPost, activeIdOfPost } from '../../Modules/posts';
 const PostsContainer = () => {
   const dispatch = useDispatch();
   const { params } = useRouteMatch();
-  const { postsModal: postsModalState } = useSelector(state => state.popup);
   const { displayName } = useSelector(state => state.user.currentUser);
+  const { postsModal: postsModalState } = useSelector(state => state.popup);
   const { data: profilePosts, loading, error } = useSelector(
     state => state.posts.profilePosts,
   );

@@ -4,15 +4,18 @@ import PostHeartCount from '../../Component/Main/PostHeartCount';
 import useToast from '../../Hooks/useToast';
 import { getUsersWhoClickHeart } from '../../Modules/heart';
 import { openPopup } from '../../Modules/popup';
-import { updateMainPosts, updateProfilePosts } from '../../Modules/posts';
+import {
+  updateMainPosts,
+  updateProfileBookmarkPosts,
+} from '../../Modules/posts';
 import {
   addHeartData,
   observeMainPost,
-  observeProfilePost,
+  observeProfileBookmarkPost,
   removeHeartData,
 } from '../../services/firestore';
 
-const PostHeartCountContainer = ({ post }) => {
+const BookmarkPostHeartCountContainer = ({ post }) => {
   const dispatch = useDispatch();
   const { uid: currentUid } = useSelector(state => state.user.currentUser);
   const isLiked = () => post?.hearts.includes(currentUid);
@@ -33,7 +36,7 @@ const PostHeartCountContainer = ({ post }) => {
       }
     }
     observeMainPost(dispatch, updateMainPosts, post?.id);
-    observeProfilePost(dispatch, updateProfilePosts, post?.id);
+    observeProfileBookmarkPost(dispatch, updateProfileBookmarkPosts, post?.id);
   };
 
   const onClickHeartCount = () => {
@@ -51,4 +54,4 @@ const PostHeartCountContainer = ({ post }) => {
   );
 };
 
-export default PostHeartCountContainer;
+export default BookmarkPostHeartCountContainer;

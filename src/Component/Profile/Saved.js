@@ -11,12 +11,12 @@ const Saved = ({ posts, onClickPostModal }) => {
         <EmptySaved />
       ) : (
         <StSavedWrapper>
-          {posts?.map((post, index, arr) => {
+          {posts?.map((post, index) => {
             return (
               <PostItemContainer
                 post={post}
                 key={index}
-                onClickPostModal={() => onClickPostModal(arr, post.id, index)}
+                onClickPostModal={() => onClickPostModal(post.id, index)}
               />
             );
           })}

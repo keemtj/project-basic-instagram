@@ -3,19 +3,21 @@ import { useDispatch, useSelector } from 'react-redux';
 import PostNavigation from '../../Component/Main/PostNavigation';
 import useToast from '../../Hooks/useToast';
 import { openPopup } from '../../Modules/popup';
-import { updateMainPosts, updateProfilePosts } from '../../Modules/posts';
+import {
+  updateMainPosts,
+  updateProfileBookmarkPosts,
+} from '../../Modules/posts';
 import {
   addBookmarkData,
   addHeartData,
   observeMainPost,
-  observeProfilePost,
+  observeProfileBookmarkPost,
   removeBookmarkData,
   removeHeartData,
 } from '../../services/firestore';
 
-const PostNavigationContainer = ({ post, inputRef }) => {
+const BookmarkPostNavigationContainer = ({ post, inputRef }) => {
   const dispatch = useDispatch();
-  const { postModal: postModalState } = useSelector(state => state.popup);
   const { currentUser } = useSelector(state => state.user);
   const { uid: currentUid } = currentUser;
   const [toast] = useToast();
@@ -37,7 +39,7 @@ const PostNavigationContainer = ({ post, inputRef }) => {
       }
     }
     observeMainPost(dispatch, updateMainPosts, post?.id);
-    observeProfilePost(dispatch, updateProfilePosts, post?.id);
+    observeProfileBookmarkPost(dispatch, updateProfileBookmarkPosts, post?.id);
   };
 
   const onClickBookmark = async () => {
@@ -59,7 +61,7 @@ const PostNavigationContainer = ({ post, inputRef }) => {
       }
     }
     observeMainPost(dispatch, updateMainPosts, post?.id);
-    observeProfilePost(dispatch, updateProfilePosts, post?.id);
+    observeProfileBookmarkPost(dispatch, updateProfileBookmarkPosts, post?.id);
   };
 
   const onClickCommentInput = () => {
@@ -72,7 +74,6 @@ const PostNavigationContainer = ({ post, inputRef }) => {
 
   return (
     <PostNavigation
-      postModalState={postModalState}
       onClickBookmark={onClickBookmark}
       onClickHeart={onClickHeart}
       onClickPostModal={onClickCommentInput}
@@ -83,4 +84,4 @@ const PostNavigationContainer = ({ post, inputRef }) => {
   );
 };
 
-export default PostNavigationContainer;
+export default BookmarkPostNavigationContainer;

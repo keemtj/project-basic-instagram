@@ -1,7 +1,7 @@
 /* eslint-disable no-undef */
 import { firebase, firebaseAuth, firestore } from './firebase';
 
-// --> APP
+// --> APP, Global
 /**
  * get current user data
  * @param {string} uid
@@ -10,6 +10,16 @@ export const getCurrentUserData = async uid => {
   const doc = await firestore.collection('users').doc(uid).get();
   const datas = doc.data();
   return datas;
+};
+
+/**
+ * get user data by posts
+ * @param {string} uid
+ */
+export const getUserDataByPost = async uid => {
+  const response = await firestore.collection('users').doc(uid).get();
+  const result = await Promise.resolve(response.data());
+  return result;
 };
 
 /**
@@ -209,6 +219,7 @@ export const observeProfilePost = (dispatch, actionCreator, id) => {
     });
 };
 
+// --> bookmark posts
 /**
  * 클릭한 유저의 uid, profile page에서 렌더링
  * @param {string} uid user's uid
@@ -239,6 +250,7 @@ export const observeProfileBookmarkPost = (dispatch, actionCreator, id) => {
     });
 };
 
+// --> heart posts
 /**
  * 클릭한 유저의 uid, profile page에서 렌더링
  * @param {string} uid user's uid
@@ -385,13 +397,6 @@ export const getCurrentUserPostsData = async uid => {
     .get();
   docs.forEach(doc => datas.push(doc.data()));
   return datas;
-};
-
-// get user data by posts
-export const getUserDataByPost = async uid => {
-  const response = await firestore.collection('users').doc(uid).get();
-  const result = await Promise.resolve(response.data());
-  return result;
 };
 
 // get searchUser data to users collection of firestore

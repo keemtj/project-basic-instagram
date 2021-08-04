@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import Loading from '../../Component/Global/Loading';
 import Saved from '../../Component/Profile/Saved';
 import { openPopup } from '../../Modules/popup';
+import { activeIdOfPost, activeIndexOfPost } from '../../Modules/posts';
 
 const SavedContainer = () => {
   const dispatch = useDispatch();
@@ -13,12 +14,10 @@ const SavedContainer = () => {
     state => state.posts.profileBookmarkPosts,
   );
 
-  const onClickPostModal = (posts, id, index) => {
-    console.log('bookmarks modal up!', posts, id, index);
+  const onClickPostModal = (id, index) => {
     dispatch(openPopup('bookmarksModal'));
-    // dispatch(activePostsData(posts));
-    // dispatch(activePostIdData(id));
-    // dispatch(activeIndex(index));
+    dispatch(activeIndexOfPost(index));
+    dispatch(activeIdOfPost(id));
   };
 
   useEffect(() => {
