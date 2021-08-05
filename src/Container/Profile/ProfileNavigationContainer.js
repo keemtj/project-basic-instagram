@@ -12,18 +12,34 @@ import {
 
 const ProfileNavigationContainer = ({ watchName }) => {
   const dispatch = useDispatch();
-  const { uid, displayName } = useSelector(state => state.user.currentUser);
+  const { displayName } = useSelector(state => state.user.currentUser);
+  const { data: profileUserData } = useSelector(
+    state => state.user.profileUserData,
+  );
+  const { data: profilePosts } = useSelector(state => state.posts.profilePosts);
+  const { data: profileBookmarkPosts } = useSelector(
+    state => state.posts.profileBookmarkPosts,
+  );
+  const { data: profileHeartPosts } = useSelector(
+    state => state.posts.profileHeartPosts,
+  );
 
   const onMoveProfilePage = () => {
-    dispatch(getProfilePosts(uid));
+    if (!profilePosts) {
+      dispatch(getProfilePosts(profileUserData?.uid));
+    }
   };
 
   const onMoveBookmarkPage = () => {
-    dispatch(getProfileBookmarkPosts(uid));
+    if (!profileBookmarkPosts) {
+      dispatch(getProfileBookmarkPosts(profileUserData?.uid));
+    }
   };
 
   const onMoveHeartPage = () => {
-    dispatch(getProfileHeartPosts(uid));
+    if (!profileHeartPosts) {
+      dispatch(getProfileHeartPosts(profileUserData?.uid));
+    }
   };
 
   const subnav = [

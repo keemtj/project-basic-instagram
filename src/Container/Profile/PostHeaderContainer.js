@@ -3,22 +3,24 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router';
 import PostHeader from '../../Component/Main/PostHeader';
 import { closePopup, openPopup } from '../../Modules/popup';
-import { getProfilePosts } from '../../Modules/posts';
 import {
-  getSearchUserData,
-  getSearchUserFollowData,
-} from '../../Modules/search';
+  getProfileUserData,
+  getProfileUserFollowData,
+} from '../../Modules/user';
+import { getProfilePosts } from '../../Modules/posts';
 
 const PostHeaderContainer = ({ post }) => {
-  const { currentUser } = useSelector(state => state.user);
-  const { uid, displayName, photoURL } = currentUser;
+  const { data: profileUserData } = useSelector(
+    state => state.user.profileUserData,
+  );
+  const { uid, displayName, photoURL } = profileUserData;
   const history = useHistory();
   const dispatch = useDispatch();
 
   const onMoveProfilePage = () => {
     dispatch(closePopup('postsModal'));
-    dispatch(getSearchUserData(uid));
-    dispatch(getSearchUserFollowData(uid));
+    dispatch(getProfileUserData(uid));
+    dispatch(getProfileUserFollowData(uid));
     dispatch(getProfilePosts(uid));
     history.push(`/${displayName}`);
   };

@@ -4,14 +4,18 @@ import PostsContainer from '../Container/Profile/PostsContainer';
 import BookmarkContainer from '../Container/Profile/BookmarkContainer';
 import HeartContainer from '../Container/Profile/HeartContainer';
 
-const ProfileRouter = ({ watchName }) => {
+const ProfileRouter = ({ watchName, displayName }) => {
   return (
     <Switch>
-      <Route path={`/:${watchName}`} exact>
+      <Route path={`/:displayName`} exact>
         <PostsContainer watchName={watchName} />
       </Route>
-      <Route path={`/:${watchName}/saved`} component={BookmarkContainer} />
-      <Route path={`/:${watchName}/heart`} component={HeartContainer} />
+      {watchName === displayName && (
+        <Route path={`/:displayName/saved`} component={BookmarkContainer} />
+      )}
+      {watchName === displayName && (
+        <Route path={`/:displayName/heart`} component={HeartContainer} />
+      )}
       <Route
         render={({ location }) => (
           <div>

@@ -4,11 +4,11 @@ import { useHistory } from 'react-router';
 import User from '../../Component/Profile/User';
 import { openPopup } from '../../Modules/popup';
 import { followUser, unFollowUser } from '../../Modules/search';
-import { profileUserFollowData } from '../../Modules/user';
+import { getProfileUserFollowData } from '../../Modules/user';
 import {
   follow,
-  observeUsersFollowData,
   unfollow,
+  observeUsersFollowData,
 } from '../../services/firestore';
 
 const UserContainer = ({ watchName }) => {
@@ -21,20 +21,17 @@ const UserContainer = ({ watchName }) => {
   const { data: profileUserData, loading } = useSelector(
     state => state.user.profileUserData,
   );
+  const { data: followData } = useSelector(
+    state => state.user.profileUserFollowData,
+  );
   const { data: profilePosts } = useSelector(state => state.posts.profilePosts);
-  const followData = useSelector(state => state.user.profileUserFollowData);
+
   const { following, followers } = followData || {
     following: [],
     followers: [],
   };
 
-  const { data: searchUserFollowData } = useSelector(
-    state => state.search.searchUserFollow,
-  );
-
-  const isFollowing = searchUserFollowData?.followers?.includes(
-    currentUserData.uid,
-  );
+  const isFollowing = followers?.includes(currentUserData.uid);
 
   const onToggleFollow = () => {
     if (isFollowing) {
@@ -44,7 +41,7 @@ const UserContainer = ({ watchName }) => {
       follow(currentUserData.uid, profileUserData?.uid);
       dispatch(followUser(currentUserData.uid));
     }
-    observeUsersFollowData(dispatch, profileUserFollowData);
+    observeUsersFollowData(dispatch, getProfileUserFollowData);
   };
 
   const onEditProfile = () => {
@@ -56,7 +53,7 @@ const UserContainer = ({ watchName }) => {
   };
 
   useEffect(() => {
-    observeUsersFollowData(dispatch, profileUserFollowData);
+    observeUsersFollowData(dispatch, getProfileUserFollowData);
   }, []);
 
   useEffect(() => {
@@ -92,12 +89,12 @@ const UserContainer = ({ watchName }) => {
       followersCount={
         currentUserData.displayName === watchName
           ? followers?.length
-          : searchUserFollowData?.followers?.length
+          : followers?.length
       }
       followingCount={
         currentUserData.displayName === watchName
           ? following?.length
-          : searchUserFollowData?.following?.length
+          : following?.length
       }
       onEditProfile={onEditProfile}
       onToggleFollow={onToggleFollow}

@@ -232,7 +232,7 @@ export const getProfilePosts = async uid => {
     .get();
   let datas = [];
   response.forEach(res => datas.push(res.data()));
-  return datas;
+  return datas.sort((a, b) => b.date - a.date);
 };
 
 /**
@@ -263,7 +263,7 @@ export const getProfileBookmarkPosts = async uid => {
     .get();
   let datas = [];
   response.forEach(res => datas.push(res.data()));
-  return datas;
+  return datas.reverse();
 };
 
 /**
@@ -294,7 +294,7 @@ export const getProfileHeartPosts = async uid => {
     .get();
   let datas = [];
   response.forEach(res => datas.push(res.data()));
-  return datas;
+  return datas.reverse();
 };
 
 /**

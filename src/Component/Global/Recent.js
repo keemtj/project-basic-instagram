@@ -6,7 +6,7 @@ import { Clear } from '@styled-icons/material-rounded/Clear';
 
 const Recent = ({
   recent,
-  onClickUser,
+  onMoveProfilePage,
   onRemoveRecentUser,
   onRemoveAllRecentUser,
 }) => {
@@ -30,7 +30,7 @@ const Recent = ({
               <StRecentList key={index}>
                 <StLink
                   to={`/${displayName}`}
-                  onClick={() => onClickUser(user)}
+                  onClick={() => onMoveProfilePage(user)}
                 >
                   <ProfileImage
                     src={photoURL || '/images/default_profile2.jpg'}

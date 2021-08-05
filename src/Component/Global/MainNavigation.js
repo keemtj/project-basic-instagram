@@ -5,8 +5,10 @@ import { Home } from '@styled-icons/ionicons-outline/Home';
 import { Home as HomeFilled } from '@styled-icons/ionicons-solid/Home';
 import { PaperPlane } from '@styled-icons/ionicons-outline/PaperPlane';
 import { PaperPlane as PaperPlaneFilled } from '@styled-icons/ionicons-solid/PaperPlane';
-import { AddCircle } from '@styled-icons/ionicons-outline/AddCircle';
-import { AddCircle as AddCircleFilled } from '@styled-icons/ionicons-sharp/AddCircle';
+// import { AddCircle } from '@styled-icons/ionicons-outline/AddCircle';
+// import { AddCircle as AddCircleFilled } from '@styled-icons/ionicons-sharp/AddCircle';
+import { AddSquare } from '@styled-icons/fluentui-system-regular/AddSquare';
+import { AddSquare as AddSquareFill } from '@styled-icons/fluentui-system-filled/AddSquare';
 import PopupContainer from '../../Container/Global/PopupContainer';
 
 const MainNavigation = ({
@@ -47,9 +49,7 @@ const MainNavigation = ({
         </li>
         <li>
           <StNewPostButton onClick={openModal}>
-            <StIcon>
-              {newPostModal ? <AddCircleFilled /> : <AddCircle />}
-            </StIcon>
+            <StIcon>{newPostModal ? <AddSquareFill /> : <AddSquare />}</StIcon>
           </StNewPostButton>
         </li>
         <li
@@ -101,8 +101,8 @@ const StNewPostButton = styled.button`
 `;
 
 const StIcon = styled.div`
-  width: 2.6rem;
-  height: 2.6rem;
+  width: 2.5rem;
+  height: 2.5rem;
 `;
 
 const StProfile = styled.div`

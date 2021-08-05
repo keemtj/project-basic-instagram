@@ -16,7 +16,7 @@ const PROFILE_USER_DATA = 'user/PROFILE_USER_DATA';
 const PROFILE_USER_DATA_SUCCESS = 'user/PROFILE_USER_DATA_SUCCESS';
 const PROFILE_USER_DATA_ERROR = 'user/PROFILE_USER_DATA_ERROR';
 // profile follow
-const PROFILE_USER_FOLLOW_DATA = 'user/SEARCH_USER_FOLLOW';
+const PROFILE_USER_FOLLOW_DATA = 'user/PROFILE_USER_FOLLOW_DATA';
 const PROFILE_USER_FOLLOW_DATA_SUCCESS =
   'user/PROFILE_USER_FOLLOW_DATA_SUCCESS';
 const PROFILE_USER_FOLLOW_DATA_ERROR = 'user/PROFILE_USER_FOLLOW_DATA_ERROR';
@@ -85,6 +85,7 @@ const user = (state = initialState, action) => {
         ...state,
         currentUserFollowData: action.data,
       };
+
     case SUGGESTION_USERS_DATA:
       return {
         ...state,
@@ -100,6 +101,7 @@ const user = (state = initialState, action) => {
         ...state,
         suggestionUsers: reducerUtils.error(action.payload),
       };
+
     case PROFILE_USER_DATA:
       return {
         ...state,
@@ -115,6 +117,7 @@ const user = (state = initialState, action) => {
         ...state,
         profileUserData: reducerUtils.error(action.payload),
       };
+
     case PROFILE_USER_FOLLOW_DATA:
       return {
         ...state,
@@ -130,6 +133,7 @@ const user = (state = initialState, action) => {
         ...state,
         profileUserFollowData: reducerUtils.error(action.payload),
       };
+
     case DATA_CLEAR:
       return initialState;
     default:

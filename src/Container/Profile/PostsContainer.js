@@ -1,14 +1,12 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useRouteMatch } from 'react-router';
 import Loading from '../../Component/Global/Loading';
 import Posts from '../../Component/Profile/Posts';
 import { openPopup } from '../../Modules/popup';
 import { activeIndexOfPost, activeIdOfPost } from '../../Modules/posts';
 
-const PostsContainer = () => {
+const PostsContainer = ({ watchName }) => {
   const dispatch = useDispatch();
-  const { params } = useRouteMatch();
   const { displayName } = useSelector(state => state.user.currentUser);
   const { postsModal: postsModalState } = useSelector(state => state.popup);
   const { data: profilePosts, loading, error } = useSelector(
@@ -31,7 +29,7 @@ const PostsContainer = () => {
     <Posts
       posts={profilePosts}
       onClickPostModal={onClickPostModal}
-      isMypage={params[displayName]}
+      isMypage={watchName === displayName}
     />
   );
 };

@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useLocation, useRouteMatch } from 'react-router';
 import Profile from '../../Component/Profile/Profile';
 import { getUid } from '../../services/firestore';
@@ -17,15 +17,18 @@ const ProfileContainer = () => {
   const { params } = useRouteMatch();
   const location = useLocation();
   const dispatch = useDispatch();
+  const { data: profilePosts } = useSelector(state => state.posts.profilePosts);
+  const { displayName } = useSelector(state => state.user.currentUser);
   const watchName = params.displayName;
 
   useEffect(async () => {
     const uid = await getUid(watchName);
     dispatch(getProfileUserData(uid));
     dispatch(getProfileUserFollowData(uid));
-    if (location.pathname === `/${watchName}`) {
+    if (!profilePosts) {
       dispatch(getProfilePosts(uid));
-    } else if (location.pathname === `/${watchName}/heart`) {
+    }
+    if (location.pathname === `/${watchName}/heart`) {
       dispatch(getProfileHeartPosts(uid));
     } else if (location.pathname === `/${watchName}/saved`) {
       dispatch(getProfileBookmarkPosts(uid));
@@ -36,7 +39,7 @@ const ProfileContainer = () => {
     document.title = `@${watchName} • Instagram 사진 및 동영상`;
   }, []);
 
-  return <Profile watchName={watchName} />;
+  return <Profile watchName={watchName} displayName={displayName} />;
 };
 
 export default ProfileContainer;

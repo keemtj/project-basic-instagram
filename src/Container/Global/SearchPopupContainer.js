@@ -8,7 +8,10 @@ import {
   removeRecent,
   clearValue,
 } from '../../Modules/search';
-import { getProfileUserData, profileUserFollowData } from '../../Modules/user';
+import {
+  getProfileUserData,
+  getProfileUserFollowData,
+} from '../../Modules/user';
 import { getProfilePosts } from '../../Modules/posts';
 
 const SearchPopupContainer = () => {
@@ -19,10 +22,10 @@ const SearchPopupContainer = () => {
   );
   const recent = useSelector(state => state.search.recent);
 
-  const onClickUser = user => {
+  const onMoveProfilePage = user => {
     console.log('user searching');
     dispatch(getProfileUserData(user.uid));
-    dispatch(profileUserFollowData(user.uid));
+    dispatch(getProfileUserFollowData(user.uid));
     dispatch(getProfilePosts(user.uid));
     dispatch(addRecent(user));
     dispatch(clearValue());
@@ -43,7 +46,7 @@ const SearchPopupContainer = () => {
       value={value}
       searchResult={searchResult}
       loading={loading}
-      onClickUser={onClickUser}
+      onMoveProfilePage={onMoveProfilePage}
       onRemoveRecentUser={onRemoveRecentUser}
       onRemoveAllRecentUser={onRemoveAllRecentUser}
     />

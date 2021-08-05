@@ -3,11 +3,11 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router';
 import PostTextBox from '../../Component/Main/PostTextBox';
 import { closePopup } from '../../Modules/popup';
-import { getProfilePosts } from '../../Modules/posts';
 import {
-  getSearchUserData,
-  getSearchUserFollowData,
-} from '../../Modules/search';
+  getProfileUserData,
+  getProfileUserFollowData,
+} from '../../Modules/user';
+import { getProfilePosts } from '../../Modules/posts';
 
 const BookmarkPostTextBoxContainer = ({ post, user }) => {
   const history = useHistory();
@@ -18,8 +18,8 @@ const BookmarkPostTextBoxContainer = ({ post, user }) => {
 
   const onMoveProfilePage = () => {
     dispatch(closePopup('bookmarksModal'));
-    dispatch(getSearchUserData(user.uid));
-    dispatch(getSearchUserFollowData(user.uid));
+    dispatch(getProfileUserData(user.uid));
+    dispatch(getProfileUserFollowData(user.uid));
     dispatch(getProfilePosts(user.uid));
     history.push(`/${user.displayName}`);
   };

@@ -4,13 +4,13 @@ import ProfileRouter from '../../Router/ProfileRouter';
 import UserContainer from '../../Container/Profile/UserContainer';
 import ProfileNavigationContainer from '../../Container/Profile/ProfileNavigationContainer';
 
-const Profile = ({ watchName }) => {
+const Profile = ({ watchName, displayName }) => {
   return (
     <StWrapper>
       <StMain>
         <UserContainer watchName={watchName} />
         <ProfileNavigationContainer watchName={watchName} />
-        <ProfileRouter watchName={watchName} />
+        <ProfileRouter watchName={watchName} displayName={displayName} />
       </StMain>
     </StWrapper>
   );

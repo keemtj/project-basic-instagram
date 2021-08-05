@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import ProfileImage from './ProfileImage';
 import { Spinner3 } from '@styled-icons/icomoon/Spinner3';
 
-const SearchResult = ({ searchResult, loading, onClickUser }) => {
+const SearchResult = ({ searchResult, loading, onMoveProfilePage }) => {
   return (
     <>
       <StSearchResultBox>
@@ -19,7 +19,7 @@ const SearchResult = ({ searchResult, loading, onClickUser }) => {
               <StSearchResultList key={index}>
                 <StLink
                   to={`/${displayName}`}
-                  onClick={() => onClickUser(user)}
+                  onClick={() => onMoveProfilePage(user)}
                 >
                   <ProfileImage
                     src={photoURL || '/images/default_profile2.jpg'}

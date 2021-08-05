@@ -5,9 +5,9 @@ import Messages from '../../Component/Direct/Messages';
 import { getMessages, updateMessages } from '../../Modules/direct';
 import { closePopup, openPopup } from '../../Modules/popup';
 import {
-  getSearchUserData,
-  getSearchUserFollowData,
-} from '../../Modules/search';
+  getProfileUserData,
+  getProfileUserFollowData,
+} from '../../Modules/user';
 import { getProfilePosts } from '../../Modules/posts';
 import { firestore } from '../../services/firebase';
 import { updateMsgs } from '../../services/firestore';
@@ -38,8 +38,8 @@ const MessagesContainer = () => {
   };
 
   const onMoveProfilePage = () => {
-    dispatch(getSearchUserData(partnerUid));
-    dispatch(getSearchUserFollowData(partnerUid));
+    dispatch(getProfileUserData(partnerUid));
+    dispatch(getProfileUserFollowData(partnerUid));
     dispatch(getProfilePosts(partnerUid));
     history.push(`/${displayName}`);
   };
