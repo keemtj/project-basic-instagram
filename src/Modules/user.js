@@ -5,15 +5,22 @@ import { fetchDataThunk, reducerUtils } from '../lib/asyncUtils';
 // main
 const CURRENT_USER_DATA = 'user/CURRENT_USER_DATA';
 const CURRENT_USER_FOLLOW_DATA = 'user/CURRENT_USER_FOLLOW_DATA';
+
 // aside
 const SUGGESTION_USERS_DATA = 'user/SUGGESTION_USERS_DATA';
 const SUGGESTION_USERS_DATA_SUCCESS = 'user/SUGGESTION_USERS_DATA_SUCCESS';
 const SUGGESTION_USERS_DATA_ERROR = 'user/SUGGESTION_USERS_DATA_ERROR';
-// profile
+
+// profile user info
 const PROFILE_USER_DATA = 'user/PROFILE_USER_DATA';
 const PROFILE_USER_DATA_SUCCESS = 'user/PROFILE_USER_DATA_SUCCESS';
 const PROFILE_USER_DATA_ERROR = 'user/PROFILE_USER_DATA_ERROR';
-const PROFILE_USER_FOLLOW_DATA = 'user/PROFILE_USER_FOLLOW_DATA';
+// profile follow
+const PROFILE_USER_FOLLOW_DATA = 'user/SEARCH_USER_FOLLOW';
+const PROFILE_USER_FOLLOW_DATA_SUCCESS =
+  'user/PROFILE_USER_FOLLOW_DATA_SUCCESS';
+const PROFILE_USER_FOLLOW_DATA_ERROR = 'user/PROFILE_USER_FOLLOW_DATA_ERROR';
+
 // sign out
 const DATA_CLEAR = 'user/DATA_CLEAR';
 
@@ -35,10 +42,11 @@ export const getProfileUserData = fetchDataThunk(
   store.getProfileUserData,
   1000,
 );
-export const profileUserFollowData = data => ({
-  type: PROFILE_USER_FOLLOW_DATA,
-  data,
-});
+
+export const getProfileUserFollowData = fetchDataThunk(
+  PROFILE_USER_FOLLOW_DATA,
+  store.getProfileUserFollowData,
+);
 
 export const userDataClear = () => ({ type: DATA_CLEAR });
 
@@ -61,12 +69,7 @@ const initialState = {
   },
   suggestionUsers: reducerUtils.initial(),
   profileUserData: reducerUtils.initial(),
-  profileUserFollowData: {
-    followers: [],
-    following: [],
-    displayName: '',
-    uid: '',
-  },
+  profileUserFollowData: reducerUtils.initial(),
 };
 
 // reducer
@@ -115,7 +118,17 @@ const user = (state = initialState, action) => {
     case PROFILE_USER_FOLLOW_DATA:
       return {
         ...state,
-        profileUserFollowData: action.data,
+        profileUserFollowData: reducerUtils.loading(),
+      };
+    case PROFILE_USER_FOLLOW_DATA_SUCCESS:
+      return {
+        ...state,
+        profileUserFollowData: reducerUtils.success(action.payload),
+      };
+    case PROFILE_USER_FOLLOW_DATA_ERROR:
+      return {
+        ...state,
+        profileUserFollowData: reducerUtils.error(action.payload),
       };
     case DATA_CLEAR:
       return initialState;

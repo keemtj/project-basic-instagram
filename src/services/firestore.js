@@ -178,6 +178,37 @@ export const observeMainPost = (dispatch, actionCreator, id) => {
 };
 
 // --> PROFILE PAGE
+/**
+ * Profile Page에서 새로고침시 watchName의 uid 가져오기
+ * @param {string} watchName, user's displayName
+ * @return uid
+ */
+export const getUid = async watchName => {
+  let uid = '';
+  const docs = await firestore
+    .collection('users')
+    .where('displayName', '==', watchName)
+    .get();
+  docs.forEach(doc => (uid = doc.data().uid));
+  return uid;
+};
+
+// --> follow data
+/**
+ * get follow data of searchUser by uid
+ * @param {string} uid
+ */
+export const getProfileUserFollowData = async uid => {
+  try {
+    const doc = await firestore.collection('follow').doc(uid).get();
+    const datas = doc.data();
+    return datas;
+  } catch (e) {
+    // console.log(e);
+    return e;
+  }
+};
+
 // --> posts
 /**
  * 클릭한 유저의 uid, profile page의 User에서 렌더링
@@ -406,18 +437,6 @@ export const getSearchUserData = async uid => {
   return datas;
 };
 
-// get follow data of searchUser by uid
-export const getSearchUserFollowData = async uid => {
-  try {
-    const doc = await firestore.collection('follow').doc(uid).get();
-    const datas = doc.data();
-    return datas;
-  } catch (e) {
-    // console.log(e);
-    return e;
-  }
-};
-
 // get uid followed me
 export const getFollowedMe = async uid => {
   let followed = [];
@@ -430,17 +449,6 @@ export const getFollowedMe = async uid => {
     followed.push({ uid, displayName });
   });
   return followed;
-};
-
-// Profile Page에서 새로고침시 watchName에 맞는 uid 가져오기
-export const getUid = async watchName => {
-  let uid = '';
-  const docs = await firestore
-    .collection('users')
-    .where('displayName', '==', watchName)
-    .get();
-  docs.forEach(doc => (uid = doc.data().uid));
-  return uid;
 };
 
 // --> new post

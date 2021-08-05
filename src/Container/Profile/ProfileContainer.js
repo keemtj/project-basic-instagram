@@ -1,28 +1,34 @@
 import React, { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { useRouteMatch } from 'react-router';
+import { useDispatch } from 'react-redux';
+import { useLocation, useRouteMatch } from 'react-router';
 import Profile from '../../Component/Profile/Profile';
 import { getUid } from '../../services/firestore';
-import { getSearchUserFollowData } from '../../Modules/search';
-import { getProfilePosts } from '../../Modules/posts';
-import { getProfileUserData } from '../../Modules/user';
+import {
+  getProfileBookmarkPosts,
+  getProfileHeartPosts,
+  getProfilePosts,
+} from '../../Modules/posts';
+import {
+  getProfileUserData,
+  getProfileUserFollowData,
+} from '../../Modules/user';
 
 const ProfileContainer = () => {
   const { params } = useRouteMatch();
+  const location = useLocation();
   const dispatch = useDispatch();
   const watchName = params.displayName;
 
-  const { data: profileUserData } = useSelector(
-    state => state.user.profileUserData,
-  );
-
   useEffect(async () => {
-    if (!profileUserData) {
-      console.log('새로고침했는데 데이터 없어서 새로가져옴');
-      const uid = await getUid(watchName);
-      dispatch(getSearchUserFollowData(uid));
+    const uid = await getUid(watchName);
+    dispatch(getProfileUserData(uid));
+    dispatch(getProfileUserFollowData(uid));
+    if (location.pathname === `/${watchName}`) {
       dispatch(getProfilePosts(uid));
-      dispatch(getProfileUserData(uid));
+    } else if (location.pathname === `/${watchName}/heart`) {
+      dispatch(getProfileHeartPosts(uid));
+    } else if (location.pathname === `/${watchName}/saved`) {
+      dispatch(getProfileBookmarkPosts(uid));
     }
   }, [watchName]);
 

@@ -16,14 +16,6 @@ const RECENT_ADD_LOCALSTORAGE = 'search/RECENT_ADD_LOCALSTORAGE';
 const RECENT_REMOVE = 'search/RECENT_REMOVE';
 const RECENT_ALL_CLEAR = 'search/RECENT_ALL_CLEAR';
 
-const SEARCH_USER = 'search/SEARCH_USER';
-const SEARCH_USER_SUCCESS = 'search/SEARCH_USER_SUCCESS';
-const SEARCH_USER_ERROR = 'search/SEARCH_USER_ERROR';
-
-const SEARCH_USER_FOLLOW = 'search/SEARCH_USER_FOLLOW';
-const SEARCH_USER_FOLLOW_SUCCESS = 'search/SEARCH_USER_FOLLOW_SUCCESS';
-const SEARCH_USER_FOLLOW_ERROR = 'search/SEARCH_USER_FOLLOW_ERROR';
-
 const FOLLOW = 'search/ADD_FOLLOW';
 const UNFOLLOW = 'search/REMOVE_FOLLOW';
 
@@ -44,14 +36,7 @@ export const getUserSearchResultByDisplayName = fetchDataThunk(
   store.getUserSearchResultByDisplayName,
   2000,
 );
-export const getSearchUserData = fetchDataThunk(
-  SEARCH_USER,
-  store.getSearchUserData,
-);
-export const getSearchUserFollowData = fetchDataThunk(
-  SEARCH_USER_FOLLOW,
-  store.getSearchUserFollowData,
-);
+
 export const followUser = uid => ({ type: FOLLOW, uid });
 export const unFollowUser = uid => ({ type: UNFOLLOW, uid });
 export const searchDataClear = () => ({ type: DATA_CLEAR });
@@ -114,36 +99,6 @@ const popup = (state = initialState, action) => {
       return {
         ...state,
         recent: searchUtils.allClearRecent(),
-      };
-    case SEARCH_USER:
-      return {
-        ...state,
-        searchUser: reducerUtils.loading(),
-      };
-    case SEARCH_USER_SUCCESS:
-      return {
-        ...state,
-        searchUser: reducerUtils.success(action.payload),
-      };
-    case SEARCH_USER_ERROR:
-      return {
-        ...state,
-        searchUser: reducerUtils.error(action.payloads),
-      };
-    case SEARCH_USER_FOLLOW:
-      return {
-        ...state,
-        searchUserFollow: reducerUtils.loading(),
-      };
-    case SEARCH_USER_FOLLOW_SUCCESS:
-      return {
-        ...state,
-        searchUserFollow: reducerUtils.success(action.payload),
-      };
-    case SEARCH_USER_FOLLOW_ERROR:
-      return {
-        ...state,
-        searchUserFollow: reducerUtils.error(action.payload),
       };
     case FOLLOW:
       return {
