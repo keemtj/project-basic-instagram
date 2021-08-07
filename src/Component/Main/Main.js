@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import PostContainer from '../../Container/Main/PostContainer';
+import MainPostContainer from '../../Container/Main/MainPostContainer';
 import AsideFooter from './AsideFooter';
 import AsideContainer from '../../Container/Main/AsideContainer';
 import Loading from '../Global/Loading';
@@ -39,9 +39,10 @@ const Main = ({ isLoading, mainPosts, userDatas }) => {
               {mainPosts?.map((post, index) => {
                 const userData = userDatas.find(user => user.uid === post?.uid);
                 return (
-                  <PostContainer
+                  <MainPostContainer
                     key={index}
                     post={post}
+                    index={index}
                     userDatas={userDatas}
                     displayName={userData?.displayName}
                     photoURL={
@@ -68,7 +69,7 @@ const Main = ({ isLoading, mainPosts, userDatas }) => {
                     피드를 받아보세요.
                   </div>
                   {influencePosts.map((post, index) => (
-                    <PostContainer
+                    <MainPostContainer
                       key={index}
                       post={post}
                       displayName={'influencer'}

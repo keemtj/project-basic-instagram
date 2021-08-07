@@ -1,26 +1,25 @@
 import React from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router';
 import PostHeader from '../../Component/Main/PostHeader';
 import { closePopup, openPopup } from '../../Modules/popup';
 import { getProfilePosts } from '../../Modules/posts';
 import {
-  getSearchUserData,
-  getSearchUserFollowData,
-} from '../../Modules/search';
+  getProfileUserData,
+  getProfileUserFollowData,
+} from '../../Modules/user';
 
-const PostHeaderContainer = ({ user, post }) => {
-  const { displayName, photoURL, uid } = user;
-  const { location } = post;
+const PostHeaderContainer = ({ post }) => {
   const history = useHistory();
   const dispatch = useDispatch();
+  const { data: user } = useSelector(state => state.user.profileUserData);
 
   const onMoveProfilePage = () => {
     dispatch(closePopup('postModal'));
-    dispatch(getSearchUserData(uid));
-    dispatch(getSearchUserFollowData(uid));
-    dispatch(getProfilePosts(uid));
-    history.push(`/${displayName}`);
+    dispatch(getProfileUserData(post.uid));
+    dispatch(getProfileUserFollowData(post.uid));
+    dispatch(getProfilePosts(post.uid));
+    history.push(`/${user?.displayName}`);
   };
 
   const onClickSetting = () => {
@@ -30,9 +29,9 @@ const PostHeaderContainer = ({ user, post }) => {
 
   return (
     <PostHeader
-      displayName={displayName}
-      photoURL={photoURL}
-      location={location}
+      displayName={user?.displayName}
+      photoURL={user?.photoURL || '/images/default_profile.png'}
+      location={post?.location}
       onMoveProfilePage={onMoveProfilePage}
       onClickSetting={onClickSetting}
     />

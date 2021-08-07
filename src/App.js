@@ -17,7 +17,7 @@ import ProgressBar from './Component/Global/ProgressBar';
 import NewPost from './Component/New/NewPost';
 import PostSettingModal from './Component/Main/PostSettingModal';
 import ToastPopup from './Component/Global/ToastPopup';
-import PostModal from './Component/Profile/PostModal';
+import MainPostModal from './Component/Main/MainPostModal';
 import HeartCountModal from './Component/Main/HeartCountModal';
 import PostShareModal from './Component/Main/PostShareModal';
 import ProfileEditModal from './Container/Profile/ProfileEditModal';
@@ -70,7 +70,7 @@ const App = () => {
         {progress !== 0 && <ProgressBar progress={progress} />}
         {newPostModalState && <NewPost setProgress={setProgress} />}
         {postSettingModalState && <PostSettingModal />}
-        {postModalState && <PostModal />}
+        {postModalState && <MainPostModal />}
         {postHeartCountModalState && <HeartCountModal />}
         {postSharePopupState && <PostShareModal />}
         {profileEditModalState && <ProfileEditModal />}

@@ -3,31 +3,30 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router';
 import PostTextBox from '../../Component/Main/PostTextBox';
 import { closePopup } from '../../Modules/popup';
-import { getProfilePosts } from '../../Modules/posts';
 import {
-  getSearchUserData,
-  getSearchUserFollowData,
-} from '../../Modules/search';
+  getProfileUserData,
+  getProfileUserFollowData,
+} from '../../Modules/user';
+import { getProfilePosts } from '../../Modules/posts';
 
-const PostTextBoxContainer = ({ user, post }) => {
-  const { displayName } = user;
-  const { text, uid } = post;
+const PostTextBoxContainer = ({ post }) => {
+  const { data: user } = useSelector(state => state.user.profileUserData);
   const history = useHistory();
   const dispatch = useDispatch();
   const { postModal: postModalState } = useSelector(state => state.popup);
 
   const onMoveProfilePage = () => {
-    history.push(`/${displayName}`);
     dispatch(closePopup('postModal'));
-    dispatch(getSearchUserData(uid));
-    dispatch(getSearchUserFollowData(uid));
-    dispatch(getProfilePosts(uid));
+    dispatch(getProfileUserData(post?.uid));
+    dispatch(getProfileUserFollowData(post?.uid));
+    dispatch(getProfilePosts(post?.uid));
+    history.push(`/${user?.displayName}`);
   };
 
   return (
     <PostTextBox
-      displayName={displayName}
-      text={text}
+      displayName={user?.displayName}
+      text={post?.text}
       postModalState={postModalState}
       onMoveProfilePage={onMoveProfilePage}
     />
