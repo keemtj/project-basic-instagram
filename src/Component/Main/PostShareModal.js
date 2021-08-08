@@ -36,7 +36,8 @@ const PostShareModal = () => {
   const dispatch = useDispatch();
   const { uid } = useSelector(state => state.user.currentUser);
   const currentUser = useSelector(state => state.user.currentUser);
-  const { postSharePopup: postSharePopupState, activePostId } = useSelector(
+  const { activePostId } = useSelector(state => state.posts);
+  const { postSharePopup: postSharePopupState } = useSelector(
     state => state.popup,
   );
   const { partners } = useSelector(state => state.direct);

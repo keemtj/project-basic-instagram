@@ -1,21 +1,16 @@
 import React, { useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router';
 import PostCommentsInModal from '../../Component/Main/PostCommentsInModal';
 import { closePopup } from '../../Modules/popup';
 import { getProfileUserData } from '../../Modules/user';
 import { getProfilePosts } from '../../Modules/posts';
-import {
-  getCommentsByPost,
-  getDisplayName,
-  getPhotoURL,
-  getUids,
-} from '../../services/firestore';
+import { getDisplayName, getPhotoURL, getUids } from '../../services/firestore';
 
-const PostCommentsInModalContainer = ({ post }) => {
-  const { id } = post;
-  const [comments, setComments] = useState([]);
-  console.log(comments);
+const PostCommentsInModalContainer = ({ comments, newComments }) => {
+  const { photoURL, displayName, uid } = useSelector(
+    state => state.user.currentUser,
+  );
   const [displayNames, setDisplayNames] = useState([]);
   const [photoURLs, setPhotoURLs] = useState([]);
   const [uids, setUids] = useState([]);
@@ -26,14 +21,9 @@ const PostCommentsInModalContainer = ({ post }) => {
     const { uid, displayName } = data;
     dispatch(getProfileUserData(uid));
     dispatch(getProfilePosts(uid));
-    dispatch(closePopup('postModal'));
+    dispatch(closePopup('postsModal'));
     history.push(`/${displayName}`);
   };
-
-  useEffect(async () => {
-    const datas = await getCommentsByPost(id);
-    setComments(datas);
-  }, []);
 
   useEffect(async () => {
     if (comments.length > 0) {
@@ -53,7 +43,11 @@ const PostCommentsInModalContainer = ({ post }) => {
       photoURLs={photoURLs}
       uids={uids}
       comments={comments}
+      newComments={newComments}
       onMoveProfilePage={onMoveProfilePage}
+      displayName={displayName}
+      photoURL={photoURL}
+      uid={uid}
     />
   );
 };

@@ -12,7 +12,6 @@ const PostCommentsContainer = ({ comments, onClickPostModal, newComments }) => {
   const [displayNames, setDisplayNames] = useState([]);
 
   const onMoveProfilePage = (uid, displayName) => {
-    console.log(uid);
     dispatch(getProfileUserData(uid));
     dispatch(getProfilePosts(uid));
     history.push(`/${displayName}`);

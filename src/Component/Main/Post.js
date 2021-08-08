@@ -1,19 +1,16 @@
 import React from 'react';
 import styled from 'styled-components';
 import ProfileCarousel from '../Global/ProfileCarousel';
-import PostTimeElapsed from '../Main/PostTimeElapsed';
-import { calcTimeElapsed } from '../../lib/calcTime';
 import PostHeaderContainer from '../../Container/Main/PostHeaderContainer';
-import PostChatInputContainer from '../../Container/Profile/PostChatInputContainer';
 import PostTextBoxContainer from '../../Container/Main/PostTextBoxContainer';
+import PostCommentsInModalContainer from '../../Container/Main/PostCommentsInModalContainer';
+import PostNavigationContainer from '../../Container/Main/PostNavigationContainer';
+import PostHeartCountContainer from '../../Container/Main/PostHeartCountContainer';
+import PostTimeElapsed from '../Main/PostTimeElapsed';
+import PostChatInputContainer from '../../Container/Profile/PostChatInputContainer';
+import { calcTimeElapsed } from '../../lib/calcTime';
 
-const Post = ({
-  post,
-  //comments,
-  newComments,
-  setNewComments,
-  inputRef,
-}) => {
+const Post = ({ post, comments, newComments, setNewComments, inputRef }) => {
   return (
     <StPostBoxBlockInner>
       <StImageBox>
@@ -24,10 +21,12 @@ const Post = ({
       <StPostDataBox>
         <PostHeaderContainer post={post} />
         <PostTextBoxContainer post={post} />
-        {/* <PostTextBoxContainer post={post} /> */}
-        {/* <PostCommentsContainer comments={comments} newComments={newComments} /> */}
-        {/* <PostNavigationContainer post={post} inputRef={inputRef} /> */}
-        {/* <PostHeartCountContainer post={post} /> */}
+        <PostCommentsInModalContainer
+          comments={comments}
+          newComments={newComments}
+        />
+        <PostNavigationContainer post={post} inputRef={inputRef} />
+        <PostHeartCountContainer post={post} />
         <PostTimeElapsed timeElapsed={calcTimeElapsed(post?.date)} />
         {post?.isPossibleToComment && (
           <PostChatInputContainer

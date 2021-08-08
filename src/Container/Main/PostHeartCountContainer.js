@@ -11,40 +11,38 @@ import {
   removeHeartData,
 } from '../../services/firestore';
 
-const PostHeartCountContainer = ({ post, heartCount }) => {
-  const { id, hearts: heartsInPost } = post;
+const PostHeartCountContainer = ({ post }) => {
   const dispatch = useDispatch();
   const { uid: currentUid } = useSelector(state => state.user.currentUser);
-  const hearts = useSelector(state => state.heart.hearts);
-  const isLiked = () => hearts.includes(currentUid);
+  const isLiked = () => post?.hearts.includes(currentUid);
   const [toast] = useToast();
 
   const onClickHeart = async () => {
     if (!isLiked()) {
       console.log('Liked!');
-      const result = await addHeartData(id);
+      const result = await addHeartData(post?.id);
       if (result === 'error') {
         toast('이미 삭제되었거나 존재하지 않는 게시물입니다.');
       }
     } else {
       console.log('Unliked!');
-      const result = await removeHeartData(id);
+      const result = await removeHeartData(post?.id);
       if (result === 'error') {
         toast('이미 삭제되었거나 존재하지 않는 게시물입니다.');
       }
     }
-    observeMainPost(dispatch, updateMainPosts, id);
+    observeMainPost(dispatch, updateMainPosts, post?.id);
   };
 
   const onClickHeartCount = () => {
     console.log('click heartCount & open heart count modal');
     dispatch(openPopup('postHeartCountModal'));
-    dispatch(getUsersWhoClickHeart(heartsInPost));
+    dispatch(getUsersWhoClickHeart(post?.hearts));
   };
 
   return (
     <PostHeartCount
-      heartCount={heartCount}
+      heartCount={post?.hearts.length}
       onClickHeart={onClickHeart}
       onClickHeartCount={onClickHeartCount}
     />

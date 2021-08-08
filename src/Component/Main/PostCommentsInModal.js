@@ -4,7 +4,7 @@ import { calcTimeElapsed } from '../../lib/calcTime';
 import Loading from '../Global/Loading';
 import ProfileImage from '../Global/ProfileImage';
 
-const PostComments = ({
+const PostCommentsInModal = ({
   modalLoading,
   displayNames,
   photoURLs,
@@ -139,4 +139,4 @@ const StTimeStamp = styled.div`
   line-height: 1.2;
 `;
 
-export default PostComments;
+export default PostCommentsInModal;

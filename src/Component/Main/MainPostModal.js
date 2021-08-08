@@ -6,6 +6,7 @@ import { closePopup } from '../../Modules/popup';
 import PostPortal from '../../Portals/PostPortal';
 import { useHistory } from 'react-router';
 import PostContainer from '../../Container/Main/PostContainer';
+import { currentImageIndex } from '../../Modules/posts';
 
 const MainPostModal = () => {
   const his = useHistory();
@@ -16,12 +17,6 @@ const MainPostModal = () => {
   const { data: mainPosts } = useSelector(state => state.posts.mainPosts);
   const [newComments, setNewComments] = useState([]);
   const path = his.location.pathname;
-
-  // useEffect(() => {
-  //   modalRef.current.style.transform = `translate(-${
-  //     95 * activeIndexValue
-  //   }rem)`;
-  // }, [activeIndexValue]);
 
   const onCloseButton = () => {
     dispatch(closePopup('postModal'));
@@ -37,6 +32,7 @@ const MainPostModal = () => {
     ) {
       console.log('outside');
       onCloseButton();
+      dispatch(currentImageIndex(0)); // reset index of images carousel
     }
   };
 
