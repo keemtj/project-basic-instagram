@@ -312,65 +312,12 @@ export const observeProfileHeartPost = (dispatch, actionCreator, id) => {
     });
 };
 
-// remove post data
-export const removePostData = async (currentUserUid, id, followers) => {
-  const response = await firestore
-    .collection('posts')
-    .doc(currentUserUid)
-    .collection('my-posts')
-    .doc(id)
-    .get();
-  const { bookmarks, hearts } = response.data();
-  console.log(
-    '0. Get uid data of all users who saved or liked my post to be deleted',
-  );
-  await bookmarks.forEach(async uid => {
-    await firestore
-      .collection('bookmarks')
-      .doc(uid) // 나의 포스트를 '북마크'한 유저의 uid
-      .update({
-        bookmarks: firebase.firestore.FieldValue.arrayRemove({
-          uid: currentUserUid, // 나의 uid
-          id, // 나의 post id
-        }),
-      });
-  });
-  console.log('1. Remove bookmarks data of all users who saved my post');
-  await hearts.forEach(async uid => {
-    await firestore
-      .collection('hearts')
-      .doc(uid)
-      .update({
-        hearts: firebase.firestore.FieldValue.arrayRemove({
-          uid: currentUserUid, // 나의 포스트를 '좋아요'한 유저의 uid
-          id, // 나의 post id
-        }),
-      });
-  });
-  console.log('2. Remove hearts data of all users who liked my post');
-  await firestore
-    .collection('posts')
-    .doc(currentUserUid)
-    .collection('my-posts')
-    .doc(id)
-    .delete();
-  console.log('3. Remove post data of firestore');
-  await firestore
-    .collection('posts')
-    .doc(currentUserUid)
-    .collection('main')
-    .doc(id)
-    .delete();
-  console.log('4. Removee post data of main collection');
-  await followers.forEach(async uid => {
-    await firestore
-      .collection('posts')
-      .doc(uid)
-      .collection('main')
-      .doc(id)
-      .delete();
-  });
-  console.log('5. Remove post data to collection of followers');
+/**
+ * remove post data
+ * @param {string} id post id
+ */
+export const removeMyPost = async id => {
+  await firestore.collection('posts').doc(id).delete();
 };
 
 // update(remove) posts data & observe data
@@ -642,7 +589,11 @@ export const getUids = async comments => {
   return promiseAll;
 };
 
-// --> direct.rooms
+// --> DIRECT
+/**
+ * Get rooms by uid
+ * @param {string} uid
+ */
 export const getRoomsByUid = async uid => {
   const response = await firestore
     .collection('direct')
@@ -673,6 +624,12 @@ export const getMessagesByRoomId = async id => {
   return messagesAll;
 };
 
+/**
+ * update direct rooms
+ * @param {function} dispatch
+ * @param {function} actionCreator
+ * @param {string} uid
+ */
 export const updateDirectRooms = async (dispatch, actionCreator, uid) => {
   firestore
     .collection('direct')
@@ -688,6 +645,12 @@ export const updateDirectRooms = async (dispatch, actionCreator, uid) => {
     });
 };
 
+/**
+ * update messages
+ * @param {function} dispatch
+ * @param {function} actionCreator
+ * @param {string} id
+ */
 export const updateMsgs = async (dispatch, actionCreator, id) => {
   firestore
     .collection('direct')
@@ -704,6 +667,11 @@ export const updateMsgs = async (dispatch, actionCreator, id) => {
     });
 };
 
+/**
+ * Get room data already created
+ * @param {string} uid
+ * @param {string} selectedUid
+ */
 export const getRoomDataAlreadyCreated = async (uid, selectedUid) => {
   const response = await firestore
     .collection('direct')

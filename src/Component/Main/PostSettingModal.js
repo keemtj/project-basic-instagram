@@ -3,51 +3,65 @@ import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import useToast from '../../Hooks/useToast';
 import { closePopup } from '../../Modules/popup';
-// import { updateMainPosts } from '../../Modules/posts';
+import { updateMainPosts } from '../../Modules/posts';
 import PostSettingPortal from '../../Portals/PostSettingPortal';
 import { removeImagesByPostData } from '../../services/firebaseStorage';
 import {
-  removePostData,
-  //updatePostsData
+  addBookmarkData,
+  observeMainPost,
+  removeBookmarkData,
+  removeMyPost,
 } from '../../services/firestore';
 
 const PostSettingModal = () => {
   const modalRef = useRef();
   const dispatch = useDispatch();
-  const [toast] = useToast();
-
   const { postSettingModal: postSettingModalState } = useSelector(
     state => state.popup,
   );
-  const { uid: currentUserUid } = useSelector(state => state.user.currentUser);
-  const { followers } = useSelector(state => state.user.currentUserFollowData);
-  const { uid, id, imagesArray } = useSelector(state => state.popup.activePost);
+  const { uid: currentUid } = useSelector(state => state.user.currentUser);
+  const { data: mainPosts } = useSelector(state => state.posts.mainPosts);
+  const { activePostIndex } = useSelector(state => state.posts);
+  const [toast] = useToast();
+  const { uid, id, imagesArray, bookmarks } = mainPosts?.[activePostIndex];
+
+  const isSaved = () => bookmarks.includes(currentUid);
 
   const onRemovePost = async () => {
-    await removePostData(uid, id, followers); // db삭제
-    await removeImagesByPostData(imagesArray, uid, id); // image삭제
-    // await updatePostsData(dispatch, updateMainPosts, newPostIds); // onSnapshot
+    await removeMyPost(id);
+    removeImagesByPostData(imagesArray, uid, id);
+    observeMainPost(dispatch, updateMainPosts, id);
     dispatch(closePopup('postSettingModal'));
     toast('게시글이 삭제되었습니다.');
   };
 
-  const isSaved = () => false;
   const onClickBookmark = async () => {
-    console.log('북마크/북마크 취소');
-    // if (!isSaved()) {
-    //   console.log('Saved!');
-    //   const result = await addBookmarkData(id);
-    //   if (result === 'error') {
-    //     toast('이미 삭제되었거나 존재하지 않는 게시물입니다.');
-    //   }
-    // } else {
-    //   console.log('Deleted!');
-    //   const result = await removeBookmarkData(id);
-    //   if (result === 'error') {
-    //     toast('이미 삭제되었거나 존재하지 않는 게시물입니다.');
-    //   }
-    // }
-    // observeMainPost(dispatch, updateMainPosts, id);
+    if (!isSaved()) {
+      console.log('Saved!');
+      const result = await addBookmarkData(id);
+      if (result === 'error') {
+        toast('이미 삭제되었거나 존재하지 않는 게시물입니다.');
+      } else {
+        toast('게시물이 저장되었습니다.');
+      }
+    } else {
+      console.log('Cancel Saved!');
+      const result = await removeBookmarkData(id);
+      if (result === 'error') {
+        toast('이미 삭제되었거나 존재하지 않는 게시물입니다.');
+      } else {
+        toast('게시물 저장이 취소되었습니다.');
+      }
+    }
+    observeMainPost(dispatch, updateMainPosts, id);
+  };
+
+  const onToggleHeartCount = () => {
+    console.log('show/hide heart count');
+  };
+
+  const onToggleFollow = () => {
+    console.log('follow/unfollow');
   };
 
   const onToggleCommentInput = () => {
@@ -58,7 +72,7 @@ const PostSettingModal = () => {
     console.log('포스트 링크 복사');
   };
 
-  const onMovePostPage = () => {
+  const onMoveProfilePage = () => {
     console.log('포스트 페이지로 이동');
   };
 
@@ -72,8 +86,7 @@ const PostSettingModal = () => {
       modalRef.current &&
       !modalRef.current.contains(e.target)
     ) {
-      dispatch(closePopup('postSettingModal'));
-      // dispatch(activePostData({}));
+      onCancel();
     }
   };
 
@@ -100,36 +113,51 @@ const PostSettingModal = () => {
                 토스트 트리거
               </StButton>
             </StButtonList>
-            {currentUserUid === uid && (
+            {currentUid === uid && (
               <StButtonList>
                 <StButton name="remove" onClick={onRemovePost}>
-                  삭제
+                  삭제(준비중)
                 </StButton>
               </StButtonList>
             )}
-            {currentUserUid !== uid && (
+            {currentUid !== uid && (
               <StButtonList>
-                <StButton name="unfollow">팔로우 취소</StButton>
+                <StButton name="follow" onClick={onToggleFollow}>
+                  팔로우 취소
+                </StButton>
               </StButtonList>
             )}
-            <StButtonList onClick={onClickBookmark}>
-              <StButton>{isSaved() ? '북마크 취소' : '북마크'}</StButton>
+            <StButtonList>
+              <StButton name="bookmark" onClick={onClickBookmark}>
+                {isSaved() ? '북마크 취소' : '북마크'}
+              </StButton>
             </StButtonList>
-            {currentUserUid === uid && (
+            {currentUid === uid && (
               <StButtonList>
-                <StButton>좋아요 수 숨기기(준비중)</StButton>
+                <StButton
+                  name="toggle-heart-count"
+                  onClick={onToggleHeartCount}
+                >
+                  좋아요 수 숨기기(준비중)
+                </StButton>
               </StButtonList>
             )}
-            {currentUserUid === uid && (
-              <StButtonList onClick={onToggleCommentInput}>
-                <StButton>댓글 기능 해제</StButton>
+            {currentUid === uid && (
+              <StButtonList>
+                <StButton name="toggle-input" onClick={onToggleCommentInput}>
+                  댓글 기능 해제(준비중)
+                </StButton>
               </StButtonList>
             )}
-            <StButtonList onClick={onClickCopyLink}>
-              <StButton>링크 복사</StButton>
+            <StButtonList>
+              <StButton name="copy-link" onClick={onClickCopyLink}>
+                링크 복사(준비중)
+              </StButton>
             </StButtonList>
-            <StButtonList onClick={onMovePostPage}>
-              <StButton>게시물로 이동(준비중)</StButton>
+            <StButtonList>
+              <StButton name="move-page" onClick={onMoveProfilePage}>
+                게시물로 이동(준비중)
+              </StButton>
             </StButtonList>
           </ul>
         </StSettingBox>

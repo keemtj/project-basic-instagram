@@ -61,7 +61,9 @@ const MainPostContainer = ({ post, index, displayName, photoURL }) => {
   const onClickSetting = () => {
     console.log('MainPost Setting Modal Trigger');
     dispatch(openPopup('postSettingModal'));
-    // dispatch(activePostData({ uid, id, imagesArray }));
+    dispatch(getProfileUserData(uid));
+    dispatch(activeIdOfPost(id));
+    dispatch(activeIndexOfPost(index));
   };
 
   const isLiked = () => hearts.includes(currentUid);
@@ -94,7 +96,7 @@ const MainPostContainer = ({ post, index, displayName, photoURL }) => {
         toast('게시물이 저장되었습니다.');
       }
     } else {
-      console.log('Deleted!');
+      console.log('Cancel Saved!');
       const result = await removeBookmarkData(id);
       if (result === 'error') {
         toast('이미 삭제되었거나 존재하지 않는 게시물입니다.');
