@@ -26,9 +26,9 @@ const ACTIVE_POST_ID = 'posts/ACTIVE_POST_ID';
 const ACTIVE_POST_INDEX = 'posts/ACTIVE_POST_INDEX';
 const CURRENT_IMAGE = 'posts/CURRENT_IMAGE';
 
-const POST = 'posts/POST';
-const POST_SUCCESS = 'posts/POST_SUCCESS';
-const POST_ERROR = 'posts/POST_ERROR';
+const SINGLE_POST = 'posts/SINGLE_POST';
+const SINGLE_POST_SUCCESS = 'posts/SINGLE_POST_SUCCESS';
+const SINGLE_POST_ERROR = 'posts/SINGLE_POST_ERROR';
 
 const REMOVE_POST = 'posts/REMOVE_POST';
 
@@ -75,8 +75,12 @@ export const activeIndexOfPost = index => ({
 });
 export const currentImageIndex = index => ({ type: CURRENT_IMAGE, index });
 
+export const getSinglePost = fetchDataThunk(
+  SINGLE_POST,
+  store.getPostBySinglePost,
+);
+
 // FIXME: 아래는 수정 가능성이 있는 action creator
-export const getPost = fetchDataThunk(POST, store.getPostBySinglePost);
 export const removePost = data => ({ type: REMOVE_POST, data });
 export const postDataClear = () => ({ type: DATA_CLEAR });
 
@@ -89,7 +93,7 @@ const initialState = {
   activePostId: '',
   activePostIndex: 0,
   currentImage: 0,
-  post: reducerUtils.initial(),
+  singlePost: reducerUtils.initial(),
 };
 
 // NOTE reducer
@@ -215,21 +219,22 @@ const posts = (state = initialState, action) => {
         currentImage: action.index,
       };
 
-    case POST:
+    case SINGLE_POST:
       return {
         ...state,
-        post: reducerUtils.loading(),
+        singlePost: reducerUtils.loading(),
       };
-    case POST_SUCCESS:
+    case SINGLE_POST_SUCCESS:
       return {
         ...state,
-        post: reducerUtils.success(action.payload),
+        singlePost: reducerUtils.success(action.payload),
       };
-    case POST_ERROR:
+    case SINGLE_POST_ERROR:
       return {
         ...state,
-        post: reducerUtils.error(action.payload),
+        singlePost: reducerUtils.error(action.payload),
       };
+
     case REMOVE_POST: {
       return {
         ...state,

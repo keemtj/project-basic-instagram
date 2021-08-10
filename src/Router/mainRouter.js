@@ -7,7 +7,8 @@ import LoginPage from '../Pages/LoginPage';
 import SignupPage from '../Pages/SignupPage';
 import EditPage from '../Pages/EditPage';
 import NewPost from '../Component/New/NewPost';
-import NotFound from '../Component/Global/NotFound';
+import SinglePostPage from '../Pages/SinglePostPage';
+// import NotFound from '../Component/Global/NotFound';
 // import LoadingPage from '../Pages/LoadingPage';
 
 const MainRouter = ({ isSignIn }) => {
@@ -30,7 +31,7 @@ const MainRouter = ({ isSignIn }) => {
     {
       path: '/p/:postId',
       exact: false,
-      children: <NotFound />,
+      children: <SinglePostPage />,
     },
     {
       path: '/:displayName',
