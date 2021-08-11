@@ -1,9 +1,14 @@
 import React, { useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useHistory } from 'react-router';
 import styled from 'styled-components';
 import useToast from '../../Hooks/useToast';
 import { closePopup } from '../../Modules/popup';
-import { updateMainPosts } from '../../Modules/posts';
+import { getProfilePosts, updateMainPosts } from '../../Modules/posts';
+import {
+  getProfileUserData,
+  getProfileUserFollowData,
+} from '../../Modules/user';
 import PostSettingPortal from '../../Portals/PostSettingPortal';
 import { removeImagesByPostData } from '../../services/firebaseStorage';
 import {
@@ -15,13 +20,14 @@ import {
 
 const PostSettingModal = () => {
   const modalRef = useRef();
+  const history = useHistory();
   const dispatch = useDispatch();
   const { postSettingModal: postSettingModalState } = useSelector(
     state => state.popup,
   );
   const { uid: currentUid } = useSelector(state => state.user.currentUser);
   const { data: mainPosts } = useSelector(state => state.posts.mainPosts);
-  const { activePostIndex } = useSelector(state => state.posts);
+  const { activePostIndex, activePostId } = useSelector(state => state.posts);
   const [toast] = useToast();
   const { uid, id, imagesArray, bookmarks } = mainPosts?.[activePostIndex];
 
@@ -72,8 +78,13 @@ const PostSettingModal = () => {
     console.log('포스트 링크 복사');
   };
 
-  const onMoveProfilePage = () => {
-    console.log('포스트 페이지로 이동');
+  const onMoveSinglePostPage = () => {
+    console.log('싱글 포스트 페이지로 이동');
+    dispatch(getProfileUserData(uid));
+    dispatch(getProfileUserFollowData(uid));
+    dispatch(getProfilePosts(uid));
+    dispatch(closePopup('postSettingModal'));
+    history.push(`/p/${activePostId}`);
   };
 
   const onCancel = () => {
@@ -155,7 +166,7 @@ const PostSettingModal = () => {
               </StButton>
             </StButtonList>
             <StButtonList>
-              <StButton name="move-page" onClick={onMoveProfilePage}>
+              <StButton name="move-page" onClick={onMoveSinglePostPage}>
                 게시물로 이동(준비중)
               </StButton>
             </StButtonList>

@@ -193,6 +193,10 @@ export const getUid = async watchName => {
   return uid;
 };
 
+export const getUidByPostId = async id => {
+  const response = await firestore.collection('posts').doc(id).get();
+  return response.data().uid;
+};
 // --> follow data
 /**
  * get follow data of searchUser by uid
