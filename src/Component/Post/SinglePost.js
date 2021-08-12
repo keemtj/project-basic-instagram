@@ -1,10 +1,10 @@
 import React from 'react';
 import styled from 'styled-components';
-import PostCommentsInModalContainer from '../../Container/Main/PostCommentsInModalContainer';
-import PostHeaderContainer from '../../Container/Main/PostHeaderContainer';
-import PostHeartCountContainer from '../../Container/Main/PostHeartCountContainer';
-import PostNavigationContainer from '../../Container/Main/PostNavigationContainer';
-import PostTextBoxContainer from '../../Container/Main/PostTextBoxContainer';
+import SinglePostHeaderContainer from './SinglePostHeaderContainer';
+import SinglePostTextBoxContainer from './SinglePostTextBoxContainer';
+import SinglePostCommentsContainer from './SinglePostCommentsContainer';
+import SinglePostNavigationContainer from './SinglePostNavigationContainer';
+import SinglePostHeartCountContainer from './SinglePostHeartCountContainer';
 import PostChatInputContainer from '../../Container/Profile/PostChatInputContainer';
 import PostItemContainer from '../../Container/Profile/PostItemContainer';
 import { calcTimeElapsed } from '../../lib/calcTime';
@@ -20,15 +20,8 @@ const SinglePost = ({
   newComments,
   setNewComments,
   inputRef,
+  onMoveProfilePage,
 }) => {
-  /**
-   * FIXME: components naming
-   * PostHeaderContainer -> SinglePostHeaderContainer
-   * PostTextBoxContainer -> SinglePostTextBoxContainer
-   * PostCommentsInModalContainer -> SinglePostCommentsContainer
-   * PostNavigationContainer -> SinglePostNavigationContainer
-   * PostHeartCountContainer -> SinglePostHeartCountContainer
-   */
   return (
     <StSinglePostWrapper>
       <StSinglePostSection>
@@ -39,14 +32,14 @@ const SinglePost = ({
             </StImagesSection>
           </StImageBox>
           <StSinglePostDataBox>
-            <PostHeaderContainer post={post} />
-            <PostTextBoxContainer post={post} />
-            <PostCommentsInModalContainer
+            <SinglePostHeaderContainer post={post} />
+            <SinglePostTextBoxContainer post={post} />
+            <SinglePostCommentsContainer
               comments={comments}
               newComments={newComments}
             />
-            <PostNavigationContainer post={post} inputRef={inputRef} />
-            <PostHeartCountContainer post={post} />
+            <SinglePostNavigationContainer post={post} inputRef={inputRef} />
+            <SinglePostHeartCountContainer post={post} />
             <PostTimeElapsed timeElapsed={calcTimeElapsed(post?.date)} />
             {post?.isPossibleToComment && (
               <PostChatInputContainer
@@ -61,7 +54,12 @@ const SinglePost = ({
       </StSinglePostSection>
       {profilePosts?.length > 1 && (
         <StMoreSinglePostSection>
-          <StMorePosts>{displayName}님의 게시물 더보기</StMorePosts>
+          <StMorePosts>
+            <StDisplayName onClick={onMoveProfilePage}>
+              {displayName}
+            </StDisplayName>
+            님의 게시물 더보기
+          </StMorePosts>
           <StPostsWrapper>
             {profilePosts
               .filter(post => post.id !== postId)
@@ -104,6 +102,7 @@ const StSinglePostBoxBlockInner = styled.div`
   border: 1px solid ${({ theme }) => theme.gray};
   min-width: 100%;
   height: auto;
+  max-height: 59.9rem;
 `;
 
 const StImageBox = styled.div`
@@ -139,6 +138,15 @@ const StMorePosts = styled.div`
   padding: 2rem 0rem;
   color: ${({ theme }) => theme.darkGray};
   font-size: 1.2rem;
+  font-weight: 600;
+`;
+
+const StDisplayName = styled.span`
+  color: ${({ theme }) => theme.black};
+  &:hover {
+    text-decoration: underline;
+    cursor: pointer;
+  }
 `;
 
 const StPostsWrapper = styled.article`

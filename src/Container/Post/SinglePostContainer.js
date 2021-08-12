@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useRouteMatch } from 'react-router';
+import { useHistory, useRouteMatch } from 'react-router';
 import SinglePost from '../../Component/Post/SinglePost';
 import { getProfilePosts } from '../../Modules/posts';
 import {
@@ -13,6 +13,7 @@ const SinglePostContainer = () => {
   const inputRef = useRef(null);
   const dispatch = useDispatch();
   const match = useRouteMatch();
+  const history = useHistory();
   const postId = match.params.postId;
   const { data: profilePosts } = useSelector(state => state.posts.profilePosts);
   const { data: profileUserData } = useSelector(
@@ -22,6 +23,14 @@ const SinglePostContainer = () => {
   const [comments, setComments] = useState([]);
   const [newComments, setNewComments] = useState([]);
   const post = () => profilePosts?.find(post => post.id === postId);
+
+  const onMoveProfilePage = async () => {
+    const uid = profileUserData?.uid;
+    dispatch(getProfileUserData(uid));
+    dispatch(getProfileUserFollowData(uid));
+    dispatch(getProfilePosts(uid));
+    history.push(`/${profileUserData?.displayName}`);
+  };
 
   useEffect(async () => {
     if (!profilePosts) {
@@ -55,6 +64,7 @@ const SinglePostContainer = () => {
       newComments={newComments}
       setNewComments={setNewComments}
       inputRef={inputRef}
+      onMoveProfilePage={onMoveProfilePage}
     />
   );
 };

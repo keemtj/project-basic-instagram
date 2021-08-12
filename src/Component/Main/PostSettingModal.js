@@ -75,7 +75,7 @@ const PostSettingModal = () => {
   };
 
   const onClickCopyLink = () => {
-    console.log('포스트 링크 복사');
+    console.log('포스트 링크 복사', activePostId);
   };
 
   const onMoveSinglePostPage = () => {
@@ -167,7 +167,7 @@ const PostSettingModal = () => {
             </StButtonList>
             <StButtonList>
               <StButton name="move-page" onClick={onMoveSinglePostPage}>
-                게시물로 이동(준비중)
+                게시물로 이동
               </StButton>
             </StButtonList>
           </ul>
