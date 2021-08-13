@@ -21,6 +21,7 @@ const SinglePost = ({
   setNewComments,
   inputRef,
   onMoveProfilePage,
+  onClickSinglePost,
 }) => {
   return (
     <StSinglePostWrapper>
@@ -69,7 +70,7 @@ const SinglePost = ({
                   <PostItemContainer
                     post={post}
                     key={index}
-                    onClickPostModal={() => console.log('single post 보여주기')}
+                    onClickPostModal={() => onClickSinglePost(post.id)}
                   />
                 );
               })}

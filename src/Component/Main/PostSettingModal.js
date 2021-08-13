@@ -79,12 +79,12 @@ const PostSettingModal = () => {
   };
 
   const onMoveSinglePostPage = () => {
-    console.log('싱글 포스트 페이지로 이동');
     dispatch(getProfileUserData(uid));
     dispatch(getProfileUserFollowData(uid));
     dispatch(getProfilePosts(uid));
     dispatch(closePopup('postSettingModal'));
     history.push(`/p/${activePostId}`);
+    console.log('싱글 포스트 페이지로 이동');
   };
 
   const onCancel = () => {

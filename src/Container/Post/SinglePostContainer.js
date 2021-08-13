@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory, useRouteMatch } from 'react-router';
 import SinglePost from '../../Component/Post/SinglePost';
+import ProgressBar from '../../Component/Global/ProgressBar';
 import { getProfilePosts } from '../../Modules/posts';
 import {
   getProfileUserData,
@@ -22,6 +23,7 @@ const SinglePostContainer = () => {
   const { activePostIndex } = useSelector(state => state.posts);
   const [comments, setComments] = useState([]);
   const [newComments, setNewComments] = useState([]);
+  const [progress, setProgress] = useState(0);
   const post = () => profilePosts?.find(post => post.id === postId);
 
   const onMoveProfilePage = async () => {
@@ -30,6 +32,14 @@ const SinglePostContainer = () => {
     dispatch(getProfileUserFollowData(uid));
     dispatch(getProfilePosts(uid));
     history.push(`/${profileUserData?.displayName}`);
+  };
+
+  const onClickSinglePost = id => {
+    setProgress(100);
+    setTimeout(() => {
+      setProgress(0);
+      history.push(`/p/${id}`);
+    }, 1000);
   };
 
   useEffect(async () => {
@@ -45,7 +55,7 @@ const SinglePostContainer = () => {
     const datas = await getCommentsByPost(postId);
     setComments(datas);
     setNewComments([]);
-  }, []);
+  }, [postId]);
 
   useEffect(() => {
     document.title = `Instagram의 ${profileUserData?.presentation} | ${
@@ -54,18 +64,22 @@ const SinglePostContainer = () => {
   }, []);
 
   return (
-    <SinglePost
-      post={post()}
-      profilePosts={profilePosts}
-      postId={postId}
-      displayName={profileUserData?.displayName}
-      activePostIndex={activePostIndex}
-      comments={comments}
-      newComments={newComments}
-      setNewComments={setNewComments}
-      inputRef={inputRef}
-      onMoveProfilePage={onMoveProfilePage}
-    />
+    <>
+      {progress !== 0 && <ProgressBar progress={progress} />}
+      <SinglePost
+        post={post()}
+        profilePosts={profilePosts}
+        postId={postId}
+        displayName={profileUserData?.displayName}
+        activePostIndex={activePostIndex}
+        comments={comments}
+        newComments={newComments}
+        setNewComments={setNewComments}
+        inputRef={inputRef}
+        onMoveProfilePage={onMoveProfilePage}
+        onClickSinglePost={onClickSinglePost}
+      />
+    </>
   );
 };
 
