@@ -79,7 +79,7 @@ const PostCommentsInModal = ({
                     >
                       {comment.displayName}
                     </StDisplayName>{' '}
-                    <StText>{comment.comment}</StText>
+                    <StText>{comment.text}</StText>
                     <StTimeStamp>{calcTimeElapsed(comment.date)}</StTimeStamp>
                     <div />
                   </StComment>

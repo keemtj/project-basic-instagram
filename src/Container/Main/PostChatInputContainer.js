@@ -7,16 +7,16 @@ import { addCommentToPost } from '../../services/firestore';
 const PostChatInputContainer = ({ id, newComments, setNewComments }) => {
   const inputRef = useRef(null);
   const { displayName } = useSelector(state => state.user.currentUser);
-  const [comment, setText] = useState('');
+  const [text, setText] = useState('');
   const [isShow, setIsShow] = useState(false);
   const [toast] = useToast();
 
   const onSubmit = async e => {
     e.preventDefault();
-    if (comment.length === 0) return;
+    if (text.length === 0) return;
     const date = Date.now();
-    await addCommentToPost(id, comment, date);
-    setNewComments([...newComments, { displayName, comment, date }]);
+    await addCommentToPost(id, text, date);
+    setNewComments([...newComments, { displayName, text, date }]);
     setText('');
     setIsShow(false);
     toast('댓글 작성이 완료되었습니다.');
@@ -31,7 +31,7 @@ const PostChatInputContainer = ({ id, newComments, setNewComments }) => {
   };
 
   const onEmojiClick = (e, emojiObject) => {
-    setText(comment + emojiObject.emoji);
+    setText(text + emojiObject.emoji);
     inputRef.current.focus();
   };
 
@@ -39,7 +39,7 @@ const PostChatInputContainer = ({ id, newComments, setNewComments }) => {
     <PostChatInput
       onSubmit={onSubmit}
       onChange={onChange}
-      comment={comment}
+      text={text}
       onShowEmojiPicker={onShowEmojiPicker}
       onEmojiClick={onEmojiClick}
       isShow={isShow}

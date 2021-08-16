@@ -1,7 +1,6 @@
 /* eslint-disable no-undef */
 import React, { useEffect, useState } from 'react';
 import styled, { css } from 'styled-components';
-import { useHistory } from 'react-router';
 import { useDispatch, useSelector } from 'react-redux';
 import useToast from '../../Hooks/useToast';
 import { firebase, firestore, firebaseStorage } from '../../services/firebase';
@@ -17,7 +16,6 @@ import PlaceSearch from './PlaceSearch';
 import PlaceAutoComplete from './PlaceAutoComplete';
 
 const NewPost = ({ setProgress }) => {
-  const his = useHistory();
   const dispatch = useDispatch();
   const { uid } = useSelector(state => state.user.currentUser);
   const [images, setImages] = useState([]);
@@ -41,7 +39,6 @@ const NewPost = ({ setProgress }) => {
     addPostDataToFirestore(uid, postId);
     uploadImagesToStorage(uid, postId, images);
     dispatch(closePopup('newPostModal'));
-    his.push('/');
     console.log('create new post');
   };
 

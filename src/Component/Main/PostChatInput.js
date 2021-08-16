@@ -6,14 +6,14 @@ import Emoji from '../Global/Emoji';
 const PostChatInput = ({
   onSubmit,
   onChange,
-  comment,
+  text,
   onShowEmojiPicker,
   onEmojiClick,
   isShow,
   inputRef,
 }) => {
   return (
-    <>
+    <StChatInput>
       {isShow && <Emoji onEmojiClick={onEmojiClick} />}
       <form onSubmit={onSubmit}>
         <StChatCommentLabel>
@@ -24,17 +24,21 @@ const PostChatInput = ({
             ref={inputRef}
             type="text"
             placeholder="댓글 달기..."
-            value={comment}
+            value={text}
             onChange={onChange}
           />
-          <StCommentButton type="submit" text={comment}>
+          <StCommentButton type="submit" text={text}>
             게시
           </StCommentButton>
         </StChatCommentLabel>
       </form>
-    </>
+    </StChatInput>
   );
 };
+
+const StChatInput = styled.div`
+  position: relative;
+`;
 
 const StChatCommentLabel = styled.label`
   border-top: 1px solid ${({ theme }) => theme.gray};

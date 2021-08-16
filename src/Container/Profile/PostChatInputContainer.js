@@ -12,23 +12,23 @@ const PostChatInputContainer = ({
 }) => {
   const { id } = post;
   const { displayName } = useSelector(state => state.user.currentUser);
-  const [comment, setComment] = useState('');
+  const [text, setText] = useState('');
   const [isShow, setIsShow] = useState(false);
   const [toast] = useToast();
 
   const onSubmit = async e => {
     e.preventDefault();
-    if (comment.length === 0) return;
+    if (text.length === 0) return;
     const date = Date.now();
-    await addCommentToPost(id, comment, date);
-    setNewComments([...newComments, { displayName, comment, date }]);
-    setComment('');
+    await addCommentToPost(id, text, date);
+    setNewComments([...newComments, { displayName, text, date }]);
+    setText('');
     setIsShow(false);
     toast('댓글 작성이 완료되었습니다.');
   };
 
   const onChange = ({ target }) => {
-    setComment(target.value);
+    setText(target.value);
   };
 
   const onShowEmojiPicker = () => {
@@ -36,7 +36,7 @@ const PostChatInputContainer = ({
   };
 
   const onEmojiClick = (e, emojiObject) => {
-    setComment(comment + emojiObject.emoji);
+    setText(text + emojiObject.emoji);
     inputRef.current.focus();
   };
 
@@ -44,7 +44,7 @@ const PostChatInputContainer = ({
     <PostChatInput
       onSubmit={onSubmit}
       onChange={onChange}
-      comment={comment}
+      text={text}
       onShowEmojiPicker={onShowEmojiPicker}
       onEmojiClick={onEmojiClick}
       isShow={isShow}
