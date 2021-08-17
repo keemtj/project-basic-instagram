@@ -14,6 +14,7 @@ import Textarea from './Textarea';
 import CommentSetting from './CommentSetting';
 import PlaceSearch from './PlaceSearch';
 import PlaceAutoComplete from './PlaceAutoComplete';
+import { useHistory } from 'react-router';
 
 const NewPost = ({ setProgress }) => {
   const dispatch = useDispatch();
@@ -26,11 +27,11 @@ const NewPost = ({ setProgress }) => {
   const [isPossibleToComment, setisPossibleToComment] = useState(false);
   const [text, setText] = useState('');
   const [toast] = useToast();
+  const [uploadState, setUploadState] = useState('');
+  const his = useHistory();
 
   const closeModal = () => {
-    console.log('cancel new post');
     dispatch(closePopup('newPostModal'));
-    history.back();
   };
 
   // FIXME: create new post
@@ -38,8 +39,6 @@ const NewPost = ({ setProgress }) => {
     const postId = generatedId();
     addPostDataToFirestore(uid, postId);
     uploadImagesToStorage(uid, postId, images);
-    dispatch(closePopup('newPostModal'));
-    console.log('create new post');
   };
 
   // add post data to firestore
@@ -73,6 +72,7 @@ const NewPost = ({ setProgress }) => {
           );
           console.log('Upload is ' + progress + '%');
           console.log('업로드중에 taskState:', snapshot.state);
+          setUploadState(snapshot.state);
           setProgress(progress);
         },
         e => console.log(e),
@@ -92,6 +92,7 @@ const NewPost = ({ setProgress }) => {
               }),
             });
           console.log('TASK STATE:', uploadTask.snapshot.state);
+          setUploadState(uploadTask.snapshot.state);
           setProgress(0);
           toast('새 게시물이 작성되었습니다.');
         },
@@ -138,7 +139,10 @@ const NewPost = ({ setProgress }) => {
   };
 
   useEffect(() => {
-    history.pushState('', '', '/new');
+    history.pushState('', '', '/create/upload');
+    return () => {
+      history.pushState('', '', his.location.pathname);
+    };
   }, []);
 
   useEffect(() => {
@@ -154,7 +158,11 @@ const NewPost = ({ setProgress }) => {
       <StModal>
         <StNewPostBox>
           <StHeader>
-            <h2>{autoCompleteState ? '장소 검색' : '새 게시물'}</h2>
+            {/* <h2>{autoCompleteState ? '장소 검색' : '새 게시물'}</h2> */}
+            {!uploadState && autoCompleteState && <h2>장소 검색</h2>}
+            {!uploadState && !autoCompleteState && <h2>새 게시물</h2>}
+            {uploadState === 'running' && <h2>업로드 중</h2>}
+            {uploadState === 'success' && <h2>업로드 완료</h2>}
           </StHeader>
           {autoCompleteState ? (
             <PlaceAutoComplete
@@ -164,39 +172,47 @@ const NewPost = ({ setProgress }) => {
             />
           ) : (
             <>
-              <StUploadSection>
-                <UploadImageInput addImage={addImage}>
-                  <StUploadIcon width={2} height={2} />
-                </UploadImageInput>
-              </StUploadSection>
-              <StImagePreviewSection>
-                <ImagePreview
-                  images={images}
-                  // onShow={onShow}
-                  // onHide={onHide}
-                  // hover={hover}
-                  // onRemoveImage={onRemoveImage}
-                >
-                  <StUploadIcon width={3} height={3} />
-                </ImagePreview>
-              </StImagePreviewSection>
-              <StTextareaSection>
-                <Textarea text={text} addText={addText} />
-              </StTextareaSection>
-              <StLocationSection>
-                <PlaceSearch
-                  location={location}
-                  subLocation={subLocation}
-                  removeLocation={removeLocation}
-                  addLocation={addLocation}
-                />
-              </StLocationSection>
-              <StCommentSettingSection>
-                <CommentSetting
-                  isPossibleToComment={isPossibleToComment}
-                  handleToggle={handleToggle}
-                />
-              </StCommentSettingSection>
+              {uploadState === 'running' && <div>{'게시물 업로드 중'}</div>}
+              {uploadState === 'success' && (
+                <div>{'게시물이 업로드되었습니다'}</div>
+              )}
+              {uploadState === '' && (
+                <>
+                  <StUploadSection>
+                    <UploadImageInput addImage={addImage}>
+                      <StUploadIcon width={2} height={2} />
+                    </UploadImageInput>
+                  </StUploadSection>
+                  <StImagePreviewSection>
+                    <ImagePreview
+                      images={images}
+                      // onShow={onShow}
+                      // onHide={onHide}
+                      // hover={hover}
+                      // onRemoveImage={onRemoveImage}
+                    >
+                      <StUploadIcon width={3} height={3} />
+                    </ImagePreview>
+                  </StImagePreviewSection>
+                  <StTextareaSection>
+                    <Textarea text={text} addText={addText} />
+                  </StTextareaSection>
+                  <StLocationSection>
+                    <PlaceSearch
+                      location={location}
+                      subLocation={subLocation}
+                      removeLocation={removeLocation}
+                      addLocation={addLocation}
+                    />
+                  </StLocationSection>
+                  <StCommentSettingSection>
+                    <CommentSetting
+                      isPossibleToComment={isPossibleToComment}
+                      handleToggle={handleToggle}
+                    />
+                  </StCommentSettingSection>
+                </>
+              )}
             </>
           )}
           <StFooter>
@@ -206,20 +222,34 @@ const NewPost = ({ setProgress }) => {
               </StNewPostButton>
             ) : (
               <>
-                <StNewPostButton
-                  type="button"
-                  name={'cancel'}
-                  onClick={closeModal}
-                >
-                  취소
-                </StNewPostButton>
-                <StNewPostButton
-                  type="button"
-                  onClick={images.length ? createPost : undefined}
-                  isExist={images.length}
-                >
-                  공유
-                </StNewPostButton>
+                {uploadState === 'success' ? (
+                  <div />
+                ) : (
+                  <StNewPostButton
+                    type="button"
+                    name={'cancel'}
+                    onClick={closeModal}
+                  >
+                    취소
+                  </StNewPostButton>
+                )}
+                {uploadState === 'success' ? (
+                  <StNewPostButton
+                    type="button"
+                    name={'cancel'}
+                    onClick={closeModal}
+                  >
+                    닫기
+                  </StNewPostButton>
+                ) : (
+                  <StNewPostButton
+                    type="button"
+                    onClick={images.length ? createPost : undefined}
+                    isExist={images.length}
+                  >
+                    공유
+                  </StNewPostButton>
+                )}
               </>
             )}
           </StFooter>

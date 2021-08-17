@@ -4,7 +4,11 @@ import { useHistory } from 'react-router';
 import styled from 'styled-components';
 import useToast from '../../Hooks/useToast';
 import { closePopup } from '../../Modules/popup';
-import { getProfilePosts, updateMainPosts } from '../../Modules/posts';
+import {
+  getProfilePosts,
+  removePost,
+  updateMainPosts,
+} from '../../Modules/posts';
 import {
   getProfileUserData,
   getProfileUserFollowData,
@@ -34,9 +38,9 @@ const PostSettingModal = () => {
   const isSaved = () => bookmarks.includes(currentUid);
 
   const onRemovePost = async () => {
-    await removeMyPost(id);
-    removeImagesByPostData(imagesArray, uid, id);
-    observeMainPost(dispatch, updateMainPosts, id);
+    await removeMyPost(id); // server - firestore
+    removeImagesByPostData(imagesArray, uid, id); // server - storage
+    dispatch(removePost(id)); // local
     dispatch(closePopup('postSettingModal'));
     toast('게시글이 삭제되었습니다.');
   };

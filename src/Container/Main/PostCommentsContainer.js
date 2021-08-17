@@ -7,7 +7,6 @@ import { getProfileUserData } from '../../Modules/user';
 import { getDisplayName } from '../../services/firestore';
 
 const PostCommentsContainer = ({ comments, onClickPostModal, newComments }) => {
-  console.log(newComments);
   const history = useHistory();
   const dispatch = useDispatch();
   const [displayNames, setDisplayNames] = useState([]);

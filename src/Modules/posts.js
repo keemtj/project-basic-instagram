@@ -80,8 +80,9 @@ export const getSinglePost = fetchDataThunk(
   store.getPostBySinglePost,
 );
 
+export const removePost = id => ({ type: REMOVE_POST, id });
+
 // FIXME: 아래는 수정 가능성이 있는 action creator
-export const removePost = data => ({ type: REMOVE_POST, data });
 export const postDataClear = () => ({ type: DATA_CLEAR });
 
 // NOTE initialState
@@ -238,12 +239,13 @@ const posts = (state = initialState, action) => {
     case REMOVE_POST: {
       return {
         ...state,
-        myPosts: {
-          ...state.myPosts,
-          data: action.data,
+        mainPosts: {
+          ...state.mainPosts,
+          data: state.mainPosts.data.filter(post => post.id !== action.id),
         },
       };
     }
+
     case DATA_CLEAR:
       return initialState;
     default:
