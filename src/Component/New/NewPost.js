@@ -2,7 +2,6 @@
 import React, { useEffect, useState } from 'react';
 import styled, { css } from 'styled-components';
 import { useDispatch, useSelector } from 'react-redux';
-import useToast from '../../Hooks/useToast';
 import { firebase, firestore, firebaseStorage } from '../../services/firebase';
 import { generatedId } from '../../services/firestore';
 import { closePopup } from '../../Modules/popup';
@@ -15,8 +14,9 @@ import CommentSetting from './CommentSetting';
 import PlaceSearch from './PlaceSearch';
 import PlaceAutoComplete from './PlaceAutoComplete';
 import { useHistory } from 'react-router';
+import Uploading from './Uploading';
 
-const NewPost = ({ setProgress }) => {
+const NewPost = () => {
   const dispatch = useDispatch();
   const { uid } = useSelector(state => state.user.currentUser);
   const [images, setImages] = useState([]);
@@ -26,7 +26,6 @@ const NewPost = ({ setProgress }) => {
   const [autoCompleteState, setAutoCompleteState] = useState(false);
   const [isPossibleToComment, setisPossibleToComment] = useState(false);
   const [text, setText] = useState('');
-  const [toast] = useToast();
   const [uploadState, setUploadState] = useState('');
   const his = useHistory();
 
@@ -73,7 +72,6 @@ const NewPost = ({ setProgress }) => {
           console.log('Upload is ' + progress + '%');
           console.log('업로드중에 taskState:', snapshot.state);
           setUploadState(snapshot.state);
-          setProgress(progress);
         },
         e => console.log(e),
         async () => {
@@ -93,8 +91,6 @@ const NewPost = ({ setProgress }) => {
             });
           console.log('TASK STATE:', uploadTask.snapshot.state);
           setUploadState(uploadTask.snapshot.state);
-          setProgress(0);
-          toast('새 게시물이 작성되었습니다.');
         },
       );
     });
@@ -158,7 +154,6 @@ const NewPost = ({ setProgress }) => {
       <StModal>
         <StNewPostBox>
           <StHeader>
-            {/* <h2>{autoCompleteState ? '장소 검색' : '새 게시물'}</h2> */}
             {!uploadState && autoCompleteState && <h2>장소 검색</h2>}
             {!uploadState && !autoCompleteState && <h2>새 게시물</h2>}
             {uploadState === 'running' && <h2>업로드 중</h2>}
@@ -172,11 +167,9 @@ const NewPost = ({ setProgress }) => {
             />
           ) : (
             <>
-              {uploadState === 'running' && <div>{'게시물 업로드 중'}</div>}
-              {uploadState === 'success' && (
-                <div>{'게시물이 업로드되었습니다'}</div>
-              )}
-              {uploadState === '' && (
+              {uploadState !== '' ? (
+                <Uploading uploadState={uploadState} />
+              ) : (
                 <>
                   <StUploadSection>
                     <UploadImageInput addImage={addImage}>
@@ -222,7 +215,7 @@ const NewPost = ({ setProgress }) => {
               </StNewPostButton>
             ) : (
               <>
-                {uploadState === 'success' ? (
+                {uploadState === 'running' || uploadState === 'success' ? (
                   <div />
                 ) : (
                   <StNewPostButton

@@ -131,7 +131,7 @@ const PostSettingModal = () => {
             {currentUid === uid && (
               <StButtonList>
                 <StButton name="remove" onClick={onRemovePost}>
-                  삭제(준비중)
+                  삭제
                 </StButton>
               </StButtonList>
             )}

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import ResetStyle from './Style/ResetStyle';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router';
@@ -13,7 +13,7 @@ import { getMainPosts } from './Modules/posts';
 import PageWrapper from './Component/Global/PageWrapper';
 import HeaderContainer from './Container/Global/HeaderContainer';
 import MainRouter from './Router/MainRouter';
-import ProgressBar from './Component/Global/ProgressBar';
+// import ProgressBar from './Component/Global/ProgressBar';
 import NewPost from './Component/New/NewPost';
 import PostSettingModal from './Component/Main/PostSettingModal';
 import ToastPopup from './Component/Global/ToastPopup';
@@ -29,7 +29,7 @@ import { getRooms } from './Modules/direct';
 const App = () => {
   const dispatch = useDispatch();
   const history = useHistory();
-  const [progress, setProgress] = useState(0);
+  // const [progress, setProgress] = React.useState(0);
   const isSignIn = useSelector(state => state.login.isSignIn);
   const {
     newPostModal: newPostModalState,
@@ -67,8 +67,8 @@ const App = () => {
       <PageWrapper>
         {isSignIn && <HeaderContainer />}
         <MainRouter isSignIn={isSignIn} />
-        {progress !== 0 && <ProgressBar progress={progress} />}
-        {newPostModalState && <NewPost setProgress={setProgress} />}
+        {/* {progress !== 0 && <ProgressBar progress={progress} />} */}
+        {newPostModalState && <NewPost />}
         {postSettingModalState && <PostSettingModal />}
         {postModalState && <MainPostModal />}
         {postHeartCountModalState && <HeartCountModal />}

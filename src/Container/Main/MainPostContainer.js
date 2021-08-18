@@ -45,8 +45,9 @@ const MainPostContainer = ({ post, index, displayName, photoURL }) => {
   };
   const history = useHistory();
   const dispatch = useDispatch();
-  const [toast] = useToast();
   const { uid: currentUid } = useSelector(state => state.user.currentUser);
+  const { data: mainPosts } = useSelector(state => state.posts.mainPosts);
+  const [toast] = useToast();
   const [comments, setComments] = useState([]);
   const [newComments, setNewComments] = useState([]);
   const [more, setMore] = useState(true);
@@ -134,7 +135,7 @@ const MainPostContainer = ({ post, index, displayName, photoURL }) => {
   useEffect(async () => {
     const datas = await getCommentsByPost(id);
     setComments(datas);
-  }, []);
+  }, [mainPosts]);
 
   return (
     <MainPost
