@@ -16,13 +16,17 @@
 >
 > **주요 기능:** 회원가입, 로그인, 포스트 작성 및 삭제, 댓글, 유저 검색, 다이렉트 메시지, 팔로우, 프로필 페이지, 좋아요 및 북마크
 >
-> **기술:** React, Styled-component, Redux-thunk, Firebase
+> **사용 기술:** React, Styled-component, Redux-thunk, Firebase
+>
+> **문의:** keemgreat@gmail.com
 
 <br />
 
 ## **🔗 링크**
 
 **링크:** [instagram v1.0.0](https://instagram-73830.web.app)
+
+> `ID: test@gmail.com | PW: 123456`를 입력하여 접속 가능
 
 <br />
 
@@ -41,59 +45,121 @@ React, Styled-component, redux-thunk, firebase를 이용하여 인스타그램 �
 
 ## **👨🏻‍💻 기능 구현**
 
-### **0. 프로젝트 기본 설정**
+### **0. DB 설계**
 
-**- Reset style**
+**- Firebase Authentication**
 
-**- Theme Provider**
+**- Firebase Cloud Firestore**
 
-**- 메인 라우터**
-
-**- 서브 라우터**
+**- Firebase Storage**
 
 ### **1. 회원가입**
 
 **- 이메일을 이용한 회원가입**
 
+<img width="250" src="https://user-images.githubusercontent.com/51189962/130093158-56126d52-86d6-4375-bf44-c003c7983fd4.png" alt="회원가입 화면 이미지"/>
+
+<img width="250" src="https://user-images.githubusercontent.com/51189962/130093874-fd88ba8e-a5a1-4449-a725-fc2d99d63be0.png" alt="회원 관리 이미지"/>
+
+- 이메일, 패스워드, 성명, 아이디를 입력하여 회원가입 구현
+- Firebase의 Authentication에서 회원가입한 유저 정보 관리
+
 **- Google 인증을 통한 회원가입**
+
+- 본인의 Google 계정을 연동하여 회원가입 진행하는 기능 구현
+- 별도의 이메일, 패스워드 입력없이 Google 계정을 통해 회원가입 및 즉시 회원가입 가능
 
 ### **2. 로그인**
 
 **- 이메일 및 패스워드 로그인**
 
+<img width="250" alt="스크린샷 2021-08-20 00 20 40" src="https://user-images.githubusercontent.com/51189962/130095694-d4009fb0-919b-4801-9602-5244868d38cd.png">
+
+<img width="250" alt="스크린샷 2021-08-20 00 25 14" src="https://user-images.githubusercontent.com/51189962/130096348-eb3f8523-f102-484e-aa0a-8f2616885cb6.png">
+
+<img width="250" alt="스크린샷 2021-08-20 00 21 07" src="https://user-images.githubusercontent.com/51189962/130095735-b845a0f0-a092-498d-98b0-f179cee0132a.png">
+
+- 인증된 이메일과 패스워드를 통해 로그인하도록 구현
+- 이메일 형식이 아닌 경우, 비밀번호가 6자리 미만인 경우 로그인 버튼 기능을 제한함
+- 이메일 혹은 비밀번호만 입력한 경우, 이메일 혹은 비밀번호가 일치하지 않을 경우 로그인 제한 기능 구현
+
 **- Google계정 로그인**
+
+- 기존에 회원가입을 통해 인증된 Google 계정이 존재할 경우 즉시 로그인
+- 회원이 존재하지 않더라도 구글 인증 과정을 거친 후 즉시 로그인
 
 ### **3. 헤더**
 
 **- 유저 검색**
 
+<img width="250" alt="스크린샷 2021-08-20 00 31 18" src="https://user-images.githubusercontent.com/51189962/130097377-d5838a58-f516-4e1f-94b5-ccdcbd0ae508.png">
+
+<img width="250" alt="스크린샷 2021-08-20 00 33 07" src="https://user-images.githubusercontent.com/51189962/130097714-e3cf3e9f-130b-4759-840a-79189db95655.png">
+
+<img width="250" alt="스크린샷 2021-08-20 00 34 04" src="https://user-images.githubusercontent.com/51189962/130097910-1c3794e0-8c0e-40b5-9d1f-c368210a8842.png">
+
+- 현재 회원가입된 유저를 검색하는 기능 구현
+- 최근 검색한 유저의 리스트를 최근 검색 항목에 구현
+- 검색 기록 지우기, 모두 지우기, 최근 검색 항목에서 유저를 선택할 경우 최근 검색 항목의 상위로 업데이트하는 기능 구현
+
 **- 네비게이션 바**
 
-### **4. 메인 페이지**
+<img width="250" alt="스크린샷 2021-08-20 00 39 41" src="https://user-images.githubusercontent.com/51189962/130098920-18b79c39-43c6-4992-a20a-ce0e7c5ce990.png">
 
-**- 메인 피드**
+<img width="250" alt="스크린샷 2021-08-20 00 39 33" src="https://user-images.githubusercontent.com/51189962/130098924-04010f93-e328-4c7f-bc8a-aa6721eadbfb.png">
 
-**- 좋아요, 북마크, 댓글, 공유**
+<img width="250" alt="스크린샷 2021-08-20 00 39 22" src="https://user-images.githubusercontent.com/51189962/130098927-13515b3e-a88d-4617-8873-f5ddcbc99d29.png">
+
+<img width="250" alt="스크린샷 2021-08-20 00 39 16" src="https://user-images.githubusercontent.com/51189962/130098928-154a7eb3-3c14-4020-b3a5-fc803f1f3887.png">
+
+- 현재 보여주는 페이지에 대해 시각적으로 표시하고 modal, popup창이 열렸다가 닫힐 경우 다시 기존의 페이지로 보여주도록 구현
+
+### **4. 새 게시물 작성**
+
+**- 새 게시물**
+
+<img width="600" alt="새 게시물 작성 과정" src="https://user-images.githubusercontent.com/51189962/130239678-88b228f0-9369-4867-82f6-f62ba935916a.gif">
+<img width="600" alt="새 게시물 modal" src="https://user-images.githubusercontent.com/51189962/130236064-5abfb386-da92-4321-9268-2ad23b503bb5.png">
+<img width="600" alt="새 게시물 작성 예시" src="https://user-images.githubusercontent.com/51189962/130235710-0101de06-9796-4587-9d28-427a0e14a796.png">
+<img width="600" alt="장소 검색" src="https://user-images.githubusercontent.com/51189962/130236717-db216d48-c51c-44d3-844a-feb414d3f636.png">
+<img width="600" alt="업로드 중" src="https://user-images.githubusercontent.com/51189962/130235732-61920215-913c-4bb9-a99a-b7c2ac03fb66.png">
+<img width="600" alt="업로드 완료" src="https://user-images.githubusercontent.com/51189962/130235734-f9b70d7d-1368-4cc8-ab75-7bec88a6fc84.png">
+
+- 실제 인스타그램의 웹 버전은 모바일 앱과 다르게 새 게시물 작성 기능이 없어 본 프로젝트에서 새롭게 구현함
+- 새 게시물 작성은 Modal창으로 작성
+- 새 게시물 작성 도중 Dimmed 부분을 클릭할 경우 창이 닫히지 않도록 구현
+- 인스타그램의 가장 큰 특징은 사진업로드 기능이기 때문에 새 게시물 작성 시 사진을 업로드 하지 않으면 공유되지 않도록 구현
+- 사진 업로드, 문구 입력, 장소 검색을 통해 위치 추가, 업로드 로딩 및 완료를 구현
+- 업로드되는 게시물에 대해서 댓글 작성에 대한 권한을 On/Off하는 Toggle 버튼 구현
+- 업로드된 새 게시물 데이터는 Firebase의 Cloud firestore에 저장되고, 사진의 경우 Firebase의 Storage에 저장함
+- 이미지는 Storage의 URL을 통해 사이트에 보여지도록 구현
+  **- 실제 인스타그램에서의 새 게시물 Modal**
+
+<img width="600" alt="스크린샷 2021-08-20 22 11 41" src="https://user-images.githubusercontent.com/51189962/130238381-dafd1e2b-f1f5-42da-b28c-c09ec7525486.png">
+
+- 본 기능을 완성한 후 실제 인스타그램에서 부분적으로 새 게시물 업로드 기능이 생겼다 없어졌다하는 테스트가 진행되는 것으로 확인됨
+- 실제 테스트 중인 인스타그램의 새 게시물에서 업로드 로딩 및 완료시 UI를 클론하여 본 프로젝트에 재구현
+
+### **5. 메인 페이지**
+
+**- 게시물**
+
+<img width="600" alt="스크린샷 2021-08-20 22 28 28" src="https://user-images.githubusercontent.com/51189962/130240533-7f73a2ee-7cda-45eb-8c31-6371d044f422.png">
+
+- 게시물 작성
+  **- 좋아요, 북마크, 댓글 작성**
 
 **- 유저 추천 리스트**
 
-### **5. 다이렉트 메시지 페이지**
+### **6. 다이렉트 메시지 페이지**
+
+**- 게시물 공유**
 
 **- 유저 검색**
 
 **- 다이렉트 룸**
 
 **- 다이렉트 메시지**
-
-### **6. 새 게시물 작성**
-
-**- 사진 업로드**
-
-**- 문구 입력**
-
-**- 장소 검색**
-
-**- 댓글 기능 on/off**
 
 ### **7. 프로필 페이지**
 
@@ -134,8 +200,6 @@ React, Styled-component, redux-thunk, firebase를 이용하여 인스타그램 �
 ### **커스텀 도메인**
 
 <br />
-
-##
 
 ## ⏰ 커밋 히스토리
 
