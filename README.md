@@ -45,20 +45,114 @@ React, Styled-component, redux-thunk, firebase를 이용하여 인스타그램 �
 
 ## **👨🏻‍💻 기능 구현**
 
-### **0. DB 설계**
+### **0. Firebase**
 
-**- Firebase Authentication**
+**- Authentication**
 
-**- Firebase Cloud Firestore**
+<img width="300" alt="회원 관리 이미지" src="https://user-images.githubusercontent.com/51189962/130093874-fd88ba8e-a5a1-4449-a725-fc2d99d63be0.png" />
+
+**- Firebase Cloud Firestore(JSON TREE)**
+
+```JSON
+{
+  "users": {
+    "user-1": {
+      "uid": "",
+      "username": "",
+      "displayName": "",
+      "email": "",
+      "phone": "",
+      "photoURL": "",
+      "presentation": "",
+    },
+    "user-2": { ... }
+  }
+}
+```
+
+```JSON
+{
+  "posts": {
+    "post-1": {
+      "uid": "",
+      "id": "",
+      "text": "",
+      "date": "",
+      "imagesArray": [
+        {
+          "name": "",
+          "timeCreated": 1628775963000,
+          "url": ""
+        },
+      ],
+      "bookmarks": ["", ..., ""],
+      "hearts": ["", ..., ""],
+      "location": "",
+      "subLocation": "",
+      "isPossibleToComment": true,
+      "comments": {
+        "comment-1": {
+          "text": "",
+          "date": 1628775963100,
+          "uid": "",
+        },
+        "comment-2": { ... }
+      }
+    },
+    "post-2": { ... }
+  }
+}
+```
+
+```JSON
+{
+  "follow": {
+    "follow-1": {
+      "displayName": "",
+      "followers": ["", ...,""],
+      "following": ["", ...,""],
+    },
+    "follow-2": { ... }
+  }
+}
+```
+
+```JSON
+{
+  "direct": {
+    "room-1": {
+      "id": "",
+      "timeStamp": 1628775963100,
+      "from": "",
+      "msg": "",
+      "msgId": "",
+      "participant": ["", ..., ""],
+      "messages": {
+        "message-1": {
+          "id": "",
+          "msg": "",
+          "timeStamp": 1628775963100,
+          "uid": "",
+        },
+        "message-2": { ... }
+      }
+    },
+    "room-2": { ... }
+  }
+}
+```
 
 **- Firebase Storage**
+
+Firebase Storage를 구조화한 이미지
+
+<img width="300" alt="스크린샷 2021-08-29 19 48 19" src="https://user-images.githubusercontent.com/51189962/131247705-2e3b5371-3b4a-44a5-b550-d3c5e0505409.png">
 
 ### **1. 회원가입**
 
 **- 이메일을 이용한 회원가입**
 
 <img width="300" src="https://user-images.githubusercontent.com/51189962/130093158-56126d52-86d6-4375-bf44-c003c7983fd4.png" alt="회원가입 화면 이미지"/>
-<img width="300" src="https://user-images.githubusercontent.com/51189962/130093874-fd88ba8e-a5a1-4449-a725-fc2d99d63be0.png" alt="회원 관리 이미지"/>
 
 - 이메일, 패스워드, 성명, 아이디를 입력하여 회원가입 구현
 - Firebase의 Authentication에서 회원가입한 유저 정보 관리
@@ -196,9 +290,6 @@ React, Styled-component, redux-thunk, firebase를 이용하여 인스타그램 �
 
 ### **7. 프로필 페이지**
 
-<img width="600" alt="스크린샷 2021-08-23 19 48 26" src="https://user-images.githubusercontent.com/51189962/130435222-031c5b90-0617-44e6-b14e-9267740e4aab.png">
-<img width="600" alt="스크린샷 2021-08-23 19 50 43" src="https://user-images.githubusercontent.com/51189962/130435484-ced76613-0bd0-48db-bf1f-7b07f145d59f.png">
-
 **- 유저 정보**
 
 <img width="600" alt="스크린샷 2021-08-23 19 53 09" src="https://user-images.githubusercontent.com/51189962/130435762-0e88537a-9e21-4856-a451-687dbf018408.png">
@@ -214,7 +305,7 @@ React, Styled-component, redux-thunk, firebase를 이용하여 인스타그램 �
 <img width="600" alt="스크린샷 2021-08-23 20 20 51" src="https://user-images.githubusercontent.com/51189962/130439121-8ee4545d-e1ab-4cb4-bd74-4430d7dd3ba4.png">
 <img width="600" alt="스크린샷 2021-08-23 20 20 46" src="https://user-images.githubusercontent.com/51189962/130439128-6275cfdf-273a-41fe-9901-a94ccad083ea.png">
 
-- 유저의 게시물, 저장됨(북마크), 좋아요 목록을 볼 수 있도록 구현
+- 유저의 게시물, 저장됨(북마크), 좋아요 목록을 서브라우터로 구현
 - 저장됨, 좋아요 목록은 본인만 확인할 수 있고 다른 유저의 프로필 페이지에 접속할 경우 게시물 탭만 보여지도록 구현
 - 게시물 목록의 경우 Grid 레이아웃을 이용하여 구현
 - 게시물 목록에 Hover하면 좋아요 갯수와 댓글 수를 확인할 수 있도록 구현
@@ -253,9 +344,10 @@ React, Styled-component, redux-thunk, firebase를 이용하여 인스타그램 �
 
 <img width="600" alt="스크린샷 2021-08-23 21 20 51" src="https://user-images.githubusercontent.com/51189962/130446077-47472eb6-926f-4422-8455-4331970f2061.png">
 
-- 게시물을 작성한 유저의 싱글 포스트 페이지이기 때문에 보고 있는 게시물 이 외의 주요 게시물이 무엇인지 나타내는 섹션 구현
+- 게시물을 작성한 유저의 싱글 포스트 페이지이기 때문에 보고 있는 게시물 이 외의 주요 게시물이 무엇인지 나타내는 섹션을 분리해 구현
 - 최대 6개의 게시물이 나오고 클릭하면 바로 그 게시물에 대해서 싱글 포스트 섹션에서 확인 가능하도록 구현
 - 게시물 더보기의 닉네임을 클릭하면 클릭한 유저의 프로필 페이지로 접속되도록 구현
+- 주요 게시물은 프로필 페이지와 마찬가지로 hover시 좋아요, 댓글 갯수를 확인할 수 있도록 구현
 
 ### **10. 기타 기능**
 
@@ -267,9 +359,30 @@ React, Styled-component, redux-thunk, firebase를 이용하여 인스타그램 �
 
 ## **🚀 배포**
 
-### **호스팅**
+### **Hosting(CLI)**
+
+- 첫 배포
+
+```
+$ npm install -g firebase-tools
+$ firebase init
+$ firebase login
+  > HOSTING
+  > Directroy? build
+$ yarn build
+$ firebase deploy
+```
+
+- 수정 후 배포
+
+```
+$ yarn build
+$ firebase deploy
+```
 
 ### **커스텀 도메인**
+
+미설정, 호스팅이 완료되면 Firebase console의 Hosting탭에서 설정 가능
 
 <br />
 
