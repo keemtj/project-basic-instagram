@@ -4,6 +4,15 @@ import { Grid } from '@styled-icons/feather/Grid';
 import { Heart } from '@styled-icons/feather/Heart';
 import { Bookmark } from '@styled-icons/feather/Bookmark';
 
+const NoData = ({ isNoData }) => {
+  return (
+    <StEmpty isNoData={isNoData}>
+      <StHeader>게시물 없음</StHeader>
+      <StText isNoData={isNoData}>더이상 게시물이 존재하지 않습니다.</StText>
+    </StEmpty>
+  );
+};
+
 const EmptyPost = () => {
   return (
     <StEmpty>
@@ -51,8 +60,8 @@ const StEmpty = styled.article`
   flex-flow: column nowrap;
   align-items: center;
   justify-content: center;
-  width: 100%;
-  height: 30rem;
+  width: ${({ isNoData }) => (isNoData ? '60rem' : '100%')};
+  height: ${({ isNoData }) => (isNoData ? '10rem' : '30rem')};
 `;
 
 const StIconWrapper = styled.div`
@@ -89,10 +98,10 @@ const StHeader = styled.header`
 const StText = styled.p`
   margin-top: 2rem;
   width: 35rem;
-  font-size: 1.4rem;
+  font-size: ${({ isNoData }) => (isNoData ? '1.6rem' : '1.4rem')};
   font-weight: 400;
   line-height: 1.4;
   text-align: center;
 `;
 
-export { EmptyPost, EmptyHeart, EmptySaved };
+export { NoData, EmptyPost, EmptyHeart, EmptySaved };

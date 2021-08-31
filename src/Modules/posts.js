@@ -6,6 +6,8 @@ const MAIN_POSTS = 'posts/MAIN_POSTS';
 const MAIN_POSTS_SUCCESS = 'posts/MAIN_POSTS_SUCCESS';
 const MAIN_POSTS_ERROR = 'posts/MAIN_POSTS_ERROR';
 const UPDATE_MAIN_POSTS = 'posts/UPDATE_MAIN_POSTS';
+const LAST_MAIN_DOCS = 'posts/LAST_MAIN_DOCS';
+const NEXT_MAIN_POSTS = 'posts/NEXT_MAIN_POSTS';
 
 const PROFILE_POSTS = 'posts/PROFILE_POSTS';
 const PROFILE_POSTS_SUCCESS = 'posts/PROFILE_POSTS_SUCCESS';
@@ -37,6 +39,8 @@ const DATA_CLEAR = 'posts/DATA_CLEAR';
 // action creator
 export const getMainPosts = fetchDataThunk(MAIN_POSTS, store.getAllPosts, 1000);
 export const updateMainPosts = data => ({ type: UPDATE_MAIN_POSTS, data });
+export const updateLastMainDocs = docs => ({ type: LAST_MAIN_DOCS, docs });
+export const nextMainPosts = datas => ({ type: NEXT_MAIN_POSTS, datas });
 
 export const getProfilePosts = fetchDataThunk(
   PROFILE_POSTS,
@@ -88,6 +92,7 @@ export const postDataClear = () => ({ type: DATA_CLEAR });
 // NOTE initialState
 const initialState = {
   mainPosts: reducerUtils.initial(),
+  lastMainDocs: [],
   profilePosts: reducerUtils.initial(),
   profileBookmarkPosts: reducerUtils.initial(),
   profileHeartPosts: reducerUtils.initial(),
@@ -123,6 +128,19 @@ const posts = (state = initialState, action) => {
           data: state.mainPosts.data.map(post =>
             post.id === action.data.id ? action.data : post,
           ),
+        },
+      };
+    case LAST_MAIN_DOCS:
+      return {
+        ...state,
+        lastMainDocs: [...action.docs],
+      };
+    case NEXT_MAIN_POSTS:
+      return {
+        ...state,
+        mainPosts: {
+          ...state.mainPosts,
+          data: [...state.mainPosts.data, ...action.datas],
         },
       };
 
