@@ -39,19 +39,55 @@ export const getCurrentUserFollowData = async uid => {
  * @param {Array} uids combined my uid and following users uid
  * @returns {Array} main posts
  */
-export const getAllPosts = async uids => {
+export const getAllPosts = async ({ uids, dispatch, updateLastMainDocs }) => {
   const arr = uids.map(async uid => {
-    let datas = [];
     const response = await firestore
       .collection('posts')
+      .orderBy('date', 'desc')
       .where('uid', '==', uid)
-      .limit(10)
+      .limit(3)
       .get();
-    response.forEach(doc => datas.push(doc.data()));
-    return datas;
+    const datas = response.docs.map(doc => doc.data());
+    const last = response.docs[response.docs.length - 1];
+    return { datas, last };
   });
   const promiseAll = await Promise.all(arr);
-  const result = promiseAll.flatMap(v => v).sort((a, b) => b.date - a.date);
+  const promiseAll2 = promiseAll.filter(item => item.last);
+  dispatch(updateLastMainDocs(promiseAll2.map(item => item.last)));
+  const result = promiseAll2
+    .map(item => item.datas)
+    .flatMap(v => v)
+    .sort((a, b) => b.date - a.date);
+  return result;
+};
+
+export const getNextMainPosts = async ({
+  uids,
+  lastDocs,
+  dispatch,
+  updateLastDocs,
+}) => {
+  const arr = uids.map(async (uid, index) => {
+    if (!lastDocs[index]) return null;
+    const response = await firestore
+      .collection('posts')
+      .orderBy('date', 'desc')
+      .where('uid', '==', uid)
+      .startAfter(lastDocs[index])
+      .limit(3)
+      .get();
+    const datas = response.docs.map(doc => doc.data());
+    const last = response.docs[response.docs.length - 1];
+    return { datas, last };
+  });
+  const promiseAll = await Promise.all(arr);
+  const promiseAll2 = promiseAll.filter(item => item);
+  const promiseAll3 = promiseAll2.filter(item => item.last);
+  dispatch(updateLastDocs(promiseAll3.map(item => item.last)));
+  const result = promiseAll3
+    .map(item => item.datas)
+    .flatMap(v => v)
+    .sort((a, b) => b.date - a.date);
   return result;
 };
 

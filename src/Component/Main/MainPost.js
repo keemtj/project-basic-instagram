@@ -89,7 +89,7 @@ const StArticle = styled.article`
   border: 1px solid ${({ theme }) => theme.gray};
   background: ${({ theme }) => theme.white};
   border-radius: 3px;
-  margin-bottom: 6rem;
+  margin-bottom: 3rem;
   width: 60rem;
   height: fit-content;
   display: flex;
