@@ -7,6 +7,7 @@ import {
   getProfileBookmarkPosts,
   getProfileHeartPosts,
   getProfilePosts,
+  updateLastDocByProfilePosts,
 } from '../../Modules/posts';
 import {
   getProfileUserData,
@@ -26,7 +27,7 @@ const ProfileContainer = () => {
     dispatch(getProfileUserData(uid));
     dispatch(getProfileUserFollowData(uid));
     if (!profilePosts) {
-      dispatch(getProfilePosts(uid));
+      dispatch(getProfilePosts({ uid, dispatch, updateLastDocByProfilePosts }));
     }
     if (location.pathname === `/${watchName}/heart`) {
       dispatch(getProfileHeartPosts(uid));

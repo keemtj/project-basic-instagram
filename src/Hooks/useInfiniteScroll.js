@@ -9,6 +9,7 @@ const useInfiniteScroll = ({
   nextPosts,
   updateLastDocs,
   uids,
+  uid,
 }) => {
   const dom = useRef();
   const dispatch = useDispatch();
@@ -22,6 +23,7 @@ const useInfiniteScroll = ({
         dispatch,
         updateLastDocs,
         uids,
+        uid,
       });
       const next = await Promise.all(response);
       dispatch(nextPosts(next));

@@ -6,13 +6,15 @@ const MAIN_POSTS = 'posts/MAIN_POSTS';
 const MAIN_POSTS_SUCCESS = 'posts/MAIN_POSTS_SUCCESS';
 const MAIN_POSTS_ERROR = 'posts/MAIN_POSTS_ERROR';
 const UPDATE_MAIN_POSTS = 'posts/UPDATE_MAIN_POSTS';
-const LAST_MAIN_DOCS = 'posts/LAST_MAIN_DOCS';
+const LAST_DOCS_BY_MAIN = 'posts/LAST_DOCS_BY_MAIN';
 const NEXT_MAIN_POSTS = 'posts/NEXT_MAIN_POSTS';
 
 const PROFILE_POSTS = 'posts/PROFILE_POSTS';
 const PROFILE_POSTS_SUCCESS = 'posts/PROFILE_POSTS_SUCCESS';
 const PROFILE_POSTS_ERROR = 'posts/PROFILE_POSTS_ERROR';
 const UPDATE_PROFILE_POSTS = 'posts/UPDATE_PROFILE_POSTS';
+const LAST_DOC_BY_PROFILE_POSTS = 'posts/LAST_DOC_BY_PROFILE_POSTS';
+const NEXT_PROFILE_POSTS = 'posts/NEXT_PROFILE_POSTS';
 
 const PROFILE_BOOKMARK_POSTS = 'posts/PROFILE_BOOKMARK_POSTS';
 const PROFILE_BOOKMARK_POSTS_SUCCESS = 'posts/PROFILE_BOOKMARK_POSTS_SUCCESS';
@@ -39,7 +41,7 @@ const DATA_CLEAR = 'posts/DATA_CLEAR';
 // action creator
 export const getMainPosts = fetchDataThunk(MAIN_POSTS, store.getAllPosts, 1000);
 export const updateMainPosts = data => ({ type: UPDATE_MAIN_POSTS, data });
-export const updateLastMainDocs = docs => ({ type: LAST_MAIN_DOCS, docs });
+export const updateLastMainDocs = docs => ({ type: LAST_DOCS_BY_MAIN, docs });
 export const nextMainPosts = datas => ({ type: NEXT_MAIN_POSTS, datas });
 
 export const getProfilePosts = fetchDataThunk(
@@ -51,6 +53,11 @@ export const updateProfilePosts = data => ({
   type: UPDATE_PROFILE_POSTS,
   data,
 });
+export const updateLastDocByProfilePosts = doc => ({
+  type: LAST_DOC_BY_PROFILE_POSTS,
+  doc,
+});
+export const nextProfilePosts = datas => ({ type: NEXT_PROFILE_POSTS, datas });
 
 export const getProfileBookmarkPosts = fetchDataThunk(
   PROFILE_BOOKMARK_POSTS,
@@ -94,6 +101,7 @@ const initialState = {
   mainPosts: reducerUtils.initial(),
   lastMainDocs: [],
   profilePosts: reducerUtils.initial(),
+  lastDocByProfilePosts: [],
   profileBookmarkPosts: reducerUtils.initial(),
   profileHeartPosts: reducerUtils.initial(),
   activePostId: '',
@@ -130,7 +138,7 @@ const posts = (state = initialState, action) => {
           ),
         },
       };
-    case LAST_MAIN_DOCS:
+    case LAST_DOCS_BY_MAIN:
       return {
         ...state,
         lastMainDocs: [...action.docs],
@@ -167,6 +175,19 @@ const posts = (state = initialState, action) => {
           data: state.profilePosts.data.map(post =>
             post.id === action.data.id ? action.data : post,
           ),
+        },
+      };
+    case LAST_DOC_BY_PROFILE_POSTS:
+      return {
+        ...state,
+        lastDocByProfilePosts: [action.doc],
+      };
+    case NEXT_PROFILE_POSTS:
+      return {
+        ...state,
+        profilePosts: {
+          ...state.profilePosts,
+          data: [...state.profilePosts.data, ...action.datas],
         },
       };
 

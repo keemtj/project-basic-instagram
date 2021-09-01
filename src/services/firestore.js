@@ -265,14 +265,42 @@ export const getProfileUserData = async uid => {
  * @param {string} uid user's uid
  * @returns posts array
  */
-export const getProfilePosts = async uid => {
+export const getProfilePosts = async ({
+  uid,
+  dispatch,
+  updateLastDocByProfilePosts,
+}) => {
   const response = await firestore
     .collection('posts')
+    .orderBy('date', 'desc')
     .where('uid', '==', uid)
+    .limit(6)
     .get();
-  let datas = [];
-  response.forEach(res => datas.push(res.data()));
-  return datas.sort((a, b) => b.date - a.date);
+  const datas = response.docs.map(doc => doc.data());
+  const lastDoc = response.docs[response.docs.length - 1];
+  dispatch(updateLastDocByProfilePosts(lastDoc));
+  return datas;
+};
+
+export const getNextProfilePosts = async ({
+  uid,
+  lastDocs,
+  dispatch,
+  updateLastDocs,
+}) => {
+  if (!lastDocs[0]) return null;
+  const response = await firestore
+    .collection('posts')
+    .orderBy('date', 'desc')
+    .where('uid', '==', uid)
+    .startAfter(lastDocs[0])
+    .limit(3)
+    .get();
+  const datas = response.docs.map(doc => doc.data());
+  const lastDoc = response.docs[response.docs.length - 1];
+  dispatch(updateLastDocs(lastDoc));
+  console.log(datas);
+  return datas;
 };
 
 /**
