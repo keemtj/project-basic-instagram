@@ -35,6 +35,7 @@ const Main = ({
   //     ],
   //   },
   // ];
+  console.log(lastDocs.length);
   return (
     <StMainWrapper>
       <StMain>

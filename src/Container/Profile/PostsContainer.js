@@ -8,7 +8,7 @@ import {
   activeIndexOfPost,
   activeIdOfPost,
   nextProfilePosts as nextPosts,
-  updateLastDocByProfilePosts,
+  updateLastDocByProfilePosts as updateLastDocs,
 } from '../../Modules/posts';
 import { getNextProfilePosts as fetchNextPosts } from '../../services/firestore';
 
@@ -26,7 +26,7 @@ const PostsContainer = ({ watchName }) => {
     fetchNextPosts,
     lastDocs,
     nextPosts,
-    updateLastDocs: updateLastDocByProfilePosts,
+    updateLastDocs,
     uid,
   });
 

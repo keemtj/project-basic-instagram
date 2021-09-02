@@ -18,15 +18,20 @@ const useInfiniteScroll = ({
     if (entry.isIntersecting) {
       // TODO: need to loading state
       console.log(`entry: ${threshold}`);
-      const response = await fetchNextPosts({
-        lastDocs,
-        dispatch,
-        updateLastDocs,
-        uids,
-        uid,
-      });
-      const next = await Promise.all(response);
-      dispatch(nextPosts(next));
+      try {
+        const response = await fetchNextPosts({
+          lastDocs,
+          dispatch,
+          updateLastDocs,
+          uids,
+          uid,
+        });
+        const next = await Promise.all(response);
+        console.log('next', next);
+        next.length > 0 ? dispatch(nextPosts(next)) : dispatch(nextPosts([]));
+      } catch (e) {
+        console.log(e);
+      }
     }
   };
 

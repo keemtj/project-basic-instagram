@@ -13,25 +13,29 @@ const Posts = ({
   intersectionObserver,
 }) => {
   // isFollowing이 false면 게시물 비공개 처리하기
+  console.log(lastDocs.length);
   return (
     <>
       {posts?.length === 0 ? (
         <>{isMypage ? <EmptyPosts /> : <EmptyPost />}</>
       ) : (
-        <StPostsWrapper>
-          {posts?.map((post, index) => {
-            return (
-              <PostItemContainer
-                post={post}
-                key={index}
-                onClickPostModal={() => onClickPostModal(post.id, index)}
-              />
-            );
-          })}
+        <>
+          <StPostsWrapper>
+            {posts?.map((post, index) => {
+              return (
+                <PostItemContainer
+                  post={post}
+                  key={index}
+                  onClickPostModal={() => onClickPostModal(post.id, index)}
+                />
+              );
+            })}
+          </StPostsWrapper>
+          {!isLoading && !lastDocs.length === 0 && <div>no data</div>}
           {!isLoading && lastDocs.length > 0 && (
-            <StObserve {...intersectionObserver}>observer</StObserve>
+            <StObserve {...intersectionObserver} />
           )}
-        </StPostsWrapper>
+        </>
       )}
     </>
   );
