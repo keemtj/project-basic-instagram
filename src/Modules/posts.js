@@ -101,7 +101,7 @@ const initialState = {
   mainPosts: reducerUtils.initial(),
   lastMainDocs: [],
   profilePosts: reducerUtils.initial(),
-  lastDocByProfilePosts: [],
+  lastDocByProfilePosts: null,
   profileBookmarkPosts: reducerUtils.initial(),
   profileHeartPosts: reducerUtils.initial(),
   activePostId: '',
@@ -180,7 +180,7 @@ const posts = (state = initialState, action) => {
     case LAST_DOC_BY_PROFILE_POSTS:
       return {
         ...state,
-        lastDocByProfilePosts: [action.doc],
+        lastDocByProfilePosts: action.doc,
       };
     case NEXT_PROFILE_POSTS:
       return {

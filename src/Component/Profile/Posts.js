@@ -9,11 +9,10 @@ const Posts = ({
   onClickPostModal,
   isMypage,
   isLoading,
-  lastDocs,
+  lastDoc,
   intersectionObserver,
 }) => {
   // isFollowing이 false면 게시물 비공개 처리하기
-  console.log(lastDocs.length);
   return (
     <>
       {posts?.length === 0 ? (
@@ -31,10 +30,7 @@ const Posts = ({
               );
             })}
           </StPostsWrapper>
-          {!isLoading && !lastDocs.length === 0 && <div>no data</div>}
-          {!isLoading && lastDocs.length > 0 && (
-            <StObserve {...intersectionObserver} />
-          )}
+          {!isLoading && lastDoc && <StObserve {...intersectionObserver} />}
         </>
       )}
     </>
@@ -52,8 +48,7 @@ const StObserve = styled.div`
   display: flex;
   align-items: flex-start;
   justify-content: center;
-  height: 10rem;
-  border: 1px solid red;
+  height: 1rem;
 `;
 
 export default Posts;

@@ -19,12 +19,12 @@ const PostsContainer = ({ watchName }) => {
   const { data: profilePosts, loading, error } = useSelector(
     state => state.posts.profilePosts,
   );
-  const lastDocs = useSelector(state => state.posts.lastDocByProfilePosts);
+  const lastDoc = useSelector(state => state.posts.lastDocByProfilePosts);
 
   const intersectionObserver = useInfiniteScroll({
     threshold: 0.9,
     fetchNextPosts,
-    lastDocs,
+    lastDoc,
     nextPosts,
     updateLastDocs,
     uid,
@@ -48,7 +48,7 @@ const PostsContainer = ({ watchName }) => {
       onClickPostModal={onClickPostModal}
       isMypage={watchName === displayName}
       isLoading={loading}
-      lastDocs={lastDocs}
+      lastDoc={lastDoc}
       intersectionObserver={intersectionObserver}
     />
   );

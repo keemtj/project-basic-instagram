@@ -274,7 +274,7 @@ export const getProfilePosts = async ({
     .collection('posts')
     .orderBy('date', 'desc')
     .where('uid', '==', uid)
-    .limit(6)
+    .limit(9)
     .get();
   const datas = response.docs.map(doc => doc.data());
   const lastDoc = response.docs[response.docs.length - 1];
@@ -284,21 +284,21 @@ export const getProfilePosts = async ({
 
 export const getNextProfilePosts = async ({
   uid,
-  lastDocs,
+  lastDoc,
   dispatch,
   updateLastDocs,
 }) => {
-  if (!lastDocs[0]) return [];
+  if (!lastDoc) return null;
   const response = await firestore
     .collection('posts')
     .orderBy('date', 'desc')
     .where('uid', '==', uid)
-    .startAfter(lastDocs[0])
-    .limit(3)
+    .startAfter(lastDoc)
+    .limit(9)
     .get();
   const datas = response.docs.map(doc => doc.data()).filter(item => item);
-  const lastDoc = response.docs[response.docs.length - 1];
-  dispatch(updateLastDocs(lastDoc));
+  const last = response.docs[response.docs.length - 1];
+  dispatch(updateLastDocs(last));
   return datas;
 };
 

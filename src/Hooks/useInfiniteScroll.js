@@ -6,6 +6,7 @@ const useInfiniteScroll = ({
   threshold = 0.5,
   fetchNextPosts,
   lastDocs,
+  lastDoc,
   nextPosts,
   updateLastDocs,
   uids,
@@ -21,14 +22,14 @@ const useInfiniteScroll = ({
       try {
         const response = await fetchNextPosts({
           lastDocs,
+          lastDoc,
           dispatch,
           updateLastDocs,
           uids,
           uid,
         });
         const next = await Promise.all(response);
-        console.log('next', next);
-        next.length > 0 ? dispatch(nextPosts(next)) : dispatch(nextPosts([]));
+        dispatch(nextPosts(next));
       } catch (e) {
         console.log(e);
       }
