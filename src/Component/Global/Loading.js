@@ -1,6 +1,7 @@
 import React from 'react';
 import styled, { css, keyframes } from 'styled-components';
-import { Spinner3 } from '@styled-icons/icomoon/Spinner3';
+// import { Spinner3 } from '@styled-icons/icomoon/Spinner3';
+import { Spinner8 } from '@styled-icons/icomoon/Spinner8';
 
 const Loading = ({ isLoading, isProfile, isSubmit, isHeartCount }) => {
   return (
@@ -56,13 +57,13 @@ const rotate = keyframes`
   }
 `;
 
-const StSpinner = styled(Spinner3)`
+const StSpinner = styled(Spinner8)`
   width: ${({ isProfile }) => (isProfile ? '2.5rem' : '2.5rem')};
   color: ${({ theme, isSubmit }) => (isSubmit ? theme.white : theme.darkGray)};
   animation: ${({ isLoading }) =>
     isLoading &&
     css`
-      ${rotate} 2s linear infinite;
+      ${rotate} 1s linear infinite;
     `};
 `;
 

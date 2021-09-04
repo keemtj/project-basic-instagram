@@ -20,11 +20,16 @@ const PROFILE_BOOKMARK_POSTS = 'posts/PROFILE_BOOKMARK_POSTS';
 const PROFILE_BOOKMARK_POSTS_SUCCESS = 'posts/PROFILE_BOOKMARK_POSTS_SUCCESS';
 const PROFILE_BOOKMARK_POSTS_ERROR = 'posts/PROFILE_BOOKMARK_POSTS_ERROR';
 const UPDATE_PROFILE_BOOKMARK_POSTS = 'posts/UPDATE_PROFILE_BOOKMARK_POSTS';
+const LAST_DOC_BY_PROFILE_BOOKMARK_POSTS =
+  'posts/LAST_DOC_BY_PROFILE_BOOKMARK_POSTS';
+const NEXT_PROFILE_BOOKMARK_POSTS = 'posts/NEXT_PROFILE_BOOKMARK_POSTS';
 
 const PROFILE_HEART_POSTS = 'posts/PROFILE_HEART_POSTS';
 const PROFILE_HEART_POSTS_SUCCESS = 'posts/PROFILE_HEART_POSTS_SUCCESS';
 const PROFILE_HEART_POSTS_ERROR = 'posts/PROFILE_HEART_POSTS_ERROR';
 const UPDATE_PROFILE_HEART_POSTS = 'posts/UPDATE_PROFILE_HEART_POSTS';
+const LAST_DOC_BY_PROFILE_HEART_POSTS = 'posts/LAST_DOC_BY_PROFILE_HEART_POSTS';
+const NEXT_PROFILE_HEART_POSTS = 'posts/NEXT_PROFILEHEART__POSTS';
 
 const ACTIVE_POST_ID = 'posts/ACTIVE_POST_ID';
 const ACTIVE_POST_INDEX = 'posts/ACTIVE_POST_INDEX';
@@ -68,6 +73,14 @@ export const updateProfileBookmarkPosts = data => ({
   type: UPDATE_PROFILE_BOOKMARK_POSTS,
   data,
 });
+export const updateLastDocByProfileBookmarkPosts = doc => ({
+  type: LAST_DOC_BY_PROFILE_BOOKMARK_POSTS,
+  doc,
+});
+export const nextProfileBookmarkPosts = datas => ({
+  type: NEXT_PROFILE_BOOKMARK_POSTS,
+  datas,
+});
 
 export const getProfileHeartPosts = fetchDataThunk(
   PROFILE_HEART_POSTS,
@@ -77,6 +90,14 @@ export const getProfileHeartPosts = fetchDataThunk(
 export const updateProfileHeartPosts = data => ({
   type: UPDATE_PROFILE_HEART_POSTS,
   data,
+});
+export const updateLastDocByProfileHeartPosts = doc => ({
+  type: LAST_DOC_BY_PROFILE_HEART_POSTS,
+  doc,
+});
+export const nextProfileHeartPosts = datas => ({
+  type: NEXT_PROFILE_HEART_POSTS,
+  datas,
 });
 
 export const activeIdOfPost = id => ({ type: ACTIVE_POST_ID, id });
@@ -103,7 +124,9 @@ const initialState = {
   profilePosts: reducerUtils.initial(),
   lastDocByProfilePosts: null,
   profileBookmarkPosts: reducerUtils.initial(),
+  lastDocByProfileBookmarkPosts: null,
   profileHeartPosts: reducerUtils.initial(),
+  lastDocByProfileHeartPosts: null,
   activePostId: '',
   activePostIndex: 0,
   currentImage: 0,
@@ -216,6 +239,19 @@ const posts = (state = initialState, action) => {
           ),
         },
       };
+    case LAST_DOC_BY_PROFILE_BOOKMARK_POSTS:
+      return {
+        ...state,
+        lastDocByProfileBookmarkPosts: action.doc,
+      };
+    case NEXT_PROFILE_BOOKMARK_POSTS:
+      return {
+        ...state,
+        profileBookmarkPosts: {
+          ...state.profileBookmarkPosts,
+          data: [...state.profileBookmarkPosts.data, ...action.datas],
+        },
+      };
 
     case PROFILE_HEART_POSTS:
       return {
@@ -240,6 +276,19 @@ const posts = (state = initialState, action) => {
           data: state.profileHeartPosts.data.map(post =>
             post.id === action.data.id ? action.data : post,
           ),
+        },
+      };
+    case LAST_DOC_BY_PROFILE_HEART_POSTS:
+      return {
+        ...state,
+        lastDocByProfileHeartPosts: action.doc,
+      };
+    case NEXT_PROFILE_HEART_POSTS:
+      return {
+        ...state,
+        profileHeartPosts: {
+          ...state.profileHeartPosts,
+          data: [...state.profileHeartPosts.data, ...action.datas],
         },
       };
 

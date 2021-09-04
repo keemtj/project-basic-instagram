@@ -7,6 +7,8 @@ import {
   getProfileBookmarkPosts,
   getProfileHeartPosts,
   getProfilePosts,
+  updateLastDocByProfileBookmarkPosts,
+  updateLastDocByProfileHeartPosts,
   updateLastDocByProfilePosts,
 } from '../../Modules/posts';
 import {
@@ -30,9 +32,21 @@ const ProfileContainer = () => {
       dispatch(getProfilePosts({ uid, dispatch, updateLastDocByProfilePosts }));
     }
     if (location.pathname === `/${watchName}/heart`) {
-      dispatch(getProfileHeartPosts(uid));
+      dispatch(
+        getProfileHeartPosts({
+          uid,
+          dispatch,
+          updateLastDocByProfileHeartPosts,
+        }),
+      );
     } else if (location.pathname === `/${watchName}/saved`) {
-      dispatch(getProfileBookmarkPosts(uid));
+      dispatch(
+        getProfileBookmarkPosts({
+          uid,
+          dispatch,
+          updateLastDocByProfileBookmarkPosts,
+        }),
+      );
     }
   }, [watchName]);
 
