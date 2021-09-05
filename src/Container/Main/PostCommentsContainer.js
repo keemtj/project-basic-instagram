@@ -2,7 +2,10 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router';
 import PostComments from '../../Component/Main/PostComments';
-import { getProfilePosts } from '../../Modules/posts';
+import {
+  getProfilePosts,
+  updateLastDocByProfilePosts,
+} from '../../Modules/posts';
 import { getProfileUserData } from '../../Modules/user';
 import { getDisplayName } from '../../services/firestore';
 
@@ -13,7 +16,7 @@ const PostCommentsContainer = ({ comments, onClickPostModal, newComments }) => {
 
   const onMoveProfilePage = (uid, displayName) => {
     dispatch(getProfileUserData(uid));
-    dispatch(getProfilePosts(uid));
+    dispatch(getProfilePosts({ uid, dispatch, updateLastDocByProfilePosts }));
     history.push(`/${displayName}`);
   };
 

@@ -10,6 +10,7 @@ const Aside = ({
   followed,
   loading,
   onFollow,
+  onMoveProfilePage,
 }) => {
   return (
     <StAside>
@@ -42,6 +43,7 @@ const Aside = ({
                   marginLeft={1.2}
                   fontSize={1.4}
                   src={user.photoURL}
+                  onClick={() => onMoveProfilePage(user)}
                 />
                 <StButton onClick={() => onFollow(user.uid, user.displayName)}>
                   팔로우

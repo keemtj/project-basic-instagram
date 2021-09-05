@@ -4,11 +4,17 @@ import { useDispatch, useSelector } from 'react-redux';
 import Aside from '../../Component/Main/Aside';
 import { signOut } from '../../services/firebaseAuth';
 import { loginState } from '../../Modules/login';
-import { postDataClear } from '../../Modules/posts';
+import {
+  getProfilePosts,
+  postDataClear,
+  updateLastDocByProfilePosts,
+} from '../../Modules/posts';
 import {
   userDataClear,
   suggestionUsersData,
   currentUserFollowData,
+  getProfileUserData,
+  getProfileUserFollowData,
 } from '../../Modules/user';
 import { searchDataClear } from '../../Modules/search';
 import { differenceSet } from '../../lib/differenceSet';
@@ -49,6 +55,19 @@ const AsideContainer = () => {
     toast(`${suggestionDisplayName}님을 팔로우 합니다.`);
   };
 
+  const onMoveProfilePage = user => {
+    dispatch(getProfileUserData(user.uid));
+    dispatch(getProfileUserFollowData(user.uid));
+    dispatch(
+      getProfilePosts({
+        uid: user.uid,
+        dispatch,
+        updateLastDocByProfilePosts,
+      }),
+    );
+    history.push(`/${user.displayName}`);
+  };
+
   useEffect(() => {
     dispatch(suggestionUsersData(differenceSet(followers, following)));
   }, [followers, following]);
@@ -61,6 +80,7 @@ const AsideContainer = () => {
       followed={followed}
       loading={loading}
       onFollow={onFollow}
+      onMoveProfilePage={onMoveProfilePage}
     />
   );
 };
