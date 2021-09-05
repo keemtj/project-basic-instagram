@@ -7,6 +7,7 @@ import { closePopup } from '../../Modules/popup';
 import {
   getProfilePosts,
   removePost,
+  updateLastDocByProfilePosts,
   updateMainPosts,
 } from '../../Modules/posts';
 import {
@@ -34,7 +35,6 @@ const PostSettingModal = () => {
   const { activePostIndex, activePostId } = useSelector(state => state.posts);
   const [toast] = useToast();
   const { uid, id, imagesArray, bookmarks } = mainPosts?.[activePostIndex];
-
   const isSaved = () => bookmarks.includes(currentUid);
 
   const onRemovePost = async () => {
@@ -79,15 +79,18 @@ const PostSettingModal = () => {
   };
 
   const onClickCopyLink = () => {
-    console.log('포스트 링크 복사', activePostId);
+    console.log('포스트 링크 복사', id);
   };
 
   const onMoveSinglePostPage = () => {
+    if (location.pathname === `/p/${activePostId || id}`) {
+      return dispatch(closePopup('postSettingModal'));
+    }
     dispatch(getProfileUserData(uid));
     dispatch(getProfileUserFollowData(uid));
-    dispatch(getProfilePosts(uid));
+    dispatch(getProfilePosts({ uid, dispatch, updateLastDocByProfilePosts }));
     dispatch(closePopup('postSettingModal'));
-    history.push(`/p/${activePostId}`);
+    history.push(`/p/${activePostId || id}`);
     console.log('싱글 포스트 페이지로 이동');
   };
 

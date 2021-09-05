@@ -13,6 +13,9 @@ import {
   getProfilePosts,
   getProfileBookmarkPosts,
   getProfileHeartPosts,
+  updateLastDocByProfilePosts,
+  updateLastDocByProfileHeartPosts,
+  updateLastDocByProfileBookmarkPosts,
 } from '../../Modules/posts';
 import { closePopup } from '../../Modules/popup';
 import { userDataClear } from '../../Modules/user';
@@ -24,17 +27,29 @@ const PopupContainer = () => {
   const { displayName, uid } = useSelector(state => state.user.currentUser);
 
   const onMoveProfilePage = () => {
-    dispatch(getProfilePosts(uid));
+    dispatch(getProfilePosts({ uid, dispatch, updateLastDocByProfilePosts }));
     dispatch(closePopup('profilePopup'));
   };
 
   const onMoveBookmarkPage = () => {
-    dispatch(getProfileBookmarkPosts(uid));
+    dispatch(
+      getProfileBookmarkPosts({
+        uid,
+        dispatch,
+        updateLastDocByProfileBookmarkPosts,
+      }),
+    );
     dispatch(closePopup('profilePopup'));
   };
 
   const onMoveHeartPage = () => {
-    dispatch(getProfileHeartPosts(uid));
+    dispatch(
+      getProfileHeartPosts({
+        uid,
+        dispatch,
+        updateLastDocByProfileHeartPosts,
+      }),
+    );
     dispatch(closePopup('profilePopup'));
   };
 

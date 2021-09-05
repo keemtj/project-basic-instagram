@@ -12,7 +12,10 @@ import {
   getProfileUserData,
   getProfileUserFollowData,
 } from '../../Modules/user';
-import { getProfilePosts } from '../../Modules/posts';
+import {
+  getProfilePosts,
+  updateLastDocByProfilePosts,
+} from '../../Modules/posts';
 
 const SearchPopupContainer = () => {
   const dispatch = useDispatch();
@@ -26,7 +29,13 @@ const SearchPopupContainer = () => {
     console.log('user searching');
     dispatch(getProfileUserData(user.uid));
     dispatch(getProfileUserFollowData(user.uid));
-    dispatch(getProfilePosts(user.uid));
+    dispatch(
+      getProfilePosts({
+        uid: user.uid,
+        dispatch,
+        updateLastDocByProfilePosts,
+      }),
+    );
     dispatch(addRecent(user));
     dispatch(clearValue());
     dispatch(closePopup('searchPopup'));

@@ -3,7 +3,10 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useHistory, useRouteMatch } from 'react-router';
 import SinglePost from '../../Component/Post/SinglePost';
 import ProgressBar from '../../Component/Global/ProgressBar';
-import { getProfilePosts } from '../../Modules/posts';
+import {
+  getProfilePosts,
+  updateLastDocByProfilePosts,
+} from '../../Modules/posts';
 import {
   getProfileUserData,
   getProfileUserFollowData,
@@ -21,6 +24,12 @@ const SinglePostContainer = () => {
     state => state.user.profileUserData,
   );
   const { activePostIndex } = useSelector(state => state.posts);
+  const {
+    postSettingModal: postSettingModalState,
+    postHeartCountModal: postHeartCountModalState,
+    postSharePopup: postSharePopupState,
+    postModal: postModalState,
+  } = useSelector(state => state.popup);
   const [comments, setComments] = useState([]);
   const [newComments, setNewComments] = useState([]);
   const [progress, setProgress] = useState(0);
@@ -47,7 +56,7 @@ const SinglePostContainer = () => {
       const uid = await getUidByPostId(postId);
       dispatch(getProfileUserData(uid));
       dispatch(getProfileUserFollowData(uid));
-      dispatch(getProfilePosts(uid));
+      dispatch(getProfilePosts({ uid, dispatch, updateLastDocByProfilePosts }));
     }
   }, []);
 
@@ -56,6 +65,22 @@ const SinglePostContainer = () => {
     setComments(datas);
     setNewComments([]);
   }, [postId]);
+
+  useEffect(() => {
+    document.body.style.overflow = postHeartCountModalState ? 'hidden' : 'auto';
+  }, [postHeartCountModalState]);
+
+  useEffect(() => {
+    document.body.style.overflow = postSettingModalState ? 'hidden' : 'auto';
+  }, [postSettingModalState]);
+
+  useEffect(() => {
+    document.body.style.overflow = postSharePopupState ? 'hidden' : 'auto';
+  }, [postSharePopupState]);
+
+  useEffect(() => {
+    document.body.style.overflow = postModalState ? 'hidden' : 'auto';
+  }, [postModalState]);
 
   useEffect(() => {
     document.title = `Instagram의 ${profileUserData?.presentation} | ${

@@ -272,6 +272,20 @@ export const getProfileUserData = async uid => {
 };
 
 /**
+ * get size
+ * @param {Stirng} uid profile page user's uid
+ * @returns {number} posts size
+ */
+export const getProfilePostsSizeData = async uid => {
+  const response = await firestore
+    .collection('posts')
+    .where('uid', '==', uid)
+    .get();
+  const size = response.size;
+  return size;
+};
+
+/**
  * 클릭한 유저의 uid, profile page에서 렌더링
  * @param {object} keys uid, dispatch, updateLastDocByProfilePosts
  * @param {string} uid user's uid
@@ -425,7 +439,7 @@ export const getNextProfileHeartPosts = async ({
     .startAfter(lastDoc)
     .limit(9)
     .get();
-  const datas = resposne.docs.map(doc => doc.data()).filter(item => item);
+  const datas = response.docs.map(doc => doc.data()).filter(item => item);
   const last = response.docs[response.docs.length - 1];
   dispatch(updateLastDocs(last));
   return datas;

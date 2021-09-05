@@ -9,6 +9,7 @@ const UPDATE_MAIN_POSTS = 'posts/UPDATE_MAIN_POSTS';
 const LAST_DOCS_BY_MAIN = 'posts/LAST_DOCS_BY_MAIN';
 const NEXT_MAIN_POSTS = 'posts/NEXT_MAIN_POSTS';
 
+const PROFILE_POSTS_SIZE = 'posts/PROFILE_POSTS_SIZE';
 const PROFILE_POSTS = 'posts/PROFILE_POSTS';
 const PROFILE_POSTS_SUCCESS = 'posts/PROFILE_POSTS_SUCCESS';
 const PROFILE_POSTS_ERROR = 'posts/PROFILE_POSTS_ERROR';
@@ -49,6 +50,7 @@ export const updateMainPosts = data => ({ type: UPDATE_MAIN_POSTS, data });
 export const updateLastMainDocs = docs => ({ type: LAST_DOCS_BY_MAIN, docs });
 export const nextMainPosts = datas => ({ type: NEXT_MAIN_POSTS, datas });
 
+export const getProfilePostsSize = size => ({ type: PROFILE_POSTS_SIZE, size });
 export const getProfilePosts = fetchDataThunk(
   PROFILE_POSTS,
   store.getProfilePosts,
@@ -121,6 +123,7 @@ export const postDataClear = () => ({ type: DATA_CLEAR });
 const initialState = {
   mainPosts: reducerUtils.initial(),
   lastMainDocs: [],
+  profilePostsSize: 0,
   profilePosts: reducerUtils.initial(),
   lastDocByProfilePosts: null,
   profileBookmarkPosts: reducerUtils.initial(),
@@ -175,6 +178,11 @@ const posts = (state = initialState, action) => {
         },
       };
 
+    case PROFILE_POSTS_SIZE:
+      return {
+        ...state,
+        profilePostsSize: action.size,
+      };
     case PROFILE_POSTS:
       return {
         ...state,
