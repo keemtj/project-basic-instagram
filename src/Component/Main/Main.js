@@ -11,7 +11,6 @@ const Main = ({
   mainPosts,
   userDatas,
   intersectionObserver,
-  onClickMore,
   lastDocs,
 }) => {
   // // 비공개 계정이 아니고, 좋아요나 북마크 수가 많은 유저의 포스츠
@@ -90,7 +89,7 @@ const Main = ({
               } */}
               {!isLoading && !lastDocs.length && <NoData isNoData />}
               {!isLoading && lastDocs.length > 0 && (
-                <StObserve {...intersectionObserver} onClick={onClickMore} />
+                <StObserve {...intersectionObserver} />
               )}
             </>
           )}

@@ -24,8 +24,7 @@ const UserContainer = ({ watchName }) => {
   const { data: followData } = useSelector(
     state => state.user.profileUserFollowData,
   );
-  const { data: profilePosts } = useSelector(state => state.posts.profilePosts);
-
+  const size = useSelector(state => state.posts.profilePostsSize);
   const { following, followers } = followData || {
     following: [],
     followers: [],
@@ -85,7 +84,7 @@ const UserContainer = ({ watchName }) => {
           ? currentUserData?.presentation
           : profileUserData?.presentation
       }
-      postsCount={profilePosts?.length}
+      postsCount={size}
       followersCount={
         currentUserData.displayName === watchName
           ? followers?.length

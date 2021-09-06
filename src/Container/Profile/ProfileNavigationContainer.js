@@ -8,6 +8,9 @@ import {
   getProfileBookmarkPosts,
   getProfileHeartPosts,
   getProfilePosts,
+  updateLastDocByProfileBookmarkPosts,
+  updateLastDocByProfileHeartPosts,
+  updateLastDocByProfilePosts,
 } from '../../Modules/posts';
 
 const ProfileNavigationContainer = ({ watchName }) => {
@@ -26,19 +29,37 @@ const ProfileNavigationContainer = ({ watchName }) => {
 
   const onMoveProfilePage = () => {
     if (!profilePosts) {
-      dispatch(getProfilePosts(profileUserData?.uid));
+      dispatch(
+        getProfilePosts({
+          uid: profileUserData?.uid,
+          dispatch,
+          updateLastDocByProfilePosts,
+        }),
+      );
     }
   };
 
   const onMoveBookmarkPage = () => {
     if (!profileBookmarkPosts) {
-      dispatch(getProfileBookmarkPosts(profileUserData?.uid));
+      dispatch(
+        getProfileBookmarkPosts({
+          uid: profileUserData?.uid,
+          dispatch,
+          updateLastDocByProfileBookmarkPosts,
+        }),
+      );
     }
   };
 
   const onMoveHeartPage = () => {
     if (!profileHeartPosts) {
-      dispatch(getProfileHeartPosts(profileUserData?.uid));
+      dispatch(
+        getProfileHeartPosts({
+          uid: profileUserData?.uid,
+          dispatch,
+          updateLastDocByProfileHeartPosts,
+        }),
+      );
     }
   };
 

@@ -2,11 +2,15 @@ import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useLocation, useRouteMatch } from 'react-router';
 import Profile from '../../Component/Profile/Profile';
-import { getUid } from '../../services/firestore';
+import { getProfilePostsSizeData, getUid } from '../../services/firestore';
 import {
   getProfileBookmarkPosts,
   getProfileHeartPosts,
   getProfilePosts,
+  getProfilePostsSize,
+  updateLastDocByProfileBookmarkPosts,
+  updateLastDocByProfileHeartPosts,
+  updateLastDocByProfilePosts,
 } from '../../Modules/posts';
 import {
   getProfileUserData,
@@ -23,15 +27,29 @@ const ProfileContainer = () => {
 
   useEffect(async () => {
     const uid = await getUid(watchName);
+    const size = await getProfilePostsSizeData(uid);
+    dispatch(getProfilePostsSize(size));
     dispatch(getProfileUserData(uid));
     dispatch(getProfileUserFollowData(uid));
     if (!profilePosts) {
-      dispatch(getProfilePosts(uid));
+      dispatch(getProfilePosts({ uid, dispatch, updateLastDocByProfilePosts }));
     }
     if (location.pathname === `/${watchName}/heart`) {
-      dispatch(getProfileHeartPosts(uid));
+      dispatch(
+        getProfileHeartPosts({
+          uid,
+          dispatch,
+          updateLastDocByProfileHeartPosts,
+        }),
+      );
     } else if (location.pathname === `/${watchName}/saved`) {
-      dispatch(getProfileBookmarkPosts(uid));
+      dispatch(
+        getProfileBookmarkPosts({
+          uid,
+          dispatch,
+          updateLastDocByProfileBookmarkPosts,
+        }),
+      );
     }
   }, [watchName]);
 

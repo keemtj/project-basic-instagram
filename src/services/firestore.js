@@ -36,7 +36,10 @@ export const getCurrentUserFollowData = async uid => {
 // --> post
 /**
  * main page에서 posts(my posts, following users posts) 데이터 가져오는 함수
+ * @param {Object} keys uids, dispatch, updateLastMainDocs
  * @param {Array} uids combined my uid and following users uid
+ * @param {function} dispatch redux-thunk dispatch function
+ * @param {Array} updateLastMainDocs last documents
  * @returns {Array} main posts
  */
 export const getAllPosts = async ({ uids, dispatch, updateLastMainDocs }) => {
@@ -61,6 +64,14 @@ export const getAllPosts = async ({ uids, dispatch, updateLastMainDocs }) => {
   return result;
 };
 
+/**
+ * main page에서 posts(my posts, following users posts)의 next 데이터를 가져오는 함수
+ * @param {Object} keys uids, dispatch, updateLastMainDocs
+ * @param {Array} uids combined my uid and following users uid
+ * @param {function} dispatch redux-thunk dispatch function
+ * @param {Array} updateLastDocs last documents
+ * @returns {Array} main posts
+ */
 export const getNextMainPosts = async ({
   uids,
   lastDocs,
@@ -261,18 +272,62 @@ export const getProfileUserData = async uid => {
 };
 
 /**
- * 클릭한 유저의 uid, profile page에서 렌더링
- * @param {string} uid user's uid
- * @returns posts array
+ * get size
+ * @param {Stirng} uid profile page user's uid
+ * @returns {number} posts size
  */
-export const getProfilePosts = async uid => {
+export const getProfilePostsSizeData = async uid => {
   const response = await firestore
     .collection('posts')
     .where('uid', '==', uid)
     .get();
-  let datas = [];
-  response.forEach(res => datas.push(res.data()));
-  return datas.sort((a, b) => b.date - a.date);
+  const size = response.size;
+  return size;
+};
+
+/**
+ * 클릭한 유저의 uid, profile page에서 렌더링
+ * @param {object} keys uid, dispatch, updateLastDocByProfilePosts
+ * @param {string} uid user's uid
+ * @param {function} dispatch redux dispatch function
+ * @param {function} updateLastDocByProfilePosts last document
+ * @returns posts array
+ */
+export const getProfilePosts = async ({
+  uid,
+  dispatch,
+  updateLastDocByProfilePosts,
+}) => {
+  const response = await firestore
+    .collection('posts')
+    .orderBy('date', 'desc')
+    .where('uid', '==', uid)
+    .limit(9)
+    .get();
+  const datas = response.docs.map(doc => doc.data());
+  const last = response.docs[response.docs.length - 1];
+  dispatch(updateLastDocByProfilePosts(last));
+  return datas;
+};
+
+export const getNextProfilePosts = async ({
+  uid,
+  lastDoc,
+  dispatch,
+  updateLastDocs,
+}) => {
+  if (!lastDoc) return null;
+  const response = await firestore
+    .collection('posts')
+    .orderBy('date', 'desc')
+    .where('uid', '==', uid)
+    .startAfter(lastDoc)
+    .limit(9)
+    .get();
+  const datas = response.docs.map(doc => doc.data()).filter(item => item);
+  const last = response.docs[response.docs.length - 1];
+  dispatch(updateLastDocs(last));
+  return datas;
 };
 
 /**
@@ -296,16 +351,42 @@ export const observeProfilePost = (dispatch, actionCreator, id) => {
  * @param {string} uid user's uid
  * @returns bookmarks array
  */
-export const getProfileBookmarkPosts = async uid => {
+export const getProfileBookmarkPosts = async ({
+  uid,
+  dispatch,
+  updateLastDocByProfileBookmarkPosts,
+}) => {
   const response = await firestore
     .collection('posts')
+    .orderBy('date', 'desc')
     .where('bookmarks', 'array-contains', uid)
+    .limit(9)
     .get();
-  let datas = [];
-  response.forEach(res => datas.push(res.data()));
-  return datas.reverse();
+  const datas = response.docs.map(doc => doc.data());
+  const last = response.docs[response.docs.length - 1];
+  dispatch(updateLastDocByProfileBookmarkPosts(last));
+  return datas;
 };
 
+export const getNextProfileBookmarkPosts = async ({
+  uid,
+  lastDoc,
+  dispatch,
+  updateLastDocs,
+}) => {
+  if (!lastDoc) return null;
+  const response = await firestore
+    .collection('posts')
+    .orderBy('date', 'desc')
+    .where('bookmarks', 'array-contains', uid)
+    .startAfter(lastDoc)
+    .limit(9)
+    .get();
+  const datas = response.docs.map(doc => doc.data()).filter(item => item);
+  const last = response.docs[response.docs.length - 1];
+  dispatch(updateLastDocs(last));
+  return datas;
+};
 /**
  * update profile bookmark post(상태 변화를 감시하고 즉시 변경)
  * @param {function} dispatch
@@ -327,16 +408,42 @@ export const observeProfileBookmarkPost = (dispatch, actionCreator, id) => {
  * @param {string} uid user's uid
  * @returns hearts array
  */
-export const getProfileHeartPosts = async uid => {
+export const getProfileHeartPosts = async ({
+  uid,
+  dispatch,
+  updateLastDocByProfileHeartPosts,
+}) => {
   const response = await firestore
     .collection('posts')
+    .orderBy('date', 'desc')
     .where('hearts', 'array-contains', uid)
+    .limit(9)
     .get();
-  let datas = [];
-  response.forEach(res => datas.push(res.data()));
-  return datas.reverse();
+  const datas = response.docs.map(doc => doc.data());
+  const last = response.docs[response.docs.length - 1];
+  dispatch(updateLastDocByProfileHeartPosts(last));
+  return datas;
 };
 
+export const getNextProfileHeartPosts = async ({
+  uid,
+  lastDoc,
+  dispatch,
+  updateLastDocs,
+}) => {
+  if (!lastDoc) return null;
+  const response = await firestore
+    .collection('posts')
+    .orderBy('date', 'desc')
+    .where('hearts', 'array-contains', uid)
+    .startAfter(lastDoc)
+    .limit(9)
+    .get();
+  const datas = response.docs.map(doc => doc.data()).filter(item => item);
+  const last = response.docs[response.docs.length - 1];
+  dispatch(updateLastDocs(last));
+  return datas;
+};
 /**
  * update profile heart post(상태 변화를 감시하고 즉시 변경)
  * @param {function} dispatch

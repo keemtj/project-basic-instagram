@@ -2,16 +2,33 @@ import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Loading from '../../Component/Global/Loading';
 import Posts from '../../Component/Profile/Posts';
+import useInfiniteScroll from '../../Hooks/useInfiniteScroll';
 import { openPopup } from '../../Modules/popup';
-import { activeIndexOfPost, activeIdOfPost } from '../../Modules/posts';
+import {
+  activeIndexOfPost,
+  activeIdOfPost,
+  nextProfilePosts as nextPosts,
+  updateLastDocByProfilePosts as updateLastDocs,
+} from '../../Modules/posts';
+import { getNextProfilePosts as fetchNextPosts } from '../../services/firestore';
 
 const PostsContainer = ({ watchName }) => {
   const dispatch = useDispatch();
-  const { displayName } = useSelector(state => state.user.currentUser);
+  const { displayName, uid } = useSelector(state => state.user.currentUser);
   const { postsModal: postsModalState } = useSelector(state => state.popup);
   const { data: profilePosts, loading, error } = useSelector(
     state => state.posts.profilePosts,
   );
+  const lastDoc = useSelector(state => state.posts.lastDocByProfilePosts);
+
+  const intersectionObserver = useInfiniteScroll({
+    threshold: 0.9,
+    fetchNextPosts,
+    lastDoc,
+    nextPosts,
+    updateLastDocs,
+    uid,
+  });
 
   const onClickPostModal = (id, index) => {
     dispatch(openPopup('postsModal'));
@@ -30,6 +47,9 @@ const PostsContainer = ({ watchName }) => {
       posts={profilePosts}
       onClickPostModal={onClickPostModal}
       isMypage={watchName === displayName}
+      isLoading={loading}
+      lastDoc={lastDoc}
+      intersectionObserver={intersectionObserver}
     />
   );
 };
