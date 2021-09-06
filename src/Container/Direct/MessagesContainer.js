@@ -8,7 +8,10 @@ import {
   getProfileUserData,
   getProfileUserFollowData,
 } from '../../Modules/user';
-import { getProfilePosts } from '../../Modules/posts';
+import {
+  getProfilePosts,
+  updateLastDocByProfilePosts,
+} from '../../Modules/posts';
 import { firestore } from '../../services/firebase';
 import { updateMsgs } from '../../services/firestore';
 
@@ -40,7 +43,13 @@ const MessagesContainer = () => {
   const onMoveProfilePage = () => {
     dispatch(getProfileUserData(partnerUid));
     dispatch(getProfileUserFollowData(partnerUid));
-    dispatch(getProfilePosts(partnerUid));
+    dispatch(
+      getProfilePosts({
+        uid: partnerUid,
+        dispatch,
+        updateLastDocByProfilePosts,
+      }),
+    );
     history.push(`/${displayName}`);
   };
 

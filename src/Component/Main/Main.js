@@ -4,8 +4,15 @@ import MainPostContainer from '../../Container/Main/MainPostContainer';
 import AsideFooter from './AsideFooter';
 import AsideContainer from '../../Container/Main/AsideContainer';
 import Loading from '../Global/Loading';
+import { NoData } from '../Global/Empty';
 
-const Main = ({ isLoading, mainPosts, userDatas }) => {
+const Main = ({
+  isLoading,
+  mainPosts,
+  userDatas,
+  intersectionObserver,
+  lastDocs,
+}) => {
   // // 비공개 계정이 아니고, 좋아요나 북마크 수가 많은 유저의 포스츠
   // const influencePosts = [
   //   {
@@ -80,6 +87,10 @@ const Main = ({ isLoading, mainPosts, userDatas }) => {
                   ))}
                 </>
               } */}
+              {!isLoading && !lastDocs.length && <NoData isNoData />}
+              {!isLoading && lastDocs.length > 0 && (
+                <StObserve {...intersectionObserver} />
+              )}
             </>
           )}
         </StSection>
@@ -105,11 +116,19 @@ const StMain = styled.main`
   width: 95rem;
   padding-top: 3rem;
   display: flex;
-  flex-flow: row nowrap;
+  flex-flow: column nowrap;
 `;
 
 const StSection = styled.section`
   width: 65rem;
+`;
+
+const StObserve = styled.div`
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  width: 60rem;
+  height: 10rem;
 `;
 
 const StAsideWrapper = styled.div`

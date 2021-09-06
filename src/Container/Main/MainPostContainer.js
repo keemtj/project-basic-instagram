@@ -7,6 +7,7 @@ import {
   activeIdOfPost,
   activeIndexOfPost,
   getProfilePosts,
+  updateLastDocByProfilePosts,
   updateMainPosts,
 } from '../../Modules/posts';
 import {
@@ -55,7 +56,13 @@ const MainPostContainer = ({ post, index, displayName, photoURL }) => {
   const onMoveProfilePage = () => {
     console.log(uid);
     dispatch(getProfileUserData(uid));
-    dispatch(getProfilePosts(uid));
+    dispatch(
+      getProfilePosts({
+        uid,
+        dispatch,
+        updateLastDocByProfilePosts,
+      }),
+    );
     history.push(`/${displayName}`);
   };
 
